@@ -122,6 +122,13 @@
   <ItemGroup>
     <Image Include="overworld.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="button.hpp" />
+    <ClInclude Include="IslandApp.hpp" />
+    <ClInclude Include="IslandMenu.hpp" />
+    <ClInclude Include="menus.hpp" />
+    <ClInclude Include="textbox.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

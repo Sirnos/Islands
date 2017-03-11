@@ -1,24 +1,25 @@
 #include <SFML/Graphics.hpp>
 
+#include "IslandApp.hpp"
 void main()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 1024), "Islands", sf::Style::Fullscreen);
+	IslandApp app;
+	app.initiate();
+	
+	sf::RenderWindow *appWindow = app.getIslandWindow();
+	sf::Event *appEvent = app.getIslandWindowEvent();
 
-
-	while (window.isOpen())
+	while (appWindow->isOpen())
 	{
-		sf::Event event;
-
-		while (window.pollEvent(event))
+		while (appWindow->pollEvent(*appEvent))
 		{
-			if (event.type == sf::Event::Closed)
+			if (appEvent->type == sf::Event::Closed)
 			{
-				window.close();
+				appWindow->close();
 			}
 		}
-
-		window.clear();
-		window.display();
+		app.clearContext();
+		app.displayContext();
 	}
 
 	return;
