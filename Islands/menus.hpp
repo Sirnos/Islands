@@ -1,22 +1,30 @@
 #pragma once
+#include "button.hpp"
+#include "textbox.hpp"
 
+struct basicmenu
+{
+	button exitButton;
 
-struct startMenu
+	virtual unsigned menuLoop(sf::Event &WindowEvent) = 0;
+};
+
+struct startMenu :basicmenu
 {
 
 };
 
-struct loadgameMenu
+struct loadgameMenu :basicmenu
 {
 
 };
 
-struct creategameMenu
+struct creategameMenu :basicmenu
 {
 
 };
 
-struct creditsMenu
+struct creditsMenu :basicmenu
 {
 
 };

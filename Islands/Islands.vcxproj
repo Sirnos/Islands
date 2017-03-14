@@ -124,10 +124,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.hpp" />
+    <ClInclude Include="Engine.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="textbox.hpp" />
+    <ClInclude Include="Tile.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

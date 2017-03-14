@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stack>
+
 #include <SFML/Graphics.hpp>
 
 enum class menu_type :size_t
@@ -13,5 +15,6 @@ enum class menu_type :size_t
 class IslandMenu
 {
 public:
+	std::stack <menu_type> MenuStack;
 	
 };
