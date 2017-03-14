@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Tile.hpp"
+
 class Engine
 {
 	//character player;
@@ -9,9 +11,18 @@ class Engine
 
 	sf::Sprite background;
 
-	std::vector <std::vector <TILE_TYPE> > island;
+	std::vector <Tile> playerIsland;
+	std::vector <Tile> otherIslands;
 
-	std::vector <TILE_TYPE> otherIslands;
+	void sortPlayerIsland();
+	void checkPlayerIslandIntegrity();
+	void cleanIslands(); // to define
+
+	std::vector <sf::RectangleShape *> drawableRectShapeVector;
+
 public:
 	~Engine();
+
+	void init();
+
 };
