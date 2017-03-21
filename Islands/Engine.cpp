@@ -96,6 +96,4 @@ void Engine::DrawAll(sf::RenderWindow * window)
 	window->draw(*player.getShape());
 
 	//draw clouds
-
-
 }
