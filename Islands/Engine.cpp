@@ -17,9 +17,9 @@ void Engine::init()
 
 	player.set(&mediaContainer.TextureContainer[9], sf::Vector2f(100, 100));
 
-	for (size_t i = 0; i < 20; i++)
+	for (size_t i = 0; i < 40; i++)
 	{
-		playerIsland.push_back(std::vector<Tile>(20));
+		playerIsland.push_back(std::vector<Tile>(40));
 		for (size_t j = 0; j < playerIsland[i].size(); j++)
 		{
 			playerIsland[i][j].set(TILE_TYPE::GRASS, sf::Vector2f(beg));
