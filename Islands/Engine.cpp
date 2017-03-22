@@ -7,6 +7,7 @@ Engine::~Engine()
 		playerIsland[i].clear();
 	}
 	objects.clear();
+	mobs.clear();
 }
 
 void Engine::init()
@@ -54,6 +55,12 @@ void Engine::init()
 	playerIsland[9][0].setTexture(&mediaContainer.TextureContainer[2]);
 	playerIsland[0][10].setTexture(&mediaContainer.TextureContainer[8]);
 
+	for (size_t i = 0; i < playerIsland.size(); i++)
+	{
+		if(playerIsland[i].capacity() > playerIsland[i].size())
+			playerIsland[i].shrink_to_fit();
+	}
+	playerIsland.shrink_to_fit();
 }
 
 void Engine::operator()()
