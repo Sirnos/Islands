@@ -2,7 +2,7 @@
 
 #include "Character.hpp"
 
-class playerCharacter :Character
+class playerCharacter :public Character
 {
 
 public:

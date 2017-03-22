@@ -14,13 +14,9 @@ protected:
 	virtual void idle() {}
 public:
 	Character()
-	{
-
-	}
+	{}
 	~Character()
-	{
-
-	}
+	{}
 
 	virtual void move(){}
 	virtual void behavior(){}
@@ -28,5 +24,13 @@ public:
 	float getHP() { return HP; }
 	float getMP() { return MP; }
 
+	sf::Vector2f getPosition()
+	{
+		return CharacterShape.getPosition();
+	}
+	sf::Vector2f getSize()
+	{
+		return CharacterShape.getSize();
+	}
 
 };

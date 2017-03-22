@@ -32,10 +32,8 @@ void Engine::init()
 			{
 				playerIsland[i][j].setTexture(&mediaContainer.TextureContainer[8]);
 			}
-
 			beg.x += 64;
 		}
-
 		beg.y += 64;
 		beg.x = 0;
 	}
@@ -61,6 +59,8 @@ void Engine::init()
 			playerIsland[i].shrink_to_fit();
 	}
 	playerIsland.shrink_to_fit();
+
+	camera.setSize(sf::Vector2f(1280, 1024));
 }
 
 void Engine::operator()()
@@ -68,26 +68,29 @@ void Engine::operator()()
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		movevctr.x -= 2;
+		movevctr.x -= 3;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		movevctr.x += 2;
+		movevctr.x += 3;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)|| sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		movevctr.y -= 2;
+		movevctr.y -= 3;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		movevctr.y += 2;
+		movevctr.y += 3;
 	}
 
 	player.move(movevctr);
+	camera.setCenter(player.getPosition());
 }
 
 void Engine::DrawAll(sf::RenderWindow * window)
 {
+	window->setView(camera);
+
 	for (size_t i = 0; i < playerIsland.size(); i++)
 	{
 		for (size_t j = 0; j < playerIsland[i].size(); j++)

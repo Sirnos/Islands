@@ -18,6 +18,8 @@ class Engine
 	sf::Sprite background;
 	std::vector <std::vector<Tile>> playerIsland;
 	std::vector <object> objects;
+
+	sf::View camera;
 public:
 	~Engine();
 
