@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
+const int size = 10;
+const int pos = 10;
+
 struct Media
 {
 	sf::Image rawImage;
@@ -10,20 +13,20 @@ struct Media
 
 	void load()
 	{
-		rawImage.loadFromFile("overworld.png");
+		rawImage.loadFromFile("sprites.png");
 		for (size_t i = 0; i < 12; i++)
 		{
 			TextureContainer.push_back(sf::Texture());
 		}
-		TextureContainer[0].loadFromImage(rawImage, sf::IntRect(0, 50, 10, 10));//normal
-		TextureContainer[1].loadFromImage(rawImage, sf::IntRect(0, 20, 10, 10));//back left
-		TextureContainer[2].loadFromImage(rawImage, sf::IntRect(0, 30, 10, 10));//up-left corner
-		TextureContainer[3].loadFromImage(rawImage, sf::IntRect(10, 30, 10, 10));//up
-		TextureContainer[4].loadFromImage(rawImage, sf::IntRect(40, 30, 10, 10));//right corner
-		TextureContainer[5].loadFromImage(rawImage, sf::IntRect(40, 20, 10, 10));//back right
-		TextureContainer[6].loadFromImage(rawImage, sf::IntRect(30, 0, 10, 10));// down
-		TextureContainer[7].loadFromImage(rawImage, sf::IntRect(0, 0, 10, 10));//down left corner
-		TextureContainer[8].loadFromImage(rawImage, sf::IntRect(60,130,10,10));//water
+		TextureContainer[0].loadFromImage(rawImage, sf::IntRect(pos, pos, size, size));//normal
+		TextureContainer[1].loadFromImage(rawImage, sf::IntRect(0, pos, size, size));//back left
+		TextureContainer[2].loadFromImage(rawImage, sf::IntRect(0, pos * 2, size, size));//up-left corner
+		TextureContainer[3].loadFromImage(rawImage, sf::IntRect(pos, pos *2, size, size));//up
+		TextureContainer[4].loadFromImage(rawImage, sf::IntRect(pos *2, pos * 2, size, size));// up right corner
+		TextureContainer[5].loadFromImage(rawImage, sf::IntRect(pos * 2, pos *1, size, size));//back right
+		TextureContainer[6].loadFromImage(rawImage, sf::IntRect(pos*1, 0, size, size));// down
+		TextureContainer[7].loadFromImage(rawImage, sf::IntRect(0, 0, size, size));//down left corner
+		TextureContainer[8].loadFromImage(rawImage, sf::IntRect(pos * 2, 0, size, size));//down right corner
 		TextureContainer[9].loadFromFile("char.png", sf::IntRect(0,0,40,60));
 	}
 

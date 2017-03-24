@@ -30,7 +30,7 @@ void main()
 
 		IslandEngine();
 
-		app.clearContext();
+		app.clearContext(sf::Color(54,128,235,60));//sky color
 
 		IslandEngine.DrawAll(app.getIslandWindow());
 

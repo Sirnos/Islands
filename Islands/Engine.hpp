@@ -20,6 +20,7 @@ class Engine
 	std::vector <object> objects;
 
 	sf::View camera;
+
 public:
 	~Engine();
 

@@ -29,6 +29,9 @@
     <Image Include="char.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="sprites.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IslandApp.hpp">
@@ -64,5 +67,10 @@
     <ClInclude Include="object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sprites.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

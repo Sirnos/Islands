@@ -24,34 +24,28 @@ void Engine::init()
 		{
 			playerIsland[i][j].set(TILE_TYPE::GRASS, sf::Vector2f(beg));
 
-			if (j < 10 && i < 10)
-			{
-				playerIsland[i][j].setTexture(&mediaContainer.TextureContainer[0]);
-			}
-			else
-			{
-				playerIsland[i][j].setTexture(&mediaContainer.TextureContainer[8]);
-			}
+			playerIsland[i][j].setTexture(&mediaContainer.TextureContainer[0]);
 			beg.x += 64;
 		}
 		beg.y += 64;
 		beg.x = 0;
 	}
 
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 40; i++)
 	{
 		playerIsland[i][0].setTexture(&mediaContainer.TextureContainer[1]);
-		playerIsland[i][10].setTexture(&mediaContainer.TextureContainer[5]);
+		playerIsland[i][39].setTexture(&mediaContainer.TextureContainer[5]);
 	}
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 39; i++)
 	{
 		playerIsland[0][i].setTexture(&mediaContainer.TextureContainer[6]);
-		playerIsland[9][i].setTexture(&mediaContainer.TextureContainer[3]);
+		playerIsland[39][i].setTexture(&mediaContainer.TextureContainer[3]);
 	}
 
 	playerIsland[0][0].setTexture(&mediaContainer.TextureContainer[7]);
-	playerIsland[9][0].setTexture(&mediaContainer.TextureContainer[2]);
-	playerIsland[0][10].setTexture(&mediaContainer.TextureContainer[8]);
+	playerIsland[39][0].setTexture(&mediaContainer.TextureContainer[2]);
+	playerIsland[0][39].setTexture(&mediaContainer.TextureContainer[8]);
+	playerIsland[39][39].setTexture(&mediaContainer.TextureContainer[4]);
 
 	for (size_t i = 0; i < playerIsland.size(); i++)
 	{
@@ -68,19 +62,19 @@ void Engine::operator()()
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		movevctr.x -= 3;
+		movevctr.x -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		movevctr.x += 3;
+		movevctr.x += 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)|| sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		movevctr.y -= 3;
+		movevctr.y -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		movevctr.y += 3;
+		movevctr.y += 5;
 	}
 
 	player.move(movevctr);

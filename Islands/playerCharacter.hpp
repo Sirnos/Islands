@@ -33,5 +33,4 @@ public:
 		CharacterShape.setTexture(texture);
 		CharacterShape.setSize(sf::Vector2f(40, 60));
 	}
-
 };

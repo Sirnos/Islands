@@ -16,5 +16,4 @@ class IslandMenu
 {
 public:
 	std::stack <menu_type> MenuStack;
-	
 };
