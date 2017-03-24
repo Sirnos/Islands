@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
 #include "Tile.hpp"
+
 
 class Engine
 {
@@ -16,7 +16,6 @@ class Engine
 
 	void sortPlayerIsland();
 	void checkPlayerIslandIntegrity();
-	void cleanIslands(); // to define
 
 	std::vector <sf::RectangleShape *> drawableRectShapeVector;
 
