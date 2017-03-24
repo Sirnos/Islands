@@ -2,9 +2,8 @@
 
 #include "Character.hpp"
 
-class playerCharacter :Character
+class playerCharacter :public Character
 {
-
 
 public:
 	playerCharacter()
@@ -17,10 +16,22 @@ public:
 	{
 		CharacterShape.setPosition(position);
 		CharacterShape.setTexture(texture);
-		CharacterShape.setSize(sf::Vector2f(64, 96));
-
-		
+		CharacterShape.setSize(sf::Vector2f(10, 10));
 	}
 
+	void move(sf::Vector2f moveVector)
+	{
+		CharacterShape.move(moveVector);
+	}
+	sf::RectangleShape *getShape()
+	{
+		return &CharacterShape;
+	}
+	void set(sf::Texture *texture, sf::Vector2f position)
+	{
+		CharacterShape.setPosition(position);
+		CharacterShape.setTexture(texture);
+		CharacterShape.setSize(sf::Vector2f(40, 60));
+	}
 
 };

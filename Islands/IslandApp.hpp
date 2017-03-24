@@ -11,7 +11,7 @@ class IslandApp
 public:
 	void initiate(sf::VideoMode WindowMode = sf::VideoMode(1280,1024,32),unsigned FPS = 62,bool vertSync = false)
 	{
-		IslandWindow.create(WindowMode, "Islands", sf::Style::Fullscreen);
+		IslandWindow.create(WindowMode, "Islands" /*sf::Style::Fullscreen*/);
 		IslandWindow.setFramerateLimit(FPS);
 		IslandWindow.setVerticalSyncEnabled(vertSync);
 	}
