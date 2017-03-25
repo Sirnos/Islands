@@ -21,6 +21,7 @@ class Engine
 
 	sf::View camera;
 
+	void generateMap();
 public:
 	~Engine();
 
