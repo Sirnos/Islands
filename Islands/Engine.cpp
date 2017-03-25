@@ -111,7 +111,10 @@ void Engine::operator()()
 	}
 
 	player.move(movevctr);
-	camera.setCenter(player.getPosition());
+	sf::Vector2f newCameraPos = player.getPosition();
+	newCameraPos.x += (player.getSize().x / 2);
+	newCameraPos.y += (player.getSize().y / 2);
+	camera.setCenter(newCameraPos);
 }
 
 void Engine::DrawAll(sf::RenderWindow * window)
