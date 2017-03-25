@@ -27,7 +27,8 @@ struct Media
 		TextureContainer[6].loadFromImage(rawImage, sf::IntRect(pos*1, 0, size, size));// down
 		TextureContainer[7].loadFromImage(rawImage, sf::IntRect(0, 0, size, size));//down left corner
 		TextureContainer[8].loadFromImage(rawImage, sf::IntRect(pos * 2, 0, size, size));//down right corner
-		TextureContainer[9].loadFromFile("char.png", sf::IntRect(0,0,40,60));
+		TextureContainer[9].loadFromFile("char.png", sf::IntRect(0,0,40,60));//player
+		TextureContainer[10].loadFromImage(rawImage, sf::IntRect(0, pos * 3, size, size));
 	}
 
 	~Media()

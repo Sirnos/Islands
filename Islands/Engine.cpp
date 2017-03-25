@@ -55,6 +55,15 @@ void Engine::init()
 	playerIsland.shrink_to_fit();
 
 	camera.setSize(sf::Vector2f(1280, 1024));
+
+	objects.resize(10);
+	for (size_t i = 0; i < 10; i++)
+	{
+		objects[i].setTexture(&mediaContainer.TextureContainer[10]);
+		objects[i].setSize(sf::Vector2f(40, 40));
+		objects[i].setPosition(sf::Vector2f(64 * i * 2, 64 * i * 2));
+	}
+	objects.shrink_to_fit();
 }
 
 void Engine::operator()()

@@ -6,6 +6,7 @@ const float TILE_SIZE = 64;
 
 enum class TILE_TYPE :unsigned
 {
+	EMPTY,
 	DIRT,
 	GRASS,
 	ROCK
