@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="char.png" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
+    <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="object.hpp" />

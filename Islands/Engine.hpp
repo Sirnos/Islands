@@ -3,25 +3,23 @@
 #include <SFML/Graphics.hpp>
 
 #include "playerCharacter.hpp"
-#include "Tile.hpp"
 #include "Media.hpp"
 #include "object.hpp"
 #include "character.hpp"
+#include "Map.hpp"
 
 class Engine
 {
+	Map GameMap;
 	Media mediaContainer;
 
 	playerCharacter player;
 	std::vector < std::pair <Character*, size_t>> mobs;
 
 	sf::Sprite background;
-	std::vector <std::vector<Tile>> playerIsland;
 	std::vector <object> objects;
 
 	sf::View camera;
-
-	void generateMap();
 public:
 	~Engine();
 
