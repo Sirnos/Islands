@@ -11,6 +11,9 @@ struct Media
 
 	std::vector <sf::Texture> TextureContainer;
 
+	std::vector <sf::Texture> ObjectsTexture;
+	std::vector <sf::Texture> ItemsTexture;
+
 	void load()
 	{
 		rawImage.loadFromFile("sprites.png");
