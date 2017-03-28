@@ -69,7 +69,7 @@ void Engine::drawMap(sf::RenderWindow *window)
 		{
 			if (i > -1 && j > -1)
 			{
-				if (i < 100 && j < 100)
+				if (i < GameMap.getMapSize().x && j < GameMap.getMapSize().y)
 				{
 					if(GameMap.getTile(sf::Vector2u(j, i))->getTileType() != TILE_TYPE::EMPTY)
 						window->draw(*GameMap.getTile(sf::Vector2u(j, i))->getShape());

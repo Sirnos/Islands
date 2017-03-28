@@ -48,7 +48,7 @@ void Map::generateMap()
 			{
 				MapTiles[i][j].set(TILE_TYPE::DIRT, sf::Vector2f(beg));
 			}
-			else if (var > 0.2)
+			else if (var > 0.05)
 			{
 				MapTiles[i][j].set(TILE_TYPE::GRASS, sf::Vector2f(beg));
 			}
@@ -96,6 +96,11 @@ const sf::Vector2i Map::getTiledPosition(sf::Vector2f characterPos)
 	characterPos = characterPos / 64.0f;
 
 	return static_cast<sf::Vector2i>(characterPos);
+}
+
+sf::Vector2u Map::getMapSize()
+{
+	return sf::Vector2u(MapTiles.size(), MapTiles[0].size());
 }
 
 Tile * Map::getTile(sf::Vector2u tileNumber)
