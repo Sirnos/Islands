@@ -48,15 +48,6 @@ void Engine::operator()()
 		movevctr.y += 5;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-	{
-		camera.zoom(2);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-	{
-		camera.zoom(0.5);
-	}
-
 	player.move(movevctr);
 	sf::Vector2f newCameraPos = player.getPosition();
 	newCameraPos.x += (player.getSize().x / 2);
@@ -64,18 +55,84 @@ void Engine::operator()()
 	camera.setCenter(newCameraPos);
 }
 
+void Engine::drawMap(sf::RenderWindow *window)
+{
+	sf::Vector2f position = player.getPosition();
+	position.x += player.getSize().x / 2;
+	position.y += player.getSize().y / 2;
+
+	sf::Vector2i PlayerPosToTile = GameMap.getTiledPosition(position);
+
+	if (PlayerPosToTile.x == 0 && PlayerPosToTile.y == 0)
+	{
+		for (size_t i = 0; i < 21; i++)
+		{
+			for (size_t j = 0; j < 21; j++)
+			{
+				sf::Vector2u TileNumber(i, j);
+				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
+				{
+					window->draw(*GameMap.getTile(TileNumber)->getShape());
+				}
+			}
+		}
+		return;
+	}
+
+	if (PlayerPosToTile.x == Map::MAP_SIZE && PlayerPosToTile.y == 0)
+	{
+		for (size_t i = PlayerPosToTile.x; i > PlayerPosToTile.x - 21; --i)
+		{
+			for (size_t j = 0; j < 21; j++)
+			{
+				sf::Vector2u TileNumber(i, j);
+				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
+				{
+					window->draw(*GameMap.getTile(TileNumber)->getShape());
+				}
+			}
+		}
+		return;
+	}
+
+	if (PlayerPosToTile.x == 0 && PlayerPosToTile.y == Map::MAP_SIZE)
+	{
+		for (size_t i = 0; i < 21;i++)
+		{
+			for (size_t j = Map::MAP_SIZE; j > Map::MAP_SIZE - 21; --j)
+			{
+				sf::Vector2u TileNumber(i, j);
+				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
+				{
+					window->draw(*GameMap.getTile(TileNumber)->getShape());
+				}
+			}
+		}
+		return;
+	}
+
+	if (PlayerPosToTile.x == Map::MAP_SIZE && PlayerPosToTile.y == Map::MAP_SIZE)
+	{
+		for (size_t i = Map::MAP_SIZE; i > Map::MAP_SIZE - 21; --i)
+		{
+			for (size_t j = Map::MAP_SIZE; j > Map::MAP_SIZE - 21; --j)
+			{
+				sf::Vector2u TileNumber(i, j);
+				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
+				{
+					window->draw(*GameMap.getTile(TileNumber)->getShape());
+				}
+			}
+		}
+		return;
+	}
+}
+
 void Engine::DrawAll(sf::RenderWindow * window)
 {
 	window->setView(camera);
 
-	for (size_t i = 0; i < Map::MAP_SIZE; i++)
-	{
-		for (size_t j = 0; j < Map::MAP_SIZE; j++)
-		{
-			if(GameMap.getTile(sf::Vector2u(i,j))->getTileType() != TILE_TYPE::EMPTY)
-				window->draw(*GameMap.getTile(sf::Vector2u(i, j))->getShape());
-		}
-	}
+	drawMap(window);
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{

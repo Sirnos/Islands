@@ -63,7 +63,6 @@ void Map::generateMap()
 		beg.y += 64;
 		beg.x = 0;
 	}
-	fitMap();
 }
 
 void Map::bindTexturesToTiles(const sf::Texture *TileTextures,size_t SIZE)
