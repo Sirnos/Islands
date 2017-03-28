@@ -1,6 +1,12 @@
 #include "Engine.hpp"
 #include <SFML/Graphics/Texture.hpp>
 
+void Engine::spawnPlayer()
+{
+	srand(static_cast<unsigned int>(time(NULL)));
+	player.move(sf::Vector2f(static_cast<float>(rand() % (250 * 64)), static_cast<float>(rand() % (250 * 64))));
+}
+
 Engine::~Engine()
 {
 	objects.clear();
@@ -11,12 +17,12 @@ void Engine::init()
 {
 	mediaContainer.load();
 	player.set(&mediaContainer.TextureContainer[9], sf::Vector2f(100, 100));
+	spawnPlayer();
 	camera.setSize(sf::Vector2f(1280, 1024));
 
 	GameMap.generateMap();
 	GameMap.fitMap();
 	GameMap.bindTexturesToTiles(mediaContainer.TextureContainer.data(),mediaContainer.TextureContainer.size());
-
 
 	objects.resize(10);
 	for (size_t i = 0; i < 10; i++)

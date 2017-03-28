@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
+#include <ctime>
 
 #include "playerCharacter.hpp"
 #include "Media.hpp"
@@ -20,6 +22,8 @@ class Engine
 	std::vector <object> objects;
 
 	sf::View camera;
+
+	void spawnPlayer();
 public:
 	~Engine();
 
