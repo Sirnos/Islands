@@ -62,70 +62,22 @@ void Engine::drawMap(sf::RenderWindow *window)
 	position.y += player.getSize().y / 2;
 
 	sf::Vector2i PlayerPosToTile = GameMap.getTiledPosition(position);
-
-	if (PlayerPosToTile.x == 0 && PlayerPosToTile.y == 0)
+	
+	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
 	{
-		for (size_t i = 0; i < 21; i++)
+		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 31; j++)
 		{
-			for (size_t j = 0; j < 21; j++)
+			if (i > -1 && j > -1)
 			{
-				sf::Vector2u TileNumber(i, j);
-				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
+				if (i < 100 && j < 100)
 				{
-					window->draw(*GameMap.getTile(TileNumber)->getShape());
+					if(GameMap.getTile(sf::Vector2u(j, i))->getTileType() != TILE_TYPE::EMPTY)
+						window->draw(*GameMap.getTile(sf::Vector2u(j, i))->getShape());
 				}
 			}
 		}
-		return;
 	}
 
-	if (PlayerPosToTile.x == Map::MAP_SIZE && PlayerPosToTile.y == 0)
-	{
-		for (size_t i = PlayerPosToTile.x; i > PlayerPosToTile.x - 21; --i)
-		{
-			for (size_t j = 0; j < 21; j++)
-			{
-				sf::Vector2u TileNumber(i, j);
-				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
-				{
-					window->draw(*GameMap.getTile(TileNumber)->getShape());
-				}
-			}
-		}
-		return;
-	}
-
-	if (PlayerPosToTile.x == 0 && PlayerPosToTile.y == Map::MAP_SIZE)
-	{
-		for (size_t i = 0; i < 21;i++)
-		{
-			for (size_t j = Map::MAP_SIZE; j > Map::MAP_SIZE - 21; --j)
-			{
-				sf::Vector2u TileNumber(i, j);
-				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
-				{
-					window->draw(*GameMap.getTile(TileNumber)->getShape());
-				}
-			}
-		}
-		return;
-	}
-
-	if (PlayerPosToTile.x == Map::MAP_SIZE && PlayerPosToTile.y == Map::MAP_SIZE)
-	{
-		for (size_t i = Map::MAP_SIZE; i > Map::MAP_SIZE - 21; --i)
-		{
-			for (size_t j = Map::MAP_SIZE; j > Map::MAP_SIZE - 21; --j)
-			{
-				sf::Vector2u TileNumber(i, j);
-				if (GameMap.getTile(TileNumber)->getTileType() != TILE_TYPE::EMPTY)
-				{
-					window->draw(*GameMap.getTile(TileNumber)->getShape());
-				}
-			}
-		}
-		return;
-	}
 }
 
 void Engine::DrawAll(sf::RenderWindow * window)
