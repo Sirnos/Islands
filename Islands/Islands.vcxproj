@@ -74,10 +74,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\SFML-2.4.0\include;E:\libnoise\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\SFML-2.4.0\include;E:\libnoise\include;C:\SFML\SFML-2.4.0\include;C:\libnoise\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>E:\SFML-2.4.0\lib;E:\libnoise\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\SFML-2.4.0\lib;E:\libnoise\bin;C:\SFML\SFML-2.4.0\lib;C:\libnoise\bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>libnoise.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

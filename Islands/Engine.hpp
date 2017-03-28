@@ -26,5 +26,6 @@ public:
 	void init();
 	void operator()();
 
+	void drawMap(sf::RenderWindow * window);
 	void DrawAll(sf::RenderWindow *window);
 };
