@@ -23,7 +23,10 @@ class Engine
 
 	sf::View camera;
 
+	//spawn player incorectly TODO:repair this func
 	void spawnPlayer();
+	//check player pos incorectly TODO:repair this func
+	bool checkPlayerPos();
 public:
 	~Engine();
 

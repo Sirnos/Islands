@@ -13,10 +13,8 @@ protected:
 	virtual void attack() {}
 	virtual void idle() {}
 public:
-	Character()
-	{}
-	~Character()
-	{}
+	Character(){}
+	~Character(){}
 
 	virtual void move(){}
 	virtual void behavior(){}
@@ -28,9 +26,21 @@ public:
 	{
 		return CharacterShape.getPosition();
 	}
+	sf::Vector2f getCharacterCenterPosition()
+	{
+		sf::Vector2f position = CharacterShape.getPosition();
+		position.x += CharacterShape.getSize().x / 2;
+		position.y += CharacterShape.getSize().y / 2;
+
+		return position;
+	}
 	sf::Vector2f getSize()
 	{
 		return CharacterShape.getSize();
+	}
+	void setPosition(sf::Vector2f newPosition)
+	{
+		CharacterShape.setPosition(newPosition);
 	}
 
 };

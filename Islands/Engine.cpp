@@ -4,7 +4,42 @@
 void Engine::spawnPlayer()
 {
 	srand(static_cast<unsigned int>(time(NULL)));
-	player.move(sf::Vector2f(static_cast<float>(rand() % (250 * 64)), static_cast<float>(rand() % (250 * 64))));
+	sf::Vector2f spawnPoint;
+
+	while (true)
+	{
+		spawnPoint = sf::Vector2f(rand() % 250 * 64, rand() % 250 * 64);
+
+		if (spawnPoint.x > 0 && spawnPoint.y > 0 && spawnPoint.x < 250 * 64 && spawnPoint.y < 250 * 64)
+		{
+			sf::Vector2i tile = GameMap.getTiledPosition(spawnPoint);
+
+			if (GameMap.getTile(static_cast<sf::Vector2u>(tile))->getTileType() != TILE_TYPE::EMPTY)
+			{
+				break;
+			}
+		}
+	}
+	player.setPosition(spawnPoint);
+}
+
+bool Engine::checkPlayerPos()
+{
+	sf::Vector2f playerPos = player.getCharacterCenterPosition();
+	sf::Vector2i pos = GameMap.getTiledPosition(playerPos);
+
+	/*
+	if (pos.x < 0 || pos.y < 0 || pos.x > Map::MAP_SIZE || pos.y > Map::MAP_SIZE)
+	{
+		return false;
+	}
+
+	if (GameMap.getTile(sf::Vector2u(pos.x, pos.y))->getTileType() == TILE_TYPE::EMPTY)
+	{
+		return false;
+	}
+	*/
+	return true;
 }
 
 Engine::~Engine()
@@ -17,12 +52,13 @@ void Engine::init()
 {
 	mediaContainer.load();
 	player.set(&mediaContainer.TextureContainer[9], sf::Vector2f(100, 100));
-	spawnPlayer();
 	camera.setSize(sf::Vector2f(1280, 1024));
 
 	GameMap.generateMap();
 	GameMap.fitMap();
 	GameMap.bindTexturesToTiles(mediaContainer.TextureContainer.data(),mediaContainer.TextureContainer.size());
+
+	spawnPlayer();
 
 	objects.resize(10);
 	for (size_t i = 0; i < 10; i++)
@@ -55,19 +91,18 @@ void Engine::operator()()
 	}
 
 	player.move(movevctr);
-	sf::Vector2f newCameraPos = player.getPosition();
-	newCameraPos.x += (player.getSize().x / 2);
-	newCameraPos.y += (player.getSize().y / 2);
+	sf::Vector2f newCameraPos = player.getCharacterCenterPosition();
 	camera.setCenter(newCameraPos);
+
+	if (!checkPlayerPos())
+	{
+		exit(0);
+	}
 }
 
 void Engine::drawMap(sf::RenderWindow *window)
 {
-	sf::Vector2f position = player.getPosition();
-	position.x += player.getSize().x / 2;
-	position.y += player.getSize().y / 2;
-
-	sf::Vector2i PlayerPosToTile = GameMap.getTiledPosition(position);
+	sf::Vector2i PlayerPosToTile = GameMap.getTiledPosition(player.getCharacterCenterPosition());
 	
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
 	{
