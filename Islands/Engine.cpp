@@ -1,5 +1,4 @@
 #include "Engine.hpp"
-#include <SFML/Graphics/Texture.hpp>
 
 void Engine::spawnPlayer()
 {
@@ -8,14 +7,20 @@ void Engine::spawnPlayer()
 
 	while (true)
 	{
-		spawnPoint = sf::Vector2f(rand() % 250 * 64, rand() % 250 * 64);
+		spawnPoint = sf::Vector2f(static_cast<float>(rand() % 250 * 64),
+			static_cast<float>(rand() % 250 * 64));
 
 		if (spawnPoint.x > 0 && spawnPoint.y > 0 && spawnPoint.x < 250 * 64 && spawnPoint.y < 250 * 64)
 		{
 			sf::Vector2i tile = GameMap.getTiledPosition(spawnPoint);
 
-			if (GameMap.getTile(static_cast<sf::Vector2u>(tile))->getTileType() != TILE_TYPE::EMPTY)
+			if (GameMap.getTile(static_cast<sf::Vector2u>(sf::Vector2i(tile.y,tile.x)))->getTileType() != TILE_TYPE::EMPTY)
 			{
+				ErrorHandler::log(std::string("spawn player pos:"));
+				ErrorHandler::log("Tile y");
+				ErrorHandler::log(std::to_string(tile.y));
+				ErrorHandler::log("Tile x");
+				ErrorHandler::log(std::to_string(tile.x));
 				break;
 			}
 		}
@@ -26,9 +31,9 @@ void Engine::spawnPlayer()
 bool Engine::checkPlayerPos()
 {
 	sf::Vector2f playerPos = player.getCharacterCenterPosition();
-	sf::Vector2i pos = GameMap.getTiledPosition(playerPos);
+	sf::Vector2i pos = GameMap.getTiledPosition(sf::Vector2f(playerPos.y,playerPos.x));
 
-	/*
+	
 	if (pos.x < 0 || pos.y < 0 || pos.x > Map::MAP_SIZE || pos.y > Map::MAP_SIZE)
 	{
 		return false;
@@ -38,12 +43,13 @@ bool Engine::checkPlayerPos()
 	{
 		return false;
 	}
-	*/
+	
 	return true;
 }
 
 Engine::~Engine()
 {
+	ErrorHandler::log("Clear data");
 	objects.clear();
 	mobs.clear();
 }
@@ -54,9 +60,9 @@ void Engine::init()
 	player.set(&mediaContainer.TextureContainer[9], sf::Vector2f(100, 100));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
+	ErrorHandler::log("Generate map");
 	GameMap.generateMap();
 	GameMap.fitMap();
-	GameMap.bindTexturesToTiles(mediaContainer.TextureContainer.data(),mediaContainer.TextureContainer.size());
 
 	spawnPlayer();
 
@@ -89,20 +95,21 @@ void Engine::operator()()
 	{
 		movevctr.y += 5;
 	}
-
 	player.move(movevctr);
 	sf::Vector2f newCameraPos = player.getCharacterCenterPosition();
 	camera.setCenter(newCameraPos);
 
 	if (!checkPlayerPos())
 	{
-		exit(0);
+		ErrorHandler::log("player move above map");
 	}
 }
 
 void Engine::drawMap(sf::RenderWindow *window)
 {
 	sf::Vector2i PlayerPosToTile = GameMap.getTiledPosition(player.getCharacterCenterPosition());
+	sf::RectangleShape TileShape;
+	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 	
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
 	{
@@ -112,13 +119,16 @@ void Engine::drawMap(sf::RenderWindow *window)
 			{
 				if (i < GameMap.getMapSize().x && j < GameMap.getMapSize().y)
 				{
-					if(GameMap.getTile(sf::Vector2u(j, i))->getTileType() != TILE_TYPE::EMPTY)
-						window->draw(*GameMap.getTile(sf::Vector2u(j, i))->getShape());
+					if (GameMap.getTile(sf::Vector2u(j, i))->getTileType() != TILE_TYPE::EMPTY)
+					{
+						TileShape.setPosition(GameMap.getTile(sf::Vector2u(j, i))->getPosition());
+						TileShape.setTexture(&mediaContainer.TextureContainer[0]);
+						window->draw(TileShape);
+					}
 				}
 			}
 		}
 	}
-
 }
 
 void Engine::DrawAll(sf::RenderWindow * window)

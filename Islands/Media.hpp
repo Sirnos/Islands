@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "Log.hpp"
 
 const int size = 10;
 const int pos = 10;
@@ -16,7 +17,13 @@ struct Media
 
 	void load()
 	{
-		rawImage.loadFromFile("sprites.png");
+		if (rawImage.loadFromFile("sprites.png"))
+		{
+			ErrorHandler::log("Textures loaded");
+		}
+		else
+			ErrorHandler::log("Textures not loaded");
+
 		for (size_t i = 0; i < 12; i++)
 		{
 			TextureContainer.push_back(sf::Texture());
@@ -36,6 +43,8 @@ struct Media
 
 	~Media()
 	{
+		ObjectsTexture.clear();
+		ItemsTexture.clear();
 		TextureContainer.clear();
 	}
 };

@@ -65,32 +65,6 @@ void Map::generateMap()
 	}
 }
 
-void Map::bindTexturesToTiles(const sf::Texture *TileTextures,size_t SIZE)
-{
-	for (size_t i = 0; i < MapTiles.size(); i++)
-	{
-		for (size_t j = 0; j < MapTiles[i].size(); j++)
-		{
-			TILE_TYPE var = MapTiles[i][j].getTileType();
-
-			switch (var)
-			{
-			case TILE_TYPE::ROCK :
-				MapTiles[i][j].setTexture(const_cast<sf::Texture *>(TileTextures));
-				break;
-			case TILE_TYPE::DIRT :
-				MapTiles[i][j].setTexture(const_cast<sf::Texture *>(TileTextures));
-				break;
-			case TILE_TYPE::GRASS :
-				MapTiles[i][j].setTexture(const_cast<sf::Texture *>(TileTextures));
-				break;
-			default:
-				break;
-			}
-		}
-	}
-}
-
 const sf::Vector2i Map::getTiledPosition(sf::Vector2f characterPos)
 {
 	characterPos = characterPos / 64.0f;

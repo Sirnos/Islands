@@ -138,6 +138,7 @@
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
+    <ClInclude Include="Log.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />
     <ClInclude Include="menus.hpp" />

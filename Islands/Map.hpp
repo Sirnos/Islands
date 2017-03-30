@@ -17,7 +17,6 @@ public:
 	void unloadMap();
 	//void loadMapFromFile(std::string file);
 	void generateMap();
-	void bindTexturesToTiles(const sf::Texture *TileTextures,size_t SIZE);
 
 	const sf::Vector2i getTiledPosition(sf::Vector2f characterPos);
 	sf::Vector2u getMapSize();

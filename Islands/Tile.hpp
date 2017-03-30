@@ -18,13 +18,9 @@ class Tile
 	TILE_TYPE type;
 	unsigned HP;
 
-	sf::RectangleShape TileShape;
-
 public:
 	Tile()
-	{
-		TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-	}
+	{}
 	Tile(TILE_TYPE newTileType,sf::Vector2f newTilePos)
 	{
 		type = newTileType;
@@ -86,16 +82,5 @@ public:
 		case TILE_TYPE::DIRT:
 			HP = 3;
 		}
-		TileShape.setPosition(pos);
-	}
-
-	sf::RectangleShape *getShape()
-	{
-		return &TileShape;
-	}
-
-	void setTexture(sf::Texture *txtr)
-	{
-		TileShape.setTexture(txtr);
 	}
 };
