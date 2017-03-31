@@ -10,4 +10,8 @@ public:
 	{
 		std::cout << text << std::endl;
 	}
+	static void logB(std::string text)
+	{
+		std::cout << text;
+	}
 };

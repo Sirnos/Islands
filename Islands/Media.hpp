@@ -3,17 +3,19 @@
 #include <SFML/Graphics.hpp>
 #include "Log.hpp"
 
-const int size = 10;
-const int pos = 10;
 
 struct Media
 {
+	const int size = 10;
+	const int pos = 10;
+
 	sf::Image rawImage;
 
-	std::vector <sf::Texture> TextureContainer;
-
+	std::vector <sf::Texture> TileTexture;
 	std::vector <sf::Texture> ObjectsTexture;
 	std::vector <sf::Texture> ItemsTexture;
+	
+	sf::Texture PlayerTexture;
 
 	void load()
 	{
@@ -23,28 +25,28 @@ struct Media
 		}
 		else
 			ErrorHandler::log("Textures not loaded");
+		
+		TileTexture.resize(12);
 
-		for (size_t i = 0; i < 12; i++)
-		{
-			TextureContainer.push_back(sf::Texture());
-		}
-		TextureContainer[0].loadFromImage(rawImage, sf::IntRect(pos, pos, size, size));//normal
-		TextureContainer[1].loadFromImage(rawImage, sf::IntRect(0, pos, size, size));//back left
-		TextureContainer[2].loadFromImage(rawImage, sf::IntRect(0, pos * 2, size, size));//up-left corner
-		TextureContainer[3].loadFromImage(rawImage, sf::IntRect(pos, pos *2, size, size));//up
-		TextureContainer[4].loadFromImage(rawImage, sf::IntRect(pos *2, pos * 2, size, size));// up right corner
-		TextureContainer[5].loadFromImage(rawImage, sf::IntRect(pos * 2, pos *1, size, size));//back right
-		TextureContainer[6].loadFromImage(rawImage, sf::IntRect(pos*1, 0, size, size));// down
-		TextureContainer[7].loadFromImage(rawImage, sf::IntRect(0, 0, size, size));//down left corner
-		TextureContainer[8].loadFromImage(rawImage, sf::IntRect(pos * 2, 0, size, size));//down right corner
-		TextureContainer[9].loadFromFile("char.png", sf::IntRect(0,0,40,60));//player
-		TextureContainer[10].loadFromImage(rawImage, sf::IntRect(0, pos * 3, size, size));
+		TileTexture[0].loadFromImage(rawImage, sf::IntRect(pos, pos, size, size));//normal
+		TileTexture[1].loadFromImage(rawImage, sf::IntRect(0, pos, size, size));//back left
+		TileTexture[2].loadFromImage(rawImage, sf::IntRect(0, pos * 2, size, size));//up-left corner
+		TileTexture[3].loadFromImage(rawImage, sf::IntRect(pos, pos *2, size, size));//up
+		TileTexture[4].loadFromImage(rawImage, sf::IntRect(pos *2, pos * 2, size, size));// up right corner
+		TileTexture[5].loadFromImage(rawImage, sf::IntRect(pos * 2, pos *1, size, size));//back right
+		TileTexture[6].loadFromImage(rawImage, sf::IntRect(pos*1, 0, size, size));// down
+		TileTexture[7].loadFromImage(rawImage, sf::IntRect(0, 0, size, size));//down left corner
+		TileTexture[8].loadFromImage(rawImage, sf::IntRect(pos * 2, 0, size, size));//down right corner
+		TileTexture[9].loadFromImage(rawImage, sf::IntRect(0, pos * 3, size, size));
+		TileTexture[10].loadFromImage(rawImage, sf::IntRect(pos, pos * 3, size, size));//brigde
+
+		PlayerTexture.loadFromFile("char.png", sf::IntRect(0, 0, 40, 60));
 	}
 
 	~Media()
 	{
 		ObjectsTexture.clear();
 		ItemsTexture.clear();
-		TextureContainer.clear();
+		TileTexture.clear();
 	}
 };

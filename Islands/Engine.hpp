@@ -25,7 +25,9 @@ class Engine
 
 	sf::View camera;
 
+	void checkPlayerBehaviour();
 	void spawnPlayer();
+
 	bool checkPlayerPos();
 public:
 	~Engine();

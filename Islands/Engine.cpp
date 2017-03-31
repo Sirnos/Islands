@@ -1,26 +1,49 @@
 #include "Engine.hpp"
 
+void Engine::checkPlayerBehaviour()
+{
+	sf::Vector2f movevctr;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		movevctr.x -= 5;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		movevctr.x += 5;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		movevctr.y -= 5;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		movevctr.y += 5;
+	}
+	player.move(movevctr);
+}
+
 void Engine::spawnPlayer()
 {
+	const int MaxPosition = Map::MAP_SIZE - 10;
+
 	srand(static_cast<unsigned int>(time(NULL)));
 	sf::Vector2f spawnPoint;
 
 	while (true)
 	{
-		spawnPoint = sf::Vector2f(static_cast<float>(rand() % 250 * 64),
-			static_cast<float>(rand() % 250 * 64));
+		spawnPoint = sf::Vector2f(static_cast<float>(rand() % MaxPosition * 64),
+			static_cast<float>(rand() % MaxPosition * 64));
 
-		if (spawnPoint.x > 0 && spawnPoint.y > 0 && spawnPoint.x < 250 * 64 && spawnPoint.y < 250 * 64)
+		if (spawnPoint.x > 0 && spawnPoint.y > 0 
+			&& spawnPoint.x < MaxPosition * 64 && spawnPoint.y < MaxPosition * 64)
 		{
-			sf::Vector2i tile = GameMap.getTiledPosition(spawnPoint);
+			sf::Vector2i tile = Map::getTiledPosition(spawnPoint);
 
 			if (GameMap.getTile(static_cast<sf::Vector2u>(sf::Vector2i(tile.y,tile.x)))->getTileType() != TILE_TYPE::EMPTY)
 			{
-				ErrorHandler::log(std::string("spawn player pos:"));
-				ErrorHandler::log("Tile y");
-				ErrorHandler::log(std::to_string(tile.y));
-				ErrorHandler::log("Tile x");
-				ErrorHandler::log(std::to_string(tile.x));
+				ErrorHandler::log(std::string("Spawn player position:"));
+				ErrorHandler::log("Tile Y " + std::to_string(tile.y));
+				ErrorHandler::log("Tile X " + std::to_string(tile.x));
 				break;
 			}
 		}
@@ -31,7 +54,7 @@ void Engine::spawnPlayer()
 bool Engine::checkPlayerPos()
 {
 	sf::Vector2f playerPos = player.getCharacterCenterPosition();
-	sf::Vector2i pos = GameMap.getTiledPosition(sf::Vector2f(playerPos.y,playerPos.x));
+	sf::Vector2i pos = Map::getTiledPosition(sf::Vector2f(playerPos.y,playerPos.x));
 
 	
 	if (pos.x < 0 || pos.y < 0 || pos.x > Map::MAP_SIZE || pos.y > Map::MAP_SIZE)
@@ -49,55 +72,30 @@ bool Engine::checkPlayerPos()
 
 Engine::~Engine()
 {
-	ErrorHandler::log("Clear data");
 	objects.clear();
 	mobs.clear();
+	ErrorHandler::log("Clear data");
 }
 
 void Engine::init()
 {
 	mediaContainer.load();
-	player.set(&mediaContainer.TextureContainer[9], sf::Vector2f(100, 100));
+	player.set(&mediaContainer.PlayerTexture, sf::Vector2f(100, 100));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
-	ErrorHandler::log("Generate map");
 	GameMap.generateMap();
+	ErrorHandler::log("Generate map");
+	ErrorHandler::log("Map Size " + std::to_string(Map::MAP_SIZE) + " x " + std::to_string(Map::MAP_SIZE));
 	GameMap.fitMap();
 
 	spawnPlayer();
 
-	objects.resize(10);
-	for (size_t i = 0; i < 10; i++)
-	{
-		objects[i].setTexture(&mediaContainer.TextureContainer[10]);
-		objects[i].setSize(sf::Vector2f(40, 40));
-		objects[i].setPosition(sf::Vector2f(64 * i * 2, 64 * i * 2));
-	}
-	objects.shrink_to_fit();
 }
 
 void Engine::operator()()
 {
-	sf::Vector2f movevctr;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		movevctr.x -= 5;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		movevctr.x += 5;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)|| sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		movevctr.y -= 5;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		movevctr.y += 5;
-	}
-	player.move(movevctr);
-	sf::Vector2f newCameraPos = player.getCharacterCenterPosition();
-	camera.setCenter(newCameraPos);
+	checkPlayerBehaviour();
+	camera.setCenter(player.getCharacterCenterPosition());
 
 	if (!checkPlayerPos())
 	{
@@ -107,7 +105,7 @@ void Engine::operator()()
 
 void Engine::drawMap(sf::RenderWindow *window)
 {
-	sf::Vector2i PlayerPosToTile = GameMap.getTiledPosition(player.getCharacterCenterPosition());
+	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 	
@@ -122,7 +120,16 @@ void Engine::drawMap(sf::RenderWindow *window)
 					if (GameMap.getTile(sf::Vector2u(j, i))->getTileType() != TILE_TYPE::EMPTY)
 					{
 						TileShape.setPosition(GameMap.getTile(sf::Vector2u(j, i))->getPosition());
-						TileShape.setTexture(&mediaContainer.TextureContainer[0]);
+
+						switch (GameMap.getTile(sf::Vector2u(j, i))->getTileType())
+						{
+						case TILE_TYPE::BRIGDE :
+							TileShape.setTexture(&mediaContainer.TileTexture[10]);
+							break;
+						default:
+							TileShape.setTexture(&mediaContainer.TileTexture[0]);
+							break;
+						}
 						window->draw(TileShape);
 					}
 				}
@@ -135,13 +142,23 @@ void Engine::DrawAll(sf::RenderWindow * window)
 {
 	window->setView(camera);
 
-	drawMap(window);
-
-	for (size_t i = 0; i < objects.size(); i++)
+	//Move this to special function
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		window->draw(*objects[i].getShape());
+		sf::Vector2f pos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+		sf::Vector2i posI = Map::getTiledPosition(pos);
+
+		if (posI.x >= 0 && posI.y > 0 && posI.x < Map::MAP_SIZE - 1 && posI.y < Map::MAP_SIZE - 1)
+		{
+			if (GameMap.getTile(sf::Vector2u(posI.y, posI.x))->getTileType() == TILE_TYPE::EMPTY)
+			{
+				GameMap.getTile(sf::Vector2u(posI.y, posI.x))->setTileType(TILE_TYPE::BRIGDE);
+				ErrorHandler::log("Player build brigde  Y " + std::to_string(posI.y) + " X " + std::to_string(posI.x));
+			}
+		}
 	}
 
-	window->draw(*player.getShape());
+	drawMap(window);
 
+	window->draw(*player.getShape());
 }

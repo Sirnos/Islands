@@ -9,7 +9,8 @@ enum class TILE_TYPE :unsigned
 	EMPTY,
 	DIRT,
 	GRASS,
-	ROCK
+	ROCK,
+	BRIGDE
 };
 
 class Tile
@@ -73,6 +74,9 @@ public:
 
 		switch (newtype)
 		{
+		case TILE_TYPE::BRIGDE:
+			HP = 4;
+			break;
 		case TILE_TYPE::ROCK:
 			HP = 9;
 			break;
@@ -81,6 +85,11 @@ public:
 			break;
 		case TILE_TYPE::DIRT:
 			HP = 3;
+			break;
 		}
+	}
+	void setTileType(TILE_TYPE newType)
+	{
+		set(newType, position);
 	}
 };
