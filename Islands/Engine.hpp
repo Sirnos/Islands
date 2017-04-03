@@ -6,7 +6,6 @@
 
 #include "playerCharacter.hpp"
 #include "Media.hpp"
-#include "object.hpp"
 #include "character.hpp"
 #include "Map.hpp"
 
@@ -16,24 +15,22 @@ class Engine
 {
 	Map GameMap;
 	Media mediaContainer;
-
 	playerCharacter player;
-	std::vector < std::pair <Character*, size_t>> mobs;
-
-	sf::Sprite background;
-	std::vector <object> objects;
 
 	sf::View camera;
+	sf::Sprite background;
 
-	void checkPlayerBehaviour();
+	std::vector < std::pair <Character*, size_t>> mobs;
+
+	void checkPlayerBehaviour(sf::RenderWindow *window);
+	bool checkPlayerPos();
 	void spawnPlayer();
 
-	bool checkPlayerPos();
 public:
 	~Engine();
 
 	void init();
-	void operator()();
+	void operator()(sf::RenderWindow * window);
 
 	void drawMap(sf::RenderWindow * window);
 	void DrawAll(sf::RenderWindow * window);

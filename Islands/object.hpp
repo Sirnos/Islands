@@ -1,37 +1,37 @@
 #pragma once
 
-#include <SFML/Graphics/RectangleShape.hpp>
-
-class object
+enum class ObjectType : unsigned
 {
-private:
-	sf::RectangleShape objectShape;
+	UNDEFINED,
+	SMALL_STONE,
+	STONE,
+	BIG_STONE,
+	FLINT,
+	LEAF_PILE,
+	FLOWER,
+	VEGETABLE,
+	SHRUB,
+	TREE,
+};
 
+class Object
+{
+	ObjectType type;
 public:
-	void setPosition(sf::Vector2f pos)
+	Object()
 	{
-		objectShape.setPosition(pos);
+		type = ObjectType::UNDEFINED;
 	}
-	void setSize(sf::Vector2f size)
+	Object(ObjectType Type)
 	{
-		objectShape.setSize(size);
+		type = Type;
 	}
-
-	void setTexture(sf::Texture *txtr)
+	ObjectType getType()
 	{
-		objectShape.setTexture(txtr);
+		return type;
 	}
-
-	sf::Vector2f getPosition()
+	void destroy()
 	{
-		return objectShape.getPosition();
-	}
-	sf::Vector2f getSize()
-	{
-		return objectShape.getSize();
-	}
-	sf::RectangleShape *getShape()
-	{
-		return &objectShape;
+		type = ObjectType::UNDEFINED;
 	}
 };

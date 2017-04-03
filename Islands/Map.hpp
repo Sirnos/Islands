@@ -1,18 +1,22 @@
 #pragma once
 
 #include <noise/noise.h>
+#include <SFML/System.hpp>
 #include <vector>
 #include <ctime>
 #include "Tile.hpp"
 #include "Log.hpp"
+#include "object.hpp"
 
 class Map
 {
-	std::vector<std::vector<Tile>> MapTiles;
-
 public:
 	const static size_t MAP_SIZE = 512;
+private:
+	std::vector<std::vector<Tile>> TilesMap;
+	std::vector<std::vector<Object>> ObjectMap;
 
+public:
 	~Map();
 
 	void unloadMap();
@@ -20,8 +24,11 @@ public:
 	void generateMap();
 
 	const static sf::Vector2i getTiledPosition(sf::Vector2f characterPos);
+	const static sf::Vector2f getNormalPosition(sf::Vector2i tileNumber);
+
 	sf::Vector2u getMapSize();
 	Tile *getTile(sf::Vector2u tileNumber);
+	Object *getObject(sf::Vector2u ObjectNumber);
 
 	void fitMap();
 };

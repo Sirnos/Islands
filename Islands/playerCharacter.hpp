@@ -4,7 +4,7 @@
 
 class playerCharacter :public Character
 {
-
+	sf::Vector2f spawnPoint;
 public:
 	playerCharacter()
 	{
@@ -32,5 +32,14 @@ public:
 		CharacterShape.setPosition(position);
 		CharacterShape.setTexture(texture);
 		CharacterShape.setSize(sf::Vector2f(40, 60));
+	}
+
+	void setSpawnPoint(sf::Vector2f newSpawnPoint)
+	{
+		spawnPoint = newSpawnPoint;
+	}
+	sf::Vector2f getSpawnPoint()
+	{
+		return spawnPoint;
 	}
 };

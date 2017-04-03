@@ -3,6 +3,8 @@
 #include "IslandApp.hpp"
 #include "Engine.hpp"
 
+const sf::Color skyColor = { 54,128,235,60 };
+
 void main()
 {
 	IslandApp app;
@@ -28,9 +30,9 @@ void main()
 			return;
 		}
 
-		IslandEngine();
+		IslandEngine(app.getIslandWindow());
 
-		app.clearContext(sf::Color(54,128,235,60));//sky color
+		app.clearContext(skyColor);
 
 		IslandEngine.DrawAll(app.getIslandWindow());
 

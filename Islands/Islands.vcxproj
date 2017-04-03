@@ -129,8 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="char.png" />
+    <Image Include="Items.png" />
     <Image Include="overworld.png" />
-    <Image Include="sprites.png" />
+    <Image Include="Tiles.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.hpp" />
@@ -148,7 +149,8 @@
     <ClInclude Include="Tile.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sprites.xcf" />
+    <None Include="Items.xcf" />
+    <None Include="Tiles.xcf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

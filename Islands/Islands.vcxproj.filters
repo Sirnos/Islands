@@ -32,7 +32,10 @@
     <Image Include="char.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="sprites.png">
+    <Image Include="Items.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Tiles.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -78,7 +81,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="sprites.xcf">
+    <None Include="Items.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Tiles.xcf">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

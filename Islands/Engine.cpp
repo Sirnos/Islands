@@ -1,6 +1,6 @@
 #include "Engine.hpp"
 
-void Engine::checkPlayerBehaviour()
+void Engine::checkPlayerBehaviour(sf::RenderWindow *window)
 {
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -49,6 +49,7 @@ void Engine::spawnPlayer()
 		}
 	}
 	player.setPosition(spawnPoint);
+	player.setSpawnPoint(spawnPoint);
 }
 
 bool Engine::checkPlayerPos()
@@ -72,7 +73,6 @@ bool Engine::checkPlayerPos()
 
 Engine::~Engine()
 {
-	objects.clear();
 	mobs.clear();
 	ErrorHandler::log("Clear data");
 }
@@ -87,14 +87,14 @@ void Engine::init()
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(Map::MAP_SIZE) + " x " + std::to_string(Map::MAP_SIZE));
 	GameMap.fitMap();
-
 	spawnPlayer();
 
 }
 
-void Engine::operator()()
+void Engine::operator()(sf::RenderWindow * window)
 {
-	checkPlayerBehaviour();
+	checkPlayerBehaviour(window);
+
 	camera.setCenter(player.getCharacterCenterPosition());
 
 	if (!checkPlayerPos())
@@ -119,7 +119,7 @@ void Engine::drawMap(sf::RenderWindow *window)
 				{
 					if (GameMap.getTile(sf::Vector2u(j, i))->getTileType() != TILE_TYPE::EMPTY)
 					{
-						TileShape.setPosition(GameMap.getTile(sf::Vector2u(j, i))->getPosition());
+						TileShape.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(i,j))));
 
 						switch (GameMap.getTile(sf::Vector2u(j, i))->getTileType())
 						{
@@ -141,22 +141,6 @@ void Engine::drawMap(sf::RenderWindow *window)
 void Engine::DrawAll(sf::RenderWindow * window)
 {
 	window->setView(camera);
-
-	//Move this to special function
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		sf::Vector2f pos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
-		sf::Vector2i posI = Map::getTiledPosition(pos);
-
-		if (posI.x >= 0 && posI.y > 0 && posI.x < Map::MAP_SIZE - 1 && posI.y < Map::MAP_SIZE - 1)
-		{
-			if (GameMap.getTile(sf::Vector2u(posI.y, posI.x))->getTileType() == TILE_TYPE::EMPTY)
-			{
-				GameMap.getTile(sf::Vector2u(posI.y, posI.x))->setTileType(TILE_TYPE::BRIGDE);
-				ErrorHandler::log("Player build brigde  Y " + std::to_string(posI.y) + " X " + std::to_string(posI.x));
-			}
-		}
-	}
 
 	drawMap(window);
 
