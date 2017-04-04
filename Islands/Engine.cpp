@@ -131,6 +131,24 @@ void Engine::drawMap(sf::RenderWindow *window)
 							break;
 						}
 						window->draw(TileShape);
+						
+						if (GameMap.getObject(sf::Vector2u(j, i))->getType() != ObjectType::UNDEFINED)
+						{
+							switch (GameMap.getObject(sf::Vector2u(j, i))->getType())
+							{
+							case ObjectType::SMALL_STONE:
+								TileShape.setTexture(&mediaContainer.ObjectsTexture[1]);
+								break;
+							case ObjectType::STONE:
+								TileShape.setTexture(&mediaContainer.ObjectsTexture[2]);
+							default:
+								TileShape.setTexture(&mediaContainer.ObjectsTexture[0]);
+								break;
+							}
+
+							window->draw(TileShape);
+						}
+
 					}
 				}
 			}
