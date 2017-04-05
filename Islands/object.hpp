@@ -34,4 +34,8 @@ public:
 	{
 		type = ObjectType::UNDEFINED;
 	}
+	void setType(ObjectType newType)
+	{
+		type = newType;
+	}
 };

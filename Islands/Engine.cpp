@@ -20,6 +20,41 @@ void Engine::checkPlayerBehaviour(sf::RenderWindow *window)
 		movevctr.y += 5;
 	}
 	player.move(movevctr);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+	{
+		objectPaintType = ObjectType::SMALL_STONE;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+	{
+		objectPaintType = ObjectType::SHRUB;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+	{
+		objectPaintType = ObjectType::FLINT;
+	}
+}
+
+void Engine::ObjectPaint(sf::RenderWindow * window)
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition());
+		if (mousePos.x > -1 && mousePos.y > -1 && mousePos.x < Map::MAP_SIZE * 64 && mousePos.y < Map::MAP_SIZE * 64)
+		{
+			sf::Vector2u objectDest = static_cast<sf::Vector2u>(sf::Vector2f(mousePos.y / 64, mousePos.x / 64));
+			GameMap.getObject(objectDest)->setType(objectPaintType);
+		}
+	}
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition());
+		if (mousePos.x > -1 && mousePos.y > -1 && mousePos.x < Map::MAP_SIZE * 64 && mousePos.y < Map::MAP_SIZE * 64)
+		{
+			sf::Vector2u objectDest = static_cast<sf::Vector2u>(sf::Vector2f(mousePos.y / 64, mousePos.x / 64));
+			GameMap.getObject(objectDest)->destroy();
+		}
+	}
 }
 
 void Engine::spawnPlayer()
@@ -94,6 +129,7 @@ void Engine::init()
 void Engine::operator()(sf::RenderWindow * window)
 {
 	checkPlayerBehaviour(window);
+	ObjectPaint(window);
 
 	camera.setCenter(player.getCharacterCenterPosition());
 
@@ -141,8 +177,14 @@ void Engine::drawMap(sf::RenderWindow *window)
 								break;
 							case ObjectType::STONE:
 								TileShape.setTexture(&mediaContainer.ObjectsTexture[2]);
-							default:
+								break;
+							case ObjectType::FLINT :
+								TileShape.setTexture(&mediaContainer.ObjectsTexture[4]);
+								break;
+							case ObjectType::SHRUB :
 								TileShape.setTexture(&mediaContainer.ObjectsTexture[0]);
+								break;
+							default:
 								break;
 							}
 
