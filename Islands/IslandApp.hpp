@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+
 class IslandApp
 {
 	sf::RenderWindow IslandWindow;
@@ -9,9 +10,9 @@ class IslandApp
 	sf::View Camera;
 
 public:
-	void initiate(sf::VideoMode WindowMode = sf::VideoMode(1280,1024,32),unsigned FPS = 62,bool vertSync = false)
+	void init(sf::VideoMode WindowMode = sf::VideoMode(1280,1024,32),unsigned FPS = 62,bool vertSync = false)
 	{
-		IslandWindow.create(WindowMode, "Islands" /*sf::Style::Fullscreen*/);
+		IslandWindow.create(WindowMode, "Islands", sf::Style::Fullscreen);
 		IslandWindow.setFramerateLimit(FPS);
 		IslandWindow.setVerticalSyncEnabled(vertSync);
 	}
@@ -28,63 +29,27 @@ public:
 		IslandWindow.display();
 	}
 
-	void drawShapeVector(std::vector <sf::RectangleShape*> &vect)
+	template<class ShapeType>
+	void draw(ShapeType & object)
 	{
-		for (size_t i = 0; i < vect.size(); i++)
-		{
-			IslandWindow.draw(*vect[i]);
-		}
-	}
-	void drawShapeVector(std::vector <sf::CircleShape*> &vect)
-	{
-		for (size_t i = 0; i < vect.size(); i++)
-		{
-			IslandWindow.draw(*vect[i]);
-		}
-	}
-	void drawShapeVector(std::vector <sf::ConvexShape*> &vect)
-	{
-		for (size_t i = 0; i < vect.size(); i++)
-		{
-			IslandWindow.draw(*vect[i]);
-		}
-	}
-	
-	void drawShape(sf::RectangleShape &shape)
-	{
-		IslandWindow.draw(shape);
-	}
-	void drawShape(sf::CircleShape &shape)
-	{
-		IslandWindow.draw(shape);
-	}
-	void drawShape(sf::ConvexShape &shape)
-	{
-		IslandWindow.draw(shape);
+		IslandWindow.draw(object);
 	}
 
-	void drawTextVector(std::vector <sf::Text*> &vect)
+	template<class ShapePointersVector>
+	void drawShapePointersVector(ShapePointersVector & Vector)
 	{
-		for (size_t i = 0; i < vect.size(); i++)
+		for (size_t i = 0; i < Vector.size(); i++)
 		{
-			IslandWindow.draw(*vect[i]);
+			IslandWindow.draw(*Vector[i]);
 		}
 	}
-	void drawText(sf::Text &txt)
+	template<class ShapeVector>
+	void drawShapeVector(ShapeVector &Vector)
 	{
-		IslandWindow.draw(txt);
-	}
-
-	void drawSpriteVector(std::vector <sf::Sprite*> &vect)
-	{
-		for (size_t i = 0; i < vect.size(); i++)
+		for (size_t i = 0; i < Vector.size(); i++)
 		{
-			IslandWindow.draw(*vect[i]);
+			IslandWindow.draw(Vector[i]);
 		}
-	}
-	void drawSprite(sf::Sprite &sprite)
-	{
-		IslandWindow.draw(sprite);
 	}
 
 	sf::Vector2f getCameraPos()

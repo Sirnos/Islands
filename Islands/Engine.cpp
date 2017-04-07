@@ -1,6 +1,6 @@
 #include "Engine.hpp"
 
-void Engine::checkPlayerBehaviour(sf::RenderWindow *window)
+void Engine::checkPlayerBehaviour(IslandApp &app)
 {
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -91,9 +91,9 @@ void Engine::init()
 
 }
 
-void Engine::operator()(sf::RenderWindow * window)
+void Engine::operator()(IslandApp &app)
 {
-	checkPlayerBehaviour(window);
+	checkPlayerBehaviour(app);
 
 	camera.setCenter(player.getCharacterCenterPosition());
 
@@ -103,7 +103,7 @@ void Engine::operator()(sf::RenderWindow * window)
 	}
 }
 
-void Engine::drawMap(sf::RenderWindow *window)
+void Engine::drawMap(IslandApp &app)
 {
 	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape;
@@ -130,7 +130,7 @@ void Engine::drawMap(sf::RenderWindow *window)
 							TileShape.setTexture(&mediaContainer.TileTexture[0]);
 							break;
 						}
-						window->draw(TileShape);
+						app.draw(TileShape);
 						
 						if (GameMap.getObject(sf::Vector2u(j, i))->getType() != ObjectType::UNDEFINED)
 						{
@@ -152,7 +152,7 @@ void Engine::drawMap(sf::RenderWindow *window)
 								break;
 							}
 
-							window->draw(TileShape);
+							app.draw(TileShape);
 						}
 
 					}
@@ -162,11 +162,11 @@ void Engine::drawMap(sf::RenderWindow *window)
 	}
 }
 
-void Engine::DrawAll(sf::RenderWindow * window)
+void Engine::DrawAll(IslandApp &app)
 {
-	window->setView(camera);
+	app.getIslandWindow()->setView(camera);
 
-	drawMap(window);
+	drawMap(app);
 
-	window->draw(*player.getShape());
+	app.draw(*player.getShape());
 }

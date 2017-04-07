@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
+#include "IslandApp.hpp"
 #include "playerCharacter.hpp"
 #include "Media.hpp"
 #include "character.hpp"
@@ -22,7 +23,7 @@ class Engine
 
 	std::vector < std::pair <Character*, size_t>> mobs;
 
-	void checkPlayerBehaviour(sf::RenderWindow *window);
+	void checkPlayerBehaviour(IslandApp &app);
 	bool checkPlayerPos();
 	void spawnPlayer();
 
@@ -30,8 +31,8 @@ public:
 	~Engine();
 
 	void init();
-	void operator()(sf::RenderWindow * window);
+	void operator()(IslandApp &app);
 
-	void drawMap(sf::RenderWindow * window);
-	void DrawAll(sf::RenderWindow * window);
+	void drawMap(IslandApp &app);
+	void DrawAll(IslandApp &app);
 };

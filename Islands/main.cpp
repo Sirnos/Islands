@@ -9,20 +9,17 @@ void main()
 {
 	IslandApp app;
 	Engine IslandEngine;
-	app.initiate();
-	
-	sf::RenderWindow *appWindow = app.getIslandWindow();
-	sf::Event *appEvent = app.getIslandWindowEvent();
 
+	app.init();
 	IslandEngine.init();
 
-	while (appWindow->isOpen())
+	while (app.getIslandWindow()->isOpen())
 	{
-		while (appWindow->pollEvent(*appEvent))
+		while (app.getIslandWindow()->pollEvent(*app.getIslandWindowEvent()))
 		{
-			if (appEvent->type == sf::Event::Closed)
+			if (app.getIslandWindowEvent()->type == sf::Event::Closed)
 			{
-				appWindow->close();
+				app.getIslandWindow()->close();
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -30,11 +27,11 @@ void main()
 			return;
 		}
 
-		IslandEngine(app.getIslandWindow());
+		IslandEngine(app);
 
 		app.clearContext(skyColor);
 
-		IslandEngine.DrawAll(app.getIslandWindow());
+		IslandEngine.DrawAll(app);
 
 		app.displayContext();
 	}
