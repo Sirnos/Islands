@@ -23,11 +23,9 @@ class Engine
 	std::vector < std::pair <Character*, size_t>> mobs;
 
 	void checkPlayerBehaviour(sf::RenderWindow *window);
-	void ObjectPaint(sf::RenderWindow *window);
 	bool checkPlayerPos();
 	void spawnPlayer();
 
-	ObjectType objectPaintType;
 public:
 	~Engine();
 
