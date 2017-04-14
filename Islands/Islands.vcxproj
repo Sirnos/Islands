@@ -74,10 +74,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\SFML-2.4.0\include;E:\libnoise\include;C:\SFML\SFML-2.4.0\include;C:\libnoise\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\LIBCPP\SFML-2.4.0\include;E:\LIBCPP\libnoise\include;E:\LIBCPP\rapidxml-1.13</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>E:\SFML-2.4.0\lib;E:\libnoise\bin;C:\SFML\SFML-2.4.0\lib;C:\libnoise\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\LIBCPP\SFML-2.4.0\lib;E:\LIBCPP\libnoise\bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>libnoise.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -100,12 +100,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\SFML-2.4.0\include;E:\libnoise\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\LIBCPP\SFML-2.4.0\include;E:\LIBCPP\libnoise\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>E:\SFML-2.4.0\lib;E:\libnoise\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\LIBCPP\SFML-2.4.0\lib;E:\LIBCPP\libnoise\bin;</AdditionalLibraryDirectories>
       <AdditionalDependencies>libnoise.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -126,6 +126,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="ObjectArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="char.png" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Media.hpp" />
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="object.hpp" />
+    <ClInclude Include="ObjectArray.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="Tile.hpp" />
@@ -151,6 +153,11 @@
   <ItemGroup>
     <None Include="Items.xcf" />
     <None Include="Tiles.xcf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Objects.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

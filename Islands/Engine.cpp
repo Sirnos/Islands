@@ -80,6 +80,7 @@ Engine::~Engine()
 void Engine::init()
 {
 	mediaContainer.load();
+	Objects.loadObjects();
 	player.set(&mediaContainer.PlayerTexture, sf::Vector2f(100, 100));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
@@ -88,7 +89,6 @@ void Engine::init()
 	ErrorHandler::log("Map Size " + std::to_string(Map::MAP_SIZE) + " x " + std::to_string(Map::MAP_SIZE));
 	GameMap.fitMap();
 	spawnPlayer();
-
 }
 
 void Engine::operator()(IslandApp &app)
@@ -131,7 +131,7 @@ void Engine::drawMap(IslandApp &app)
 							break;
 						}
 						app.draw(TileShape);
-						
+						/*
 						if (GameMap.getObject(sf::Vector2u(j, i))->getType() != ObjectType::UNDEFINED)
 						{
 							switch (GameMap.getObject(sf::Vector2u(j, i))->getType())
@@ -154,6 +154,7 @@ void Engine::drawMap(IslandApp &app)
 
 							app.draw(TileShape);
 						}
+						*/
 
 					}
 				}

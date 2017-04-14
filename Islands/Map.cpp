@@ -7,12 +7,6 @@ void Map::fitMap()
 		TilesMap[i].shrink_to_fit();
 	}
 	TilesMap.shrink_to_fit();
-
-	for (size_t i = 0; i < ObjectMap.size(); i++)
-	{
-		ObjectMap[i].shrink_to_fit();
-	}
-	ObjectMap.shrink_to_fit();
 }
 
 Map::~Map()
@@ -22,17 +16,7 @@ Map::~Map()
 
 void Map::unloadMap()
 {
-	for (size_t i = 0; i < TilesMap.size(); i++)
-	{
-		TilesMap[i].clear();
-	}
 	TilesMap.clear();
-
-	for (size_t i = 0; i < ObjectMap.size(); i++)
-	{
-		ObjectMap[i].clear();
-	}
-	ObjectMap.clear();
 }
 
 void Map::generateMap()
@@ -45,7 +29,6 @@ void Map::generateMap()
 
 	for (size_t i = 0; i < MAP_SIZE; i++)
 	{
-		ObjectMap.push_back(std::vector<Object>(MAP_SIZE));
 		TilesMap.push_back(std::vector<Tile>(MAP_SIZE));
 		for (size_t j = 0; j < TilesMap[i].size(); j++)
 		{
@@ -92,9 +75,4 @@ sf::Vector2u Map::getMapSize()
 Tile * Map::getTile(sf::Vector2u tileNumber)
 {
 	return &TilesMap[tileNumber.x][tileNumber.y];
-}
-
-Object *Map::getObject(sf::Vector2u ObjectNumber)
-{
-	return &ObjectMap[ObjectNumber.x][ObjectNumber.y];
 }

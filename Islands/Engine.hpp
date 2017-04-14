@@ -9,7 +9,7 @@
 #include "Media.hpp"
 #include "character.hpp"
 #include "Map.hpp"
-
+#include "ObjectArray.hpp"
 #include "Log.hpp"
 
 class Engine
@@ -17,6 +17,7 @@ class Engine
 	Map GameMap;
 	Media mediaContainer;
 	playerCharacter player;
+	ObjectArray Objects;
 
 	sf::View camera;
 	sf::Sprite background;

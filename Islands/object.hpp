@@ -1,41 +1,113 @@
 #pragma once
 
-enum class ObjectType : unsigned
-{
-	UNDEFINED,
-	SMALL_STONE,
-	STONE,
-	BIG_STONE,
-	FLINT,
-	LEAF_PILE,
-	FLOWER,
-	VEGETABLE,
-	SHRUB,
-	TREE,
-};
+#include <SFML/Graphics.hpp>
 
 class Object
 {
-	ObjectType type;
+	std::string ID;
+	sf::Vector2f Size;
+	sf::IntRect TextureCord;
+	sf::FloatRect CollisionBox;
+	bool Destructible;
+
+	//1.Name of item 2.amount
+	std::pair<std::string, unsigned> Yield;
 public:
 	Object()
 	{
-		type = ObjectType::UNDEFINED;
+		Size = { 0,0 };
+		CollisionBox = { 0.0f,0.0f,0.0f,0.0f };
+		Destructible = { false };
+		Yield = { "NULL",0 };
+		TextureCord = { 0,0,0,0 };
 	}
-	Object(ObjectType Type)
+	Object(std::string name,sf::Vector2f begSize, sf::IntRect begTextureCord,
+		sf::FloatRect begCollisionBox, bool begDestructible, std::string YieldType,unsigned YieldAmount )
 	{
-		type = Type;
+		ID = name;
+		Size = begSize;
+		TextureCord = begTextureCord;
+		CollisionBox = begCollisionBox;
+		Destructible = begDestructible;
+		Yield.first = YieldType;
+		Yield.second = YieldAmount;
 	}
-	ObjectType getType()
+
+	bool operator==(const Object &second)
 	{
-		return type;
+		if (ID == second.ID)
+		{
+			if (Size == second.Size)
+			{
+				if (TextureCord == second.TextureCord)
+				{
+					if (CollisionBox == second.CollisionBox)
+					{
+						if (Destructible == second.Destructible)
+						{
+							if (Yield.first == second.Yield.first)
+							{
+								if (Yield.second == second.Yield.second)
+								{
+									true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
-	void destroy()
+
+	std::string getID()
 	{
-		type = ObjectType::UNDEFINED;
+		return ID;
 	}
-	void setType(ObjectType newType)
+	sf::Vector2f getSize()
 	{
-		type = newType;
+		return Size;
 	}
+	sf::IntRect getTextureCord()
+	{
+		return TextureCord;
+	}
+	sf::FloatRect getCollisionBox()
+	{
+		return CollisionBox;
+	}
+	bool getDestructible()
+	{
+		return Destructible;
+	}
+	std::pair<std::string, unsigned> getYield()
+	{
+		return Yield;
+	}
+
+	void setID(std::string newValue)
+	{
+		ID = newValue;
+	}
+	void setSize(sf::Vector2f newValue)
+	{
+		Size = newValue;
+	}
+	void setTextureCord(sf::IntRect newValue)
+	{
+		TextureCord = newValue;
+	}
+	void setCollisionBox(sf::FloatRect newValue)
+	{
+		CollisionBox = newValue;
+	}
+	void setDestructible(bool newValue)
+	{
+		Destructible = newValue;
+	}
+	void setYield(const std::pair<std::string, unsigned> &newValue)
+	{
+		Yield = newValue;
+	}
+
 };
