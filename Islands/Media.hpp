@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <map>
 #include "Log.hpp"
 
 
@@ -12,21 +13,15 @@ struct Media
 	sf::Image TileImage;
 
 	std::vector <sf::Texture> TileTexture;
-	std::vector <sf::Texture> ObjectsTexture;
-	std::vector <sf::Texture> ItemsTexture;
-	std::vector <sf::Texture> GUITexture;
 	
 	sf::Texture PlayerTexture;
+	std::vector<std::pair<std::string, sf::Texture>> ObjectsTexture;
+	std::vector<std::pair<std::string, sf::Texture>> ItemsTexture;
 
 	void load()
 	{
-		if (TileImage.loadFromFile("Tiles.png"))
-		{
-			ErrorHandler::log("Textures loaded");
-		}
-		else
-			ErrorHandler::log("Textures not loaded");
-		
+		TileImage.loadFromFile("Tiles.png");
+
 		TileTexture.resize(12);
 
 		TileTexture[0].loadFromImage(TileImage, sf::IntRect(pos, pos, size, size));//normal
@@ -41,23 +36,17 @@ struct Media
 		TileTexture[9].loadFromImage(TileImage, sf::IntRect(0, pos * 3, size, size));
 		TileTexture[10].loadFromImage(TileImage, sf::IntRect(pos, pos * 3, size, size));//brigde
 
-		ObjectsTexture.resize(10);
-		ObjectsTexture[0].loadFromImage(TileImage, sf::IntRect(0, pos * 3, size, size));//shrub
-		ObjectsTexture[1].loadFromImage(TileImage, sf::IntRect(pos * 2, pos * 3, size, size));//small stone
-		ObjectsTexture[2].loadFromImage(TileImage, sf::IntRect(pos * 3, pos * 3, size, size));//stone
-		ObjectsTexture[3].loadFromImage(TileImage, sf::IntRect(pos * 4, pos * 3, size, size));//big-stone
-		ObjectsTexture[4].loadFromImage(TileImage, sf::IntRect(pos * 5, pos * 3, size, size));//flint
-		ObjectsTexture[5].loadFromImage(TileImage, sf::IntRect(pos * 6, pos * 3, size, size));//leafpile
-		ObjectsTexture[6].loadFromImage(TileImage, sf::IntRect(pos * 7, pos * 3, size, size));//flower
-		ObjectsTexture[7].loadFromImage(TileImage, sf::IntRect(pos * 8, pos * 3, size, size));//vegetable
-
-
 		PlayerTexture.loadFromFile("char.png", sf::IntRect(0, 0, 40, 60));
+	}
+	void pushObjectsTextures(std::string textureName,std::string fileName,sf::IntRect textCord)
+	{
+		sf::Texture temp;
+		temp.loadFromFile(fileName, textCord);
+		ObjectsTexture.push_back(std::pair<std::string, sf::Texture >(textureName,temp));
 	}
 
 	~Media()
 	{
-		GUITexture.clear();
 		ObjectsTexture.clear();
 		ItemsTexture.clear();
 		TileTexture.clear();

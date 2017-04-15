@@ -85,6 +85,7 @@ public:
 		return Yield;
 	}
 
+	/*
 	void setID(std::string newValue)
 	{
 		ID = newValue;
@@ -109,5 +110,5 @@ public:
 	{
 		Yield = newValue;
 	}
-
+	*/
 };

@@ -110,7 +110,7 @@ void ObjectArray::loadObjects()
 
 bool ObjectArray::isObjectExist(std::string objectID)
 {
-    for (auto& i : ObjectVector)
+    for (auto & i : ObjectVector)
     {
         if (i.getID() == objectID)
         {

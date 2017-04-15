@@ -131,31 +131,6 @@ void Engine::drawMap(IslandApp &app)
 							break;
 						}
 						app.draw(TileShape);
-						/*
-						if (GameMap.getObject(sf::Vector2u(j, i))->getType() != ObjectType::UNDEFINED)
-						{
-							switch (GameMap.getObject(sf::Vector2u(j, i))->getType())
-							{
-							case ObjectType::SMALL_STONE:
-								TileShape.setTexture(&mediaContainer.ObjectsTexture[1]);
-								break;
-							case ObjectType::STONE:
-								TileShape.setTexture(&mediaContainer.ObjectsTexture[2]);
-								break;
-							case ObjectType::FLINT :
-								TileShape.setTexture(&mediaContainer.ObjectsTexture[4]);
-								break;
-							case ObjectType::SHRUB :
-								TileShape.setTexture(&mediaContainer.ObjectsTexture[0]);
-								break;
-							default:
-								break;
-							}
-
-							app.draw(TileShape);
-						}
-						*/
-
 					}
 				}
 			}
