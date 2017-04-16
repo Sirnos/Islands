@@ -2,8 +2,12 @@
 
 #include "Character.hpp"
 
+typedef std::pair<std::string, unsigned> InventoryField;
+
 class playerCharacter :public Character
 {
+	InventoryField Inventory[30][30] = { std::pair<std::string,unsigned>("",0) };
+	InventoryField HandInventory[6] = { std::pair<std::string,unsigned>("",0) };
 	sf::Vector2f spawnPoint;
 public:
 	playerCharacter()

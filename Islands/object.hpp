@@ -1,6 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 class Object
 {
@@ -84,31 +85,4 @@ public:
 	{
 		return Yield;
 	}
-
-	/*
-	void setID(std::string newValue)
-	{
-		ID = newValue;
-	}
-	void setSize(sf::Vector2f newValue)
-	{
-		Size = newValue;
-	}
-	void setTextureCord(sf::IntRect newValue)
-	{
-		TextureCord = newValue;
-	}
-	void setCollisionBox(sf::FloatRect newValue)
-	{
-		CollisionBox = newValue;
-	}
-	void setDestructible(bool newValue)
-	{
-		Destructible = newValue;
-	}
-	void setYield(const std::pair<std::string, unsigned> &newValue)
-	{
-		Yield = newValue;
-	}
-	*/
 };
