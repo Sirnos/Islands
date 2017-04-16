@@ -24,6 +24,7 @@ class Engine
 
 	std::vector < std::pair <Character*, size_t>> mobs;
 
+	void loadObjects();
 	void checkPlayerBehaviour(IslandApp &app);
 	bool checkPlayerPos();
 	void spawnPlayer();

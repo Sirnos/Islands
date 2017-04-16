@@ -25,4 +25,5 @@ public:
 	Object getObject(std::string objectID);
 
 	std::string getObjectsGraphicsFile();
+	const std::vector<Object> &getObjects();
 };

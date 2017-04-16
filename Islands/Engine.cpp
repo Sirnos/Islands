@@ -1,5 +1,17 @@
 #include "Engine.hpp"
 
+void Engine::loadObjects()
+{
+	Objects.loadObjects();
+
+	for (auto & i : Objects.getObjects())
+	{
+		auto ref = const_cast<Object&>(i);
+		mediaContainer.pushObjectsTextures(ref.getID(), 
+			Objects.getObjectsGraphicsFile(), ref.getTextureCord());
+	}
+}
+
 void Engine::checkPlayerBehaviour(IslandApp &app)
 {
 	sf::Vector2f movevctr;
@@ -79,8 +91,9 @@ Engine::~Engine()
 
 void Engine::init()
 {
-	mediaContainer.load();
-	Objects.loadObjects();
+	mediaContainer.load(); ErrorHandler::log("Load media");
+	loadObjects();ErrorHandler::log("Load objects");
+
 	player.set(&mediaContainer.PlayerTexture, sf::Vector2f(100, 100));
 	camera.setSize(sf::Vector2f(1280, 1024));
 

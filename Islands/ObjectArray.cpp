@@ -137,3 +137,8 @@ std::string ObjectArray::getObjectsGraphicsFile()
 {
     return ObjectsGraphicsFile;
 }
+
+const std::vector<Object>& ObjectArray::getObjects()
+{
+	return ObjectVector;
+}
