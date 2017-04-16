@@ -46,4 +46,14 @@ public:
 	{
 		return spawnPoint;
 	}
+
+	//(Inv param)true == HandInventory, false == Inventory
+	std::pair<std::string, unsigned> &getInventoryField(bool Inv, sf::Vector2u fieldNumber)
+	{
+		if (Inv == true)
+		{
+			return HandInventory[fieldNumber.x];
+		}
+		return Inventory[fieldNumber.x][fieldNumber.y];
+	}
 };

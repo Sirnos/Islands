@@ -2,9 +2,9 @@
 
 void Map::fitMap()
 {
-	for (size_t i = 0; i < TilesMap.size(); i++)
+	for (auto & i : TilesMap)
 	{
-		TilesMap[i].shrink_to_fit();
+		i.shrink_to_fit();
 	}
 	TilesMap.shrink_to_fit();
 }
@@ -27,30 +27,34 @@ void Map::generateMap()
 	noiseModule.SetFrequency(1.0);
 	noiseModule.SetPersistence(0.25);
 
-	for (size_t i = 0; i < MAP_SIZE; i++)
-	{
-		TilesMap.push_back(std::vector<Tile>(MAP_SIZE));
-		for (size_t j = 0; j < TilesMap[i].size(); j++)
-		{
-			double var = noiseModule.GetValue(1.25 + (0.1 * i), 0.75 + (0.1 * j), 0.5);
+	TilesMap.resize(MAP_SIZE,std::vector<Tile>(MAP_SIZE));
 
-			if (var > 0.75)
+	double mnX = 0;
+	for (auto & i : TilesMap)
+	{
+		double mnY = 0;
+		for (auto & j : i)
+		{
+			double TileValue = noiseModule.GetValue(1.25 + (0.1 * mnX), 0.75 + (0.1 * mnY), 0.5);
+			if (TileValue > 0.75)
 			{
-				TilesMap[i][j].setType(TILE_TYPE::ROCK);
+				j.setType(TILE_TYPE::ROCK);
 			}
-			else if (var > 0.5)
+			else if (TileValue > 0.5)
 			{
-				TilesMap[i][j].setType(TILE_TYPE::DIRT);
+				j.setType(TILE_TYPE::DIRT);
 			}
-			else if (var > 0.05)
+			else if (TileValue > 0.05)
 			{
-				TilesMap[i][j].setType(TILE_TYPE::GRASS);
+				j.setType(TILE_TYPE::GRASS);
 			}
 			else
 			{
-				TilesMap[i][j].setType(TILE_TYPE::EMPTY);
+				j.setType(TILE_TYPE::EMPTY);
 			}
+			mnY += 1;
 		}
+		mnX += 1;
 	}
 }
 

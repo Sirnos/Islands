@@ -106,6 +106,7 @@ void ObjectArray::loadObjects()
             }
         }
     }
+	ObjectVector.shrink_to_fit();
 }
 
 bool ObjectArray::isObjectExist(std::string objectID)
