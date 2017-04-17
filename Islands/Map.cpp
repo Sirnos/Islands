@@ -56,6 +56,7 @@ void Map::generateMap()
 		}
 		mnX += 1;
 	}
+	fitMap();
 }
 
 const sf::Vector2i Map::getTiledPosition(sf::Vector2f characterPos)

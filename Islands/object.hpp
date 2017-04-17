@@ -2,6 +2,7 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include <string>
 
 class Object
 {

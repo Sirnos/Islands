@@ -13,7 +13,7 @@ public:
 	const static size_t MAP_SIZE = 512;
 private:
 	std::vector<std::vector<Tile>> TilesMap;
-
+	void fitMap();
 public:
 	~Map();
 
@@ -26,6 +26,4 @@ public:
 
 	sf::Vector2u getMapSize();
 	Tile *getTile(sf::Vector2u tileNumber);
-
-	void fitMap();
 };

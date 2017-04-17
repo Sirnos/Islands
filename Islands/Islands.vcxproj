@@ -129,12 +129,6 @@
     <ClCompile Include="ObjectArray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="char.png" />
-    <Image Include="Items.png" />
-    <Image Include="overworld.png" />
-    <Image Include="Tiles.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="button.hpp" />
     <ClInclude Include="Character.hpp" />
     <ClInclude Include="Engine.hpp" />
@@ -151,13 +145,17 @@
     <ClInclude Include="Tile.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Items.xcf" />
-    <None Include="Tiles.xcf" />
+    <Image Include="Data\char.png" />
+    <Image Include="Data\Items.png" />
+    <Image Include="Data\overworld.png" />
+    <Image Include="Data\Tiles.png" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Objects.xml">
-      <SubType>Designer</SubType>
-    </Xml>
+    <Xml Include="Data\Objects.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Items.xcf" />
+    <None Include="Data\Tiles.xcf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

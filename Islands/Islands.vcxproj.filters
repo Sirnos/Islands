@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="IslandData">
+      <UniqueIdentifier>{2c18dd1c-63d5-4536-830c-2d1c35b8f18b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,20 +30,6 @@
     <ClCompile Include="ObjectArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="overworld.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="char.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Items.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Tiles.png">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IslandApp.hpp">
@@ -73,9 +62,6 @@
     <ClInclude Include="Media.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="object.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Map.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -85,18 +71,35 @@
     <ClInclude Include="ObjectArray.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="object.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Items.xcf">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Tiles.xcf">
-      <Filter>Resource Files</Filter>
-    </None>
+    <Image Include="Data\char.png">
+      <Filter>IslandData</Filter>
+    </Image>
+    <Image Include="Data\Items.png">
+      <Filter>IslandData</Filter>
+    </Image>
+    <Image Include="Data\overworld.png">
+      <Filter>IslandData</Filter>
+    </Image>
+    <Image Include="Data\Tiles.png">
+      <Filter>IslandData</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Objects.xml">
-      <Filter>Resource Files</Filter>
+    <Xml Include="Data\Objects.xml">
+      <Filter>IslandData</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Items.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Data\Tiles.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

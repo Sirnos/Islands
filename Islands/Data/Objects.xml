@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<Objects graphics="Tiles.png">
+<Objects graphics="Data/Tiles.png">
     <Object>
         <Object name="TREE">
             <SIZE>

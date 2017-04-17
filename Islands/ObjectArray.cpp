@@ -11,7 +11,7 @@ ObjectArray::~ObjectArray()
 
 void ObjectArray::loadObjects()
 {
-    rapidxml::file<> File("Objects.xml");
+    rapidxml::file<> File("Data/Objects.xml");
     rapidxml::xml_document<> document;
     document.parse<0>(File.data());
 

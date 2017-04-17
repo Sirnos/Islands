@@ -20,7 +20,7 @@ struct Media
 
 	void load()
 	{
-		TileImage.loadFromFile("Tiles.png");
+		TileImage.loadFromFile("Data/Tiles.png");
 
 		TileTexture.resize(12);
 
@@ -36,7 +36,7 @@ struct Media
 		TileTexture[9].loadFromImage(TileImage, sf::IntRect(0, pos * 3, size, size));
 		TileTexture[10].loadFromImage(TileImage, sf::IntRect(pos, pos * 3, size, size));//brigde
 
-		PlayerTexture.loadFromFile("char.png", sf::IntRect(0, 0, 40, 60));
+		PlayerTexture.loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
 	}
 	void pushObjectsTextures(std::string textureName,std::string fileName,sf::IntRect textCord)
 	{

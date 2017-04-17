@@ -100,7 +100,6 @@ void Engine::init()
 	GameMap.generateMap();
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(Map::MAP_SIZE) + " x " + std::to_string(Map::MAP_SIZE));
-	GameMap.fitMap();
 	spawnPlayer();
 }
 
