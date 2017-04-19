@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-
 class IslandApp
 {
 	sf::RenderWindow IslandWindow;
@@ -16,24 +15,12 @@ public:
 		IslandWindow.setFramerateLimit(FPS);
 		IslandWindow.setVerticalSyncEnabled(vertSync);
 	}
-	void clearContext()
-	{
-		IslandWindow.clear();
-	}
-	void clearContext(sf::Color BufferColor)
-	{
-		IslandWindow.clear(BufferColor);
-	}
-	void displayContext()
-	{
-		IslandWindow.display();
-	}
+	void clearContext() { IslandWindow.clear(); }
+	void clearContext(sf::Color BufferColor) { IslandWindow.clear(BufferColor); }
+	void displayContext() { IslandWindow.display(); }
 
 	template<class ShapeType>
-	void draw(ShapeType & object)
-	{
-		IslandWindow.draw(object);
-	}
+	void draw(ShapeType & object) { IslandWindow.draw(object); }
 
 	template<class ShapePointersVector>
 	void drawShapePointersVector(ShapePointersVector & Vector)
@@ -52,23 +39,12 @@ public:
 		}
 	}
 
-	sf::Vector2f getCameraPos()
-	{
-		return Camera.getCenter();
-	}
-	void moveCamera(sf::Vector2f &offset)
-	{
-		Camera.setCenter(Camera.getCenter() + offset);
-	}
-	void setDefaultCameraPos()
-	{
-		Camera = IslandWindow.getDefaultView();
-	}
+	sf::Vector2f getCameraPos() { return Camera.getCenter(); }
+	void moveCamera(sf::Vector2f &offset) { Camera.setCenter(Camera.getCenter() + offset); }
+	void setDefaultCameraPos() { Camera = IslandWindow.getDefaultView(); }
 
-	sf::Event *getIslandWindowEvent()
-	{
-		return &IslandWindowEvent;
-	}
+	sf::Event *getIslandWindowEvent() { return &IslandWindowEvent; }
+	sf::RenderWindow *getIslandWindow() { return &IslandWindow; }
 	bool getEvents(sf::Event::EventType EventType)
 	{
 		while (IslandWindow.pollEvent(IslandWindowEvent))
@@ -78,10 +54,5 @@ public:
 				return true;
 			}
 		}
-	}
-
-	sf::RenderWindow *getIslandWindow()
-	{
-		return &IslandWindow;
 	}
 };

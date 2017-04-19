@@ -1,13 +1,7 @@
 #include "ObjectArray.hpp"
 
-ObjectArray::ObjectArray()
-{
-}
-
-ObjectArray::~ObjectArray()
-{
-    ObjectVector.clear();
-}
+ObjectArray::ObjectArray(){}
+ObjectArray::~ObjectArray() { ObjectVector.clear(); }
 
 void ObjectArray::loadObjects()
 {
@@ -134,12 +128,6 @@ Object ObjectArray::getObject(std::string objectID)
     return Object();
 }
 
-std::string ObjectArray::getObjectsGraphicsFile()
-{
-    return ObjectsGraphicsFile;
-}
+std::string ObjectArray::getObjectsGraphicsFile() { return ObjectsGraphicsFile; }
 
-const std::vector<Object>& ObjectArray::getObjects()
-{
-	return ObjectVector;
-}
+const std::vector<Object>& ObjectArray::getObjects() { return ObjectVector; }

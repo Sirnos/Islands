@@ -9,15 +9,9 @@ void Map::fitMap()
 	TilesMap.shrink_to_fit();
 }
 
-Map::~Map()
-{
-	unloadMap();
-}
+Map::~Map() { unloadMap(); }
 
-void Map::unloadMap()
-{
-	TilesMap.clear();
-}
+void Map::unloadMap() { TilesMap.clear(); }
 
 void Map::generateMap()
 {
@@ -62,7 +56,6 @@ void Map::generateMap()
 const sf::Vector2i Map::getTiledPosition(sf::Vector2f characterPos)
 {
 	characterPos = characterPos / TILE_SIZE;
-
 	return static_cast<sf::Vector2i>(characterPos);
 }
 
@@ -72,12 +65,6 @@ const sf::Vector2f Map::getNormalPosition(sf::Vector2i tileNumber)
 		static_cast<float>(tileNumber.y) * TILE_SIZE);
 }
 
-sf::Vector2u Map::getMapSize()
-{
-	return sf::Vector2u(TilesMap.size(), TilesMap[0].size());
-}
+sf::Vector2u Map::getMapSize() { return sf::Vector2u(TilesMap.size(), TilesMap[0].size()); }
 
-Tile * Map::getTile(sf::Vector2u tileNumber)
-{
-	return &TilesMap[tileNumber.x][tileNumber.y];
-}
+Tile * Map::getTile(sf::Vector2u tileNumber) { return &TilesMap[tileNumber.x][tileNumber.y]; }

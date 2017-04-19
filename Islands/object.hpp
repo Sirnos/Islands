@@ -62,28 +62,10 @@ public:
 		return false;
 	}
 
-	std::string getID()
-	{
-		return ID;
-	}
-	sf::Vector2f getSize()
-	{
-		return Size;
-	}
-	sf::IntRect getTextureCord()
-	{
-		return TextureCord;
-	}
-	sf::FloatRect getCollisionBox()
-	{
-		return CollisionBox;
-	}
-	bool getDestructible()
-	{
-		return Destructible;
-	}
-	std::pair<std::string, unsigned> getYield()
-	{
-		return Yield;
-	}
+	std::string getID() { return ID; }
+	sf::Vector2f getSize() { return Size; }
+	sf::IntRect getTextureCord() { return TextureCord; }
+	sf::FloatRect getCollisionBox() { return CollisionBox; }
+	bool getDestructible() { return Destructible; }
+	std::pair<std::string, unsigned> getYield() { return Yield; }
 };

@@ -140,6 +140,7 @@
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="object.hpp" />
     <ClInclude Include="ObjectArray.hpp" />
+    <ClInclude Include="ObjectsContainer.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="Tile.hpp" />

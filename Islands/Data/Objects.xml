@@ -7,10 +7,10 @@
                 <Y>64</Y>
             </SIZE>
             <GRAPHICS>
-                <TOP>0</TOP>
+                <TOP>40</TOP>
                 <LEFT>0</LEFT>
                 <WIDTH>10</WIDTH>
-                <HEIGHT>10</HEIGHT>
+                <HEIGHT>30</HEIGHT>
             </GRAPHICS>
             <COLLISION>
                 <TOP>0</TOP>

@@ -2,13 +2,16 @@
 
 void Engine::loadObjects()
 {
-	Objects.loadObjects();
+	RawObjects.loadObjects();
 
-	for (auto & i : Objects.getObjects())
+	unsigned var = 1;
+	for (auto & i : RawObjects.getObjects())
 	{
 		auto ref = const_cast<Object&>(i);
-		mediaContainer.pushObjectsTextures(ref.getID(), 
-			Objects.getObjectsGraphicsFile(), ref.getTextureCord());
+		mediaContainer.pushObjectsTextures(RawObjects.getObjectsGraphicsFile(), ref.getTextureCord());
+		ObjectsTextures.insert(std::pair<std::string, std::pair<unsigned, sf::Texture&>>(ref.getID(),
+			std::pair<unsigned, sf::Texture&>(var, mediaContainer.ObjectsTexture.back())));
+			var++;
 	}
 }
 
@@ -109,10 +112,7 @@ void Engine::operator()(IslandApp &app)
 
 	camera.setCenter(player.getCharacterCenterPosition());
 
-	if (!checkPlayerPos())
-	{
-		ErrorHandler::log("player move above map");
-	}
+	if (!checkPlayerPos()) { ErrorHandler::log("player move above map"); }
 }
 
 void Engine::drawMap(IslandApp &app)

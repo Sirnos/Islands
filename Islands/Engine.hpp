@@ -17,7 +17,9 @@ class Engine
 	Map GameMap;
 	Media mediaContainer;
 	playerCharacter player;
-	ObjectArray Objects;
+
+	ObjectArray RawObjects;
+	std::map<std::string,std::pair<unsigned,sf::Texture&>> ObjectsTextures;
 
 	sf::View camera;
 	sf::Sprite background;

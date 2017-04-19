@@ -1,11 +1,10 @@
 #include <SFML/Graphics.hpp>
-
 #include "IslandApp.hpp"
 #include "Engine.hpp"
 
 const sf::Color skyColor = { 54,128,235,60 };
 
-void main()
+int main()
 {
 	IslandApp app;
 	Engine IslandEngine;
@@ -22,10 +21,7 @@ void main()
 				app.getIslandWindow()->close();
 			}
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		{
-			return;
-		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { return 1; }
 
 		IslandEngine(app);
 
@@ -36,5 +32,5 @@ void main()
 		app.displayContext();
 	}
 
-	return;
+	return 0;
 }

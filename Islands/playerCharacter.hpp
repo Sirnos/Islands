@@ -23,14 +23,8 @@ public:
 		CharacterShape.setSize(sf::Vector2f(10, 10));
 	}
 
-	void move(sf::Vector2f moveVector)
-	{
-		CharacterShape.move(moveVector);
-	}
-	sf::RectangleShape *getShape()
-	{
-		return &CharacterShape;
-	}
+	void move(sf::Vector2f moveVector) { CharacterShape.move(moveVector); }
+	sf::RectangleShape *getShape() { return &CharacterShape; }
 	void set(sf::Texture *texture, sf::Vector2f position)
 	{
 		CharacterShape.setPosition(position);
@@ -38,14 +32,8 @@ public:
 		CharacterShape.setSize(sf::Vector2f(40, 60));
 	}
 
-	void setSpawnPoint(sf::Vector2f newSpawnPoint)
-	{
-		spawnPoint = newSpawnPoint;
-	}
-	sf::Vector2f getSpawnPoint()
-	{
-		return spawnPoint;
-	}
+	void setSpawnPoint(sf::Vector2f newSpawnPoint) { spawnPoint = newSpawnPoint; }
+	sf::Vector2f getSpawnPoint() { return spawnPoint; }
 
 	//(Inv param)true == HandInventory, false == Inventory
 	std::pair<std::string, unsigned> &getInventoryField(bool Inv, sf::Vector2u fieldNumber)

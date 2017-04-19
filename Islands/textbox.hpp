@@ -12,7 +12,6 @@ class textbox
 	sf::Text TXBOX_text;
 
 public:
-
 	void operator()(sf::Event &event)
 	{
 		if (IsEnable == false || IsConstant == true)
@@ -80,24 +79,15 @@ public:
 		return false;
 	}
 
-	std::string getString()
-	{
-		return TXBOX_text.getString();
-	}
+	std::string getString() { return TXBOX_text.getString(); }
 	void setString(std::string str)
 	{
 		String = str;
 		TXBOX_text.setString(str);
 	}
-	sf::Text getText()
-	{
-		return TXBOX_text;
-	}
+	sf::Text getText() { return TXBOX_text; }
 
-	void setEnable(bool var)
-	{
-		IsEnable = var;
-	}
+	void setEnable(bool var) { IsEnable = var; }
 	void switchEnable()
 	{
 		if (IsEnable == true)
@@ -109,10 +99,7 @@ public:
 			IsEnable = true;
 		}
 	}
-	bool getIsEnable()
-	{
-		return IsEnable;
-	}
+	bool getIsEnable() { return IsEnable; }
 
 	void setPosition(sf::Vector2u newPos)
 	{
