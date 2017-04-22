@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "IslandApp.hpp"
 #include "Engine.hpp"
 
@@ -9,7 +9,7 @@ int main()
 	IslandApp app;
 	Engine IslandEngine;
 
-	app.init();
+	app.init(sf::VideoMode(1280,1024),62,true);
 	IslandEngine.init();
 
 	while (app.getIslandWindow()->isOpen())

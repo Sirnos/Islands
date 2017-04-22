@@ -127,6 +127,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="ObjectArray.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.hpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="Tile.hpp" />
+    <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png" />

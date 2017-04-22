@@ -8,9 +8,8 @@ void Engine::loadObjects()
 	for (auto & i : RawObjects.getObjects())
 	{
 		auto ref = const_cast<Object&>(i);
-		mediaContainer.pushObjectsTextures(RawObjects.getObjectsGraphicsFile(), ref.getTextureCord());
 		ObjectsTextures.insert(std::pair<std::string, std::pair<unsigned, sf::Texture&>>(ref.getID(),
-			std::pair<unsigned, sf::Texture&>(var, mediaContainer.ObjectsTexture.back())));
+			std::pair<unsigned, sf::Texture&>(var, mediaContainer.pushObjectsTextures(RawObjects.getObjectsGraphicsFile(), ref.getTextureCord()))));
 			var++;
 	}
 }
@@ -49,18 +48,12 @@ void Engine::spawnPlayer()
 		spawnPoint = sf::Vector2f(static_cast<float>(rand() % MaxPosition * 64),
 			static_cast<float>(rand() % MaxPosition * 64));
 
-		if (spawnPoint.x > 0 && spawnPoint.y > 0 
-			&& spawnPoint.x < MaxPosition * 64 && spawnPoint.y < MaxPosition * 64)
+		if (GameWorld.isPlaceImpassable(sf::Vector2f(spawnPoint.y,spawnPoint.x)) == false)
 		{
-			sf::Vector2i tile = Map::getTiledPosition(spawnPoint);
-
-			if (GameMap.getTile(static_cast<sf::Vector2u>(sf::Vector2i(tile.y,tile.x)))->getTileType() != TILE_TYPE::EMPTY)
-			{
-				ErrorHandler::log(std::string("Spawn player position:"));
-				ErrorHandler::log("Tile Y " + std::to_string(tile.y));
-				ErrorHandler::log("Tile X " + std::to_string(tile.x));
-				break;
-			}
+			ErrorHandler::log(std::string("Spawn player position:"));
+			ErrorHandler::log("Tile Y " + std::to_string(Map::getTiledPosition(spawnPoint).y));
+			ErrorHandler::log("Tile X " + std::to_string(Map::getTiledPosition(spawnPoint).x));
+			break;
 		}
 	}
 	player.setPosition(spawnPoint);
@@ -70,25 +63,13 @@ void Engine::spawnPlayer()
 bool Engine::checkPlayerPos()
 {
 	sf::Vector2f playerPos = player.getCharacterCenterPosition();
-	sf::Vector2i pos = Map::getTiledPosition(sf::Vector2f(playerPos.y,playerPos.x));
+	if (GameWorld.isPlaceImpassable(sf::Vector2f(playerPos.y,playerPos.x)) == true) { return false; }
 
-	
-	if (pos.x < 0 || pos.y < 0 || pos.x > Map::MAP_SIZE || pos.y > Map::MAP_SIZE)
-	{
-		return false;
-	}
-
-	if (GameMap.getTile(sf::Vector2u(pos.x, pos.y))->getTileType() == TILE_TYPE::EMPTY)
-	{
-		return false;
-	}
-	
 	return true;
 }
 
 Engine::~Engine()
 {
-	mobs.clear();
 	ErrorHandler::log("Clear data");
 }
 
@@ -100,7 +81,7 @@ void Engine::init()
 	player.set(&mediaContainer.PlayerTexture, sf::Vector2f(100, 100));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
-	GameMap.generateMap();
+	GameWorld.init();
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(Map::MAP_SIZE) + " x " + std::to_string(Map::MAP_SIZE));
 	spawnPlayer();
@@ -127,23 +108,28 @@ void Engine::drawMap(IslandApp &app)
 		{
 			if (i > -1 && j > -1)
 			{
-				if (i < GameMap.getMapSize().x && j < GameMap.getMapSize().y)
+				TILE_TYPE tile = GameWorld.getTile(static_cast<sf::Vector2u>(sf::Vector2i(j, i)));
+				TileShape.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(i, j))));
+				switch (tile)
 				{
-					if (GameMap.getTile(sf::Vector2u(j, i))->getTileType() != TILE_TYPE::EMPTY)
-					{
-						TileShape.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(i,j))));
-
-						switch (GameMap.getTile(sf::Vector2u(j, i))->getTileType())
-						{
-						case TILE_TYPE::BRIGDE :
-							TileShape.setTexture(&mediaContainer.TileTexture[10]);
-							break;
-						default:
-							TileShape.setTexture(&mediaContainer.TileTexture[0]);
-							break;
-						}
-						app.draw(TileShape);
-					}
+				case TILE_TYPE::EMPTY:
+					break;
+				case TILE_TYPE::DIRT:
+					TileShape.setTexture(&mediaContainer.TileTexture[0]);
+					break;
+				case TILE_TYPE::GRASS:
+					break;
+				case TILE_TYPE::ROCK:
+					break;
+				case TILE_TYPE::BRIGDE:
+					TileShape.setTexture(&mediaContainer.TileTexture[10]);
+					break;
+				default:
+					break;
+				}
+				if (tile != TILE_TYPE::EMPTY)
+				{
+					app.draw(TileShape);
 				}
 			}
 		}

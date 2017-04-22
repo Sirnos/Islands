@@ -40,11 +40,14 @@ struct Media
 
 		PlayerTexture.loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
 	}
-	void pushObjectsTextures(std::string fileName,sf::IntRect textCord)
+	sf::Texture& pushObjectsTextures(std::string fileName,sf::IntRect textCord)
 	{
-		sf::Texture temp;
-		temp.loadFromFile(fileName, textCord);
-		ObjectsTexture.push_back(sf::Texture(temp));
+		ObjectsTexture.push_back(sf::Texture());
+		if (!ObjectsTexture.back().loadFromFile(fileName, textCord))
+		{
+			ErrorHandler::log("Object texture load incorectly");
+		}
+		return ObjectsTexture.back();
 	}
 
 	~Media()

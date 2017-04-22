@@ -32,16 +32,16 @@
                 <Y>64</Y>
             </SIZE>
             <GRAPHICS>
-                <TOP>0</TOP>
+                <TOP>30</TOP>
                 <LEFT>0</LEFT>
                 <WIDTH>10</WIDTH>
                 <HEIGHT>10</HEIGHT>
             </GRAPHICS>
             <COLLISION>
-                <TOP>30</TOP>
+                <TOP>0</TOP>
                 <LEFT>0</LEFT>
-                <WIDTH>10</WIDTH>
-                <HEIGHT>10</HEIGHT>
+                <WIDTH>0</WIDTH>
+                <HEIGHT>0</HEIGHT>
             </COLLISION>
             <ISDESTRUCTIBLE>1</ISDESTRUCTIBLE>
             <IFDESTROYED>

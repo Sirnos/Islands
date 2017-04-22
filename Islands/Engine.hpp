@@ -7,14 +7,13 @@
 #include "IslandApp.hpp"
 #include "playerCharacter.hpp"
 #include "Media.hpp"
-#include "character.hpp"
-#include "Map.hpp"
 #include "ObjectArray.hpp"
 #include "Log.hpp"
+#include "World.hpp"
 
 class Engine
 {
-	Map GameMap;
+	World GameWorld;
 	Media mediaContainer;
 	playerCharacter player;
 
@@ -22,9 +21,6 @@ class Engine
 	std::map<std::string,std::pair<unsigned,sf::Texture&>> ObjectsTextures;
 
 	sf::View camera;
-	sf::Sprite background;
-
-	std::vector < std::pair <Character*, size_t>> mobs;
 
 	void loadObjects();
 	void checkPlayerBehaviour(IslandApp &app);
