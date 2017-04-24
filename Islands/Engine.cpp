@@ -8,9 +8,8 @@ void Engine::loadObjects()
 	for (auto & i : RawObjects.getObjects())
 	{
 		auto ref = const_cast<Object&>(i);
-		ObjectsTextures.insert(std::pair<std::string, std::pair<unsigned, sf::Texture&>>(ref.getID(),
-			std::pair<unsigned, sf::Texture&>(var, mediaContainer.pushObjectsTextures(RawObjects.getObjectsGraphicsFile(), ref.getTextureCord()))));
-			var++;
+		ObjectsTextures.push_back(ObjTex(var,ref.getID(), mediaContainer.pushObjectsTextures(RawObjects.getObjectsGraphicsFile(), ref.getTextureCord())));
+		var++;
 	}
 }
 
@@ -70,6 +69,7 @@ bool Engine::checkPlayerPos()
 
 Engine::~Engine()
 {
+	ObjectsTextures.clear();
 	ErrorHandler::log("Clear data");
 }
 
@@ -93,7 +93,12 @@ void Engine::operator()(IslandApp &app)
 
 	camera.setCenter(player.getCharacterCenterPosition());
 
-	if (!checkPlayerPos()) { ErrorHandler::log("player move above map"); }
+	if (!checkPlayerPos())
+	{ 
+		ErrorHandler::log("Player move above map");
+		ErrorHandler::log("Pos:X" + std::to_string(player.getCharacterCenterPosition().x) +
+			" :Y " + std::to_string(+player.getCharacterCenterPosition().y));
+	}
 }
 
 void Engine::drawMap(IslandApp &app)
@@ -106,9 +111,10 @@ void Engine::drawMap(IslandApp &app)
 	{
 		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 31; j++)
 		{
-			if (i > -1 && j > -1)
-			{
+			if(j < 0 && i < 0) { continue; }
+
 				TILE_TYPE tile = GameWorld.getTile(static_cast<sf::Vector2u>(sf::Vector2i(j, i)));
+				if (tile == TILE_TYPE::EMPTY) { continue; }
 				TileShape.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(i, j))));
 				switch (tile)
 				{
@@ -118,8 +124,10 @@ void Engine::drawMap(IslandApp &app)
 					TileShape.setTexture(&mediaContainer.TileTexture[0]);
 					break;
 				case TILE_TYPE::GRASS:
+					TileShape.setTexture(&mediaContainer.TileTexture[0]);
 					break;
 				case TILE_TYPE::ROCK:
+					TileShape.setTexture(&mediaContainer.TileTexture[0]);
 					break;
 				case TILE_TYPE::BRIGDE:
 					TileShape.setTexture(&mediaContainer.TileTexture[10]);
@@ -127,20 +135,42 @@ void Engine::drawMap(IslandApp &app)
 				default:
 					break;
 				}
-				if (tile != TILE_TYPE::EMPTY)
-				{
-					app.draw(TileShape);
-				}
-			}
+				app.draw(TileShape);
 		}
 	}
 }
+
+
+void Engine::drawObjects(sf::RenderWindow & RWindow)
+{
+	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
+	sf::Sprite ObjectSprite;
+
+	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 30; i++)
+	{
+		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 30; j++)
+		{
+			if (i < 0 && j < 0) { continue; }
+
+			unsigned ObjectID = GameWorld.getObject(static_cast<sf::Vector2u>(sf::Vector2i(j, i)));
+
+			if (ObjectID == 0) { continue; }
+
+			ObjectSprite.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(j, i))));
+			if (ObjectID > ObjectsTextures.back().Id) { continue; }
+			ObjectSprite.setTexture(ObjectsTextures[ObjectID-1].Texture);
+			RWindow.draw(ObjectSprite);
+		}
+	}
+}
+
 
 void Engine::DrawAll(IslandApp &app)
 {
 	app.getIslandWindow()->setView(camera);
 
 	drawMap(app);
+	drawObjects(*app.getIslandWindow());
 
 	app.draw(*player.getShape());
 }

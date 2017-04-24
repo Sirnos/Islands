@@ -15,7 +15,6 @@ bool World::isPlaceImpassable(sf::Vector2f position)
 
 	sf::Vector2u uPos = static_cast<sf::Vector2u>(Map::getTiledPosition(position));
 	if (getTile(uPos) == TILE_TYPE::EMPTY) { return true; }
-
 	return false;
 }
 

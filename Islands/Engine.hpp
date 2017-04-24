@@ -11,6 +11,25 @@
 #include "Log.hpp"
 #include "World.hpp"
 
+struct ObjTex
+{
+	unsigned Id;
+	std::string Name;
+	sf::Texture &Texture;
+
+	void operator=(const ObjTex &Other)
+	{
+		Id = Other.Id;
+		Name = Other.Name;
+		Texture = Other.Texture;
+	}
+	ObjTex(unsigned id, std::string name, sf::Texture &refToTex)
+		:Texture(refToTex)
+	{
+		Id = id; Name = name; 
+	}
+};
+
 class Engine
 {
 	World GameWorld;
@@ -18,7 +37,7 @@ class Engine
 	playerCharacter player;
 
 	ObjectArray RawObjects;
-	std::map<std::string,std::pair<unsigned,sf::Texture&>> ObjectsTextures;
+	std::vector<ObjTex> ObjectsTextures;
 
 	sf::View camera;
 
@@ -27,12 +46,14 @@ class Engine
 	bool checkPlayerPos();
 	void spawnPlayer();
 
+
+	void drawMap(IslandApp &app);
+	void drawObjects(sf::RenderWindow &RWindow);
 public:
 	~Engine();
 
 	void init();
 	void operator()(IslandApp &app);
 
-	void drawMap(IslandApp &app);
 	void DrawAll(IslandApp &app);
 };
