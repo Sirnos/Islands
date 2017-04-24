@@ -128,6 +128,11 @@ Object ObjectArray::getObject(std::string objectID)
     return Object();
 }
 
+Object ObjectArray::getObject(size_t Pos)
+{
+	return ObjectVector[Pos];
+}
+
 std::string ObjectArray::getObjectsGraphicsFile() { return ObjectsGraphicsFile; }
 
 const std::vector<Object>& ObjectArray::getObjects() { return ObjectVector; }

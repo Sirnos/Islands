@@ -23,6 +23,7 @@ public:
 
 	bool isObjectExist(std::string objectID);
 	Object getObject(std::string objectID);
+	Object getObject(size_t Pos);
 
 	std::string getObjectsGraphicsFile();
 	const std::vector<Object> &getObjects();

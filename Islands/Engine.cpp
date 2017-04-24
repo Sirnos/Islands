@@ -59,6 +59,44 @@ void Engine::spawnPlayer()
 	player.setSpawnPoint(spawnPoint);
 }
 
+void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
+{
+	TILE_TYPE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
+	if (tile == TILE_TYPE::EMPTY) { return; }
+	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(tileIndex.x,tileIndex.y))));
+	switch (tile)
+	{
+	case TILE_TYPE::EMPTY:
+		break;
+	case TILE_TYPE::DIRT:
+		shp.setTexture(&mediaContainer.TileTexture[0]);
+		break;
+	case TILE_TYPE::GRASS:
+		shp.setTexture(&mediaContainer.TileTexture[0]);
+		break;
+	case TILE_TYPE::ROCK:
+		shp.setTexture(&mediaContainer.TileTexture[0]);
+		break;
+	case TILE_TYPE::BRIGDE:
+		shp.setTexture(&mediaContainer.TileTexture[10]);
+		break;
+	default:
+		break;
+	}
+	window.draw(shp);
+}
+
+void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
+{
+	unsigned ObjectID = GameWorld.getObject(sf::Vector2u(objectIndex.y,objectIndex.x));
+	if (ObjectID == 0) { return; }
+	if (ObjectID > ObjectsTextures.back().Id) { return; }
+	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
+	shp.setTexture(&ObjectsTextures[ObjectID - 1].Texture);
+	shp.setSize(RawObjects.getObject(ObjectID).getSize());
+	window.draw(shp);
+}
+
 bool Engine::checkPlayerPos()
 {
 	sf::Vector2f playerPos = player.getCharacterCenterPosition();
@@ -101,76 +139,29 @@ void Engine::operator()(IslandApp &app)
 	}
 }
 
-void Engine::drawMap(IslandApp &app)
+void Engine::drawWorld(IslandApp & app)
 {
 	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
-	sf::RectangleShape TileShape;
+	sf::RectangleShape TileShape,
+					 ObjectShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-	
+
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
 	{
 		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 31; j++)
 		{
-			if(j < 0 && i < 0) { continue; }
-
-				TILE_TYPE tile = GameWorld.getTile(static_cast<sf::Vector2u>(sf::Vector2i(j, i)));
-				if (tile == TILE_TYPE::EMPTY) { continue; }
-				TileShape.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(i, j))));
-				switch (tile)
-				{
-				case TILE_TYPE::EMPTY:
-					break;
-				case TILE_TYPE::DIRT:
-					TileShape.setTexture(&mediaContainer.TileTexture[0]);
-					break;
-				case TILE_TYPE::GRASS:
-					TileShape.setTexture(&mediaContainer.TileTexture[0]);
-					break;
-				case TILE_TYPE::ROCK:
-					TileShape.setTexture(&mediaContainer.TileTexture[0]);
-					break;
-				case TILE_TYPE::BRIGDE:
-					TileShape.setTexture(&mediaContainer.TileTexture[10]);
-					break;
-				default:
-					break;
-				}
-				app.draw(TileShape);
+			if (j < 0 && i < 0) { continue; }
+			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			//drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i,j)),*app.getIslandWindow(),ObjectShape);
 		}
 	}
 }
-
-
-void Engine::drawObjects(sf::RenderWindow & RWindow)
-{
-	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
-	sf::Sprite ObjectSprite;
-
-	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 30; i++)
-	{
-		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 30; j++)
-		{
-			if (i < 0 && j < 0) { continue; }
-
-			unsigned ObjectID = GameWorld.getObject(static_cast<sf::Vector2u>(sf::Vector2i(j, i)));
-
-			if (ObjectID == 0) { continue; }
-
-			ObjectSprite.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(j, i))));
-			if (ObjectID > ObjectsTextures.back().Id) { continue; }
-			ObjectSprite.setTexture(ObjectsTextures[ObjectID-1].Texture);
-			RWindow.draw(ObjectSprite);
-		}
-	}
-}
-
 
 void Engine::DrawAll(IslandApp &app)
 {
 	app.getIslandWindow()->setView(camera);
 
-	drawMap(app);
-	drawObjects(*app.getIslandWindow());
+	drawWorld(app);
 
 	app.draw(*player.getShape());
 }

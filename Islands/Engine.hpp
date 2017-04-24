@@ -47,8 +47,10 @@ class Engine
 	void spawnPlayer();
 
 
-	void drawMap(IslandApp &app);
-	void drawObjects(sf::RenderWindow &RWindow);
+	void drawTile(sf::Vector2u tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
+	void drawObject(sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
+
+	void drawWorld(IslandApp &app);
 public:
 	~Engine();
 
