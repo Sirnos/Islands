@@ -7,8 +7,11 @@ enum class TILE_TYPE : unsigned
 	EMPTY,
 	DIRT,
 	GRASS,
+	SAND,
 	ROCK,
-	BRIGDE
+	BRIGDE,
+	CLOUD,
+	WATER
 };
 
 class Tile
