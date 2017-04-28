@@ -9,7 +9,8 @@ void Engine::loadObjects()
 	for (auto & i : RawObjects.getObjects())
 	{
 		auto ref = const_cast<Object&>(i);
-		ObjectsTextures.push_back(ObjTex(var,ref.getID(), mediaContainer.pushObjectsTextures(RawObjects.getObjectsGraphicsFile(), ref.getTextureCord())));
+		ObjectsTextures.push_back(ObjTex(var,ref.getID(), mediaContainer.pushTexture(TextureContainer::ObjectTextures,
+			RawObjects.getObjectsGraphicsFile(), ref.getTextureCord())));
 		var++;
 	}
 }
@@ -70,16 +71,16 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 	case TILE_TYPE::EMPTY:
 		break;
 	case TILE_TYPE::DIRT:
-		shp.setTexture(&mediaContainer.TileTexture[0]);
+		shp.setTexture(&mediaContainer.getTexture(1,TextureContainer::TileTextures));
 		break;
 	case TILE_TYPE::GRASS:
-		shp.setTexture(&mediaContainer.TileTexture[0]);
+		shp.setTexture(&mediaContainer.getTexture(1, TextureContainer::TileTextures));
 		break;
 	case TILE_TYPE::ROCK:
-		shp.setTexture(&mediaContainer.TileTexture[0]);
+		shp.setTexture(&mediaContainer.getTexture(1, TextureContainer::TileTextures));
 		break;
 	case TILE_TYPE::BRIGDE:
-		shp.setTexture(&mediaContainer.TileTexture[10]);
+		shp.setTexture(&mediaContainer.getTexture(2, TextureContainer::TileTextures));
 		break;
 	default:
 		break;
@@ -93,7 +94,7 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 	if (ObjectID == 0) { return; }
 	if (ObjectID > ObjectsTextures.size()-1) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
-	shp.setTexture(&mediaContainer.ObjectsTexture[ObjectID]);
+	shp.setTexture(&mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures));
 	shp.setSize(sf::Vector2f(64, 64));
 	//shp.setSize(RawObjects.getObject(ObjectID).getSize());
 	window.draw(shp);
@@ -118,7 +119,7 @@ void Engine::init()
 	mediaContainer.load(); ErrorHandler::log("Load media");
 	loadObjects();ErrorHandler::log("Load objects");
 
-	player.set(&mediaContainer.PlayerTexture, sf::Vector2f(100, 100));
+	player.set(&mediaContainer.getTexture(1,TextureContainer::CharacterTextures), sf::Vector2f(100, 100));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
 	GameWorld.init();
