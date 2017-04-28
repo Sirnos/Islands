@@ -3,6 +3,7 @@
 void Engine::loadObjects()
 {
 	RawObjects.loadObjects();
+	ObjectsTextures.push_back(ObjTex());
 
 	unsigned var = 1;
 	for (auto & i : RawObjects.getObjects())
@@ -90,10 +91,11 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 {
 	unsigned ObjectID = GameWorld.getObject(sf::Vector2u(objectIndex.y,objectIndex.x));
 	if (ObjectID == 0) { return; }
-	if (ObjectID > ObjectsTextures.back().Id) { return; }
+	if (ObjectID > ObjectsTextures.size()-1) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
-	shp.setTexture(&ObjectsTextures[ObjectID - 1].Texture);
-	shp.setSize(RawObjects.getObject(ObjectID).getSize());
+	shp.setTexture(&mediaContainer.ObjectsTexture[ObjectID]);
+	shp.setSize(sf::Vector2f(64, 64));
+	//shp.setSize(RawObjects.getObject(ObjectID).getSize());
 	window.draw(shp);
 }
 
@@ -152,7 +154,7 @@ void Engine::drawWorld(IslandApp & app)
 		{
 			if (j < 0 && i < 0) { continue; }
 			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
-			//drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i,j)),*app.getIslandWindow(),ObjectShape);
+			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i,j)),*app.getIslandWindow(), TileShape);
 		}
 	}
 }
