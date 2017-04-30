@@ -18,7 +18,6 @@ class Engine
 	playerCharacter player;
 
 	ObjectArray RawObjects;
-	std::vector<ObjTex> ObjectsTextures;
 
 	sf::View camera;
 

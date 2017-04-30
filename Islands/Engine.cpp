@@ -3,15 +3,12 @@
 void Engine::loadObjects()
 {
 	RawObjects.loadObjects();
-	ObjectsTextures.push_back(ObjTex());
 
-	unsigned var = 1;
 	for (auto & i : RawObjects.getObjects())
 	{
 		auto ref = const_cast<Object&>(i);
-		ObjectsTextures.push_back(ObjTex(var,ref.getID(), mediaContainer.pushTexture(TextureContainer::ObjectTextures,
-			RawObjects.getObjectsGraphicsFile(), ref.getTextureCord())));
-		var++;
+			mediaContainer.pushTexture(TextureContainer::ObjectTextures,
+				RawObjects.getObjectsGraphicsFile(), ref.getTextureCord());
 	}
 }
 
@@ -92,11 +89,11 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 {
 	unsigned ObjectID = GameWorld.getObject(sf::Vector2u(objectIndex.y,objectIndex.x));
 	if (ObjectID == 0) { return; }
-	if (ObjectID > ObjectsTextures.size()-1) { return; }
+	if (ObjectID > RawObjects.getObjects().size()) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
-	shp.setTexture(&mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures));
 	shp.setSize(sf::Vector2f(64, 64));
 	//shp.setSize(RawObjects.getObject(ObjectID).getSize());
+	shp.setTexture(&mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures));
 	window.draw(shp);
 }
 
@@ -110,7 +107,6 @@ bool Engine::checkPlayerPos()
 
 Engine::~Engine()
 {
-	ObjectsTextures.clear();
 	ErrorHandler::log("Clear data");
 }
 

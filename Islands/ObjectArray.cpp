@@ -1,6 +1,6 @@
 #include "ObjectArray.hpp"
 
-ObjectArray::ObjectArray(){}
+ObjectArray::ObjectArray() { ObjectVector.push_back(Object()); }
 ObjectArray::~ObjectArray() { ObjectVector.clear(); }
 
 void ObjectArray::loadObjects()

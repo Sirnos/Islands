@@ -69,24 +69,3 @@ public:
 	bool getDestructible() { return Destructible; }
 	std::pair<std::string, unsigned> getYield() { return Yield; }
 };
-
-struct ObjTex
-{
-	unsigned Id;
-	std::string Name;
-	//Texture cannot store data it's a pointer to texture in Media
-	sf::Texture *Texture;
-
-	void operator=(const ObjTex &Other)
-	{
-		Id = Other.Id;
-		Name = Other.Name;
-		Texture = Other.Texture;
-	}
-	ObjTex(unsigned id, std::string name, sf::Texture &refToTex)
-		:Texture(&refToTex)
-	{
-		Id = id; Name = name;
-	}
-	ObjTex() { Id = 0; Name = "NULL"; Texture = nullptr; }
-};
