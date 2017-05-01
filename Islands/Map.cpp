@@ -42,6 +42,10 @@ void Map::generateMap()
 			{
 				j.setType(TILE_TYPE::GRASS);
 			}
+			else if (TileValue > -0.5)
+			{
+				j.setType(TILE_TYPE::CLOUD);
+			}
 			else
 			{
 				j.setType(TILE_TYPE::EMPTY);

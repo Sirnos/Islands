@@ -71,13 +71,16 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 		shp.setTexture(&mediaContainer.getTexture(1,TextureContainer::TileTextures));
 		break;
 	case TILE_TYPE::GRASS:
-		shp.setTexture(&mediaContainer.getTexture(1, TextureContainer::TileTextures));
+		shp.setTexture(&mediaContainer.getTexture(2, TextureContainer::TileTextures));
 		break;
 	case TILE_TYPE::ROCK:
-		shp.setTexture(&mediaContainer.getTexture(1, TextureContainer::TileTextures));
+		shp.setTexture(&mediaContainer.getTexture(4, TextureContainer::TileTextures));
 		break;
 	case TILE_TYPE::BRIGDE:
 		shp.setTexture(&mediaContainer.getTexture(2, TextureContainer::TileTextures));
+		break;
+	case TILE_TYPE::CLOUD:
+		shp.setTexture(&mediaContainer.getTexture(6, TextureContainer::TileTextures));
 		break;
 	default:
 		break;
