@@ -135,6 +135,8 @@
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
+    <ClInclude Include="ItemDef.hpp" />
+    <ClInclude Include="ItemDefFactory.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />
@@ -150,7 +152,6 @@
   <ItemGroup>
     <Image Include="Data\char.png" />
     <Image Include="Data\Items.png" />
-    <Image Include="Data\overworld.png" />
     <Image Include="Data\Tiles.png" />
   </ItemGroup>
   <ItemGroup>

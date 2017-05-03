@@ -83,15 +83,18 @@
     <ClInclude Include="World.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ItemDef.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDefFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">
       <Filter>IslandData</Filter>
     </Image>
     <Image Include="Data\Items.png">
-      <Filter>IslandData</Filter>
-    </Image>
-    <Image Include="Data\overworld.png">
       <Filter>IslandData</Filter>
     </Image>
     <Image Include="Data\Tiles.png">
