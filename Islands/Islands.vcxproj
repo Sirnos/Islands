@@ -136,6 +136,7 @@
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
+    <ClInclude Include="ItemDefContainer.hpp" />
     <ClInclude Include="ItemDefFactory.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="Map.hpp" />
