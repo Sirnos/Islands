@@ -1,14 +1,16 @@
 #include "Engine.hpp"
 
-void Engine::loadObjects()
+void Engine::loadGameComponents()
 {
-	RawObjects.loadObjects();
+	GameComponentsLoader loader;
+	std::string graphicsfile;
+	RawObjects.generateArray(loader.LoadObjectDefFromFile("Data/Objects.xml", graphicsfile));
 
 	for (auto & i : RawObjects.getObjects())
 	{
 		auto ref = const_cast<Object&>(i);
 			mediaContainer.pushTexture(TextureContainer::ObjectTextures,
-				RawObjects.getObjectsGraphicsFile(), ref.getTextureCord());
+				graphicsfile, ref.getTextureCord());
 	}
 }
 
@@ -116,7 +118,7 @@ Engine::~Engine()
 void Engine::init()
 {
 	mediaContainer.load(); ErrorHandler::log("Load media");
-	loadObjects();ErrorHandler::log("Load objects");
+	loadGameComponents(); ErrorHandler::log("Load game components");
 
 	player.set(&mediaContainer.getTexture(1,TextureContainer::CharacterTextures), sf::Vector2f(100, 100));
 	camera.setSize(sf::Vector2f(1280, 1024));

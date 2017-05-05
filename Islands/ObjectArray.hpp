@@ -1,30 +1,43 @@
 #pragma once
 
-#include <rapidxml_utils.hpp>
-#include <rapidxml_iterators.hpp>
-#include <rapidxml.hpp>
-
 #include <vector>
 #include <string>
-#include <fstream>
 
 #include "object.hpp"
 #include "Log.hpp"
 
 class ObjectArray
 {
-	std::string ObjectsGraphicsFile;
 	std::vector<Object> ObjectVector;
 public:
-	ObjectArray();
-	~ObjectArray();
+	~ObjectArray() { ObjectVector.clear(); }
 
-	void loadObjects();
+	void generateArray(std::vector<Object> &Other) { ObjectVector = Other; }
 
-	bool isObjectExist(std::string objectID);
-	Object getObject(std::string objectID);
-	Object getObject(size_t Pos);
+	bool isObjectExist(std::string objectID)
+	{
+		for (auto & i : ObjectVector)
+		{
+			if (i.getID() == objectID)
+			{
+				return true;
+			}
+		}
 
-	std::string getObjectsGraphicsFile();
-	const std::vector<Object> &getObjects();
+		return false;
+	}
+	Object getObject(std::string objectID)
+	{
+		for (auto i : ObjectVector)
+		{
+			if (i.getID() == objectID)
+			{
+				return i;
+			}
+		}
+		return Object();
+	}
+	Object getObject(size_t Pos) { return ObjectVector[Pos]; }
+
+	const std::vector<Object> &getObjects() { return ObjectVector; }
 };

@@ -5,6 +5,7 @@
 #include <ctime>
 
 #include "IslandApp.hpp"
+#include "GameComponentsLoader.hpp"
 #include "playerCharacter.hpp"
 #include "Media.hpp"
 #include "ObjectArray.hpp"
@@ -21,7 +22,7 @@ class Engine
 
 	sf::View camera;
 
-	void loadObjects();
+	void loadGameComponents();
 	void checkPlayerBehaviour(IslandApp &app);
 	bool checkPlayerPos();
 	void spawnPlayer();

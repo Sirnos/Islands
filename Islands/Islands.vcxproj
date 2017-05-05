@@ -126,13 +126,13 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="ObjectArray.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.hpp" />
     <ClInclude Include="Character.hpp" />
     <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="GameComponentsLoader.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
