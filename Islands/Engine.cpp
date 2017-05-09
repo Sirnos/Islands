@@ -156,7 +156,7 @@ void Engine::drawWorld(IslandApp & app)
 		{
 			if (j < 0 && i < 0) { continue; }
 			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
-			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i,j)),*app.getIslandWindow(), TileShape);
+			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 		}
 	}
 }

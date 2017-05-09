@@ -2,12 +2,13 @@
 
 #include "Character.hpp"
 
-typedef std::pair<std::string, unsigned> InventoryField;
+//first = ID of item,second = amount
+typedef std::pair<unsigned, unsigned> InventoryField;
 
 class playerCharacter :public Character
 {
-	InventoryField Inventory[30][30] = { std::pair<std::string,unsigned>("",0) };
-	InventoryField HandInventory[6] = { std::pair<std::string,unsigned>("",0) };
+	InventoryField Inventory[30][30] = { InventoryField(0,0) };
+	InventoryField HandInventory[6] = { InventoryField(0,0) };
 	sf::Vector2f spawnPoint;
 public:
 	playerCharacter()
@@ -35,13 +36,12 @@ public:
 	void setSpawnPoint(sf::Vector2f newSpawnPoint) { spawnPoint = newSpawnPoint; }
 	sf::Vector2f getSpawnPoint() { return spawnPoint; }
 
-	//(Inv param)true == HandInventory, false == Inventory
-	std::pair<std::string, unsigned> &getInventoryField(bool Inv, sf::Vector2u fieldNumber)
+	InventoryField getInventoryField(sf::Vector2u fieldNumber)
 	{
-		if (Inv == true)
-		{
-			return HandInventory[fieldNumber.x];
-		}
 		return Inventory[fieldNumber.x][fieldNumber.y];
+	}
+	InventoryField getHandInventoryField(unsigned fieldNumber)
+	{
+		return HandInventory[fieldNumber];
 	}
 };

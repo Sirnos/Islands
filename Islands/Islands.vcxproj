@@ -156,7 +156,10 @@
     <Image Include="Data\Tiles.png" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Data\Objects.xml" />
+    <Xml Include="Data\Items.xml" />
+    <Xml Include="Data\Objects.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf" />
