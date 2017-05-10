@@ -8,7 +8,7 @@ void Engine::loadGameComponents()
 
 	for (auto & i : RawObjects.getObjects())
 	{
-		auto ref = const_cast<Object&>(i);
+		auto ref = const_cast<ObjectDef&>(i);
 			mediaContainer.pushTexture(TextureContainer::ObjectTextures,
 				graphicsfile, ref.getTextureCord());
 	}

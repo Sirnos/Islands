@@ -3,22 +3,22 @@
 #include <vector>
 #include <string>
 
-#include "object.hpp"
+#include "ObjectDef.hpp"
 #include "Log.hpp"
 
 class ObjectArray
 {
-	std::vector<Object> ObjectVector;
+	std::vector<ObjectDef> ObjectVector;
 public:
 	~ObjectArray() { ObjectVector.clear(); }
 
-	void generateArray(std::vector<Object> &Other) { ObjectVector = Other; }
+	void generateArray(std::vector<ObjectDef> &Other) { ObjectVector = Other; }
 
-	bool isObjectExist(std::string objectID)
+	bool isObjectExist(std::string OtherObjName)
 	{
 		for (auto & i : ObjectVector)
 		{
-			if (i.getID() == objectID)
+			if (i.getName() == OtherObjName)
 			{
 				return true;
 			}
@@ -26,18 +26,18 @@ public:
 
 		return false;
 	}
-	Object getObject(std::string objectID)
+	ObjectDef* getObject(std::string ObjectName)
 	{
 		for (auto i : ObjectVector)
 		{
-			if (i.getID() == objectID)
+			if (i.getName() == ObjectName)
 			{
-				return i;
+				return &i;
 			}
 		}
-		return Object();
+		return nullptr;
 	}
-	Object getObject(size_t Pos) { return ObjectVector[Pos]; }
+	ObjectDef* getObject(size_t Pos) { return &ObjectVector[Pos]; }
 
-	const std::vector<Object> &getObjects() { return ObjectVector; }
+	const std::vector<ObjectDef> &getObjects() { return ObjectVector; }
 };

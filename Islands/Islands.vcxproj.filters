@@ -86,9 +86,6 @@
     <ClInclude Include="ItemDefFactory.hpp">
       <Filter>Header Files\Item</Filter>
     </ClInclude>
-    <ClInclude Include="object.hpp">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectArray.hpp">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
@@ -97,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="GameComponentsLoader.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectDef.hpp">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

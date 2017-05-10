@@ -6,16 +6,16 @@
 #include <rapidxml_iterators.hpp>
 #include <rapidxml.hpp>
 
-#include "object.hpp"
+#include "ObjectDef.hpp"
 #include "ItemDef.hpp"
 
 class GameComponentsLoader
 {
 public:
-	std::vector<Object> LoadObjectDefFromFile(std::string file,std::string &ObjectsGraphicsFile)
+	std::vector<ObjectDef> LoadObjectDefFromFile(std::string file,std::string &ObjectsGraphicsFile)
 	{
-		std::vector<Object> Objects;
-		Objects.push_back(Object());
+		std::vector<ObjectDef> Objects;
+		Objects.push_back(ObjectDef());
 		rapidxml::file<> File("Data/Objects.xml");
 		rapidxml::xml_document<> document;
 		document.parse<0>(File.data());
@@ -34,7 +34,7 @@ public:
 
 					std::string ObjName = nnNode->first_attribute()->value();
 					bool isDestructible = false;
-					std::pair<std::string, unsigned> IFDESTROYED;
+					Yield IFDESTROYED;
 					sf::Vector2f size;
 					sf::IntRect textureCords;
 					sf::FloatRect collisionBox;
@@ -105,9 +105,8 @@ public:
 							}
 						}
 					}
-					Object temp{ ObjName, size, textureCords, collisionBox, isDestructible,
-						IFDESTROYED.first, IFDESTROYED.second };
-					Objects.push_back(temp);
+					Objects.push_back(ObjectDef(ObjName,size,textureCords,
+						collisionBox,IFDESTROYED,isDestructible));
 				}
 			}
 		}

@@ -142,7 +142,7 @@
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />
     <ClInclude Include="menus.hpp" />
-    <ClInclude Include="object.hpp" />
+    <ClInclude Include="ObjectDef.hpp" />
     <ClInclude Include="ObjectArray.hpp" />
     <ClInclude Include="ObjectsContainer.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
