@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Object">
       <UniqueIdentifier>{eb66c7cb-e194-46eb-b524-cc6e7e8ec961}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameComponents">
+      <UniqueIdentifier>{3343d9d6-3d85-44a6-bf06-1198d3699626}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,20 +86,20 @@
     <ClInclude Include="ItemDef.hpp">
       <Filter>Header Files\Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemDefFactory.hpp">
-      <Filter>Header Files\Item</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectArray.hpp">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsContainer.hpp">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponentsLoader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectDef.hpp">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponentsLoader.hpp">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponentsUnloader.hpp">
+      <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

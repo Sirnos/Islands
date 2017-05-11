@@ -5,8 +5,13 @@
 #include <ctime>
 
 #include "IslandApp.hpp"
+
 #include "GameComponentsLoader.hpp"
+#include "GameComponentsUnloader.hpp"
+
+#include "ItemDefContainer.hpp"
 #include "playerCharacter.hpp"
+
 #include "Media.hpp"
 #include "ObjectArray.hpp"
 #include "Log.hpp"
@@ -19,6 +24,7 @@ class Engine
 	playerCharacter player;
 
 	ObjectArray RawObjects;
+	ItemDefContainer Items;
 
 	sf::View camera;
 

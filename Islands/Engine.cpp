@@ -12,6 +12,8 @@ void Engine::loadGameComponents()
 			mediaContainer.pushTexture(TextureContainer::ObjectTextures,
 				graphicsfile, ref.getTextureCord());
 	}
+	loader.GenerateItemsFromObjectDef(RawObjects.getObjects(), Items.getContainer());
+	Items.getContainer().back()->getName();
 }
 
 void Engine::checkPlayerBehaviour(IslandApp &app)
@@ -112,6 +114,8 @@ bool Engine::checkPlayerPos()
 
 Engine::~Engine()
 {
+	GameComponentUnloader unloader;
+	unloader.clearItems(Items.getContainer());
 	ErrorHandler::log("Clear data");
 }
 

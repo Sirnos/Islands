@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "ItemDefFactory.hpp"
+#include "ItemDef.hpp"
 
 class ItemDefContainer
 {
@@ -16,11 +16,7 @@ public:
 	{
 		Container.push_back(Item);
 	}
+	std::vector<ItemDef*>& getContainer() { return Container; }
 
 	ItemDefContainer() { Container.push_back(nullptr); }
-	~ItemDefContainer()
-	{
-		for (auto & i : Container) { delete i; }
-		Container.clear();
-	}
 };

@@ -114,5 +114,18 @@ public:
 
 		return Objects;
 	}
-	//void LoadItemDefFromFile(){}
+	void GenerateItemsFromObjectDef(const std::vector<ObjectDef> &Objs,std::vector<ItemDef*> &Items)
+	{
+		for (auto & i : Objs)
+		{
+			auto ref = const_cast<ObjectDef*>(&i);
+			Items.push_back(new PlaceableDef(ref->getName()));
+		}
+	}
+
+	// define
+	void LoadItemDefFromFile(std::vector<ItemDef*> &Items, std::string file)
+	{
+		
+	}
 };

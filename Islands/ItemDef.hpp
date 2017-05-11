@@ -16,6 +16,7 @@ public:
 	unsigned getMaxStack() { return maxStack; }
 
 	ItemDef(std::string ItemName, unsigned maxItemStack) { name = ItemName; maxStack = maxItemStack; }
+	virtual ~ItemDef(){}
 };
 
 class MeleeWeaponDef :public ItemDef

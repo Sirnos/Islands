@@ -132,12 +132,12 @@
     <ClInclude Include="button.hpp" />
     <ClInclude Include="Character.hpp" />
     <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="GameComponentsUnloader.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
     <ClInclude Include="ItemDefContainer.hpp" />
-    <ClInclude Include="ItemDefFactory.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />

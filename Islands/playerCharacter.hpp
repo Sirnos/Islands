@@ -7,7 +7,7 @@ typedef std::pair<unsigned, unsigned> InventoryField;
 
 class playerCharacter :public Character
 {
-	InventoryField Inventory[30][30] = { InventoryField(0,0) };
+	InventoryField Inventory[21][21] = { InventoryField(0,0) };
 	InventoryField HandInventory[6] = { InventoryField(0,0) };
 	sf::Vector2f spawnPoint;
 public:
