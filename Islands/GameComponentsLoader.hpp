@@ -210,7 +210,7 @@ public:
 					if (type == "Material")
 					{
 						Items.push_back(new RawMaterialDef(name, maxStack));
-						textures.push_back(sf::IntRect(texturePos.x, texturePos.y, textureSize, textureSize));
+						textures.push_back(sf::IntRect(texturePos.x * textureSize, texturePos.y * textureSize, textureSize, textureSize));
 					}
 				}
 			}

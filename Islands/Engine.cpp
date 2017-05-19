@@ -149,7 +149,6 @@ void Engine::init()
 
 void Engine::operator()(IslandApp &app)
 {
-	
 	checkPlayerBehaviour(app);
 
 	camera.setCenter(player.getCharacterCenterPosition());

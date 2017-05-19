@@ -99,7 +99,24 @@ public:
 		case TextureContainer::ItemsTextures:
 			return ItemsTexture[index];
 			break;
-		default:
+		}
+	}
+
+	size_t getSizeOfContainer(TextureContainer typeOfContainer)
+	{
+		switch (typeOfContainer)
+		{
+		case TextureContainer::TileTextures:
+			return TileTexture.size();
+			break;
+		case TextureContainer::CharacterTextures:
+			return CharacterTexture.size();
+			break;
+		case TextureContainer::ObjectTextures:
+			return ObjectsTexture.size();
+			break;
+		case TextureContainer::ItemsTextures:
+			return ItemsTexture.size();
 			break;
 		}
 	}
@@ -108,7 +125,6 @@ public:
 	{
 		TileTexture.push_back(sf::Texture());
 		ObjectsTexture.push_back(sf::Texture());
-		ItemsTexture.push_back(sf::Texture());
 		CharacterTexture.push_back(sf::Texture());
 	}
 	~Media()
