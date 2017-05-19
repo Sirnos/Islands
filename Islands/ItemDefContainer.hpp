@@ -6,7 +6,6 @@
 class ItemDefContainer
 {
 	std::vector<ItemDef*> Container;
-
 public:
 	ItemDef* getItemDef(size_t index)
 	{
@@ -17,6 +16,4 @@ public:
 		Container.push_back(Item);
 	}
 	std::vector<ItemDef*>& getContainer() { return Container; }
-
-	ItemDefContainer() { Container.push_back(nullptr); }
 };

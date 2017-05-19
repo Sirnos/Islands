@@ -7,16 +7,16 @@
 #include <rapidxml.hpp>
 
 #include "ObjectDef.hpp"
-#include "ItemDef.hpp"
+#include "ItemDefContainer.hpp"
 
 class GameComponentsLoader
 {
 public:
-	std::vector<ObjectDef> LoadObjectDefFromFile(std::string file,std::string &ObjectsGraphicsFile)
+	std::vector<ObjectDef> LoadObjectDefFromFile(std::string &ObjectsGraphicsFile)
 	{
 		std::vector<ObjectDef> Objects;
 		Objects.push_back(ObjectDef());
-		rapidxml::file<> File("Data/Objects.xml");
+		rapidxml::file<char> File("Data/Objects.xml");
 		rapidxml::xml_document<> document;
 		document.parse<0>(File.data());
 
@@ -114,18 +114,106 @@ public:
 
 		return Objects;
 	}
-	void GenerateItemsFromObjectDef(const std::vector<ObjectDef> &Objs,std::vector<ItemDef*> &Items)
+
+	void GenerateItemsFromObjectDef(const std::vector<ObjectDef> &Objs,ItemDefContainer &ItemCont)
 	{
-		for (auto & i : Objs)
+		for (unsigned i = 1; i < Objs.size(); i++)
 		{
-			auto ref = const_cast<ObjectDef*>(&i);
-			Items.push_back(new PlaceableDef(ref->getName()));
+			auto ref = const_cast<ObjectDef*>(&Objs[i]);
+			ItemCont.pushNewItemDef(new PlaceableDef(ref->getName()));
 		}
+		auto & Items = ItemCont.getContainer();
+		for (size_t i = 0; i<Items.size(); i++)
+		{
+			if (Items[i] == nullptr)
+			{
+				Items.erase(Items.begin() + i);
+			}
+		}
+		Items.shrink_to_fit();
 	}
 
-	// define
-	void LoadItemDefFromFile(std::vector<ItemDef*> &Items, std::string file)
+	void LoadItemDefFromFile(std::vector<ItemDef*> &Items,std::string &ItemsGraphicsFile,std::vector<sf::IntRect> &textures)
 	{
-		
+		rapidxml::file<char> File("Data/Items.xml");
+		rapidxml::xml_document<> document;
+		document.parse<0>(File.data());
+
+		int textureSize;
+
+		for (auto node1 = document.first_node(); node1 != nullptr; node1 = node1->next_sibling())
+		{
+			std::string node1Name = node1->name();
+			if (node1Name == "Items")
+			{
+				auto attrib = node1->first_attribute();
+
+				std::string attribName = attrib->name();
+				if (attribName == "graphics")
+				{
+					ItemsGraphicsFile = attrib->value();
+					attrib = attrib->next_attribute();
+					attribName = attrib->name();
+					if (attribName == "textureSize")
+					{
+						auto temp = std::stoi(attrib->value());
+						if (temp > 64) { temp = 64; }
+						textureSize = temp;
+					}
+				}
+			}
+			for (auto node2 = node1->first_node(); node2 != nullptr; node2 = node2->next_sibling())
+			{
+				std::string node2Name = node2->name();
+				if (node2Name == "Item")
+				{
+					std::string name;
+					std::string type;
+					unsigned maxStack;
+					sf::Vector2i texturePos;
+
+					name = node2->first_attribute()->value();
+
+					for (auto node3 = node2->first_node(); node3 != nullptr; node3 = node3->next_sibling())
+					{
+						std::string node3Name = node3->name();
+						if (node3Name == "GRAPHICS")
+						{
+							for (auto node4 = node3->first_node(); node4 != nullptr; node4 = node4->next_sibling())
+							{
+
+								auto tempPos = std::stoi(node4->value());
+								std::string node4Name = node4->name();
+
+								if (node4Name == "POSX")
+								{
+									texturePos.x = tempPos;
+								}
+								else if (node4Name == "POSY")
+								{
+									texturePos.y = tempPos;
+								}
+							}
+						}
+						else if(node3Name == "MAXSTACK")
+						{
+							maxStack = static_cast<unsigned>(std::stoi(node3->value()));
+						}
+						else if(node3Name == "TYPE")
+						{
+							type = node3->value();
+						}
+					}
+
+					//push Items and Textures
+
+					if (type == "Material")
+					{
+						Items.push_back(new RawMaterialDef(name, maxStack));
+						textures.push_back(sf::IntRect(texturePos.x, texturePos.y, textureSize, textureSize));
+					}
+				}
+			}
+		}
 	}
 };

@@ -4,7 +4,7 @@ void Engine::loadGameComponents()
 {
 	GameComponentsLoader loader;
 	std::string graphicsfile;
-	RawObjects.generateArray(loader.LoadObjectDefFromFile("Data/Objects.xml", graphicsfile));
+	RawObjects.generateArray(loader.LoadObjectDefFromFile(graphicsfile));
 
 	for (auto & i : RawObjects.getObjects())
 	{
@@ -12,8 +12,22 @@ void Engine::loadGameComponents()
 			mediaContainer.pushTexture(TextureContainer::ObjectTextures,
 				graphicsfile, ref.getTextureCord());
 	}
-	loader.GenerateItemsFromObjectDef(RawObjects.getObjects(), Items.getContainer());
-	Items.getContainer().back()->getName();
+	loader.GenerateItemsFromObjectDef(RawObjects.getObjects(), Items);
+
+	for (auto & i : Items.getContainer())
+	{
+			ErrorHandler::log("Load Item: "+i->getName()+" maxStack: 64");
+	}
+
+	std::string itemTextureFile;
+	std::vector<sf::IntRect> ItemTextRect;
+	loader.LoadItemDefFromFile(Items.getContainer(), itemTextureFile, ItemTextRect);
+
+	for (auto & i : ItemTextRect)
+	{
+		mediaContainer.pushTexture(TextureContainer::ItemsTextures, itemTextureFile, i);
+	}
+
 }
 
 void Engine::checkPlayerBehaviour(IslandApp &app)
@@ -135,6 +149,7 @@ void Engine::init()
 
 void Engine::operator()(IslandApp &app)
 {
+	
 	checkPlayerBehaviour(app);
 
 	camera.setCenter(player.getCharacterCenterPosition());

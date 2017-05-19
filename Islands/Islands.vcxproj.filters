@@ -25,6 +25,9 @@
     <Filter Include="Header Files\GameComponents">
       <UniqueIdentifier>{3343d9d6-3d85-44a6-bf06-1198d3699626}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{b8be1493-835c-46b1-af5c-45e20a2915dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

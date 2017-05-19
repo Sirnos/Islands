@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Items>
+<Items graphics="Data/Items.png" textureSize="16">
+  <Item name="LOG_WOOD">
+    <GRAPHICS>
+      <POSX>0</POSX>
+      <POSY>0</POSY>
+    </GRAPHICS>
+    <MAXSTACK>32</MAXSTACK>
+    <TYPE>Material</TYPE>
+  </Item>
+  <Item name="STICK">
+    <GRAPHICS>
+      <POSX>1</POSX>
+      <POSY>0</POSY>
+    </GRAPHICS>
+    <MAXSTACK>128</MAXSTACK>
+    <TYPE>Material</TYPE>
+  </Item>
+  <Item name="PLANK">
+    <GRAPHICS>
+      <POSX>2</POSX>
+      <POSY>0</POSY>
+    </GRAPHICS>
+    <MAXSTACK>64</MAXSTACK>
+    <TYPE>Material</TYPE>
+  </Item>
+  <Item name="SAPLING">
+    <GRAPHICS>
+      <POSX>3</POSX>
+      <POSY>0</POSY>
+    </GRAPHICS>
+    <MAXSTACK>256</MAXSTACK>
+    <TYPE>Material</TYPE>
+  </Item>
 </Items>
