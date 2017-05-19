@@ -205,8 +205,6 @@ public:
 						}
 					}
 
-					//push Items and Textures
-
 					if (type == "Material")
 					{
 						Items.push_back(new RawMaterialDef(name, maxStack));

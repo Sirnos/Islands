@@ -21,7 +21,7 @@ void Map::generateMap()
 	noiseModule.SetFrequency(1.0);
 	noiseModule.SetPersistence(0.25);
 
-	TilesMap.resize(MAP_SIZE,std::vector<Tile>(MAP_SIZE));
+	TilesMap.resize(MAP_SIZE,std::vector<TILE>(MAP_SIZE));
 
 	double mnX = 0;
 	for (auto & i : TilesMap)
@@ -32,23 +32,23 @@ void Map::generateMap()
 			double TileValue = noiseModule.GetValue(1.25 + (0.1 * mnX), 0.75 + (0.1 * mnY), 0.5);
 			if (TileValue > 0.75)
 			{
-				j.setType(TILE_TYPE::ROCK);
+				j = TILE::ROCK;
 			}
 			else if (TileValue > 0.5)
 			{
-				j.setType(TILE_TYPE::DIRT);
+				j = TILE::DIRT;
 			}
 			else if (TileValue > 0.05)
 			{
-				j.setType(TILE_TYPE::GRASS);
+				j = TILE::GRASS;
 			}
 			else if (TileValue > -0.5)
 			{
-				j.setType(TILE_TYPE::CLOUD);
+				j = TILE::CLOUD;
 			}
 			else
 			{
-				j.setType(TILE_TYPE::EMPTY);
+				j = TILE::EMPTY;
 			}
 			mnY += 1;
 		}
@@ -71,4 +71,4 @@ const sf::Vector2f Map::getNormalPosition(sf::Vector2i tileNumber)
 
 sf::Vector2u Map::getMapSize() { return sf::Vector2u(TilesMap.size(), TilesMap[0].size()); }
 
-Tile * Map::getTile(sf::Vector2u tileNumber) { return &TilesMap[tileNumber.x][tileNumber.y]; }
+TILE Map::getTile(sf::Vector2u tileNumber) { return TilesMap[tileNumber.x][tileNumber.y]; }

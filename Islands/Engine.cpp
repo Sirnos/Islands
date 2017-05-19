@@ -78,26 +78,26 @@ void Engine::spawnPlayer()
 
 void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
-	TILE_TYPE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
-	if (tile == TILE_TYPE::EMPTY) { return; }
+	TILE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
+	if (tile == TILE::EMPTY) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(tileIndex.x,tileIndex.y))));
 	switch (tile)
 	{
-	case TILE_TYPE::EMPTY:
+	case TILE::EMPTY:
 		break;
-	case TILE_TYPE::DIRT:
+	case TILE::DIRT:
 		shp.setTexture(&mediaContainer.getTexture(1,TextureContainer::TileTextures));
 		break;
-	case TILE_TYPE::GRASS:
+	case TILE::GRASS:
 		shp.setTexture(&mediaContainer.getTexture(2, TextureContainer::TileTextures));
 		break;
-	case TILE_TYPE::ROCK:
+	case TILE::ROCK:
 		shp.setTexture(&mediaContainer.getTexture(4, TextureContainer::TileTextures));
 		break;
-	case TILE_TYPE::BRIGDE:
+	case TILE::BRIGDE:
 		shp.setTexture(&mediaContainer.getTexture(2, TextureContainer::TileTextures));
 		break;
-	case TILE_TYPE::CLOUD:
+	case TILE::CLOUD:
 		shp.setTexture(&mediaContainer.getTexture(6, TextureContainer::TileTextures));
 		break;
 	default:

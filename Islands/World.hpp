@@ -21,6 +21,6 @@ public:
 	bool isPlaceImpassable(sf::Vector2f position);
 	//bool isPositionImpasable(sf::Vector2i position);
 
-	TILE_TYPE getTile(sf::Vector2u tileIndex,bool safeVersion = true);
+	TILE getTile(sf::Vector2u tileIndex,bool safeVersion = true);
 	unsigned getObject(sf::Vector2u objectIndex,bool safeVersion = true);
 };
