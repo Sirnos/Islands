@@ -79,8 +79,6 @@ public:
 			}
 			return ItemsTexture.back();
 			break;
-		default:
-			break;
 		}
 	}
 	sf::Texture& getTexture(size_t index, TextureContainer typeOfContainer)

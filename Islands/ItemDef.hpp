@@ -2,6 +2,8 @@
 
 #include <string>
 
+const unsigned MAXIMUM_STACK_SIZE = 255;
+
 class ItemDef
 {
 	std::string name;
@@ -15,7 +17,14 @@ public:
 	std::string getName() { return name; }
 	unsigned getMaxStack() { return maxStack; }
 
-	ItemDef(std::string ItemName, unsigned maxItemStack) { name = ItemName; maxStack = maxItemStack; }
+	ItemDef(std::string ItemName, unsigned maxItemStack) 
+	{ 
+		name = ItemName; 
+		if (maxItemStack < MAXIMUM_STACK_SIZE)
+			maxStack = maxItemStack;
+		else
+			maxStack = MAXIMUM_STACK_SIZE;
+	}
 	virtual ~ItemDef() {}
 };
 

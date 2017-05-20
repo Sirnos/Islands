@@ -13,6 +13,7 @@ protected:
 	virtual void attack() {}
 	virtual void idle() {}
 public:
+	Character(sf::Vector2f stats) { HP = stats.x; MP = stats.y; }
 	Character(){}
 	~Character(){}
 

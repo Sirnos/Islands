@@ -9,15 +9,16 @@ class playerCharacter :public Character
 {
 	InventoryField Inventory[21][21] = { InventoryField(0,0) };
 	InventoryField HandInventory[6] = { InventoryField(0,0) };
+
+	InventoryField ArmorFields[3] = { InventoryField(0,0) };
+
 	sf::Vector2f spawnPoint;
 public:
 	playerCharacter()
-	{
-		HP = 10;
-		MP = 6;
-	}
-	playerCharacter(sf::Texture *texture, sf::Vector2f position)
-		:playerCharacter()
+		:Character()
+	{}
+	playerCharacter(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
+		:Character(stats)
 	{
 		CharacterShape.setPosition(position);
 		CharacterShape.setTexture(texture);
@@ -26,11 +27,13 @@ public:
 
 	void move(sf::Vector2f moveVector) { CharacterShape.move(moveVector); }
 	sf::RectangleShape *getShape() { return &CharacterShape; }
-	void set(sf::Texture *texture, sf::Vector2f position)
+	void set(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
 	{
 		CharacterShape.setPosition(position);
 		CharacterShape.setTexture(texture);
 		CharacterShape.setSize(sf::Vector2f(40, 60));
+		HP = stats.x;
+		MP = stats.y;
 	}
 
 	void setSpawnPoint(sf::Vector2f newSpawnPoint) { spawnPoint = newSpawnPoint; }

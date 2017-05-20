@@ -78,6 +78,8 @@ void Engine::spawnPlayer()
 
 void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
+	Items.getContainer();
+
 	TILE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
 	if (tile == TILE::EMPTY) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(tileIndex.x,tileIndex.y))));
@@ -138,7 +140,7 @@ void Engine::init()
 	mediaContainer.load(); ErrorHandler::log("Load media");
 	loadGameComponents(); ErrorHandler::log("Load game components");
 
-	player.set(&mediaContainer.getTexture(1,TextureContainer::CharacterTextures), sf::Vector2f(100, 100));
+	player.set(&mediaContainer.getTexture(1,TextureContainer::CharacterTextures), sf::Vector2f(100, 100),sf::Vector2f(10,8));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
 	GameWorld.init();
