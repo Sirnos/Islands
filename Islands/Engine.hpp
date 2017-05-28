@@ -6,6 +6,8 @@
 
 #include "IslandApp.hpp"
 
+#include "PlayerGui.hpp"
+
 #include "GameComponentsLoader.hpp"
 #include "GameComponentsUnloader.hpp"
 
@@ -23,6 +25,8 @@ class Engine
 	Media mediaContainer;
 	playerCharacter player;
 
+	PlayerGui GameGui;
+
 	ObjectArray RawObjects;
 	ItemDefContainer Items;
 
@@ -38,6 +42,8 @@ class Engine
 	void drawObject(sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 
 	void drawWorld(IslandApp &app);
+
+	void drawPlayerGui(IslandApp & app);
 public:
 	~Engine();
 

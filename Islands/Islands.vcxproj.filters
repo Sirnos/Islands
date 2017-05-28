@@ -28,6 +28,9 @@
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{b8be1493-835c-46b1-af5c-45e20a2915dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\other">
+      <UniqueIdentifier>{b368c235-e222-4717-82ec-610f32f144fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -103,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="GameComponentsUnloader.hpp">
       <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerGui.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerEquipmentGui.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemField.hpp">
+      <Filter>Header Files\other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

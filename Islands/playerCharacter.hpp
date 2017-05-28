@@ -1,16 +1,14 @@
 #pragma once
 
 #include "Character.hpp"
+#include "ItemField.hpp"
 
-//first = ID of item,second = amount
-typedef std::pair<unsigned, unsigned> InventoryField;
 
 class playerCharacter :public Character
 {
-	InventoryField Inventory[21][21] = { InventoryField(0,0) };
-	InventoryField HandInventory[6] = { InventoryField(0,0) };
-
-	InventoryField ArmorFields[3] = { InventoryField(0,0) };
+	ItemField Inventory[PlayerFieldsNumber][PlayerFieldsNumber];
+	ItemField HandInventory[6];
+	ItemField ArmorFields[3];
 
 	sf::Vector2f spawnPoint;
 public:
@@ -39,11 +37,11 @@ public:
 	void setSpawnPoint(sf::Vector2f newSpawnPoint) { spawnPoint = newSpawnPoint; }
 	sf::Vector2f getSpawnPoint() { return spawnPoint; }
 
-	InventoryField getInventoryField(sf::Vector2u fieldNumber)
+	ItemField getInventoryField(sf::Vector2u fieldNumber)
 	{
 		return Inventory[fieldNumber.x][fieldNumber.y];
 	}
-	InventoryField getHandInventoryField(unsigned fieldNumber)
+	ItemField getHandInventoryField(unsigned fieldNumber)
 	{
 		return HandInventory[fieldNumber];
 	}

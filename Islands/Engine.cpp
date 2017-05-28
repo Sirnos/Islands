@@ -27,7 +27,6 @@ void Engine::loadGameComponents()
 	{
 		mediaContainer.pushTexture(TextureContainer::ItemsTextures, itemTextureFile, i);
 	}
-
 }
 
 void Engine::checkPlayerBehaviour(IslandApp &app)
@@ -78,8 +77,6 @@ void Engine::spawnPlayer()
 
 void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
-	Items.getContainer();
-
 	TILE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
 	if (tile == TILE::EMPTY) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(tileIndex.x,tileIndex.y))));
@@ -147,6 +144,8 @@ void Engine::init()
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(Map::MAP_SIZE) + " x " + std::to_string(Map::MAP_SIZE));
 	spawnPlayer();
+
+	GameGui.create();
 }
 
 void Engine::operator()(IslandApp &app)
@@ -154,6 +153,8 @@ void Engine::operator()(IslandApp &app)
 	checkPlayerBehaviour(app);
 
 	camera.setCenter(player.getCharacterCenterPosition());
+
+	GameGui.setNewPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.EquipmentGui.defaultEquipmentGuiPosOnScreen));
 
 	if (!checkPlayerPos())
 	{ 
@@ -165,6 +166,7 @@ void Engine::operator()(IslandApp &app)
 
 void Engine::drawWorld(IslandApp & app)
 {
+	
 	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape,
 					 ObjectShape;
@@ -181,11 +183,40 @@ void Engine::drawWorld(IslandApp & app)
 	}
 }
 
+void Engine::drawPlayerGui(IslandApp & app)
+{
+	sf::Font font;
+	font.loadFromFile("Data/Fonts/ariali.ttf");
+
+	sf::Text amountItem;
+	amountItem.setCharacterSize(16);
+	amountItem.setFont(font);
+	amountItem.setFillColor(sf::Color(255, 0, 0, 255));
+
+	sf::Vector2u field;
+	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	{
+		field.x = i;
+		for (size_t j = 0; j < PlayerFieldsNumber; j++)
+		{
+			field.y = j;
+			app.draw(GameGui.EquipmentGui.getFieldRect(field));
+			amountItem.setPosition(GameGui.EquipmentGui.getFieldRect(field).getPosition());
+			amountItem.setString(std::to_string(GameGui.EquipmentGui.getItemField(field).ItemAmount));
+			app.draw(amountItem);
+		}
+	}
+		
+}
+
 void Engine::DrawAll(IslandApp &app)
 {
 	app.getIslandWindow()->setView(camera);
 
 	drawWorld(app);
 
+	drawPlayerGui(app);
+
 	app.draw(*player.getShape());
+
 }

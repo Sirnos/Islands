@@ -138,6 +138,7 @@
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
     <ClInclude Include="ItemDefContainer.hpp" />
+    <ClInclude Include="ItemField.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />
@@ -146,6 +147,8 @@
     <ClInclude Include="ObjectArray.hpp" />
     <ClInclude Include="ObjectsContainer.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
+    <ClInclude Include="PlayerEquipmentGui.hpp" />
+    <ClInclude Include="PlayerGui.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="Tile.hpp" />
     <ClInclude Include="World.hpp" />
