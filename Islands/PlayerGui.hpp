@@ -3,17 +3,25 @@
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include "PlayerEquipmentGui.hpp"
+#include "PlayerHud.hpp"
 
 class PlayerGui
 {
+	sf::Font GuiFont;
+
 	bool isEqGuiEnable;
+
+	const int keyForEqGuiEnable = 'e';
 
 public:
 	PlayerEquipmentGui EquipmentGui;
+	PlayerHud HudGui;
 
 	void create()
 	{
+		GuiFont.loadFromFile("Data/Fonts/ariali.ttf");
 		EquipmentGui.create();
+		HudGui.create(GuiFont);
 	}
 	//void pushKeyBinds(std::string keybinds){}
 
@@ -23,9 +31,18 @@ public:
 
 	//void pushMouseState(sf::Mouse::Button button, sf::Vector2i mousePosition) {}
 
-	void pushKeyState(char key){}
+	void pushKeyState(char key)
+	{
+		int keyVar = tolower(key);
+
+		if (keyVar == keyForEqGuiEnable)
+		{
+			switchEqGuiEnable();
+		}
+	}
 
 	void pushInteractionWithChestObjectType(/*chest* obj*/){}
 
-	void switchEnable() { isEqGuiEnable = !isEqGuiEnable; }
+	void switchEqGuiEnable() { isEqGuiEnable = !isEqGuiEnable; }
+	bool getIsEqGuiEnable() { return isEqGuiEnable; }
 };

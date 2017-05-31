@@ -149,6 +149,7 @@
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="PlayerEquipmentGui.hpp" />
     <ClInclude Include="PlayerGui.hpp" />
+    <ClInclude Include="PlayerHud.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="Tile.hpp" />
     <ClInclude Include="World.hpp" />

@@ -48,6 +48,7 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 	{
 		movevctr.y += 5;
 	}
+
 	player.move(movevctr);
 }
 
@@ -148,13 +149,15 @@ void Engine::init()
 	GameGui.create();
 }
 
-void Engine::operator()(IslandApp &app)
+void Engine::operator()(IslandApp &app,char key)
 {
 	checkPlayerBehaviour(app);
 
 	camera.setCenter(player.getCharacterCenterPosition());
 
 	GameGui.setNewPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.EquipmentGui.defaultEquipmentGuiPosOnScreen));
+	GameGui.HudGui.setNewPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.HudGui.HpInfoScreenPos),
+		app.getIslandWindow()->mapPixelToCoords(GameGui.HudGui.MpInfoScreenPos));
 
 	if (!checkPlayerPos())
 	{ 
@@ -162,6 +165,9 @@ void Engine::operator()(IslandApp &app)
 		ErrorHandler::log("Pos:X" + std::to_string(player.getCharacterCenterPosition().x) +
 			" :Y " + std::to_string(+player.getCharacterCenterPosition().y));
 	}
+	GameGui.pushKeyState(key);
+	GameGui.HudGui.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
+	GameGui.HudGui.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
 }
 
 void Engine::drawWorld(IslandApp & app)
@@ -185,6 +191,10 @@ void Engine::drawWorld(IslandApp & app)
 
 void Engine::drawPlayerGui(IslandApp & app)
 {
+	app.draw(*GameGui.HudGui.getHudElement(false));
+	app.draw(*GameGui.HudGui.getHudElement(true));
+
+	if (!GameGui.getIsEqGuiEnable()) { return; }
 	sf::Font font;
 	font.loadFromFile("Data/Fonts/ariali.ttf");
 

@@ -116,6 +116,9 @@
     <ClInclude Include="ItemField.hpp">
       <Filter>Header Files\other</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerHud.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">

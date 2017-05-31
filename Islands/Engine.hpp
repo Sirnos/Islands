@@ -48,7 +48,7 @@ public:
 	~Engine();
 
 	void init();
-	void operator()(IslandApp &app);
+	void operator()(IslandApp &app,char key);
 
 	void DrawAll(IslandApp &app);
 };
