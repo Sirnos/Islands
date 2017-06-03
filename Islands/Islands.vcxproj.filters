@@ -31,6 +31,9 @@
     <Filter Include="Header Files\other">
       <UniqueIdentifier>{b368c235-e222-4717-82ec-610f32f144fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{c27c5217-fa50-4947-8271-511657bf7786}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="textbox.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tile.hpp">
@@ -118,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="PlayerHud.hpp">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.hpp">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

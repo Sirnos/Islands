@@ -40,4 +40,6 @@ public:
 	ObjectDef* getObject(size_t Pos) { return &ObjectVector[Pos]; }
 
 	const std::vector<ObjectDef> &getObjects() { return ObjectVector; }
+
+	sf::Vector2f ObjectGraphicsSize = sf::Vector2f(64,64);
 };

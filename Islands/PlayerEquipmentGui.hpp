@@ -21,6 +21,11 @@ struct EquipmentField
 		TextureRect.setPosition(atPosition);
 		TextureRect.setSize(sf::Vector2f(fieldSize, fieldSize));
 	}
+	void setPosition(sf::Vector2f newPosition)
+	{
+		FieldRect.setPosition(newPosition);
+		TextureRect.setPosition(newPosition);
+	}
 
 	void assingItem(ItemField other,sf::Texture *texture)
 	{
@@ -49,12 +54,16 @@ class PlayerEquipmentGui
 
 
 public:
-	const sf::Vector2i defaultEquipmentGuiPosOnScreen = sf::Vector2i(100, 100);
+	const sf::Vector2i defaultEquipmentGuiPosOnScreen = sf::Vector2i(200, 100);
 
 	void create()
 	{
 		for (unsigned i = 0; i < PlayerFieldsNumber; i++)
 		{
+			if (i < 3)
+			{
+				ArmorFields[i].create(sf::Vector2f(), EquipmentFieldSize, EqArmorFieldColor);
+			}
 			for (unsigned j = 0; j < PlayerFieldsNumber; j++)
 			{
 				Fields[i][j].create(sf::Vector2f(), EquipmentFieldSize, EquipmentFieldColor);
@@ -74,13 +83,20 @@ public:
 			Pos.y += 20;
 			for (size_t j = 0; j < PlayerFieldsNumber; j++)
 			{
-				Fields[i][j].FieldRect.setPosition(Pos);
-				Fields[i][j].TextureRect.setPosition(Pos);
+				Fields[i][j].setPosition(Pos);
 
 				Pos.x += 64;
 				Pos.x += 20;
 			}
 			Pos.y += 64;
+		}
+		sf::Vector2f ArmorFieldPos = position;
+		ArmorFieldPos -= sf::Vector2f(88, -20);
+		for (unsigned i = 0; i < 3; i++)
+		{
+			ArmorFields[i].setPosition(ArmorFieldPos);
+
+			ArmorFieldPos.y += 88;
 		}
 	}
 

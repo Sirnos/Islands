@@ -112,8 +112,6 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 	if (ObjectID == 0) { return; }
 	if (ObjectID > RawObjects.getObjects().size()) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
-	shp.setSize(sf::Vector2f(64, 64));
-	//shp.setSize(RawObjects.getObject(ObjectID).getSize());
 	shp.setTexture(&mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures));
 	window.draw(shp);
 }
@@ -177,6 +175,7 @@ void Engine::drawWorld(IslandApp & app)
 	sf::RectangleShape TileShape,
 					 ObjectShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+	ObjectShape.setSize(RawObjects.ObjectGraphicsSize);
 
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
 	{
@@ -206,6 +205,10 @@ void Engine::drawPlayerGui(IslandApp & app)
 	sf::Vector2u field;
 	for (size_t i = 0; i < PlayerFieldsNumber; i++)
 	{
+		if (i < 3)
+		{
+			app.draw(GameGui.EquipmentGui.getArmorFieldRect(i));
+		}
 		field.x = i;
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)
 		{

@@ -20,14 +20,14 @@ public:
 		rapidxml::xml_document<> document;
 		document.parse<0>(File.data());
 
-		for (rapidxml::xml_node<>* node = document.first_node(); node != NULL;
+		for (rapidxml::xml_node<>* node = document.first_node(); node != nullptr;
 			node = node->next_sibling())
 		{
 			ObjectsGraphicsFile = node->first_attribute()->value();
-			for (rapidxml::xml_node<>* nNode = node->first_node(); nNode != NULL;
+			for (rapidxml::xml_node<>* nNode = node->first_node(); nNode != nullptr;
 				nNode = nNode->next_sibling())
 			{
-				for (rapidxml::xml_node<>* nnNode = nNode->first_node(); nnNode != NULL;
+				for (rapidxml::xml_node<>* nnNode = nNode->first_node(); nnNode != nullptr;
 					nnNode = nnNode->next_sibling())
 				{
 					rapidxml::xml_node<>* Node3 = nnNode->first_node();
@@ -39,7 +39,7 @@ public:
 					sf::IntRect textureCords;
 					sf::FloatRect collisionBox;
 
-					for (Node3; Node3 != NULL; Node3 = Node3->next_sibling())
+					for (Node3; Node3 != nullptr; Node3 = Node3->next_sibling())
 					{
 						std::string parametrName(Node3->name());
 						rapidxml::xml_node<>* Node4 = Node3->first_node();
@@ -51,7 +51,7 @@ public:
 							}
 						}
 
-						for (Node4; Node4 != NULL; Node4 = Node4->next_sibling())
+						for (Node4; Node4 != nullptr; Node4 = Node4->next_sibling())
 						{
 							std::string nodeName = Node4->name();
 							if (nodeName == "DROP")
