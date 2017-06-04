@@ -153,9 +153,11 @@ void Engine::operator()(IslandApp &app,char key)
 
 	camera.setCenter(player.getCharacterCenterPosition());
 
-	GameGui.setNewPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.EquipmentGui.defaultEquipmentGuiPosOnScreen));
-	GameGui.HudGui.setNewPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.HudGui.HpInfoScreenPos),
-		app.getIslandWindow()->mapPixelToCoords(GameGui.HudGui.MpInfoScreenPos));
+	auto Window = app.getIslandWindow();
+
+	GameGui.setNewPosition(Window->mapPixelToCoords(GameGui.EquipmentGui.defaultEquipmentGuiPosOnScreen));
+	GameGui.HudGui.setNewPosition(Window->mapPixelToCoords(GameGui.HudGui.HpInfoScreenPos),
+		Window->mapPixelToCoords(GameGui.HudGui.MpInfoScreenPos),Window->mapPixelToCoords(GameGui.HudGui.BeltFieldPosOnScreen));
 
 	if (!checkPlayerPos())
 	{ 
@@ -192,6 +194,11 @@ void Engine::drawPlayerGui(IslandApp & app)
 {
 	app.draw(*GameGui.HudGui.getHudElement(false));
 	app.draw(*GameGui.HudGui.getHudElement(true));
+
+	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	{
+		app.draw(GameGui.HudGui.getFieldFromBelt(i)->FieldRect);
+	}
 
 	if (!GameGui.getIsEqGuiEnable()) { return; }
 	sf::Font font;

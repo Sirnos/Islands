@@ -27,6 +27,10 @@
     </Object>
     <Object>
         <Object name="SHRUB">
+          <SIZE>
+            <X>64</X>
+            <Y>64</Y>
+          </SIZE>
             <GRAPHICS>
                 <TOP>30</TOP>
                 <LEFT>0</LEFT>
