@@ -145,6 +145,22 @@ void Engine::init()
 	spawnPlayer();
 
 	GameGui.create();
+	GameGui.EquipmentGui.pushPlayerArmorInventory(player.getArmorInv());
+	GameGui.HudGui.pushPlayerBeltInventory(player.getBelt());
+
+	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	{
+		for (size_t j = 0; j < PlayerFieldsNumber; j++)
+		{
+			GameGui.EquipmentGui.setEqField(sf::Vector2u(i, j), player.getInventoryField(sf::Vector2u(i, j)));
+
+			if (GameGui.EquipmentGui.getItemField(sf::Vector2u(i,j)).ItemId != 0)
+			{
+				GameGui.EquipmentGui.pushTextureToFields(sf::Vector2u(i, j), &mediaContainer.getTexture(
+					GameGui.EquipmentGui.getItemField(sf::Vector2u(i,j)).ItemId, TextureContainer::ItemsTextures));
+			}
+		}
+	}
 }
 
 void Engine::operator()(IslandApp &app,char key)
@@ -223,6 +239,10 @@ void Engine::drawPlayerGui(IslandApp & app)
 			app.draw(GameGui.EquipmentGui.getFieldRect(field));
 			amountItem.setPosition(GameGui.EquipmentGui.getFieldRect(field).getPosition());
 			amountItem.setString(std::to_string(GameGui.EquipmentGui.getItemField(field).ItemAmount));
+			if (GameGui.EquipmentGui.getItemField(field).ItemId != 0)
+			{
+				app.draw(GameGui.EquipmentGui.getTextureRect(field));
+			}
 			app.draw(amountItem);
 		}
 	}

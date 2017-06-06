@@ -30,9 +30,12 @@ struct EquipmentField
 		TextureRect.setSize(sf::Vector2f(fieldSize, fieldSize));
 	}
 
-	void assingItem(ItemField other, sf::Texture *texture)
+	void assingItem(ItemField other)
 	{
 		item.assingFromOther(other);
+	}
+	void assingTexture(sf::Texture *texture)
+	{
 		TextureRect.setTexture(texture);
 	}
 	void clearField()

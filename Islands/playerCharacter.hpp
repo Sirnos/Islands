@@ -14,7 +14,10 @@ class playerCharacter :public Character
 public:
 	playerCharacter()
 		:Character()
-	{}
+	{
+		Inventory[0][0].assignNew(2, 20);
+		Inventory[1][1].assignNew(3, 40);
+	}
 	playerCharacter(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
 		:Character(stats)
 	{
@@ -37,12 +40,16 @@ public:
 	void setSpawnPoint(sf::Vector2f newSpawnPoint) { spawnPoint = newSpawnPoint; }
 	sf::Vector2f getSpawnPoint() { return spawnPoint; }
 
-	ItemField getInventoryField(sf::Vector2u fieldNumber)
+	ItemField getInventoryField(sf::Vector2u field)
 	{
-		return Inventory[fieldNumber.x][fieldNumber.y];
+		return Inventory[field.x][field.y];
 	}
-	ItemField getHandInventoryField(unsigned fieldNumber)
+	ItemField getHandInventoryField(unsigned field)
 	{
-		return HandInventory[fieldNumber];
+		return HandInventory[field];
 	}
+	ItemField getArmorInventoryField(unsigned field) { return ArmorFields[field]; }
+
+	ItemField *getArmorInv() { return ArmorFields; }
+	ItemField *getBelt() { return HandInventory; }
 };

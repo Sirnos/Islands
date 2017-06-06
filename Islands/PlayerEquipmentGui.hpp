@@ -12,6 +12,28 @@ class PlayerEquipmentGui
 public:
 	const sf::Vector2i defaultEquipmentGuiPosOnScreen = sf::Vector2i(200, 100);
 
+	void setEqField(sf::Vector2u field, ItemField val)
+	{
+		Fields[field.x][field.y].assingItem(val);
+	}
+
+	void pushPlayerArmorInventory(ItemField *ArmorInv)
+	{
+		for (size_t i = 0; i < 3; i++)
+		{
+			ArmorFields[i].assingItem(ArmorInv[i]);
+		}
+	}
+
+	void pushTextureToFields(sf::Vector2u field,sf::Texture *txt)
+	{
+		Fields[field.x][field.y].TextureRect.setTexture(txt);
+	}
+	void pushTextureToArmorFields(unsigned field, sf::Texture *txt)
+	{
+		ArmorFields[field].TextureRect.setTexture(txt);
+	}
+
 	void create()
 	{
 		for (unsigned i = 0; i < PlayerFieldsNumber; i++)
@@ -57,7 +79,9 @@ public:
 	}
 
 	sf::RectangleShape &getFieldRect(sf::Vector2u field) { return Fields[field.x][field.y].FieldRect; }
+	sf::RectangleShape &getTextureRect(sf::Vector2u field) { return Fields[field.x][field.y].TextureRect; }
 	sf::RectangleShape &getArmorFieldRect(unsigned field) { return ArmorFields[field].FieldRect; }
+	sf::RectangleShape &getArmorTextureRect(unsigned field) { return ArmorFields[field].TextureRect; }
 	ItemField getItemField(sf::Vector2u field) { return Fields[field.x][field.y].item; }
 	ItemField getArmorItemField(unsigned field) { return ArmorFields[field].item; }
 };

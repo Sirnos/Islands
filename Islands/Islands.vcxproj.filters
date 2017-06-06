@@ -113,9 +113,6 @@
     <ClInclude Include="PlayerEquipmentGui.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ItemField.hpp">
-      <Filter>Header Files\other</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerHud.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
@@ -124,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="EquipmentField.hpp">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemField.hpp">
+      <Filter>Header Files\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

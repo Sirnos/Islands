@@ -29,7 +29,7 @@ public:
 
 	//void makeDrawableVector(std::vector<sf::Drawable*> &vector){}
 
-	//void pushMouseState(sf::Mouse::Button button, sf::Vector2i mousePosition) {}
+	//void pushMouseState(sf::Mouse::Button button, sf::Vector2i mousePosition) 
 
 	void pushKeyState(char key)
 	{
@@ -41,7 +41,7 @@ public:
 		}
 	}
 
-	void pushInteractionWithChestObjectType(/*chest* obj*/){}
+	//void pushInteractionWithChestObjectType(/*chest* obj*/){}
 
 	void switchEqGuiEnable() { isEqGuiEnable = !isEqGuiEnable; }
 	bool getIsEqGuiEnable() { return isEqGuiEnable; }
