@@ -11,6 +11,8 @@ void Engine::loadGameComponents()
 		auto ref = const_cast<ObjectDef&>(i);
 			mediaContainer.pushTexture(TextureContainer::ObjectTextures,
 				graphicsfile, ref.getTextureCord());
+			mediaContainer.pushTexture(TextureContainer::ItemsTextures,
+				graphicsfile, ref.getTextureCord());
 	}
 	loader.GenerateItemsFromObjectDef(RawObjects.getObjects(), Items);
 
@@ -145,11 +147,15 @@ void Engine::init()
 	spawnPlayer();
 
 	GameGui.create();
+	Items.getContainer();
 	GameGui.EquipmentGui.pushPlayerArmorInventory(player.getArmorInv());
+	mediaContainer.getTexture(1, TextureContainer::ItemsTextures);
 	GameGui.HudGui.pushPlayerBeltInventory(player.getBelt());
 
 	for (size_t i = 0; i < PlayerFieldsNumber; i++)
 	{
+		GameGui.HudGui.getFieldFromBelt(i)->TextureRect.setTexture(&mediaContainer.getTexture(
+			GameGui.HudGui.getItemFieldFromBelt(i).ItemId, TextureContainer::ItemsTextures));
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)
 		{
 			GameGui.EquipmentGui.setEqField(sf::Vector2u(i, j), player.getInventoryField(sf::Vector2u(i, j)));
@@ -211,12 +217,6 @@ void Engine::drawPlayerGui(IslandApp & app)
 	app.draw(*GameGui.HudGui.getHudElement(false));
 	app.draw(*GameGui.HudGui.getHudElement(true));
 
-	for (size_t i = 0; i < PlayerFieldsNumber; i++)
-	{
-		app.draw(GameGui.HudGui.getFieldFromBelt(i)->FieldRect);
-	}
-
-	if (!GameGui.getIsEqGuiEnable()) { return; }
 	sf::Font font;
 	font.loadFromFile("Data/Fonts/ariali.ttf");
 
@@ -224,6 +224,20 @@ void Engine::drawPlayerGui(IslandApp & app)
 	amountItem.setCharacterSize(16);
 	amountItem.setFont(font);
 	amountItem.setFillColor(sf::Color(255, 0, 0, 255));
+
+	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	{
+		app.draw(GameGui.HudGui.getFieldFromBelt(i)->FieldRect);
+		if (GameGui.HudGui.getItemFieldFromBelt(i).ItemId != 0)
+		{
+			app.draw(GameGui.HudGui.getFieldFromBelt(i)->TextureRect);
+			amountItem.setPosition(GameGui.HudGui.getFieldFromBelt(i)->FieldRect.getPosition());
+			amountItem.setString(std::to_string(GameGui.HudGui.getItemFieldFromBelt(i).ItemAmount));
+			app.draw(amountItem);
+		}
+	}
+
+	if (!GameGui.getIsEqGuiEnable()) { return; }
 
 	sf::Vector2u field;
 	for (size_t i = 0; i < PlayerFieldsNumber; i++)
@@ -238,12 +252,12 @@ void Engine::drawPlayerGui(IslandApp & app)
 			field.y = j;
 			app.draw(GameGui.EquipmentGui.getFieldRect(field));
 			amountItem.setPosition(GameGui.EquipmentGui.getFieldRect(field).getPosition());
-			amountItem.setString(std::to_string(GameGui.EquipmentGui.getItemField(field).ItemAmount));
 			if (GameGui.EquipmentGui.getItemField(field).ItemId != 0)
 			{
 				app.draw(GameGui.EquipmentGui.getTextureRect(field));
+				amountItem.setString(std::to_string(GameGui.EquipmentGui.getItemField(field).ItemAmount));
+				app.draw(amountItem);
 			}
-			app.draw(amountItem);
 		}
 	}
 		

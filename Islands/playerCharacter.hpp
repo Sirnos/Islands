@@ -7,7 +7,7 @@
 class playerCharacter :public Character
 {
 	ItemField Inventory[PlayerFieldsNumber][PlayerFieldsNumber];
-	ItemField HandInventory[6];
+	ItemField HandInventory[PlayerFieldsNumber];
 	ItemField ArmorFields[3];
 
 	sf::Vector2f spawnPoint;
@@ -17,6 +17,9 @@ public:
 	{
 		Inventory[0][0].assignNew(2, 20);
 		Inventory[1][1].assignNew(3, 40);
+		Inventory[3][3].assignNew(11, 40);
+
+		HandInventory[1].assignNew(10, 20);
 	}
 	playerCharacter(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
 		:Character(stats)
