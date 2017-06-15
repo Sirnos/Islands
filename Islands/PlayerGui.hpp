@@ -12,7 +12,7 @@ class PlayerGui
 	bool isEqGuiEnable;
 
 	const int keyForEqGuiEnable = 'e';
-
+	unsigned SelectedBeltField = 0;
 public:
 	PlayerEquipmentGui EquipmentGui;
 	PlayerHud HudGui;
@@ -41,8 +41,30 @@ public:
 		}
 	}
 
+	void incrSelectedBeltField()
+	{
+		if (SelectedBeltField >= PlayerFieldsNumber - 1)
+			SelectedBeltField = 0;
+		else
+		{
+			SelectedBeltField++;
+		}
+
+	}
+	void decrSelectedBeltField()
+	{
+		if (SelectedBeltField == 0)
+			SelectedBeltField = PlayerFieldsNumber - 1;
+		else
+		{
+			SelectedBeltField--;
+		}
+	}
+
 	//void pushInteractionWithChestObjectType(/*chest* obj*/){}
 
 	void switchEqGuiEnable() { isEqGuiEnable = !isEqGuiEnable; }
+	unsigned getNumberOfSelectedBeltField() { return SelectedBeltField; }
+
 	bool getIsEqGuiEnable() { return isEqGuiEnable; }
 };

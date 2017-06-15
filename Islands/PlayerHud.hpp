@@ -65,7 +65,7 @@ public:
 		PlayerMpInfo.setString("Mp: " + std::to_string(newActualPlayerMp) + " / " + std::to_string(newMaxPlayerMp));
 	}
 
-	//which == true then return PlayerMpInfo else PlayerHpInfo
+	//which == true then return PlayerMpInfo else  return PlayerHpInfo
 	sf::Text* getHudElement(bool which)
 	{
 		if (which == true) { return &PlayerMpInfo; }

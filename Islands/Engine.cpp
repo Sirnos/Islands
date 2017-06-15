@@ -169,7 +169,7 @@ void Engine::init()
 	}
 }
 
-void Engine::operator()(IslandApp &app,char key)
+void Engine::operator()(IslandApp &app,char key,mouseWheel last)
 {
 	checkPlayerBehaviour(app);
 
@@ -187,6 +187,21 @@ void Engine::operator()(IslandApp &app,char key)
 		ErrorHandler::log("Pos:X" + std::to_string(player.getCharacterCenterPosition().x) +
 			" :Y " + std::to_string(+player.getCharacterCenterPosition().y));
 	}
+
+	switch (last)
+	{
+	case mouseWheel::Up:
+		GameGui.incrSelectedBeltField();
+		break;
+	case mouseWheel::Down:
+		GameGui.decrSelectedBeltField();
+		break;
+	case mouseWheel::Stop:
+		break;
+	default:
+		break;
+	}
+
 	GameGui.pushKeyState(key);
 	GameGui.HudGui.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
 	GameGui.HudGui.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
@@ -225,8 +240,13 @@ void Engine::drawPlayerGui(IslandApp & app)
 	amountItem.setFont(font);
 	amountItem.setFillColor(sf::Color(255, 0, 0, 255));
 
+	GameGui.HudGui.getFieldFromBelt(GameGui.getNumberOfSelectedBeltField())->
+		FieldRect.setFillColor(EqFieldColorWhenIsSelected);
+
 	for (size_t i = 0; i < PlayerFieldsNumber; i++)
 	{
+
+		
 		app.draw(GameGui.HudGui.getFieldFromBelt(i)->FieldRect);
 		if (GameGui.HudGui.getItemFieldFromBelt(i).ItemId != 0)
 		{
@@ -236,6 +256,9 @@ void Engine::drawPlayerGui(IslandApp & app)
 			app.draw(amountItem);
 		}
 	}
+
+	GameGui.HudGui.getFieldFromBelt(GameGui.getNumberOfSelectedBeltField())->
+		FieldRect.setFillColor(DefaultEqFieldColor);
 
 	if (!GameGui.getIsEqGuiEnable()) { return; }
 

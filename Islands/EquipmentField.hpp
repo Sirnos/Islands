@@ -5,6 +5,7 @@
 
 const float DefaultEqFieldSize = 64;
 const sf::Color DefaultEqFieldColor = sf::Color(120, 250, 120, 250);
+const sf::Color EqFieldColorWhenIsSelected = sf::Color(250, 60, 80, 250);
 
 struct EquipmentField
 {

@@ -2,6 +2,13 @@
 
 #include <SFML/Graphics.hpp>
 
+enum class mouseWheel
+{
+	Up,
+	Down,
+	Stop
+};
+
 class IslandApp
 {
 	sf::RenderWindow IslandWindow;
