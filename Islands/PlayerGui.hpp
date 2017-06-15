@@ -12,6 +12,7 @@ class PlayerGui
 	bool isEqGuiEnable;
 
 	const int keyForEqGuiEnable = 'e';
+	const int keyForBeltFields[PlayerFieldsNumber] = { '1','2','3','4','5' };
 	unsigned SelectedBeltField = 0;
 public:
 	PlayerEquipmentGui EquipmentGui;
@@ -38,6 +39,14 @@ public:
 		if (keyVar == keyForEqGuiEnable)
 		{
 			switchEqGuiEnable();
+		}
+		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		{
+			if (keyVar == keyForBeltFields[i])
+			{
+				SelectedBeltField = i;
+				break;
+			}
 		}
 	}
 
