@@ -14,11 +14,14 @@ struct EquipmentField
 	sf::RectangleShape FieldRect;
 	sf::RectangleShape TextureRect;
 
+	bool ishover;
+
 	void create(sf::Vector2f atPosition, float fieldSize, sf::Color fieldColor)
 	{
 		FieldRect.setFillColor(fieldColor);
 		setPosition(atPosition);
 		setSize(fieldSize);
+		ishover = false;
 	}
 	void setPosition(sf::Vector2f newPosition)
 	{
@@ -44,4 +47,6 @@ struct EquipmentField
 		item.clear();
 		TextureRect.setTexture(nullptr);
 	}
+
+	sf::Vector2f getPosition() { return FieldRect.getPosition(); }
 };

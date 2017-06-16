@@ -84,4 +84,13 @@ public:
 	sf::RectangleShape &getArmorTextureRect(unsigned field) { return ArmorFields[field].TextureRect; }
 	ItemField getItemField(sf::Vector2u field) { return Fields[field.x][field.y].item; }
 	ItemField getArmorItemField(unsigned field) { return ArmorFields[field].item; }
+
+	void setHover(sf::Vector2u field,bool newVal)
+	{
+		Fields[field.x][field.y].ishover = newVal;
+	}
+	bool getHover(sf::Vector2u field)
+	{
+		return Fields[field.x][field.y].ishover;
+	}
 };

@@ -62,4 +62,9 @@ public:
 			}
 		}
 	}
+
+	sf::Vector2f getMousePosInWorld()
+	{
+		return IslandWindow.mapPixelToCoords(sf::Mouse::getPosition());
+	}
 };

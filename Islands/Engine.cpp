@@ -188,6 +188,28 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last)
 			" :Y " + std::to_string(+player.getCharacterCenterPosition().y));
 	}
 
+	if (GameGui.getIsEqGuiEnable())
+	{
+		sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
+		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		{
+			for (size_t j = 0; j < PlayerFieldsNumber; j++)
+			{
+				if (GameGui.EquipmentGui.getHover(sf::Vector2u(i, j)))
+				{
+					GameGui.EquipmentGui.setHover(sf::Vector2u(i, j), false);
+				}
+
+				sf::Vector2f fieldPos = GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).getPosition();
+				if (mousePosInWorld.x > fieldPos.x && mousePosInWorld.x < fieldPos.x + DefaultEqFieldSize
+					&& mousePosInWorld.y > fieldPos.y && mousePosInWorld.y < fieldPos.y + DefaultEqFieldSize)
+				{
+					GameGui.EquipmentGui.setHover(sf::Vector2u(i, j), true);
+				}
+			}
+		}
+	}
+
 	switch (last)
 	{
 	case mouseWheel::Up:
@@ -273,8 +295,19 @@ void Engine::drawPlayerGui(IslandApp & app)
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)
 		{
 			field.y = j;
+			if (GameGui.EquipmentGui.getHover(field))
+			{
+				GameGui.EquipmentGui.getFieldRect(field).setFillColor(EqFieldColorWhenIsSelected);
+			}
+
 			app.draw(GameGui.EquipmentGui.getFieldRect(field));
 			amountItem.setPosition(GameGui.EquipmentGui.getFieldRect(field).getPosition());
+
+			if (GameGui.EquipmentGui.getHover(field))
+			{
+				GameGui.EquipmentGui.getFieldRect(field).setFillColor(DefaultEqFieldColor);
+			}
+
 			if (GameGui.EquipmentGui.getItemField(field).ItemId != 0)
 			{
 				app.draw(GameGui.EquipmentGui.getTextureRect(field));
