@@ -9,8 +9,6 @@ const sf::Color EqFieldColorWhenIsSelected = sf::Color(250, 60, 80, 250);
 
 struct EquipmentField
 {
-	ItemField item;
-
 	sf::RectangleShape FieldRect;
 	sf::RectangleShape TextureRect;
 
@@ -23,30 +21,21 @@ struct EquipmentField
 		setSize(fieldSize);
 		ishover = false;
 	}
-	void setPosition(sf::Vector2f newPosition)
-	{
-		FieldRect.setPosition(newPosition);
-		TextureRect.setPosition(newPosition);
-	}
+
 	void setSize(float fieldSize)
 	{
 		FieldRect.setSize(sf::Vector2f(fieldSize, fieldSize));
 		TextureRect.setSize(sf::Vector2f(fieldSize, fieldSize));
 	}
-
-	void assingItem(ItemField other)
-	{
-		item.assingFromOther(other);
-	}
-	void assingTexture(sf::Texture *texture)
+	void setTexture(sf::Texture *texture)
 	{
 		TextureRect.setTexture(texture);
 	}
-	void clearField()
-	{
-		item.clear();
-		TextureRect.setTexture(nullptr);
-	}
 
+	void setPosition(sf::Vector2f newPosition)
+	{
+		FieldRect.setPosition(newPosition);
+		TextureRect.setPosition(newPosition);
+	}
 	sf::Vector2f getPosition() { return FieldRect.getPosition(); }
 };

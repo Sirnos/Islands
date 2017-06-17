@@ -78,6 +78,54 @@ void Engine::spawnPlayer()
 	player.setSpawnPoint(spawnPoint);
 }
 
+void Engine::pushChangesToGui()
+{
+	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	{
+		//for armor inventory
+		if (i < 3)
+		{
+
+		}
+
+		//for belt inventory
+		GameGui.HudGui.getBeltFieldRect(i).setFillColor(DefaultEqFieldColor);
+		GameGui.HudGui.getBeltFieldTextureRect(i).setTexture(nullptr);
+		if (i == GameGui.getNumberOfSelectedBeltField())
+		{
+			GameGui.HudGui.getBeltFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
+		}
+
+		unsigned itemId = player.getHandInventoryField(i).ItemId;
+
+		if (itemId != 0)
+		{
+			GameGui.HudGui.getBeltFieldTextureRect(i).setTexture(&mediaContainer.
+				getTexture(itemId,TextureContainer::ItemsTextures));
+		}
+
+		//for normal inventory
+		for (size_t j = 0; j < PlayerFieldsNumber; j++)
+		{
+			GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i,j)).setFillColor(DefaultEqFieldColor);
+			GameGui.EquipmentGui.getTextureRect(sf::Vector2u(i, j)).setTexture(nullptr);
+
+			if (GameGui.EquipmentGui.getHover(sf::Vector2u(i,j)))
+			{
+				GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).setFillColor(EqFieldColorWhenIsSelected);
+			}
+
+			unsigned tempItemId = player.getInventoryField(sf::Vector2u(i, j)).ItemId;
+			if (tempItemId != 0)
+			{
+				GameGui.EquipmentGui.getTextureRect(sf::Vector2u(i, j)).setTexture(&mediaContainer.getTexture(tempItemId,
+					TextureContainer::ItemsTextures));
+			}
+		}
+
+	}
+}
+
 void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
 	TILE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
@@ -148,25 +196,6 @@ void Engine::init()
 
 	GameGui.create();
 	Items.getContainer();
-	GameGui.EquipmentGui.pushPlayerArmorInventory(player.getArmorInv());
-	mediaContainer.getTexture(1, TextureContainer::ItemsTextures);
-	GameGui.HudGui.pushPlayerBeltInventory(player.getBelt());
-
-	for (size_t i = 0; i < PlayerFieldsNumber; i++)
-	{
-		GameGui.HudGui.getFieldFromBelt(i)->TextureRect.setTexture(&mediaContainer.getTexture(
-			GameGui.HudGui.getItemFieldFromBelt(i).ItemId, TextureContainer::ItemsTextures));
-		for (size_t j = 0; j < PlayerFieldsNumber; j++)
-		{
-			GameGui.EquipmentGui.setEqField(sf::Vector2u(i, j), player.getInventoryField(sf::Vector2u(i, j)));
-
-			if (GameGui.EquipmentGui.getItemField(sf::Vector2u(i,j)).ItemId != 0)
-			{
-				GameGui.EquipmentGui.pushTextureToFields(sf::Vector2u(i, j), &mediaContainer.getTexture(
-					GameGui.EquipmentGui.getItemField(sf::Vector2u(i,j)).ItemId, TextureContainer::ItemsTextures));
-			}
-		}
-	}
 }
 
 void Engine::operator()(IslandApp &app,char key,mouseWheel last)
@@ -227,6 +256,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last)
 	GameGui.pushKeyState(key);
 	GameGui.HudGui.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
 	GameGui.HudGui.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
+	pushChangesToGui();
 }
 
 void Engine::drawWorld(IslandApp & app)
@@ -262,25 +292,33 @@ void Engine::drawPlayerGui(IslandApp & app)
 	amountItem.setFont(font);
 	amountItem.setFillColor(sf::Color(255, 0, 0, 255));
 
-	GameGui.HudGui.getFieldFromBelt(GameGui.getNumberOfSelectedBeltField())->
-		FieldRect.setFillColor(EqFieldColorWhenIsSelected);
+
+	if (GameGui.getHoldedItem().ItemId != 0)
+	{
+		sf::RectangleShape holdedItemRep;
+		holdedItemRep.setSize(sf::Vector2f(DefaultEqFieldSize, DefaultEqFieldSize));
+		holdedItemRep.setTexture(&mediaContainer.getTexture(GameGui.getHoldedItem().ItemId,
+			TextureContainer::ItemsTextures));
+		holdedItemRep.setPosition(app.getMousePosInWorld());
+		amountItem.setString(std::to_string(GameGui.getHoldedItem().ItemAmount));
+		amountItem.setPosition(app.getMousePosInWorld());
+
+		app.draw(holdedItemRep);
+		app.draw(amountItem);
+	}
 
 	for (size_t i = 0; i < PlayerFieldsNumber; i++)
 	{
+		app.draw(GameGui.HudGui.getBeltFieldRect(i));
 
-		
-		app.draw(GameGui.HudGui.getFieldFromBelt(i)->FieldRect);
-		if (GameGui.HudGui.getItemFieldFromBelt(i).ItemId != 0)
+		if (player.getHandInventoryField(i).ItemId != 0)
 		{
-			app.draw(GameGui.HudGui.getFieldFromBelt(i)->TextureRect);
-			amountItem.setPosition(GameGui.HudGui.getFieldFromBelt(i)->FieldRect.getPosition());
-			amountItem.setString(std::to_string(GameGui.HudGui.getItemFieldFromBelt(i).ItemAmount));
+			app.draw(GameGui.HudGui.getBeltFieldTextureRect(i));
+			amountItem.setPosition(GameGui.HudGui.getBeltFieldRect(i).getPosition());
+			amountItem.setString(std::to_string(player.getHandInventoryField(i).ItemAmount));
 			app.draw(amountItem);
 		}
 	}
-
-	GameGui.HudGui.getFieldFromBelt(GameGui.getNumberOfSelectedBeltField())->
-		FieldRect.setFillColor(DefaultEqFieldColor);
 
 	if (!GameGui.getIsEqGuiEnable()) { return; }
 
@@ -295,23 +333,14 @@ void Engine::drawPlayerGui(IslandApp & app)
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)
 		{
 			field.y = j;
-			if (GameGui.EquipmentGui.getHover(field))
-			{
-				GameGui.EquipmentGui.getFieldRect(field).setFillColor(EqFieldColorWhenIsSelected);
-			}
 
 			app.draw(GameGui.EquipmentGui.getFieldRect(field));
-			amountItem.setPosition(GameGui.EquipmentGui.getFieldRect(field).getPosition());
 
-			if (GameGui.EquipmentGui.getHover(field))
-			{
-				GameGui.EquipmentGui.getFieldRect(field).setFillColor(DefaultEqFieldColor);
-			}
-
-			if (GameGui.EquipmentGui.getItemField(field).ItemId != 0)
+			if (player.getInventoryField(field).ItemId != 0)
 			{
 				app.draw(GameGui.EquipmentGui.getTextureRect(field));
-				amountItem.setString(std::to_string(GameGui.EquipmentGui.getItemField(field).ItemAmount));
+				amountItem.setPosition(GameGui.EquipmentGui.getFieldRect(field).getPosition());
+				amountItem.setString(std::to_string(player.getInventoryField(field).ItemAmount));
 				app.draw(amountItem);
 			}
 		}

@@ -49,13 +49,6 @@ public:
 		Belt[field].TextureRect.setTexture(txt);
 	}
 
-	void pushPlayerBeltInventory(ItemField *BeltInv)
-	{
-		for (size_t i = 0; i < PlayerFieldsNumber; i++)
-		{
-			Belt[i].assingItem(BeltInv[i]);
-		}
-	}
 	void pushNewValuesForHpInfo(unsigned newMaxPlayerHp, unsigned newActualPlayerHp)
 	{
 		PlayerHpInfo.setString("Hp: " + std::to_string(newActualPlayerHp) + " / " + std::to_string(newMaxPlayerHp));
@@ -72,12 +65,7 @@ public:
 
 		return &PlayerHpInfo;
 	}
-	EquipmentField* getFieldFromBelt(unsigned Index)
-	{
-		return &Belt[Index];
-	}
-	ItemField getItemFieldFromBelt(unsigned Index)
-	{
-		return Belt[Index].item;
-	}
+
+	sf::RectangleShape &getBeltFieldRect(unsigned field) { return Belt[field].FieldRect; }
+	sf::RectangleShape &getBeltFieldTextureRect(unsigned field) { return Belt[field].TextureRect; }
 };

@@ -15,11 +15,11 @@ public:
 	playerCharacter()
 		:Character()
 	{
-		Inventory[0][0].assignNew(2, 20);
-		Inventory[1][1].assignNew(3, 40);
-		Inventory[3][3].assignNew(11, 40);
+		Inventory[0][0] = ItemField(2, 20);
+		Inventory[1][1] = ItemField(3, 40);
+		Inventory[3][3] = ItemField(11, 40);
 
-		HandInventory[1].assignNew(10, 20);
+		HandInventory[1] = ItemField(10, 20);
 	}
 	playerCharacter(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
 		:Character(stats)
@@ -53,6 +53,4 @@ public:
 	}
 	ItemField getArmorInventoryField(unsigned field) { return ArmorFields[field]; }
 
-	ItemField *getArmorInv() { return ArmorFields; }
-	ItemField *getBelt() { return HandInventory; }
 };

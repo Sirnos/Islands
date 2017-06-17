@@ -5,6 +5,13 @@
 #include "PlayerEquipmentGui.hpp"
 #include "PlayerHud.hpp"
 
+enum class EquipmentType
+{
+	Inventory,
+	Armor,
+	Belt
+};
+
 class PlayerGui
 {
 	sf::Font GuiFont;
@@ -14,6 +21,8 @@ class PlayerGui
 	const int keyForEqGuiEnable = 'e';
 	const int keyForBeltFields[PlayerFieldsNumber] = { '1','2','3','4','5' };
 	unsigned SelectedBeltField = 0;
+
+	ItemField holdedItem;
 public:
 	PlayerEquipmentGui EquipmentGui;
 	PlayerHud HudGui;
@@ -28,9 +37,18 @@ public:
 
 	void setNewPosition(sf::Vector2f newPosition) { EquipmentGui.setNewPosition(newPosition); }
 
-	//void makeDrawableVector(std::vector<sf::Drawable*> &vector){}
-
-	//void pushMouseState(sf::Mouse::Button button, sf::Vector2i mousePosition) 
+	ItemField getHoldedItem()
+	{
+		return holdedItem;
+	}
+	void assingNewItemToHold(ItemField item)
+	{
+		holdedItem = item;
+	}
+	void clearHoldedItem()
+	{
+		holdedItem.clear();
+	}
 
 	void pushKeyState(char key)
 	{
