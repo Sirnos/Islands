@@ -208,10 +208,9 @@ void Engine::init()
 	spawnPlayer();
 
 	GameGui.create();
-	Items.getContainer();
 }
 
-void Engine::operator()(IslandApp &app,char key,mouseWheel last)
+void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseClick)
 {
 	checkPlayerBehaviour(app);
 
@@ -247,6 +246,28 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last)
 					&& mousePosInWorld.y > fieldPos.y && mousePosInWorld.y < fieldPos.y + DefaultEqFieldSize)
 				{
 					GameGui.EquipmentGui.setHoverForArmorField(i, true);
+					if (isMouseClick)
+					{
+						if (GameGui.getHoldedItem().ItemId != 0)
+						{
+							if (player.getArmorInventoryField(i).ItemId != 0)
+							{
+								ItemField temp(GameGui.getHoldedItem());
+								GameGui.assingNewItemToHold(player.getArmorInventoryField(i));
+								player.setArmorField(i, temp);
+							}
+							else
+							{
+								player.setArmorField(i, GameGui.getHoldedItem());
+								GameGui.clearHoldedItem();
+							}
+						}
+						else
+						{
+							GameGui.assingNewItemToHold(player.getArmorInventoryField(i));
+							player.setArmorField(i, ItemField());
+						}
+					}
 				}
 			}
 
@@ -262,6 +283,28 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last)
 					&& mousePosInWorld.y > fieldPos.y && mousePosInWorld.y < fieldPos.y + DefaultEqFieldSize)
 				{
 					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), true);
+					if (isMouseClick)
+					{
+						if (GameGui.getHoldedItem().ItemId != 0)
+						{
+							if (player.getInventoryField(sf::Vector2u(i,j)).ItemId != 0)
+							{
+								ItemField temp(GameGui.getHoldedItem());
+								GameGui.assingNewItemToHold(player.getInventoryField(sf::Vector2u(i, j)));
+								player.setArmorField(i, temp);
+							}
+							else
+							{
+								player.setInventoryField(sf::Vector2u(i, j), GameGui.getHoldedItem());
+								GameGui.clearHoldedItem();
+							}
+						}
+						else
+						{
+							GameGui.assingNewItemToHold(player.getInventoryField(sf::Vector2u(i, j)));
+							player.setInventoryField(sf::Vector2u(i, j), ItemField());
+						}
+					}
 				}
 			}
 		}
@@ -356,6 +399,10 @@ void Engine::drawPlayerGui(IslandApp & app)
 		if (i < 3)
 		{
 			app.draw(GameGui.EquipmentGui.getArmorFieldRect(i));
+			if (player.getArmorInventoryField(i).ItemId != 0)
+			{
+				app.draw(GameGui.EquipmentGui.getArmorTextureRect(i));
+			}
 		}
 		field.x = i;
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)

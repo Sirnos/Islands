@@ -53,4 +53,16 @@ public:
 	}
 	ItemField getArmorInventoryField(unsigned field) { return ArmorFields[field]; }
 
+	void setInventoryField(sf::Vector2u field, ItemField newVal)
+	{
+		Inventory[field.x][field.y] = newVal;
+	}
+	void setHandInventoryField(unsigned field, ItemField newVal)
+	{
+		HandInventory[field] = newVal;
+	}
+	void setArmorField(unsigned field, ItemField newVal)
+	{
+		ArmorFields[field] = newVal;
+	}
 };

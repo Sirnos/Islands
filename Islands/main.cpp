@@ -11,6 +11,8 @@ int main()
 
 	app.init(sf::VideoMode(1280,1024),62,true);
 	IslandEngine.init();
+
+	bool isClick = false;
 	char lastKey = 'U';
 	mouseWheel lastMouseWheelAct;
 
@@ -18,6 +20,8 @@ int main()
 	{
 		lastMouseWheelAct = mouseWheel::Stop;
 		lastKey = '0';
+		isClick = false;
+
 		while (app.getIslandWindow()->pollEvent(*app.getIslandWindowEvent()))
 		{
 			if (app.getIslandWindowEvent()->type == sf::Event::Closed)
@@ -28,6 +32,7 @@ int main()
 			{
 				lastKey = static_cast<char>(app.getIslandWindowEvent()->text.unicode);
 			}
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { isClick = true; }
 		
 				if (app.getIslandWindowEvent()->type == sf::Event::MouseWheelScrolled)
 				{
@@ -44,7 +49,7 @@ int main()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { return 1; }
 
-		IslandEngine(app,lastKey,lastMouseWheelAct);
+		IslandEngine(app, lastKey, lastMouseWheelAct, isClick);
 
 		app.clearContext(skyColor);
 

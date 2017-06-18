@@ -12,6 +12,10 @@ struct ItemField
 		:ItemId(newItemId),
 		ItemAmount(newItemAmount)
 	{}
+	ItemField(ItemField &other)
+	{
+		this->operator=(other);
+	}
 
 	void operator= (ItemField &other)
 	{

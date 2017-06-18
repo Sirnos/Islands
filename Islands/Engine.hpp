@@ -49,7 +49,7 @@ public:
 	~Engine();
 
 	void init();
-	void operator()(IslandApp &app,char key,mouseWheel last);
+	void operator()(IslandApp &app,char key,mouseWheel last,bool isMouseClick);
 
 	void DrawAll(IslandApp &app);
 };
