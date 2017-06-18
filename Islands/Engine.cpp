@@ -138,6 +138,128 @@ void Engine::pushChangesToGui()
 	}
 }
 
+void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
+{
+	unsigned holdedItemId = GameGui.getHoldedItem().ItemId;
+	switch (type)
+	{
+	case EquipmentType::Inventory:
+		if (holdedItemId != 0)
+		{
+			if (player.getInventoryField(field).ItemId == holdedItemId)
+			{
+				player.setInventoryField(field, ItemField(holdedItemId,
+					player.getInventoryField(field).ItemAmount + GameGui.getHoldedItem().ItemAmount));
+
+				unsigned maxStack = Items.getItemDef(holdedItemId)->getMaxStack();
+				if (player.getInventoryField(field).ItemAmount >= maxStack)
+				{
+					unsigned amountForHold = player.getInventoryField(field).ItemAmount - maxStack;
+					player.setInventoryField(field, ItemField(holdedItemId,
+						player.getInventoryField(field).ItemAmount - amountForHold));
+
+					GameGui.assingNewItemToHold(ItemField(holdedItemId, amountForHold));
+				}
+				else
+				{
+					GameGui.assingNewItemToHold(ItemField());
+				}
+
+			}
+			else if(player.getInventoryField(field).ItemId != 0)
+			{
+				ItemField temp(player.getInventoryField(field));
+				player.setInventoryField(field, GameGui.getHoldedItem());
+				GameGui.assingNewItemToHold(temp);
+			}
+			else
+			{
+				player.setInventoryField(field, GameGui.getHoldedItem());
+				GameGui.assingNewItemToHold(ItemField());
+			}
+		}
+		else
+		{
+			if (player.getInventoryField(field).ItemId != 0)
+			{
+				GameGui.assingNewItemToHold(player.getInventoryField(field));
+				player.setInventoryField(field, ItemField());
+			}
+		}
+		break;
+	case EquipmentType::Armor:
+		if (holdedItemId != 0)
+		{
+			if (player.getArmorInventoryField(field.x).ItemId != 0)
+			{
+				ItemField temp(player.getArmorInventoryField(field.x));
+				player.setArmorField(field.x, GameGui.getHoldedItem());
+				GameGui.assingNewItemToHold(temp);
+			}
+			else
+			{
+				player.setArmorField(field.x, GameGui.getHoldedItem());
+				GameGui.assingNewItemToHold(ItemField());
+			}
+		}
+		else
+		{
+			if (player.getArmorInventoryField(field.x).ItemId != 0)
+			{
+				GameGui.assingNewItemToHold(player.getArmorInventoryField(field.x));
+				player.setArmorField(field.x, ItemField());
+			}
+		}
+		break;
+	case EquipmentType::Belt:
+		if (holdedItemId != 0)
+		{
+			if (player.getHandInventoryField(field.x).ItemId == holdedItemId)
+			{
+				player.setHandInventoryField(field.x, ItemField(holdedItemId,
+					player.getHandInventoryField(field.x).ItemAmount + GameGui.getHoldedItem().ItemAmount));
+
+				unsigned maxStack = Items.getItemDef(holdedItemId)->getMaxStack();
+				if (player.getHandInventoryField(field.x).ItemAmount >= maxStack)
+				{
+					unsigned amountForHold = player.getHandInventoryField(field.x).ItemAmount - maxStack;
+					player.setHandInventoryField(field.x, ItemField(holdedItemId,
+						player.getHandInventoryField(field.x).ItemAmount - amountForHold));
+
+					GameGui.assingNewItemToHold(ItemField(holdedItemId, amountForHold));
+				}
+				else
+				{
+					GameGui.assingNewItemToHold(ItemField());
+				}
+
+			}
+			else if (player.getHandInventoryField(field.x).ItemId != 0)
+			{
+				ItemField temp(player.getHandInventoryField(field.x));
+				player.setHandInventoryField(field.x, GameGui.getHoldedItem());
+				GameGui.assingNewItemToHold(temp);
+			}
+			else
+			{
+				player.setHandInventoryField(field.x, GameGui.getHoldedItem());
+				GameGui.assingNewItemToHold(ItemField());
+			}
+		}
+		else
+		{
+			if (player.getHandInventoryField(field.x).ItemId != 0)
+			{
+				GameGui.assingNewItemToHold(player.getHandInventoryField(field.x));
+				player.setHandInventoryField(field.x, ItemField());
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
 	TILE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
@@ -247,25 +369,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 					GameGui.EquipmentGui.setHoverForArmorField(i, true);
 					if (isMouseClick)
 					{
-						if (GameGui.getHoldedItem().ItemId != 0)
-						{
-							if (player.getArmorInventoryField(i).ItemId != 0)
-							{
-								ItemField temp(GameGui.getHoldedItem());
-								GameGui.assingNewItemToHold(player.getArmorInventoryField(i));
-								player.setArmorField(i, temp);
-							}
-							else
-							{
-								player.setArmorField(i, GameGui.getHoldedItem());
-								GameGui.clearHoldedItem();
-							}
-						}
-						else
-						{
-							GameGui.assingNewItemToHold(player.getArmorInventoryField(i));
-							player.setArmorField(i, ItemField());
-						}
+						checkGuiOperations(EquipmentType::Armor, sf::Vector2u(i, 0));
 					}
 				}
 			}
@@ -279,6 +383,10 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				sf::Vector2f(DefaultEqFieldSize,DefaultEqFieldSize)))
 			{
 				GameGui.HudGui.setHoverForBeltField(i, true);
+				if (isMouseClick)
+				{
+					checkGuiOperations(EquipmentType::Belt, sf::Vector2u(i, 0));
+				}
 			}
 
 			for (size_t j = 0; j < PlayerFieldsNumber; j++)
@@ -295,25 +403,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), true);
 					if (isMouseClick)
 					{
-						if (GameGui.getHoldedItem().ItemId != 0)
-						{
-							if (player.getInventoryField(sf::Vector2u(i,j)).ItemId != 0)
-							{
-								ItemField temp(GameGui.getHoldedItem());
-								GameGui.assingNewItemToHold(player.getInventoryField(sf::Vector2u(i, j)));
-								player.setArmorField(i, temp);
-							}
-							else
-							{
-								player.setInventoryField(sf::Vector2u(i, j), GameGui.getHoldedItem());
-								GameGui.clearHoldedItem();
-							}
-						}
-						else
-						{
-							GameGui.assingNewItemToHold(player.getInventoryField(sf::Vector2u(i, j)));
-							player.setInventoryField(sf::Vector2u(i, j), ItemField());
-						}
+						checkGuiOperations(EquipmentType::Inventory, sf::Vector2u(i, j));
 					}
 				}
 			}

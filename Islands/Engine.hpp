@@ -35,11 +35,14 @@ class Engine
 	sf::View camera;
 
 	void loadGameComponents();
+
 	void checkPlayerBehaviour(IslandApp &app);
 	bool checkPlayerPos();
+
 	void spawnPlayer();
 
 	void pushChangesToGui();
+	void checkGuiOperations(EquipmentType type, sf::Vector2u field);
 
 	void drawTile(sf::Vector2u tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 	void drawObject(sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);

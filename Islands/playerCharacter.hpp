@@ -17,8 +17,8 @@ public:
 	{
 		Inventory[0][0] = ItemField(2, 20);
 		Inventory[1][1] = ItemField(3, 40);
-		Inventory[3][3] = ItemField(11, 40);
-		Inventory[4][4] = ItemField(11, 20);
+		Inventory[3][3] = ItemField(11, 140);
+		Inventory[4][4] = ItemField(11, 120);
 
 		HandInventory[1] = ItemField(10, 20);
 	}
