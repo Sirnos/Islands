@@ -85,9 +85,7 @@ void Engine::pushChangesToGui()
 		//for armor inventory
 		if (i < 3)
 		{
-			GameGui.EquipmentGui.getArmorFieldRect(i).setFillColor(DefaultEqFieldColor);
-			GameGui.EquipmentGui.getArmorTextureRect(i).setTexture(nullptr);
-
+			GameGui.EquipmentGui.clearArmorField(i);
 			if (GameGui.EquipmentGui.getHoverFromArmorField(i))
 			{
 				GameGui.EquipmentGui.getArmorFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
@@ -96,15 +94,18 @@ void Engine::pushChangesToGui()
 			unsigned ArmorItemId = player.getArmorInventoryField(i).ItemId;
 			if (ArmorItemId != 0)
 			{
-				GameGui.EquipmentGui.getArmorTextureRect(i).setTexture(&mediaContainer.getTexture(ArmorItemId,
+				GameGui.EquipmentGui.pushTextureToArmorFields(i, &mediaContainer.getTexture(ArmorItemId,
 					TextureContainer::ItemsTextures));
 			}
 		}
 
 		//for belt inventory
-		GameGui.HudGui.getBeltFieldRect(i).setFillColor(DefaultEqFieldColor);
-		GameGui.HudGui.getBeltFieldTextureRect(i).setTexture(nullptr);
+		GameGui.HudGui.clearBeltField(i);
 		if (i == GameGui.getNumberOfSelectedBeltField())
+		{
+			GameGui.HudGui.getBeltFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
+		}
+		if (GameGui.HudGui.getHoverFromBeltField(i))
 		{
 			GameGui.HudGui.getBeltFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
 		}
@@ -113,16 +114,14 @@ void Engine::pushChangesToGui()
 
 		if (itemId != 0)
 		{
-			GameGui.HudGui.getBeltFieldTextureRect(i).setTexture(&mediaContainer.
-				getTexture(itemId,TextureContainer::ItemsTextures));
+			GameGui.HudGui.pushTextureToBeltField(i, &mediaContainer.getTexture(itemId,
+				TextureContainer::ItemsTextures));
 		}
 
 		//for normal inventory
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)
 		{
-			GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i,j)).setFillColor(DefaultEqFieldColor);
-			GameGui.EquipmentGui.getTextureRect(sf::Vector2u(i, j)).setTexture(nullptr);
-
+			GameGui.EquipmentGui.clearInventoryField(sf::Vector2u(i, j));
 			if (GameGui.EquipmentGui.getHoverFromInventoryField(sf::Vector2u(i,j)))
 			{
 				GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).setFillColor(EqFieldColorWhenIsSelected);
@@ -131,7 +130,7 @@ void Engine::pushChangesToGui()
 			unsigned tempItemId = player.getInventoryField(sf::Vector2u(i, j)).ItemId;
 			if (tempItemId != 0)
 			{
-				GameGui.EquipmentGui.getTextureRect(sf::Vector2u(i, j)).setTexture(&mediaContainer.getTexture(tempItemId,
+				GameGui.EquipmentGui.pushTextureToFields(sf::Vector2u(i, j), &mediaContainer.getTexture(tempItemId,
 					TextureContainer::ItemsTextures));
 			}
 		}
@@ -242,8 +241,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 				sf::Vector2f fieldPos = GameGui.EquipmentGui.getArmorFieldRect(i).getPosition();
 
-				if (mousePosInWorld.x > fieldPos.x && mousePosInWorld.x < fieldPos.x + DefaultEqFieldSize
-					&& mousePosInWorld.y > fieldPos.y && mousePosInWorld.y < fieldPos.y + DefaultEqFieldSize)
+				if (CollisionDetect::isPointInRectangle(mousePosInWorld,fieldPos,
+					sf::Vector2f(DefaultEqFieldSize,DefaultEqFieldSize)))
 				{
 					GameGui.EquipmentGui.setHoverForArmorField(i, true);
 					if (isMouseClick)
@@ -271,6 +270,17 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 			}
 
+			if (GameGui.HudGui.getHoverFromBeltField(i))
+			{
+				GameGui.HudGui.setHoverForBeltField(i, false);
+			}
+			sf::Vector2f beltFieldPos = GameGui.HudGui.getBeltFieldRect(i).getPosition();
+			if (CollisionDetect::isPointInRectangle(mousePosInWorld,beltFieldPos,
+				sf::Vector2f(DefaultEqFieldSize,DefaultEqFieldSize)))
+			{
+				GameGui.HudGui.setHoverForBeltField(i, true);
+			}
+
 			for (size_t j = 0; j < PlayerFieldsNumber; j++)
 			{
 				if (GameGui.EquipmentGui.getHoverFromInventoryField(sf::Vector2u(i, j)))
@@ -279,8 +289,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 
 				sf::Vector2f fieldPos = GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).getPosition();
-				if (mousePosInWorld.x > fieldPos.x && mousePosInWorld.x < fieldPos.x + DefaultEqFieldSize
-					&& mousePosInWorld.y > fieldPos.y && mousePosInWorld.y < fieldPos.y + DefaultEqFieldSize)
+				if (CollisionDetect::isPointInRectangle(mousePosInWorld,fieldPos,
+					sf::Vector2f(DefaultEqFieldSize,DefaultEqFieldSize)))
 				{
 					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), true);
 					if (isMouseClick)
@@ -352,8 +362,8 @@ void Engine::drawWorld(IslandApp & app)
 
 void Engine::drawPlayerGui(IslandApp & app)
 {
-	app.draw(*GameGui.HudGui.getHudElement(false));
-	app.draw(*GameGui.HudGui.getHudElement(true));
+	app.draw(GameGui.HudGui.getHudElement(false));
+	app.draw(GameGui.HudGui.getHudElement(true));
 
 	sf::Font font;
 	font.loadFromFile("Data/Fonts/ariali.ttf");

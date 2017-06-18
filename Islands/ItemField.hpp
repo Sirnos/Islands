@@ -22,6 +22,10 @@ struct ItemField
 		ItemId = other.ItemId;
 		ItemAmount = other.ItemAmount;
 	}
+	void operator+= (unsigned amount)
+	{
+		ItemAmount += amount;
+	}
 
 	void clear() { ItemId = 0; ItemAmount = 0; }
 };

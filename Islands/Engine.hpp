@@ -6,6 +6,8 @@
 
 #include "IslandApp.hpp"
 
+#include "CollisionDetect.hpp"
+
 #include "PlayerGui.hpp"
 
 #include "GameComponentsLoader.hpp"

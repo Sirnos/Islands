@@ -125,6 +125,9 @@
     <ClInclude Include="ItemField.hpp">
       <Filter>Header Files\Item</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionDetect.hpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">

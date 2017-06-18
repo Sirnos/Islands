@@ -14,11 +14,11 @@ public:
 
 	void pushTextureToFields(sf::Vector2u field,sf::Texture *txt)
 	{
-		Fields[field.x][field.y].TextureRect.setTexture(txt);
+		Fields[field.x][field.y].TextureRect.setTexture(txt,true);
 	}
 	void pushTextureToArmorFields(unsigned field, sf::Texture *txt)
 	{
-		ArmorFields[field].TextureRect.setTexture(txt);
+		ArmorFields[field].TextureRect.setTexture(txt,true);
 	}
 
 	void create()
@@ -88,4 +88,14 @@ public:
 		return ArmorFields[field].ishover;
 	}
 
+	void clearInventoryField(sf::Vector2u field)
+	{
+		Fields[field.x][field.y].FieldRect.setFillColor(DefaultEqFieldColor);
+		Fields[field.x][field.y].TextureRect.setTexture(nullptr);
+	}
+	void clearArmorField(unsigned field)
+	{
+		ArmorFields[field].FieldRect.setFillColor(DefaultEqFieldColor);
+		ArmorFields[field].TextureRect.setTexture(nullptr);
+	}
 };

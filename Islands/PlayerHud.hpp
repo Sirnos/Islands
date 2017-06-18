@@ -46,7 +46,7 @@ public:
 
 	void pushTextureToBeltField(unsigned field, sf::Texture *txt)
 	{
-		Belt[field].TextureRect.setTexture(txt);
+		Belt[field].TextureRect.setTexture(txt,true);
 	}
 
 	void pushNewValuesForHpInfo(unsigned newMaxPlayerHp, unsigned newActualPlayerHp)
@@ -59,13 +59,29 @@ public:
 	}
 
 	//which == true then return PlayerMpInfo else  return PlayerHpInfo
-	sf::Text* getHudElement(bool which)
+	sf::Text& getHudElement(bool which)
 	{
-		if (which == true) { return &PlayerMpInfo; }
+		if (which == true) { return PlayerMpInfo; }
 
-		return &PlayerHpInfo;
+		return PlayerHpInfo;
 	}
 
 	sf::RectangleShape &getBeltFieldRect(unsigned field) { return Belt[field].FieldRect; }
 	sf::RectangleShape &getBeltFieldTextureRect(unsigned field) { return Belt[field].TextureRect; }
+
+	void clearBeltField(unsigned field)
+	{
+		Belt[field].FieldRect.setFillColor(DefaultEqFieldColor);
+		Belt[field].TextureRect.setTexture(nullptr);
+	}
+
+	void setHoverForBeltField(unsigned field, bool newVal)
+	{
+		Belt[field].ishover = newVal;
+	}
+	bool getHoverFromBeltField(unsigned field)
+	{
+		return Belt[field].ishover;
+	}
+
 };
