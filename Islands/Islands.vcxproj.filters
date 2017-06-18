@@ -125,8 +125,11 @@
     <ClInclude Include="ItemField.hpp">
       <Filter>Header Files\Item</Filter>
     </ClInclude>
+    <ClInclude Include="LyingItemsContainer.hpp">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
     <ClInclude Include="CollisionDetect.hpp">
-      <Filter>Header Files\Engine</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

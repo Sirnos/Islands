@@ -14,6 +14,8 @@
 #include "GameComponentsUnloader.hpp"
 
 #include "ItemDefContainer.hpp"
+#include "LyingItemsContainer.hpp"
+
 #include "playerCharacter.hpp"
 
 #include "Media.hpp"
@@ -30,9 +32,12 @@ class Engine
 	PlayerGui GameGui;
 
 	ObjectArray RawObjects;
+
 	ItemDefContainer Items;
+	LyingItemsContainer LyingItems;
 
 	sf::View camera;
+	sf::Clock GameClock;
 
 	void loadGameComponents();
 

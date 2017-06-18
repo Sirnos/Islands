@@ -82,7 +82,6 @@ void Engine::pushChangesToGui()
 {
 	for (size_t i = 0; i < PlayerFieldsNumber; i++)
 	{
-		//for armor inventory
 		if (i < 3)
 		{
 			GameGui.EquipmentGui.clearArmorField(i);
@@ -99,7 +98,6 @@ void Engine::pushChangesToGui()
 			}
 		}
 
-		//for belt inventory
 		GameGui.HudGui.clearBeltField(i);
 		if (i == GameGui.getNumberOfSelectedBeltField())
 		{
@@ -118,7 +116,6 @@ void Engine::pushChangesToGui()
 				TextureContainer::ItemsTextures));
 		}
 
-		//for normal inventory
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)
 		{
 			GameGui.EquipmentGui.clearInventoryField(sf::Vector2u(i, j));
@@ -162,7 +159,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 				}
 				else
 				{
-					GameGui.assingNewItemToHold(ItemField());
+					GameGui.clearHoldedItem();
 				}
 
 			}
@@ -175,7 +172,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 			else
 			{
 				player.setInventoryField(field, GameGui.getHoldedItem());
-				GameGui.assingNewItemToHold(ItemField());
+				GameGui.clearHoldedItem();
 			}
 		}
 		else
@@ -199,7 +196,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 			else
 			{
 				player.setArmorField(field.x, GameGui.getHoldedItem());
-				GameGui.assingNewItemToHold(ItemField());
+				GameGui.clearHoldedItem();
 			}
 		}
 		else
@@ -230,7 +227,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 				}
 				else
 				{
-					GameGui.assingNewItemToHold(ItemField());
+					GameGui.clearHoldedItem();
 				}
 
 			}
@@ -243,7 +240,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 			else
 			{
 				player.setHandInventoryField(field.x, GameGui.getHoldedItem());
-				GameGui.assingNewItemToHold(ItemField());
+				GameGui.clearHoldedItem();
 			}
 		}
 		else
@@ -410,6 +407,16 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 		}
 	}
 
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.getIsEqGuiEnable())
+	{
+		if (GameGui.getHoldedItem().ItemId != 0)
+		{
+			LyingItems.pushNewItem(GameClock.getElapsedTime(),
+				player.getCharacterCenterPosition(), GameGui.getHoldedItem());
+			GameGui.clearHoldedItem();
+		}
+	}
+
 	switch (last)
 	{
 	case mouseWheel::Up:
@@ -435,9 +442,11 @@ void Engine::drawWorld(IslandApp & app)
 	
 	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape,
-					 ObjectShape;
+		LyingItemShape,
+		ObjectShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 	ObjectShape.setSize(RawObjects.ObjectGraphicsSize);
+	LyingItemShape.setSize(sf::Vector2f(32, 32));
 
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
 	{
@@ -446,6 +455,17 @@ void Engine::drawWorld(IslandApp & app)
 			if (j < 0 && i < 0) { continue; }
 			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+		}
+	}
+	sf::Vector2f cameraPos = camera.getCenter() - sf::Vector2f(camera.getSize().x / 2, camera.getSize().y / 2);
+	for (size_t i = 0; i < LyingItems.getSize(); i++)
+	{
+		if (CollisionDetect::isPointInRectangle(LyingItems.getPosition(i), cameraPos, camera.getSize()))
+		{
+			LyingItemShape.setPosition(LyingItems.getPosition(i));
+			LyingItemShape.setTexture(&mediaContainer.getTexture(LyingItems.getItem(i).ItemId,
+				TextureContainer::ItemsTextures), true);
+			app.draw(LyingItemShape);
 		}
 	}
 }
