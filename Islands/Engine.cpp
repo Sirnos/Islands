@@ -85,7 +85,20 @@ void Engine::pushChangesToGui()
 		//for armor inventory
 		if (i < 3)
 		{
+			GameGui.EquipmentGui.getArmorFieldRect(i).setFillColor(DefaultEqFieldColor);
+			GameGui.EquipmentGui.getArmorTextureRect(i).setTexture(nullptr);
 
+			if (GameGui.EquipmentGui.getHoverFromArmorField(i))
+			{
+				GameGui.EquipmentGui.getArmorFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
+			}
+
+			unsigned ArmorItemId = player.getArmorInventoryField(i).ItemId;
+			if (ArmorItemId != 0)
+			{
+				GameGui.EquipmentGui.getArmorTextureRect(i).setTexture(&mediaContainer.getTexture(ArmorItemId,
+					TextureContainer::ItemsTextures));
+			}
 		}
 
 		//for belt inventory
@@ -110,7 +123,7 @@ void Engine::pushChangesToGui()
 			GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i,j)).setFillColor(DefaultEqFieldColor);
 			GameGui.EquipmentGui.getTextureRect(sf::Vector2u(i, j)).setTexture(nullptr);
 
-			if (GameGui.EquipmentGui.getHover(sf::Vector2u(i,j)))
+			if (GameGui.EquipmentGui.getHoverFromInventoryField(sf::Vector2u(i,j)))
 			{
 				GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).setFillColor(EqFieldColorWhenIsSelected);
 			}
@@ -222,18 +235,33 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last)
 		sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
 		for (size_t i = 0; i < PlayerFieldsNumber; i++)
 		{
+			if (i < 3)
+			{
+				if (GameGui.EquipmentGui.getHoverFromArmorField(i))
+				{
+					GameGui.EquipmentGui.setHoverForArmorField(i, false);
+				}
+				sf::Vector2f fieldPos = GameGui.EquipmentGui.getArmorFieldRect(i).getPosition();
+
+				if (mousePosInWorld.x > fieldPos.x && mousePosInWorld.x < fieldPos.x + DefaultEqFieldSize
+					&& mousePosInWorld.y > fieldPos.y && mousePosInWorld.y < fieldPos.y + DefaultEqFieldSize)
+				{
+					GameGui.EquipmentGui.setHoverForArmorField(i, true);
+				}
+			}
+
 			for (size_t j = 0; j < PlayerFieldsNumber; j++)
 			{
-				if (GameGui.EquipmentGui.getHover(sf::Vector2u(i, j)))
+				if (GameGui.EquipmentGui.getHoverFromInventoryField(sf::Vector2u(i, j)))
 				{
-					GameGui.EquipmentGui.setHover(sf::Vector2u(i, j), false);
+					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), false);
 				}
 
 				sf::Vector2f fieldPos = GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).getPosition();
 				if (mousePosInWorld.x > fieldPos.x && mousePosInWorld.x < fieldPos.x + DefaultEqFieldSize
 					&& mousePosInWorld.y > fieldPos.y && mousePosInWorld.y < fieldPos.y + DefaultEqFieldSize)
 				{
-					GameGui.EquipmentGui.setHover(sf::Vector2u(i, j), true);
+					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), true);
 				}
 			}
 		}

@@ -70,12 +70,22 @@ public:
 	sf::RectangleShape &getArmorFieldRect(unsigned field) { return ArmorFields[field].FieldRect; }
 	sf::RectangleShape &getArmorTextureRect(unsigned field) { return ArmorFields[field].TextureRect; }
 
-	void setHover(sf::Vector2u field,bool newVal)
+	void setHoverForInventoryField(sf::Vector2u field, bool newVal)
 	{
 		Fields[field.x][field.y].ishover = newVal;
 	}
-	bool getHover(sf::Vector2u field)
+	bool getHoverFromInventoryField(sf::Vector2u field)
 	{
 		return Fields[field.x][field.y].ishover;
 	}
+
+	void setHoverForArmorField(unsigned field, bool newVal)
+	{
+		ArmorFields[field].ishover = newVal;
+	}
+	bool getHoverFromArmorField(unsigned field)
+	{
+		return ArmorFields[field].ishover;
+	}
+
 };
