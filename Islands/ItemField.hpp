@@ -27,5 +27,13 @@ struct ItemField
 		ItemAmount += amount;
 	}
 
+	bool isClear() 
+	{
+		if (ItemId == 0 || ItemAmount == 0)
+		{
+			return true;
+		}
+		return false;
+	}
 	void clear() { ItemId = 0; ItemAmount = 0; }
 };

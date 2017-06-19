@@ -41,4 +41,9 @@ public:
 	sf::Time getTime(unsigned index) { return LyingItems[index].lyingTime; }
 	sf::Vector2f getPosition(unsigned index) { return LyingItems[index].lyingPosition; }
 	ItemField getItem(unsigned index) { return LyingItems[index].lyingItem; }
+
+	void setItemAmount(unsigned index, unsigned newAmount)
+	{
+		LyingItems[index].lyingItem.ItemAmount = newAmount;
+	}
 };

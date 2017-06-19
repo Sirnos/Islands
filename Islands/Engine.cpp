@@ -31,6 +31,78 @@ void Engine::loadGameComponents()
 	}
 }
 
+void Engine::checkPlayerEnvironment()
+{
+	sf::Vector2f playerCollectRectSize(128, 128);
+	sf::Vector2f playerCollectRectPos = player.getPosition() - sf::Vector2f(playerCollectRectSize.x / 2,
+		playerCollectRectSize.y / 2);
+
+	for (size_t i = 0; i < LyingItems.getSize(); i++)
+	{
+		if (CollisionDetect::isPointInRectangle(LyingItems.getPosition(i),
+			playerCollectRectPos, playerCollectRectSize))
+		{
+			ItemField temp = LyingItems.getItem(i);
+			pushItemToPlayerInventory(temp);
+			if (temp.isClear())
+			{
+				LyingItems.eraseItem(i);
+			}
+			else
+			{
+				LyingItems.setItemAmount(i, temp.ItemAmount);
+			}
+		}
+	}
+}
+
+void Engine::pushItemToPlayerInventory(ItemField & item)
+{
+	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	{
+		if (player.getHandInventoryField(i).ItemId == item.ItemId)
+		{
+			ItemField temp = player.getHandInventoryField(i);
+			temp += item.ItemAmount;
+			unsigned maxStack = Items.getItemDef(item.ItemId)->getMaxStack();
+
+			if (temp.ItemAmount >= maxStack)
+			{
+				item.ItemAmount = temp.ItemAmount - maxStack;
+				temp.ItemAmount -= (temp.ItemAmount - maxStack);
+				player.setHandInventoryField(i, temp);
+			}
+		}
+		else if (player.getHandInventoryField(i).ItemId == 0)
+		{
+			player.setHandInventoryField(i, item);	
+			item.clear();
+			return;
+		}
+		for (size_t j = 0; j < PlayerFieldsNumber; j++)
+		{
+			if (player.getInventoryField(sf::Vector2u(i,j)).ItemId == item.ItemId)
+			{
+				ItemField temp = player.getInventoryField(sf::Vector2u(i, j));
+				temp += item.ItemAmount;
+				unsigned maxStack = Items.getItemDef(item.ItemId)->getMaxStack();
+				if (temp.ItemAmount >= maxStack)
+				{
+					item.ItemAmount = temp.ItemAmount - maxStack;
+					temp.ItemAmount -= (temp.ItemAmount - maxStack);
+					player.setInventoryField(sf::Vector2u(i,j), temp);
+				}
+			}
+			else if (player.getInventoryField(sf::Vector2u(i,j)).ItemId == 0)
+			{
+				player.setInventoryField(sf::Vector2u(i, j), item);
+				item.clear();
+				return;
+			}
+		}
+	}
+}
+
 void Engine::checkPlayerBehaviour(IslandApp &app)
 {
 	sf::Vector2f movevctr;
@@ -331,6 +403,7 @@ void Engine::init()
 void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseClick)
 {
 	checkPlayerBehaviour(app);
+	checkPlayerEnvironment();
 
 	camera.setCenter(player.getCharacterCenterPosition());
 
