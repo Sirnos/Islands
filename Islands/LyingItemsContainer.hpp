@@ -31,6 +31,7 @@ public:
 
 	size_t getSize() { return LyingItems.size(); }
 
+	void eraseFirstItem() { LyingItems.erase(LyingItems.begin()); }
 	void eraseItem(unsigned index) { LyingItems.erase(LyingItems.begin() + index); }
 
 	void pushNewItem(sf::Time time, sf::Vector2f position, ItemField item)
