@@ -422,6 +422,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	checkPlayerEnvironment();
 
 	camera.setCenter(player.getCharacterCenterPosition());
+	app.getIslandWindow()->setView(camera);
 
 	auto Window = app.getIslandWindow();
 
@@ -528,7 +529,6 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 
 void Engine::drawWorld(IslandApp & app)
 {
-	
 	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape,
 		LyingItemShape,
