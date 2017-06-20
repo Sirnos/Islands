@@ -26,6 +26,10 @@ struct ItemField
 	{
 		ItemAmount += amount;
 	}
+	void operator-= (unsigned amount)
+	{
+		ItemAmount -= amount;
+	}
 
 	bool isClear() 
 	{

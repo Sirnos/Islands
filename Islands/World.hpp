@@ -23,4 +23,6 @@ public:
 
 	TILE getTile(sf::Vector2u tileIndex,bool safeVersion = true);
 	unsigned getObject(sf::Vector2u objectIndex,bool safeVersion = true);
+
+	bool setObject(sf::Vector2u objectIndex, unsigned objectId);
 };

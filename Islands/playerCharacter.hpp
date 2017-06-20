@@ -21,6 +21,7 @@ public:
 		Inventory[4][4] = ItemField(11, 120);
 
 		HandInventory[1] = ItemField(10, 20);
+		HandInventory[2] = ItemField(3, 10);
 	}
 	playerCharacter(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
 		:Character(stats)

@@ -47,3 +47,11 @@ unsigned World::getObject(sf::Vector2u objectIndex, bool safeVersion)
 
 	return WorldObjects.getElementID(objectIndex);
 }
+
+bool World::setObject(sf::Vector2u objectIndex, unsigned objectId)
+{
+	if (WorldObjects.getElementID(objectIndex) != 0) { return false; }
+
+	WorldObjects.pushNewObject(objectId, objectIndex);
+	return true;
+}

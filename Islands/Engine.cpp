@@ -365,7 +365,7 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 	if (ObjectID == 0) { return; }
 	if (ObjectID > RawObjects.getObjects().size()) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
-	shp.setTexture(&mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures));
+	shp.setTexture(&mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures),true);
 	window.draw(shp);
 }
 
@@ -496,6 +496,29 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			}
 		}
 	}
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GameGui.getHoldedItem().isClear())
+		{
+			unsigned itemId = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemId;
+			if (itemId != 0)
+			{
+				if (dynamic_cast<PlaceableDef*>(Items.getItemDef(itemId)) != nullptr)
+				{
+					sf::Vector2f mousePos = app.getMousePosInWorld();
+					sf::Vector2u objectPos(mousePos.y / TILE_SIZE, mousePos.x / TILE_SIZE);
+					if (player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemAmount == 0)
+					{
+						player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), ItemField(0, 0));
+					}
+					if (GameWorld.setObject(objectPos, itemId+1))
+					{
+						ItemField temp = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField());
+						temp -= 1;
+						player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), temp);
+					}
+				}
+			}
+		}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.getIsEqGuiEnable())
 	{
