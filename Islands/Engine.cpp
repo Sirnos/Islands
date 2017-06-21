@@ -402,21 +402,8 @@ void Engine::init()
 
 void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseClick)
 {
-	while (true)
-	{
-		if (LyingItems.getSize() == 0)
-		{
-			break;
-		}
-		else if (GameClock.getElapsedTime() - LyingItems.getTime(0) > sf::Time(sf::seconds(600)))
-		{
-			LyingItems.eraseFirstItem();
-		}
-		else
-		{
-			break;
-		}
-	}
+	LyingItems.clearOldItems(GameClock.getElapsedTime());
+
 
 	checkPlayerBehaviour(app);
 	checkPlayerEnvironment();

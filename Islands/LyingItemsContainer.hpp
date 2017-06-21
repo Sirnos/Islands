@@ -47,4 +47,22 @@ public:
 	{
 		LyingItems[index].lyingItem.ItemAmount = newAmount;
 	}
+	void clearOldItems(sf::Time currentGameTime)
+	{
+		while (true)
+		{
+			if (LyingItems.size() == 0)
+			{
+				break;
+			}
+			else if (currentGameTime - LyingItems[0].lyingTime > sf::Time(sf::seconds(600)))
+			{
+				eraseFirstItem();
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
 };
