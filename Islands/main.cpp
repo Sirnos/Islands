@@ -16,6 +16,8 @@ int main()
 	char lastKey = 'U';
 	mouseWheel lastMouseWheelAct;
 
+	ImGui::SFML::Init(*app.getIslandWindow());
+
 	while (app.getIslandWindow()->isOpen())
 	{
 		lastMouseWheelAct = mouseWheel::Stop;
@@ -24,6 +26,8 @@ int main()
 
 		while (app.getIslandWindow()->pollEvent(*app.getIslandWindowEvent()))
 		{
+			ImGui::SFML::ProcessEvent(*app.getIslandWindowEvent());
+
 			if (app.getIslandWindowEvent()->type == sf::Event::Closed)
 			{
 				app.getIslandWindow()->close();
@@ -57,6 +61,8 @@ int main()
 
 		app.displayContext();
 	}
+
+	ImGui::SFML::Shutdown();
 
 	return 0;
 }

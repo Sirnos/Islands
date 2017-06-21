@@ -23,6 +23,9 @@
 #include "Log.hpp"
 #include "World.hpp"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui-SFML.h"
+
 class Engine
 {
 	World GameWorld;

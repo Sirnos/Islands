@@ -551,6 +551,12 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	GameGui.HudGui.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
 	GameGui.HudGui.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
 	pushChangesToGui();
+
+	ImGui::SFML::Update(*app.getIslandWindow(), sf::Time(sf::seconds(1)));
+
+	ImGui::Begin("EEE");
+	ImGui::Button("OOO");
+	ImGui::End();
 }
 
 void Engine::drawWorld(IslandApp & app)
@@ -667,5 +673,7 @@ void Engine::DrawAll(IslandApp &app)
 	drawPlayerGui(app);
 
 	app.draw(*player.getShape());
+
+	ImGui::SFML::Render(*app.getIslandWindow());
 
 }

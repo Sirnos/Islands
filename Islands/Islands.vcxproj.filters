@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Engine">
       <UniqueIdentifier>{c27c5217-fa50-4947-8271-511657bf7786}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\imgui">
+      <UniqueIdentifier>{107f3c30-613a-41df-9f1a-9150c7fccba6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,6 +50,18 @@
     </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Header Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>Header Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>Header Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui-SFML.cpp">
+      <Filter>Header Files\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +145,30 @@
     </ClInclude>
     <ClInclude Include="CollisionDetect.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig-SFML.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui-SFML.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_rect_pack.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_textedit.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_truetype.h">
+      <Filter>Header Files\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
