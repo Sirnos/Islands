@@ -1,10 +1,11 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include "CollisionDetect.hpp"
 
 class textbox
 {
-	size_t MAX_TEXT_SIZE = 30;
+	size_t MAX_TEXT_SIZE = 32;
 
 	bool IsEnable = false;
 	bool IsConstant = false;
@@ -12,29 +13,39 @@ class textbox
 	sf::Text TXBOX_text;
 
 public:
-	void operator()(sf::Event &event)
+	//Return String when player press Return(Enter)
+	//Else return empty string
+	std::string operator()(sf::Event &event)
 	{
 		if (IsEnable == false || IsConstant == true)
 		{
-			return;
+			return "";
 		}
 		else
 		{
 			if (event.type == sf::Event::TextEntered)
 			{
+				if (event.text.unicode == 13)
+				{
+					std::string tmp(String.data());
+					String.clear();
+					TXBOX_text.setString(String);
+					return tmp;
+				}
+
 				if (event.text.unicode == 8)
 				{
 					if (String.size() > 0 == true)
 					{
 						String.pop_back();
 						TXBOX_text.setString(String);
-						return;
+						return "";
 					}
 				}
 
 				if (String.size() >= MAX_TEXT_SIZE)
 				{
-					return;
+					return "";
 				}
 
 				if (event.text.unicode < 128)
@@ -44,6 +55,7 @@ public:
 				}
 			}
 		}
+		return "";
 	}
 
 	void create(sf::Font &font, bool isConstant, std::string strForTextBox, size_t MAXSIZE)
@@ -60,23 +72,9 @@ public:
 		TXBOX_text.setCharacterSize(CharSize);
 		TXBOX_text.setStyle(style);
 	}
-	bool isClick(sf::Vector2i mousePos,bool isMouseClick)
+	bool isClick(sf::Vector2f mousePos,bool isMouseClick)
 	{
-		sf::Vector2i textBoxPos = static_cast<sf::Vector2i>(TXBOX_text.getPosition());
-
-		int sizeX = 100;
-		if (MAX_TEXT_SIZE > 5)
-		{
-			sizeX = MAX_TEXT_SIZE * 10;
-		}
-		if ((mousePos.x >= textBoxPos.x && mousePos.x <= mousePos.x + sizeX &&
-			mousePos.y >= textBoxPos.y && mousePos.y <= mousePos.y + 50) == true
-			&& isMouseClick == true)
-		{
-			return true;
-		}
-
-		return false;
+		return (TXBOX_text.getGlobalBounds().contains(mousePos) && isMouseClick == true);
 	}
 
 	std::string getString() { return TXBOX_text.getString(); }
@@ -90,21 +88,14 @@ public:
 	void setEnable(bool var) { IsEnable = var; }
 	void switchEnable()
 	{
-		if (IsEnable == true)
-		{
-			IsEnable = false;
-		}
-		else
-		{
-			IsEnable = true;
-		}
+		IsEnable = !IsEnable;
+
 	}
 	bool getIsEnable() { return IsEnable; }
 
-	void setPosition(sf::Vector2u newPos)
+	void setPosition(sf::Vector2f newPos)
 	{
-		TXBOX_text.setPosition(sf::Vector2f(static_cast<float>(newPos.x),
-			static_cast<float>(newPos.y)));
+		TXBOX_text.setPosition(newPos);
 	}
 	sf::Vector2u getPosition()
 	{

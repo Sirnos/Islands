@@ -124,10 +124,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="imgui\imgui-SFML.cpp" />
-    <ClCompile Include="imgui\imgui.cpp" />
-    <ClCompile Include="imgui\imgui_demo.cpp" />
-    <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="World.cpp" />
@@ -136,18 +132,11 @@
     <ClInclude Include="button.hpp" />
     <ClInclude Include="Character.hpp" />
     <ClInclude Include="CollisionDetect.hpp" />
+    <ClInclude Include="Console.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="EquipmentField.hpp" />
     <ClInclude Include="GameComponentsUnloader.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
-    <ClInclude Include="imgui\imconfig-SFML.h" />
-    <ClInclude Include="imgui\imconfig.h" />
-    <ClInclude Include="imgui\imgui-SFML.h" />
-    <ClInclude Include="imgui\imgui.h" />
-    <ClInclude Include="imgui\imgui_internal.h" />
-    <ClInclude Include="imgui\stb_rect_pack.h" />
-    <ClInclude Include="imgui\stb_textedit.h" />
-    <ClInclude Include="imgui\stb_truetype.h" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
@@ -183,6 +172,9 @@
   <ItemGroup>
     <None Include="Data\Items.xcf" />
     <None Include="Data\Tiles.xcf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Data\Fonts\ariali.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

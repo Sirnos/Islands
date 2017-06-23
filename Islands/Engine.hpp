@@ -23,8 +23,7 @@
 #include "Log.hpp"
 #include "World.hpp"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui-SFML.h"
+#include "Console.hpp"
 
 class Engine
 {
@@ -41,6 +40,7 @@ class Engine
 
 	sf::View camera;
 	sf::Clock GameClock;
+	Console GameConsole;
 
 	void loadGameComponents();
 
@@ -54,6 +54,8 @@ class Engine
 	void pushChangesToGui();
 	void checkGuiOperations(EquipmentType type, sf::Vector2u field);
 
+	void drawConsole(IslandApp &app);
+
 	void drawTile(sf::Vector2u tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 	void drawObject(sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 
@@ -65,6 +67,8 @@ public:
 
 	void init();
 	void operator()(IslandApp &app,char key,mouseWheel last,bool isMouseClick);
+
+	void manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick);
 
 	void DrawAll(IslandApp &app);
 };

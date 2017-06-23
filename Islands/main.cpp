@@ -16,8 +16,6 @@ int main()
 	char lastKey = 'U';
 	mouseWheel lastMouseWheelAct;
 
-	ImGui::SFML::Init(*app.getIslandWindow());
-
 	while (app.getIslandWindow()->isOpen())
 	{
 		lastMouseWheelAct = mouseWheel::Stop;
@@ -26,8 +24,6 @@ int main()
 
 		while (app.getIslandWindow()->pollEvent(*app.getIslandWindowEvent()))
 		{
-			ImGui::SFML::ProcessEvent(*app.getIslandWindowEvent());
-
 			if (app.getIslandWindowEvent()->type == sf::Event::Closed)
 			{
 				app.getIslandWindow()->close();
@@ -38,7 +34,9 @@ int main()
 			}
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { isClick = true; }
 		
-				if (app.getIslandWindowEvent()->type == sf::Event::MouseWheelScrolled)
+			IslandEngine.manageConsole(*app.getIslandWindowEvent(), app.getMousePosInWorld(), isClick);
+
+			if (app.getIslandWindowEvent()->type == sf::Event::MouseWheelScrolled)
 				{
 					if (app.getIslandWindowEvent()->mouseWheelScroll.delta < 0)
 					{
@@ -51,7 +49,7 @@ int main()
 
 				}
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { return 1; }
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { break; }
 
 		IslandEngine(app, lastKey, lastMouseWheelAct, isClick);
 
@@ -61,8 +59,6 @@ int main()
 
 		app.displayContext();
 	}
-
-	ImGui::SFML::Shutdown();
 
 	return 0;
 }

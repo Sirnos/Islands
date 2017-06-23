@@ -329,6 +329,72 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 	}
 }
 
+void Engine::drawConsole(IslandApp & app)
+{
+	app.draw(GameConsole.getWindow());
+	app.draw(GameConsole.getInputText());
+
+	if (GameConsole.getCommandsSize() > 0)
+	{
+		sf::Text consoleText;
+		sf::Font consoleTextFont;
+		consoleTextFont.loadFromFile("Data/Fonts/ariali.ttf");
+
+		consoleText.setCharacterSize(16);
+		consoleText.setFont(consoleTextFont);
+		consoleText.setFillColor(sf::Color::White);
+
+		sf::Vector2f begPos = GameConsole.getInputText().getPosition();
+		begPos -= sf::Vector2f(0, 16);
+
+		for (size_t i = GameConsole.getCommandsSize() - 1; i > GameConsole.getCommandsSize() - 20 || i > 0; i--)
+		{
+			consoleText.setString(GameConsole.getText(i));
+			consoleText.setPosition(begPos);
+			app.draw(consoleText);
+			begPos -= sf::Vector2f(0, 16);
+		}
+	}
+}
+
+void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick)
+{
+	auto tmp = GameConsole(event, mousePos, isMouseRClick);
+	if (tmp.size() > 0 )
+	{
+		if (tmp[0] == '/')
+		{
+			if (tmp == "/help")
+			{
+				GameConsole.pushText(std::string("Commands:/giveitem,/spawnmonster"));
+				GameConsole.pushText(std::string("/placeobject,/settile,/settime"));
+				GameConsole.pushText(std::string("/playerposition,/time,/worldsize"));
+			}
+			else if(tmp == "/playerposition")
+			{
+				GameConsole.pushText(std::string("Pos-x: ") + std::to_string(player.getCharacterCenterPosition().x));
+				GameConsole.pushText(std::string("Pos-y: ") + std::to_string(player.getCharacterCenterPosition().y));
+			}
+			else if(tmp == "/time")
+			{
+				GameConsole.pushText(std::string("Time: ") + std::to_string(GameClock.getElapsedTime().asSeconds()));
+			}
+			else if(tmp == "/worldsize")
+			{
+				GameConsole.pushText(std::string("Size: ") + std::to_string(World::WorldSize));
+			}
+			else
+			{
+				GameConsole.pushText(std::string("Unspecified command"));
+			}
+		}
+		else
+		{
+			GameConsole.pushText(tmp);
+		}
+	}
+}
+
 void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
 	TILE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
@@ -404,7 +470,6 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 {
 	LyingItems.clearOldItems(GameClock.getElapsedTime());
 
-
 	checkPlayerBehaviour(app);
 	checkPlayerEnvironment();
 
@@ -416,6 +481,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	GameGui.setNewPosition(Window->mapPixelToCoords(GameGui.EquipmentGui.defaultEquipmentGuiPosOnScreen));
 	GameGui.HudGui.setNewPosition(Window->mapPixelToCoords(GameGui.HudGui.HpInfoScreenPos),
 		Window->mapPixelToCoords(GameGui.HudGui.MpInfoScreenPos),Window->mapPixelToCoords(GameGui.HudGui.BeltFieldPosOnScreen));
+	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(800, 200)));
 
 	if (!checkPlayerPos())
 	{ 
@@ -539,11 +605,6 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	GameGui.HudGui.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
 	pushChangesToGui();
 
-	ImGui::SFML::Update(*app.getIslandWindow(), sf::Time(sf::seconds(1)));
-
-	ImGui::Begin("EEE");
-	ImGui::Button("OOO");
-	ImGui::End();
 }
 
 void Engine::drawWorld(IslandApp & app)
@@ -653,14 +714,9 @@ void Engine::drawPlayerGui(IslandApp & app)
 
 void Engine::DrawAll(IslandApp &app)
 {
-	app.getIslandWindow()->setView(camera);
-
 	drawWorld(app);
-
 	drawPlayerGui(app);
+	drawConsole(app);
 
 	app.draw(*player.getShape());
-
-	ImGui::SFML::Render(*app.getIslandWindow());
-
 }
