@@ -67,4 +67,51 @@ public:
 	{
 		ArmorFields[field] = newVal;
 	}
+
+	void pushItemToPlayer(ItemField &item,ItemDefContainer &Items)
+	{
+		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		{
+			if (getHandInventoryField(i).ItemId == item.ItemId)
+			{
+				ItemField temp = getHandInventoryField(i);
+				temp += item.ItemAmount;
+				unsigned maxStack = Items.getItemDef(item.ItemId)->getMaxStack();
+
+				if (temp.ItemAmount >= maxStack)
+				{
+					item.ItemAmount = temp.ItemAmount - maxStack;
+					temp.ItemAmount -= (temp.ItemAmount - maxStack);
+					setHandInventoryField(i, temp);
+				}
+			}
+			else if (getHandInventoryField(i).ItemId == 0)
+			{
+				setHandInventoryField(i, item);
+				item.clear();
+				return;
+			}
+			for (size_t j = 0; j < PlayerFieldsNumber; j++)
+			{
+				if (getInventoryField(sf::Vector2u(i, j)).ItemId == item.ItemId)
+				{
+					ItemField temp = getInventoryField(sf::Vector2u(i, j));
+					temp += item.ItemAmount;
+					unsigned maxStack = Items.getItemDef(item.ItemId)->getMaxStack();
+					if (temp.ItemAmount >= maxStack)
+					{
+						item.ItemAmount = temp.ItemAmount - maxStack;
+						temp.ItemAmount -= (temp.ItemAmount - maxStack);
+						setInventoryField(sf::Vector2u(i, j), temp);
+					}
+				}
+				else if (getInventoryField(sf::Vector2u(i, j)).ItemId == 0)
+				{
+					setInventoryField(sf::Vector2u(i, j), item);
+					item.clear();
+					return;
+				}
+			}
+		}
+	}
 };

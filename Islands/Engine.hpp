@@ -45,7 +45,6 @@ class Engine
 	void loadGameComponents();
 
 	void checkPlayerEnvironment();
-	void pushItemToPlayerInventory(ItemField & item);
 	void checkPlayerBehaviour(IslandApp &app);
 	bool checkPlayerPos();
 
