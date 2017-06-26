@@ -10,6 +10,9 @@ class Console
 	textbox ConsoleInput;
 
 	std::vector<std::string> commands;
+	std::vector<std::string> history;
+
+	unsigned lastHistoryCmd;
 
 	sf::Font ConsoleFont;
 public:
@@ -21,11 +24,21 @@ public:
 		ConsoleInput.changeVars(sf::Color::White, 16, sf::Text::Style::Regular);
 		ConsoleFont.loadFromFile("Data/Fonts/ariali.ttf");
 		ConsoleInput.create(ConsoleFont, false, "Type you command here! ", 64);
+
+		lastHistoryCmd = 0;
 	}
 	~Console()
 	{
 		commands.clear();
+		history.clear();
 	}
+	
+	void pushCommandToHistory(std::string command) { history.push_back(command); }
+	std::string getCmdFromHistory(unsigned cmdNumber) { return history[cmdNumber]; }
+	std::string getLastCmdFromHistory() { return history.back(); }
+	unsigned getHistorySize() { return history.size(); }
+
+	unsigned &getLastHistoryCmdNumber() { return lastHistoryCmd; }
 
 	std::string operator()(sf::Event &event,sf::Vector2f mousePos,bool isMouseClick)
 	{
@@ -41,32 +54,15 @@ public:
 		commands.clear();
 		ConsoleInput.setString("");
 	}
-	size_t getCommandsSize()
-	{
-		return commands.size();
-	}
+	void clearHistory() { history.clear(); }
 
-	std::string getCurrentText()
-	{
-		return ConsoleInput.getString();
-	}
-	void pushText(std::string &text)
-	{
-		commands.push_back(text);
-	}
-	void pushCommand()
-	{
-		commands.push_back(ConsoleInput.getString());
-		ConsoleInput.setString("");
-	}
-	std::string getText(unsigned index)
-	{
-		return commands[index];
-	}
-	std::string getLastText()
-	{
-		return commands.back();
-	}
+	std::string getCurrentText() { return ConsoleInput.getString(); }
+	void setCurrentText(std::string text) { ConsoleInput.setString(text); }
+
+	size_t getCommandsSize() { return commands.size(); }
+	void pushText(std::string &text) { commands.push_back(text); }
+	std::string getText(unsigned index) { return commands[index]; }
+	std::string getLastText() { return commands.back(); }
 
 	void setPosition(sf::Vector2f position)
 	{
@@ -108,13 +104,14 @@ public:
 
 		int id = std::stoi(idStr);
 		if (id <= 0) { commands.push_back("id is equal 0 or smaller"); return; }
-		if (id > Items.getContainer().size()) { commands.push_back("item with this id does not exist"); return; }
+		if (id > Items.getContainer().size()-1) { commands.push_back("item with this id does not exist"); return; }
 		int amount = std::stoi(amountStr);
 		if (amount <= 0) { commands.push_back("amount is equal 0 or smaller"); return; }
 		if (amount > (int)(MAXIMUM_STACK_SIZE)) { commands.push_back("amount is higher than MAXIMUM_STACK_SIZE"); return; }
 		if (amount > (int)Items.getItemDef(id)->getMaxStack()) { commands.push_back("amount is higher than Item::MaxStack"); return; }
 
 		player.pushItemToPlayer(ItemField(id, amount), Items);
+		pushCommandToHistory(command);
 
 		return;
 	}

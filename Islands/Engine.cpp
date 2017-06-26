@@ -313,8 +313,23 @@ void Engine::drawConsole(IslandApp & app)
 void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick)
 {
 	auto tmp = GameConsole(event, mousePos, isMouseRClick);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		if (GameConsole.getLastHistoryCmdNumber() == 0)
+		{
+			GameConsole.setCurrentText(GameConsole.getLastCmdFromHistory());
+			GameConsole.getLastHistoryCmdNumber() = GameConsole.getHistorySize() - 2;
+		}
+		else
+		{
+			GameConsole.setCurrentText(GameConsole.getCmdFromHistory(GameConsole.getLastHistoryCmdNumber()));
+			GameConsole.getLastHistoryCmdNumber() -= 1;
+		}
+	}
+
 	if (tmp.size() > 0 )
 	{
+		GameConsole.getLastHistoryCmdNumber() = 0;
 		if (tmp[0] == '/')
 		{
 			if (tmp == "/help")
@@ -323,19 +338,24 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 				GameConsole.pushText(std::string("/placeobject,/settile,/settime"));
 				GameConsole.pushText(std::string("/playerposition,/time,/worldsize"));
 				GameConsole.pushText(std::string("/clear,/"));
+
+				GameConsole.pushCommandToHistory(tmp);
 			}
 			else if(tmp == "/playerposition")
 			{
 				GameConsole.pushText(std::string("Pos-x: ") + std::to_string(player.getCharacterCenterPosition().x));
 				GameConsole.pushText(std::string("Pos-y: ") + std::to_string(player.getCharacterCenterPosition().y));
+				GameConsole.pushCommandToHistory(tmp);
 			}
 			else if(tmp == "/time")
 			{
 				GameConsole.pushText(std::string("Time: ") + std::to_string(GameClock.getElapsedTime().asSeconds()));
+				GameConsole.pushCommandToHistory(tmp);
 			}
 			else if(tmp == "/worldsize")
 			{
 				GameConsole.pushText(std::string("Size: ") + std::to_string(World::WorldSize));
+				GameConsole.pushCommandToHistory(tmp);
 			}
 			else if(tmp.find("/giveItem") != std::string::npos)
 			{
