@@ -115,4 +115,73 @@ public:
 
 		return;
 	}
+
+	//function for /placeObject command
+	void placeObjectCheck(std::string command, ObjectArray &GObjects, World &GWorld)
+	{
+		uint16_t param = 1;
+		std::string tileX;
+		std::string tileY;
+		std::string objectId;
+
+		size_t begPos = command.find('t');
+		size_t i = begPos + 2;
+
+		while (i < command.size())
+		{
+			if (command[i] != ' ')
+			{
+				switch (param)
+				{
+				case 1:
+					tileX += command[i];
+					break;
+				case 2:
+					tileY += command[i];
+					break;
+				case 3:
+					objectId += command[i];
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				param++;
+			}
+			i++;
+		}
+		sf::Vector2i tile;
+		tile.x == std::stoi(tileX);
+		tile.y == std::stoi(tileY);
+
+		if (tile.x < 0 || tile.y < 0) 
+		{ 
+			commands.push_back(std::string("tile param must have value bigger than 0!")); 
+			return;
+		}
+		if (tile.x > World::WorldSize || tile.y > World::WorldSize)
+		{
+			commands.push_back(std::string("tile param must have value smaller than World::WorldSize!"));
+			return;
+		}
+
+		int objId = std::stoi(objectId);
+		if (objId < 0)
+		{
+			commands.push_back(std::string("objectId param must have value bigger than 0!"));
+			return;
+		}
+		if (objId > GObjects.getObjects().size() - 1)
+		{
+			commands.push_back(std::string("objectId param must have value smaller than Objects.Size()"));
+			return;
+		}
+
+		if (!GWorld.setObject(static_cast<sf::Vector2u>(tile), static_cast<unsigned>(objId)))
+		{
+			commands.push_back(std::string("this place is busy!"));
+		}
+	}
 };

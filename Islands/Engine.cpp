@@ -335,7 +335,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			if (tmp == "/help")
 			{
 				GameConsole.pushText(std::string("Commands:/giveItem,/spawnmonster"));
-				GameConsole.pushText(std::string("/placeobject,/settile,/settime"));
+				GameConsole.pushText(std::string("/placeObject,/settile,/settime"));
 				GameConsole.pushText(std::string("/playerposition,/time,/worldsize"));
 				GameConsole.pushText(std::string("/clear,/"));
 
@@ -352,6 +352,11 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 				GameConsole.pushText(std::string("Time: ") + std::to_string(GameClock.getElapsedTime().asSeconds()));
 				GameConsole.pushCommandToHistory(tmp);
 			}
+			else if(tmp == "/clear")
+			{
+				GameConsole.clearConsole();
+				GameConsole.pushCommandToHistory(tmp);
+			}
 			else if(tmp == "/worldsize")
 			{
 				GameConsole.pushText(std::string("Size: ") + std::to_string(World::WorldSize));
@@ -360,6 +365,10 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			else if(tmp.find("/giveItem") != std::string::npos)
 			{
 				GameConsole.giveItemCheck(tmp, Items, player);
+			}
+			else if(tmp.find("/placeObject") != std::string::npos)
+			{
+				GameConsole.placeObjectCheck(tmp, RawObjects, GameWorld);
 			}
 			else
 			{
