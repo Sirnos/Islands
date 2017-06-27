@@ -4,11 +4,21 @@
 
 const unsigned MAXIMUM_STACK_SIZE = 255;
 
+enum class ItemType
+{
+	Default,
+	Placeable,
+	MeleeWeapon,
+	DistanceWeapon,
+	Armor
+};
+
+
 class ItemDef
 {
 	std::string name;
 	unsigned maxStack;
-
+	ItemType type;
 public:
 	virtual	std::string ifUsed() = 0;
 	virtual	std::string ifClicked() = 0;
@@ -17,8 +27,12 @@ public:
 	std::string getName() { return name; }
 	unsigned getMaxStack() { return maxStack; }
 
-	ItemDef(std::string ItemName, unsigned maxItemStack) 
+	ItemType getType() { return type; }
+
+	ItemDef(std::string ItemName, unsigned maxItemStack,ItemType typeOfItem = ItemType::Default) 
 	{ 
+		type = typeOfItem;
+
 		name = ItemName; 
 		if (maxItemStack < MAXIMUM_STACK_SIZE)
 			maxStack = maxItemStack;
@@ -41,7 +55,7 @@ public:
 	std::string ifHold() { return "DRAW"; }
 
 	MeleeWeaponDef(std::string ItemName, int WeaponDmg, float WeaponReach, unsigned maxStack = 1)
-		:ItemDef(ItemName, maxStack)
+		:ItemDef(ItemName, maxStack, ItemType::MeleeWeapon)
 	{
 		Dmg = WeaponDmg;
 		Reach = WeaponReach;
@@ -61,7 +75,7 @@ public:
 	}
 	std::string ifHold() { return "DRAW"; }
 	DistantWeaponDef(std::string ItemName, int WeaponDmg, float WeaponRange, unsigned maxStack = 1)
-		:ItemDef(ItemName, maxStack)
+		:ItemDef(ItemName, maxStack, ItemType::DistanceWeapon)
 	{
 		Dmg = WeaponDmg;
 		Range = WeaponRange;
@@ -76,7 +90,7 @@ public:
 	std::string ifClicked() { return "MATTACK:1:1"; }
 
 	PlaceableDef(std::string ItemName, unsigned maxStack = 64)
-		:ItemDef(ItemName, maxStack) {}
+		:ItemDef(ItemName, maxStack, ItemType::Placeable) {}
 };
 
 class RawMaterialDef : public ItemDef
@@ -111,7 +125,7 @@ public:
 	ArmorPart getPart() { return part; }
 
 	ArmorDef(std::string ArmorName, ArmorPart armor,unsigned protectVal, unsigned maxStack = 1)
-		:ItemDef(ArmorName, maxStack)
+		:ItemDef(ArmorName, maxStack, ItemType::Armor)
 	{
 		protection = protectVal;
 		part = armor;

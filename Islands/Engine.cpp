@@ -16,11 +16,6 @@ void Engine::loadGameComponents()
 	}
 	loader.GenerateItemsFromObjectDef(RawObjects.getObjects(), Items);
 
-	for (auto & i : Items.getContainer())
-	{
-			ErrorHandler::log("Load Item: "+i->getName()+" maxStack: 64");
-	}
-
 	std::string itemTextureFile;
 	std::vector<sf::IntRect> ItemTextRect;
 	loader.LoadItemDefFromFile(Items.getContainer(), itemTextureFile, ItemTextRect);
@@ -28,6 +23,11 @@ void Engine::loadGameComponents()
 	for (auto & i : ItemTextRect)
 	{
 		mediaContainer.pushTexture(TextureContainer::ItemsTextures, itemTextureFile, i);
+	}
+	for (auto & i : Items.getContainer())
+	{
+		ErrorHandler::log("Load Item: " + i->getName() + " MaxStack: " + std::to_string(i->getMaxStack()));
+		ErrorHandler::log("Type: " + std::to_string(static_cast<int>(i->getType())));
 	}
 }
 
@@ -369,7 +369,6 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			else if(tmp.find("/placeObject") != std::string::npos)
 			{
 				GameConsole.placeObjectCheck(tmp, RawObjects, GameWorld);
-				GameConsole.pushCommandToHistory(tmp);
 			}
 			else
 			{
@@ -539,7 +538,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			unsigned itemId = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemId;
 			if (itemId != 0)
 			{
-				if (dynamic_cast<PlaceableDef*>(Items.getItemDef(itemId)) != nullptr)
+				if (Items.getItemDef(itemId)->getType() == ItemType::Placeable)
 				{
 					sf::Vector2f mousePos = app.getMousePosInWorld();
 					sf::Vector2u objectPos(mousePos.y / TILE_SIZE, mousePos.x / TILE_SIZE);

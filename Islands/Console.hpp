@@ -182,6 +182,8 @@ public:
 		if (!GWorld.setObject(static_cast<sf::Vector2u>(tile), static_cast<unsigned>(objId)))
 		{
 			commands.push_back(std::string("this place is busy!"));
+			return;
 		}
+		pushCommandToHistory(command);
 	}
 };
