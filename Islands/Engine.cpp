@@ -118,7 +118,7 @@ void Engine::pushChangesToGui()
 			unsigned ArmorItemId = player.getArmorInventoryField(i).ItemId;
 			if (ArmorItemId != 0)
 			{
-				GameGui.EquipmentGui.pushTextureToArmorFields(i, &mediaContainer.getTexture(ArmorItemId,
+				GameGui.EquipmentGui.pushTextureToArmorFields(i, mediaContainer.getTexture(ArmorItemId,
 					TextureContainer::ItemsTextures));
 			}
 		}
@@ -137,7 +137,7 @@ void Engine::pushChangesToGui()
 
 		if (itemId != 0)
 		{
-			GameGui.HudGui.pushTextureToBeltField(i, &mediaContainer.getTexture(itemId,
+			GameGui.HudGui.pushTextureToBeltField(i, mediaContainer.getTexture(itemId,
 				TextureContainer::ItemsTextures));
 		}
 
@@ -152,7 +152,7 @@ void Engine::pushChangesToGui()
 			unsigned tempItemId = player.getInventoryField(sf::Vector2u(i, j)).ItemId;
 			if (tempItemId != 0)
 			{
-				GameGui.EquipmentGui.pushTextureToFields(sf::Vector2u(i, j), &mediaContainer.getTexture(tempItemId,
+				GameGui.EquipmentGui.pushTextureToFields(sf::Vector2u(i, j), mediaContainer.getTexture(tempItemId,
 					TextureContainer::ItemsTextures));
 			}
 		}
@@ -395,19 +395,19 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 	case TILE::EMPTY:
 		break;
 	case TILE::DIRT:
-		shp.setTexture(&mediaContainer.getTexture(1,TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(1,TextureContainer::TileTextures));
 		break;
 	case TILE::GRASS:
-		shp.setTexture(&mediaContainer.getTexture(2, TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(2, TextureContainer::TileTextures));
 		break;
 	case TILE::ROCK:
-		shp.setTexture(&mediaContainer.getTexture(4, TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(4, TextureContainer::TileTextures));
 		break;
 	case TILE::BRIGDE:
-		shp.setTexture(&mediaContainer.getTexture(2, TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(2, TextureContainer::TileTextures));
 		break;
 	case TILE::CLOUD:
-		shp.setTexture(&mediaContainer.getTexture(6, TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(6, TextureContainer::TileTextures));
 		break;
 	default:
 		break;
@@ -421,7 +421,7 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 	if (ObjectID == 0) { return; }
 	if (ObjectID > RawObjects.getObjects().size()) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
-	shp.setTexture(&mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures),true);
+	shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures),true);
 	window.draw(shp);
 }
 
@@ -445,7 +445,7 @@ void Engine::init()
 	mediaContainer.load(); ErrorHandler::log("Load media");
 	loadGameComponents(); ErrorHandler::log("Load game components");
 
-	player.set(&mediaContainer.getTexture(1,TextureContainer::CharacterTextures), sf::Vector2f(100, 100),sf::Vector2f(10,8));
+	player.set(mediaContainer.getTexture(1,TextureContainer::CharacterTextures), sf::Vector2f(100, 100),sf::Vector2f(10,8));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
 	GameWorld.init();
@@ -620,7 +620,7 @@ void Engine::drawWorld(IslandApp & app)
 		if (CollisionDetect::isPointInRectangle(LyingItems.getPosition(i), cameraPos, camera.getSize()))
 		{
 			LyingItemShape.setPosition(LyingItems.getPosition(i));
-			LyingItemShape.setTexture(&mediaContainer.getTexture(LyingItems.getItem(i).ItemId,
+			LyingItemShape.setTexture(mediaContainer.getTexture(LyingItems.getItem(i).ItemId,
 				TextureContainer::ItemsTextures), true);
 			app.draw(LyingItemShape);
 		}
@@ -645,7 +645,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 	{
 		sf::RectangleShape holdedItemRep;
 		holdedItemRep.setSize(sf::Vector2f(DefaultEqFieldSize, DefaultEqFieldSize));
-		holdedItemRep.setTexture(&mediaContainer.getTexture(GameGui.getHoldedItem().ItemId,
+		holdedItemRep.setTexture(mediaContainer.getTexture(GameGui.getHoldedItem().ItemId,
 			TextureContainer::ItemsTextures));
 		holdedItemRep.setPosition(app.getMousePosInWorld());
 		amountItem.setString(std::to_string(GameGui.getHoldedItem().ItemAmount));

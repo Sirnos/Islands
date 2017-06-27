@@ -1,7 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <map>
+#include<SFML/Graphics/Texture.hpp>
 #include "Log.hpp"
 
 enum class TextureContainer : unsigned
@@ -43,7 +42,7 @@ public:
 		CharacterTexture.back().loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
 	}
 
-	sf::Texture& pushTexture(TextureContainer destinationContainer, std::string fileName, sf::IntRect textCord)
+	void pushTexture(TextureContainer destinationContainer, std::string fileName, sf::IntRect textCord)
 	{
 		switch (destinationContainer)
 		{
@@ -53,7 +52,6 @@ public:
 			{
 				ErrorHandler::log("Tile texture load incorectly");
 			}
-			return TileTexture.back();
 			break;
 		case TextureContainer::CharacterTextures:
 			CharacterTexture.push_back(sf::Texture());
@@ -61,7 +59,6 @@ public:
 			{
 				ErrorHandler::log("Character texture load incorectly");
 			}
-			return CharacterTexture.back();
 			break;
 		case TextureContainer::ObjectTextures:
 			ObjectsTexture.push_back(sf::Texture());
@@ -69,7 +66,6 @@ public:
 			{
 				ErrorHandler::log("Object texture load incorectly");
 			}
-			return ObjectsTexture.back();
 			break;
 		case TextureContainer::ItemsTextures:
 			ItemsTexture.push_back(sf::Texture());
@@ -77,27 +73,27 @@ public:
 			{
 				ErrorHandler::log("Item texture load incorectly");
 			}
-			return ItemsTexture.back();
 			break;
 		}
 	}
-	sf::Texture& getTexture(size_t index, TextureContainer typeOfContainer)
+	sf::Texture* getTexture(size_t index, TextureContainer typeOfContainer)
 	{
 		switch (typeOfContainer)
 		{
 		case TextureContainer::TileTextures:
-			return TileTexture[index];
+			return &TileTexture[index];
 			break;
 		case TextureContainer::CharacterTextures:
-			return CharacterTexture[index];
+			return &CharacterTexture[index];
 			break;
 		case TextureContainer::ObjectTextures:
-			return ObjectsTexture[index];
+			return &ObjectsTexture[index];
 			break;
 		case TextureContainer::ItemsTextures:
-			return ItemsTexture[index];
+			return &ItemsTexture[index];
 			break;
 		}
+		return nullptr;
 	}
 
 	size_t getSizeOfContainer(TextureContainer typeOfContainer)
