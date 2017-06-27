@@ -369,6 +369,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			else if(tmp.find("/placeObject") != std::string::npos)
 			{
 				GameConsole.placeObjectCheck(tmp, RawObjects, GameWorld);
+				GameConsole.pushCommandToHistory(tmp);
 			}
 			else
 			{
@@ -490,8 +491,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 				sf::Vector2f fieldPos = GameGui.EquipmentGui.getArmorFieldRect(i).getPosition();
 
-				if (CollisionDetect::isPointInRectangle(mousePosInWorld,fieldPos,
-					sf::Vector2f(DefaultEqFieldSize,DefaultEqFieldSize)))
+				if (GameGui.EquipmentGui.getArmorFieldRect(i).getGlobalBounds().contains(mousePosInWorld))
 				{
 					GameGui.EquipmentGui.setHoverForArmorField(i, true);
 					if (isMouseClick)
@@ -506,8 +506,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				GameGui.HudGui.setHoverForBeltField(i, false);
 			}
 			sf::Vector2f beltFieldPos = GameGui.HudGui.getBeltFieldRect(i).getPosition();
-			if (CollisionDetect::isPointInRectangle(mousePosInWorld,beltFieldPos,
-				sf::Vector2f(DefaultEqFieldSize,DefaultEqFieldSize)))
+			if (GameGui.HudGui.getBeltFieldRect(i).getGlobalBounds().contains(mousePosInWorld))
 			{
 				GameGui.HudGui.setHoverForBeltField(i, true);
 				if (isMouseClick)
@@ -524,8 +523,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 
 				sf::Vector2f fieldPos = GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).getPosition();
-				if (CollisionDetect::isPointInRectangle(mousePosInWorld,fieldPos,
-					sf::Vector2f(DefaultEqFieldSize,DefaultEqFieldSize)))
+				if (GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i,j)).getGlobalBounds().contains(mousePosInWorld))
 				{
 					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), true);
 					if (isMouseClick)
