@@ -104,11 +104,11 @@ public:
 
 		int id = std::stoi(idStr);
 		if (id <= 0) { commands.push_back("id is equal 0 or smaller"); return; }
-		if (id > Items.getContainer().size()-1) { commands.push_back("item with this id does not exist"); return; }
+		if (static_cast<unsigned>(id) > Items.getContainer().size()-1) { commands.push_back("item with this id does not exist"); return; }
 		int amount = std::stoi(amountStr);
 		if (amount <= 0) { commands.push_back("amount is equal 0 or smaller"); return; }
-		if (amount > (int)(MAXIMUM_STACK_SIZE)) { commands.push_back("amount is higher than MAXIMUM_STACK_SIZE"); return; }
-		if (amount > (int)Items.getItemDef(id)->getMaxStack()) { commands.push_back("amount is higher than Item::MaxStack"); return; }
+		if (static_cast<unsigned>(amount) > MAXIMUM_STACK_SIZE) { commands.push_back("amount is higher than MAXIMUM_STACK_SIZE"); return; }
+		if (static_cast<unsigned>(amount) > Items.getItemDef(id)->getMaxStack()-1) { commands.push_back("amount is higher than Item::MaxStack"); return; }
 
 		player.pushItemToPlayer(ItemField(id, amount), Items);
 		pushCommandToHistory(command);
@@ -161,7 +161,7 @@ public:
 			commands.push_back(std::string("tile param must have value bigger than 0!")); 
 			return;
 		}
-		if (tile.x > World::WorldSize || tile.y > World::WorldSize)
+		if (static_cast<unsigned>(tile.x) > World::WorldSize || static_cast<unsigned>(tile.y) > World::WorldSize)
 		{
 			commands.push_back(std::string("tile param must have value smaller than World::WorldSize!"));
 			return;
@@ -173,7 +173,7 @@ public:
 			commands.push_back(std::string("objectId param must have value bigger than 0!"));
 			return;
 		}
-		if (objId > GObjects.getObjects().size() - 1)
+		if (static_cast<unsigned>(objId) > GObjects.getObjects().size() - 1)
 		{
 			commands.push_back(std::string("objectId param must have value smaller than Objects.Size()"));
 			return;

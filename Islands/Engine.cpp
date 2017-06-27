@@ -26,8 +26,8 @@ void Engine::loadGameComponents()
 	}
 	for (auto & i : Items.getContainer())
 	{
-		ErrorHandler::log("Load Item: " + i->getName() + " MaxStack: " + std::to_string(i->getMaxStack()));
-		ErrorHandler::log("Type: " + std::to_string(static_cast<int>(i->getType())));
+		ErrorHandler::log("Load Item: " + i->getName() + " MaxStack: " + std::to_string(i->getMaxStack())
+			+ " Type: " + std::to_string(static_cast<int>(i->getType())));
 	}
 }
 
@@ -544,7 +544,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				if (Items.getItemDef(itemId)->getType() == ItemType::Placeable)
 				{
 					sf::Vector2f mousePos = app.getMousePosInWorld();
-					sf::Vector2u objectPos(mousePos.y / TILE_SIZE, mousePos.x / TILE_SIZE);
+					sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE),
+						static_cast<unsigned>(mousePos.x / TILE_SIZE));
 					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
 						sf::Vector2f(World::WorldSize * TILE_SIZE,World::WorldSize * TILE_SIZE)))
 					{
