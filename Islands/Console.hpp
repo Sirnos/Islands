@@ -153,8 +153,8 @@ public:
 			i++;
 		}
 		sf::Vector2i tile;
-		tile.x == std::stoi(tileX);
-		tile.y == std::stoi(tileY);
+		tile.x = std::stoi(tileX);
+		tile.y = std::stoi(tileY);
 
 		if (tile.x < 0 || tile.y < 0) 
 		{ 

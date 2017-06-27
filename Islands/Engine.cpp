@@ -300,8 +300,11 @@ void Engine::drawConsole(IslandApp & app)
 		sf::Vector2f begPos = GameConsole.getInputText().getPosition();
 		begPos -= sf::Vector2f(0, 16);
 
-		for (size_t i = GameConsole.getCommandsSize() - 1; i > GameConsole.getCommandsSize() - 20 || i > 0; i--)
+
+		if (GameConsole.getCommandsSize() == 0) { return; }
+		for (size_t i = GameConsole.getCommandsSize() - 1; i > 0; i--)
 		{
+			if (begPos.y < GameConsole.getWindow().getPosition().y) { break; }
 			consoleText.setString(GameConsole.getText(i));
 			consoleText.setPosition(begPos);
 			app.draw(consoleText);
