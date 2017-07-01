@@ -7,7 +7,7 @@
 #include <rapidxml.hpp>
 
 #include "ObjectDef.hpp"
-#include "ItemDefContainer.hpp"
+#include "DefContainer.hpp"
 
 class GameComponentsLoader
 {
@@ -120,7 +120,7 @@ public:
 		for (unsigned i = 1; i < Objs.size(); i++)
 		{
 			auto ref = const_cast<ObjectDef*>(&Objs[i]);
-			ItemCont.pushNewItemDef(new PlaceableDef(ref->getName()));
+			ItemCont.pushNewDef(new PlaceableDef(ref->getName()));
 		}
 		auto & Items = ItemCont.getContainer();
 		for (size_t i = 0; i<Items.size(); i++)

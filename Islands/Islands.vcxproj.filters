@@ -86,9 +86,6 @@
     <ClInclude Include="World.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemDefContainer.hpp">
-      <Filter>Header Files\Item</Filter>
-    </ClInclude>
     <ClInclude Include="ItemDef.hpp">
       <Filter>Header Files\Item</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
       <Filter>Header Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="GameComponentsLoader.hpp">
-      <Filter>Header Files\GameComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponentsUnloader.hpp">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="PlayerGui.hpp">
@@ -133,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Console.hpp">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="DefContainer.hpp">
+      <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

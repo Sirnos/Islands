@@ -59,16 +59,16 @@ public:
 
 class ChestDef : public ObjectDef
 {
-	unsigned ChestCapacity;
+	unsigned Capacity;
 
 public:
-	unsigned getCapacity() { return ChestCapacity; }
+	unsigned getCapacity() { return Capacity; }
 
 	ChestDef(std::string Name, sf::Vector2f Size, sf::IntRect TextureCord, sf::FloatRect CollisionBox,
-		Yield yield, bool Destructible, unsigned Capacity)
+		Yield yield, bool Destructible, unsigned ChestCapacity)
 		:ObjectDef(Name, Size, TextureCord, CollisionBox, yield, Destructible)
 	{
-		ChestCapacity = Capacity;
+		Capacity = ChestCapacity;
 		type = ObjectType::Chest;
 	}
 };

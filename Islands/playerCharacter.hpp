@@ -76,7 +76,7 @@ public:
 			{
 				ItemField temp = getHandInventoryField(i);
 				temp += item.ItemAmount;
-				unsigned maxStack = Items.getItemDef(item.ItemId)->getMaxStack();
+				unsigned maxStack = Items.getDefinition(item.ItemId)->getMaxStack();
 
 				if (temp.ItemAmount >= maxStack)
 				{
@@ -97,7 +97,7 @@ public:
 				{
 					ItemField temp = getInventoryField(sf::Vector2u(i, j));
 					temp += item.ItemAmount;
-					unsigned maxStack = Items.getItemDef(item.ItemId)->getMaxStack();
+					unsigned maxStack = Items.getDefinition(item.ItemId)->getMaxStack();
 					if (temp.ItemAmount >= maxStack)
 					{
 						item.ItemAmount = temp.ItemAmount - maxStack;

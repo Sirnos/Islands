@@ -11,9 +11,8 @@
 #include "PlayerGui.hpp"
 
 #include "GameComponentsLoader.hpp"
-#include "GameComponentsUnloader.hpp"
 
-#include "ItemDefContainer.hpp"
+#include "DefContainer.hpp"
 #include "LyingItemsContainer.hpp"
 
 #include "playerCharacter.hpp"

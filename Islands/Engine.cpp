@@ -173,7 +173,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 				player.setInventoryField(field, ItemField(holdedItemId,
 					player.getInventoryField(field).ItemAmount + GameGui.getHoldedItem().ItemAmount));
 
-				unsigned maxStack = Items.getItemDef(holdedItemId)->getMaxStack();
+				unsigned maxStack = Items.getDefinition(holdedItemId)->getMaxStack();
 				if (player.getInventoryField(field).ItemAmount >= maxStack)
 				{
 					unsigned amountForHold = player.getInventoryField(field).ItemAmount - maxStack;
@@ -241,7 +241,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 				player.setHandInventoryField(field.x, ItemField(holdedItemId,
 					player.getHandInventoryField(field.x).ItemAmount + GameGui.getHoldedItem().ItemAmount));
 
-				unsigned maxStack = Items.getItemDef(holdedItemId)->getMaxStack();
+				unsigned maxStack = Items.getDefinition(holdedItemId)->getMaxStack();
 				if (player.getHandInventoryField(field.x).ItemAmount >= maxStack)
 				{
 					unsigned amountForHold = player.getHandInventoryField(field.x).ItemAmount - maxStack;
@@ -435,8 +435,6 @@ bool Engine::checkPlayerPos()
 
 Engine::~Engine()
 {
-	GameComponentUnloader unloader;
-	unloader.clearItems(Items.getContainer());
 	ErrorHandler::log("Clear data");
 }
 
@@ -541,7 +539,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			unsigned itemId = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemId;
 			if (itemId != 0)
 			{
-				if (Items.getItemDef(itemId)->getType() == ItemType::Placeable)
+				if (Items.getDefinition(itemId)->getType() == ItemType::Placeable)
 				{
 					sf::Vector2f mousePos = app.getMousePosInWorld();
 					sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE),

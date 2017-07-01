@@ -133,14 +133,13 @@
     <ClInclude Include="Character.hpp" />
     <ClInclude Include="CollisionDetect.hpp" />
     <ClInclude Include="Console.hpp" />
+    <ClInclude Include="DefContainer.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="EquipmentField.hpp" />
-    <ClInclude Include="GameComponentsUnloader.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
-    <ClInclude Include="ItemDefContainer.hpp" />
     <ClInclude Include="ItemField.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="LyingItemsContainer.hpp" />
