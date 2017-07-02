@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ItemDef.hpp"
+#include "ObjectDef.hpp"
 #include <vector>
 
 template<typename DefType>
@@ -18,6 +19,8 @@ public:
 		}
 		Container.clear();
 	}
+
+	size_t getSize() { return Container.size(); }
 
 	DefType getDefinition(unsigned index)
 	{
@@ -40,3 +43,4 @@ public:
 };
 
 typedef DefContainer<ItemDef*> ItemDefContainer;
+typedef DefContainer<ObjectDef*> ObjectDefContainer;

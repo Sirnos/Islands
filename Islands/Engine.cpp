@@ -3,32 +3,35 @@
 void Engine::loadGameComponents()
 {
 	GameComponentsLoader loader;
-	std::string graphicsfile;
-	RawObjects.generateArray(loader.LoadObjectDefFromFile(graphicsfile));
+	std::string objectGraphicsfile;
+	std::vector<sf::IntRect> objectTextureCords;
 
-	for (auto & i : RawObjects.getObjects())
-	{
-		auto ref = const_cast<ObjectDef&>(i);
-			mediaContainer.pushTexture(TextureContainer::ObjectTextures,
-				graphicsfile, ref.getTextureCord());
-			mediaContainer.pushTexture(TextureContainer::ItemsTextures,
-				graphicsfile, ref.getTextureCord());
-	}
-	loader.GenerateItemsFromObjectDef(RawObjects.getObjects(), Items);
+	loader.LoadObjectDefFromFile(Objects.getContainer(), objectGraphicsfile, objectTextureCords);
 
-	std::string itemTextureFile;
-	std::vector<sf::IntRect> ItemTextRect;
-	loader.LoadItemDefFromFile(Items.getContainer(), itemTextureFile, ItemTextRect);
+	for (auto & i : objectTextureCords)
+	{
+		mediaContainer.pushTexture(TextureContainer::ObjectTextures, objectGraphicsfile, i);
+		mediaContainer.pushTexture(TextureContainer::ItemsTextures, objectGraphicsfile, i);
+	}
 
-	for (auto & i : ItemTextRect)
+	loader.GenerateItemsFromObjectDef(Objects.getContainer(), Items.getContainer());
+
+	std::string itemGraphicsFile;
+	std::vector<sf::IntRect> itemTextureCords;
+	loader.LoadItemDefFromFile(Items.getContainer(), itemGraphicsFile, itemTextureCords);
+
+	for (auto & i : itemTextureCords)
 	{
-		mediaContainer.pushTexture(TextureContainer::ItemsTextures, itemTextureFile, i);
+		mediaContainer.pushTexture(TextureContainer::ItemsTextures, itemGraphicsFile, i);
 	}
-	for (auto & i : Items.getContainer())
+
+	for (size_t i = 0; i < Items.getSize(); i++)
 	{
-		ErrorHandler::log("Load Item: " + i->getName() + " MaxStack: " + std::to_string(i->getMaxStack())
-			+ " Type: " + std::to_string(static_cast<int>(i->getType())));
+		ErrorHandler::log("Load Item: " + Items.getDefinition(i)->getName() + " MaxStack: " + std::to_string(Items.getDefinition(i)->getMaxStack())
+			+ " Type: " + std::to_string(static_cast<int>(Items.getDefinition(i)->getType())));
 	}
+
+	Items.getContainer();
 }
 
 void Engine::checkPlayerEnvironment()
@@ -371,7 +374,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			}
 			else if(tmp.find("/placeObject") != std::string::npos)
 			{
-				GameConsole.placeObjectCheck(tmp, RawObjects, GameWorld);
+				GameConsole.placeObjectCheck(tmp, Objects, GameWorld);
 			}
 			else
 			{
@@ -419,7 +422,7 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 {
 	unsigned ObjectID = GameWorld.getObject(sf::Vector2u(objectIndex.y,objectIndex.x));
 	if (ObjectID == 0) { return; }
-	if (ObjectID > RawObjects.getObjects().size()) { return; }
+	if (ObjectID > Objects.getSize()) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
 	shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures),true);
 	window.draw(shp);
@@ -600,7 +603,7 @@ void Engine::drawWorld(IslandApp & app)
 		LyingItemShape,
 		ObjectShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-	ObjectShape.setSize(RawObjects.ObjectGraphicsSize);
+	ObjectShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 	LyingItemShape.setSize(sf::Vector2f(32, 32));
 
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)

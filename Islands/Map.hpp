@@ -5,7 +5,7 @@
 #include <vector>
 #include <ctime>
 #include "Tile.hpp"
-#include "Log.hpp"
+#include "ErrorHandler.hpp"
 
 class Map
 {

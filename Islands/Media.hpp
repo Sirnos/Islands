@@ -1,7 +1,7 @@
 #pragma once
 
 #include<SFML/Graphics/Texture.hpp>
-#include "Log.hpp"
+#include "ErrorHandler.hpp"
 
 enum class TextureContainer : unsigned
 {

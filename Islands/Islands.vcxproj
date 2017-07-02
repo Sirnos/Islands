@@ -141,13 +141,12 @@
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
     <ClInclude Include="ItemField.hpp" />
-    <ClInclude Include="Log.hpp" />
+    <ClInclude Include="ErrorHandler.hpp" />
     <ClInclude Include="LyingItemsContainer.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="ObjectDef.hpp" />
-    <ClInclude Include="ObjectArray.hpp" />
     <ClInclude Include="ObjectsContainer.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="PlayerEquipmentGui.hpp" />
@@ -163,7 +162,9 @@
     <Image Include="Data\Tiles.png" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Data\Items.xml" />
+    <Xml Include="Data\Items.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="Data\Objects.xml">
       <SubType>Designer</SubType>
     </Xml>

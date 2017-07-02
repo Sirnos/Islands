@@ -6,6 +6,7 @@
 
 #include "IslandApp.hpp"
 
+#include "ErrorHandler.hpp"
 #include "CollisionDetect.hpp"
 
 #include "PlayerGui.hpp"
@@ -18,8 +19,6 @@
 #include "playerCharacter.hpp"
 
 #include "Media.hpp"
-#include "ObjectArray.hpp"
-#include "Log.hpp"
 #include "World.hpp"
 
 #include "Console.hpp"
@@ -32,8 +31,7 @@ class Engine
 
 	PlayerGui GameGui;
 
-	ObjectArray RawObjects;
-
+	ObjectDefContainer Objects;
 	ItemDefContainer Items;
 	LyingItemsContainer LyingItems;
 

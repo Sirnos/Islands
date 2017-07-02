@@ -23,17 +23,14 @@ protected:
 private:
 	std::string ObjName;
 	sf::Vector2f ObjSize;
-	sf::IntRect ObjTextureCord;
 	sf::FloatRect ObjCollisionBox;
 	bool ObjDestructible;
 	Yield ObjYield;
 public:
-	ObjectDef(std::string Name, sf::Vector2f Size, sf::IntRect TextureCord, sf::FloatRect CollisionBox,
-		Yield yield, bool Destructible)
+	ObjectDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox, Yield yield, bool Destructible)
 		:ObjDestructible(Destructible),
 		ObjName(Name),
 		ObjSize(Size),
-		ObjTextureCord(TextureCord),
 		ObjCollisionBox(CollisionBox),
 		ObjYield(yield),
 		type(ObjectType::Default)
@@ -42,7 +39,6 @@ public:
 		:ObjDestructible(false),
 		ObjName(""),
 		ObjSize(0,0),
-		ObjTextureCord(0,0,0,0),
 		ObjCollisionBox(0,0,0,0),
 		ObjYield(Yield("",0)),
 		type(ObjectType::Default)
@@ -51,7 +47,6 @@ public:
 	ObjectType getType() { return type; }
 	std::string getName() { return ObjName; }
 	sf::Vector2f getSize() { return ObjSize; }
-	sf::IntRect getTextureCord() { return ObjTextureCord; }
 	sf::FloatRect getCollisionBox() { return ObjCollisionBox; }
 	bool getDestructible() { return ObjDestructible; }
 	Yield getYield() { return ObjYield; }
@@ -64,9 +59,9 @@ class ChestDef : public ObjectDef
 public:
 	unsigned getCapacity() { return Capacity; }
 
-	ChestDef(std::string Name, sf::Vector2f Size, sf::IntRect TextureCord, sf::FloatRect CollisionBox,
+	ChestDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, unsigned ChestCapacity)
-		:ObjectDef(Name, Size, TextureCord, CollisionBox, yield, Destructible)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible)
 	{
 		Capacity = ChestCapacity;
 		type = ObjectType::Chest;
@@ -80,9 +75,9 @@ class Sapling : public ObjectDef
 public:
 	float getGrowTime() { return GrowTime; }
 
-	Sapling(std::string Name, sf::Vector2f Size, sf::IntRect TextureCord, sf::FloatRect CollisionBox,
+	Sapling(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, float TimeForGrow)
-		:ObjectDef(Name, Size, TextureCord, CollisionBox, yield, Destructible)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible)
 	{
 		GrowTime = TimeForGrow;
 		type = ObjectType::Sapling;

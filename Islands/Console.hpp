@@ -117,7 +117,7 @@ public:
 	}
 
 	//function for /placeObject command
-	void placeObjectCheck(std::string command, ObjectArray &GObjects, World &GWorld)
+	void placeObjectCheck(std::string command, ObjectDefContainer &GObjects, World &GWorld)
 	{
 		uint16_t param = 1;
 		std::string tileX;
@@ -173,7 +173,7 @@ public:
 			commands.push_back(std::string("objectId param must have value bigger than 0!"));
 			return;
 		}
-		if (static_cast<unsigned>(objId) > GObjects.getObjects().size() - 1)
+		if (static_cast<unsigned>(objId) > GObjects.getSize() - 1)
 		{
 			commands.push_back(std::string("objectId param must have value smaller than Objects.Size()"));
 			return;
