@@ -1,7 +1,7 @@
 #pragma once
 
 #include <noise/noise.h>
-#include <SFML/System.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <vector>
 #include <ctime>
 #include "Tile.hpp"
@@ -9,21 +9,90 @@
 
 class Map
 {
-public:
-	const static size_t MAP_SIZE = 512;
-private:
+
 	std::vector<std::vector<TILE>> TilesMap;
-	void fitMap();
+	void fitMap()
+	{
+		for (auto & i : TilesMap)
+		{
+			i.shrink_to_fit();
+		}
+		TilesMap.shrink_to_fit();
+	}
 public:
-	~Map();
+	~Map()
+	{
+		unloadMap();
+	}
 
-	void unloadMap();
+	void unloadMap()
+	{
+		TilesMap.clear();
+	}
+
 	//void loadMapFromFile(std::string file);
-	void generateMap();
+	void generateMap(size_t Size)
+	{
+		noise::module::Perlin noiseModule;
+		noiseModule.SetSeed(static_cast<int>(time(time_t(NULL))));
+		noiseModule.SetOctaveCount(6);
+		noiseModule.SetFrequency(1.0);
+		noiseModule.SetPersistence(0.25);
 
-	const static sf::Vector2i getTiledPosition(sf::Vector2f characterPos);
-	const static sf::Vector2f getNormalPosition(sf::Vector2i tileNumber);
+		TilesMap.resize(Size, std::vector<TILE>(Size));
 
-	sf::Vector2u getMapSize();
-	TILE getTile(sf::Vector2u tileNumber);
+		double mnX = 0;
+		for (auto & i : TilesMap)
+		{
+			double mnY = 0;
+			for (auto & j : i)
+			{
+				double TileValue = noiseModule.GetValue(1.25 + (0.1 * mnX), 0.75 + (0.1 * mnY), 0.5);
+				if (TileValue > 0.75)
+				{
+					j = TILE::ROCK;
+				}
+				else if (TileValue > 0.5)
+				{
+					j = TILE::DIRT;
+				}
+				else if (TileValue > 0.05)
+				{
+					j = TILE::GRASS;
+				}
+				else if (TileValue > -0.5)
+				{
+					j = TILE::CLOUD;
+				}
+				else
+				{
+					j = TILE::EMPTY;
+				}
+				mnY += 1;
+			}
+			mnX += 1;
+		}
+		fitMap();
+	}
+
+	const static sf::Vector2i getTiledPosition(sf::Vector2f characterPos)
+	{
+		characterPos = characterPos / TILE_SIZE;
+		return static_cast<sf::Vector2i>(characterPos);
+	}
+
+	const static sf::Vector2f getNormalPosition(sf::Vector2i tileNumber)
+	{
+		return sf::Vector2f(static_cast<float>(tileNumber.x) * TILE_SIZE,
+			static_cast<float>(tileNumber.y) * TILE_SIZE);
+	}
+
+	sf::Vector2u getMapSize()
+	{
+		return sf::Vector2u(TilesMap.size(), TilesMap[0].size());
+	}
+	TILE getTile(sf::Vector2u tileNumber)
+	{
+		return TilesMap[tileNumber.x][tileNumber.y];
+	}
 };

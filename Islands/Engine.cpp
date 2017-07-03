@@ -84,7 +84,7 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 
 void Engine::spawnPlayer()
 {
-	const int MaxPosition = Map::MAP_SIZE - 10;
+	const int MaxPosition = WorldSize - 10;
 
 	srand(static_cast<unsigned int>(time(NULL)));
 	sf::Vector2f spawnPoint;
@@ -365,7 +365,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			}
 			else if(tmp == "/worldsize")
 			{
-				GameConsole.pushText(std::string("Size: ") + std::to_string(World::WorldSize));
+				GameConsole.pushText(std::string("Size: ") + std::to_string(WorldSize));
 				GameConsole.pushCommandToHistory(tmp);
 			}
 			else if(tmp.find("/giveItem") != std::string::npos)
@@ -451,7 +451,7 @@ void Engine::init()
 
 	GameWorld.init();
 	ErrorHandler::log("Generate map");
-	ErrorHandler::log("Map Size " + std::to_string(Map::MAP_SIZE) + " x " + std::to_string(Map::MAP_SIZE));
+	ErrorHandler::log("Map Size " + std::to_string(WorldSize) + " x " + std::to_string(WorldSize));
 	spawnPlayer();
 
 	GameGui.create();
@@ -548,7 +548,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 					sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE),
 						static_cast<unsigned>(mousePos.x / TILE_SIZE));
 					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
-						sf::Vector2f(World::WorldSize * TILE_SIZE,World::WorldSize * TILE_SIZE)))
+						sf::Vector2f(WorldSize * TILE_SIZE,WorldSize * TILE_SIZE)))
 					{
 						if (player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemAmount == 0)
 						{

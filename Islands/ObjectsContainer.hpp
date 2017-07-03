@@ -11,15 +11,13 @@ class ObjectContainer
 {
 	Elements Container;
 public:
-	ObjectContainer(unsigned RangeForElements = 512,Elements &otherContainer = Elements())
-	{
-		Container.resize(RangeForElements);
-		for (auto & i : Container)
-		{
-			i.resize(RangeForElements,0);
-		}
-	}
+	ObjectContainer(){}
 	~ObjectContainer() { Container.clear(); }
+
+	void generate(unsigned Size)
+	{
+		Container.resize(Size, std::vector<unsigned>(Size, 0));
+	}
 
 	void pushNewObject(unsigned ObjectID, sf::Vector2u position) { Container[position.x][position.y] = ObjectID; }
 	const Elements &getContainerElements() { return Container; }

@@ -161,7 +161,7 @@ public:
 			commands.push_back(std::string("tile param must have value bigger than 0!")); 
 			return;
 		}
-		if (static_cast<unsigned>(tile.x) > World::WorldSize || static_cast<unsigned>(tile.y) > World::WorldSize)
+		if (static_cast<unsigned>(tile.x) > WorldSize || static_cast<unsigned>(tile.y) > WorldSize)
 		{
 			commands.push_back(std::string("tile param must have value smaller than World::WorldSize!"));
 			return;
