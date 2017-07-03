@@ -13,6 +13,7 @@ enum class ObjectType
 	Chest,
 	Tree,
 	Sapling,
+	Spawner
 };
 
 class ObjectDef
@@ -27,6 +28,13 @@ private:
 	bool ObjDestructible;
 	Yield ObjYield;
 public:
+	ObjectType getType() { return type; }
+	std::string getName() { return ObjName; }
+	sf::Vector2f getSize() { return ObjSize; }
+	sf::FloatRect getCollisionBox() { return ObjCollisionBox; }
+	bool getDestructible() { return ObjDestructible; }
+	Yield getYield() { return ObjYield; }
+
 	ObjectDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox, Yield yield, bool Destructible)
 		:ObjDestructible(Destructible),
 		ObjName(Name),
@@ -44,12 +52,7 @@ public:
 		type(ObjectType::Default)
 	{}
 
-	ObjectType getType() { return type; }
-	std::string getName() { return ObjName; }
-	sf::Vector2f getSize() { return ObjSize; }
-	sf::FloatRect getCollisionBox() { return ObjCollisionBox; }
-	bool getDestructible() { return ObjDestructible; }
-	Yield getYield() { return ObjYield; }
+	virtual ~ObjectDef(){}
 };
 
 class ChestDef : public ObjectDef
@@ -68,18 +71,36 @@ public:
 	}
 };
 
-class Sapling : public ObjectDef
+class SaplingDef : public ObjectDef
 {
 	float GrowTime;
 
 public:
 	float getGrowTime() { return GrowTime; }
 
-	Sapling(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
+	SaplingDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, float TimeForGrow)
 		:ObjectDef(Name, Size, CollisionBox, yield, Destructible)
 	{
 		GrowTime = TimeForGrow;
 		type = ObjectType::Sapling;
+	}
+};
+
+class SpawnerDef : public ObjectDef
+{
+	float SpawnTime;
+	std::string MonsterName;
+public:
+	float getSpawnTime() { return SpawnTime; }
+	std::string getMonsterName() { return MonsterName; }
+
+	SpawnerDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
+		Yield yield, bool Destructible, float TimeForSpawn, std::string MonsterToSpawn)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible)
+	{
+		SpawnTime = TimeForSpawn;
+		MonsterName = MonsterToSpawn;
+		type = ObjectType::Spawner;
 	}
 };
