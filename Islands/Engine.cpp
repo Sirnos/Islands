@@ -287,6 +287,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 
 void Engine::drawConsole(IslandApp & app)
 {
+	if (!GameConsole.getEnable()) { return; }
 	app.draw(GameConsole.getWindow());
 	app.draw(GameConsole.getInputText());
 
@@ -318,6 +319,8 @@ void Engine::drawConsole(IslandApp & app)
 
 void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick)
 {
+	if (!GameConsole.getEnable()) { return; }
+
 	auto tmp = GameConsole(event, mousePos, isMouseRClick);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
@@ -468,6 +471,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	app.getIslandWindow()->setView(camera);
 
 	auto Window = app.getIslandWindow();
+
+	if (key == '`') { GameConsole.setEnable(!GameConsole.getEnable()); }
 
 	GameGui.setNewPosition(Window->mapPixelToCoords(GameGui.EquipmentGui.defaultEquipmentGuiPosOnScreen));
 	GameGui.HudGui.setNewPosition(Window->mapPixelToCoords(GameGui.HudGui.HpInfoScreenPos),

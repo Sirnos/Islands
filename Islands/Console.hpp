@@ -15,6 +15,8 @@ class Console
 	unsigned lastHistoryCmd;
 
 	sf::Font ConsoleFont;
+
+	bool enable;
 public:
 	Console()
 	{
@@ -26,6 +28,7 @@ public:
 		ConsoleInput.create(ConsoleFont, false, "Type you command here! ", 64);
 
 		lastHistoryCmd = 0;
+		enable = true;
 	}
 	~Console()
 	{
@@ -33,6 +36,9 @@ public:
 		history.clear();
 	}
 	
+	bool getEnable() { return enable; }
+	void setEnable(bool newVal) { enable = newVal; }
+
 	void pushCommandToHistory(std::string command) { history.push_back(command); }
 	std::string getCmdFromHistory(unsigned cmdNumber) { return history[cmdNumber]; }
 	std::string getLastCmdFromHistory() { return history.back(); }
