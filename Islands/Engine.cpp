@@ -30,8 +30,6 @@ void Engine::loadGameComponents()
 		ErrorHandler::log("Load Item: " + Items.getDefinition(i)->getName() + " MaxStack: " + std::to_string(Items.getDefinition(i)->getMaxStack())
 			+ " Type: " + std::to_string(static_cast<int>(Items.getDefinition(i)->getType())));
 	}
-
-	Items.getContainer();
 }
 
 void Engine::checkPlayerEnvironment()

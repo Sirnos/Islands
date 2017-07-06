@@ -18,10 +18,8 @@ enum class ObjectType
 
 class ObjectDef
 {
-protected:
 	ObjectType type;
 
-private:
 	std::string ObjName;
 	sf::Vector2f ObjSize;
 	sf::FloatRect ObjCollisionBox;
@@ -35,13 +33,13 @@ public:
 	bool getDestructible() { return ObjDestructible; }
 	Yield getYield() { return ObjYield; }
 
-	ObjectDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox, Yield yield, bool Destructible)
+	ObjectDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox, Yield yield, bool Destructible,ObjectType type = ObjectType::Default)
 		:ObjDestructible(Destructible),
 		ObjName(Name),
 		ObjSize(Size),
 		ObjCollisionBox(CollisionBox),
 		ObjYield(yield),
-		type(ObjectType::Default)
+		type(type)
 	{}
 	ObjectDef()
 		:ObjDestructible(false),
@@ -64,26 +62,26 @@ public:
 
 	ChestDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, unsigned ChestCapacity)
-		:ObjectDef(Name, Size, CollisionBox, yield, Destructible)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Chest)
 	{
 		Capacity = ChestCapacity;
-		type = ObjectType::Chest;
 	}
 };
 
 class SaplingDef : public ObjectDef
 {
 	float GrowTime;
+	std::string GrowTo;
 
 public:
 	float getGrowTime() { return GrowTime; }
 
 	SaplingDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
-		Yield yield, bool Destructible, float TimeForGrow)
-		:ObjectDef(Name, Size, CollisionBox, yield, Destructible)
+		Yield yield, bool Destructible, float TimeForGrow,std::string For)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Sapling)
 	{
+		GrowTo = For;
 		GrowTime = TimeForGrow;
-		type = ObjectType::Sapling;
 	}
 };
 
@@ -97,10 +95,9 @@ public:
 
 	SpawnerDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, float TimeForSpawn, std::string MonsterToSpawn)
-		:ObjectDef(Name, Size, CollisionBox, yield, Destructible)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Spawner)
 	{
 		SpawnTime = TimeForSpawn;
 		MonsterName = MonsterToSpawn;
-		type = ObjectType::Spawner;
 	}
 };
