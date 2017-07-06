@@ -375,7 +375,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			}
 			else if(tmp.find("/placeObject") != std::string::npos)
 			{
-				GameConsole.placeObjectCheck(tmp, Objects, GameWorld);
+				//GameConsole.placeObjectCheck(tmp, Objects, GameWorld);
 			}
 			else
 			{
@@ -421,7 +421,7 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 
 void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
 {
-	unsigned ObjectID = GameWorld.getObject(sf::Vector2u(objectIndex.y,objectIndex.x));
+	unsigned ObjectID = GameWorld.getObjectId(sf::Vector2u(objectIndex.y,objectIndex.x));
 	if (ObjectID == 0) { return; }
 	if (ObjectID > Objects.getSize()) { return; }
 	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
@@ -557,12 +557,14 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 						{
 							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), ItemField(0, 0));
 						}
+						/*
 						if (GameWorld.setObject(objectPos, itemId + 1))
 						{
 							ItemField temp = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField());
 							temp -= 1;
 							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), temp);
 						}
+						*/
 					}
 				}
 			}

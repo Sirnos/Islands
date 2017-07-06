@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Map.hpp"
-#include "ObjectsContainer.hpp"
+#include "ObjectMap.hpp"
 
 const size_t WorldSize = 512;
 
@@ -9,7 +9,7 @@ class World
 {
 
 	Map WorldMap;
-	ObjectContainer WorldObjects;
+	ObjectMap WorldObjects;
 
 public:
 	World(){}
@@ -45,26 +45,31 @@ public:
 
 		return WorldMap.getTile(tileIndex);
 	}
-	unsigned getObject(sf::Vector2u objectIndex,bool safeVersion = true)
-	{
-		if (safeVersion == true)
-		{
-			if (objectIndex.x < WorldSize && objectIndex.y < WorldSize)
-			{
-				return WorldObjects.getElementID(objectIndex);
-			}
 
-			return 0;
-		}
-
-		return WorldObjects.getElementID(objectIndex);
-	}
-
+	/*
 	bool setObject(sf::Vector2u objectIndex, unsigned objectId)
 	{
 		if (WorldObjects.getElementID(objectIndex) != 0) { return false; }
 
 		WorldObjects.pushNewObject(objectId, objectIndex);
 		return true;
+	}
+	*/
+
+	ObjectType getObjectType(sf::Vector2u objectIndex)
+	{
+		if (WorldObjects.getObject(objectIndex) == nullptr)
+		{
+			return ObjectType::Default;
+		}
+		return WorldObjects.getObject(objectIndex)->type;
+	}
+	unsigned getObjectId(sf::Vector2u objectIndex)
+	{
+		if (WorldObjects.getObject(objectIndex) == nullptr)
+		{
+			return 0;
+		}
+		return WorldObjects.getObject(objectIndex)->Id;
 	}
 };

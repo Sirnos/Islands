@@ -123,6 +123,7 @@ public:
 	}
 
 	//function for /placeObject command
+	/*
 	void placeObjectCheck(std::string command, ObjectDefContainer &GObjects, World &GWorld)
 	{
 		uint16_t param = 1;
@@ -192,4 +193,5 @@ public:
 		}
 		pushCommandToHistory(command);
 	}
+	*/
 };

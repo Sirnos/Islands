@@ -80,9 +80,6 @@
     <ClInclude Include="ItemDef.hpp">
       <Filter>Header Files\Item</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectsContainer.hpp">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectDef.hpp">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
