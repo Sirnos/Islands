@@ -130,7 +130,7 @@
     <Image Include="Data\Items.png">
       <Filter>IslandData</Filter>
     </Image>
-    <Image Include="Data\Tiles.png">
+    <Image Include="Data\Objects.png">
       <Filter>IslandData</Filter>
     </Image>
   </ItemGroup>

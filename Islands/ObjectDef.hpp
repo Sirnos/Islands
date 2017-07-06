@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <string>
 
@@ -21,19 +20,19 @@ class ObjectDef
 	ObjectType type;
 
 	std::string ObjName;
-	sf::Vector2f ObjSize;
+	sf::Vector2i ObjSize;
 	sf::FloatRect ObjCollisionBox;
 	bool ObjDestructible;
 	Yield ObjYield;
 public:
 	ObjectType getType() { return type; }
 	std::string getName() { return ObjName; }
-	sf::Vector2f getSize() { return ObjSize; }
+	sf::Vector2i getSize() { return ObjSize; }
 	sf::FloatRect getCollisionBox() { return ObjCollisionBox; }
 	bool getDestructible() { return ObjDestructible; }
 	Yield getYield() { return ObjYield; }
 
-	ObjectDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox, Yield yield, bool Destructible,ObjectType type = ObjectType::Default)
+	ObjectDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox, Yield yield, bool Destructible,ObjectType type = ObjectType::Default)
 		:ObjDestructible(Destructible),
 		ObjName(Name),
 		ObjSize(Size),
@@ -60,7 +59,7 @@ class ChestDef : public ObjectDef
 public:
 	unsigned getCapacity() { return Capacity; }
 
-	ChestDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
+	ChestDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, unsigned ChestCapacity)
 		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Chest)
 	{
@@ -76,7 +75,7 @@ class SaplingDef : public ObjectDef
 public:
 	float getGrowTime() { return GrowTime; }
 
-	SaplingDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
+	SaplingDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, float TimeForGrow,std::string For)
 		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Sapling)
 	{
@@ -93,7 +92,7 @@ public:
 	float getSpawnTime() { return SpawnTime; }
 	std::string getMonsterName() { return MonsterName; }
 
-	SpawnerDef(std::string Name, sf::Vector2f Size, sf::FloatRect CollisionBox,
+	SpawnerDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, float TimeForSpawn, std::string MonsterToSpawn)
 		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Spawner)
 	{

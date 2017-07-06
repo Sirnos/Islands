@@ -27,7 +27,7 @@ class Media
 public:
 	void load()
 	{
-		TileImage.loadFromFile("Data/Tiles.png");
+		TileImage.loadFromFile("Data/Objects.png");
 
 		TileTexture.resize(12);
 

@@ -10,6 +10,59 @@
 
 class GameComponentsLoader
 {
+	sf::Vector2i getVectorFromString(std::string str)
+	{
+		sf::Vector2i temp;
+		temp.x = std::stoi(str.substr(0, str.find(',')));
+		temp.y = std::stoi(str.substr(str.find(',') + 1, str.size() - 1));
+		return temp;
+	}
+	sf::IntRect getIntRectFromString(std::string str)
+	{
+		short varNumber = 0;
+		std::string values[4];
+
+		for (auto i : str)
+		{
+			if (i == ',')
+			{
+				if (varNumber == 3) { break; }
+				varNumber++;
+			}
+			else
+			{
+				values[varNumber] += i;
+			}
+		}
+
+		return sf::IntRect(std::stoi(values[0]), std::stoi(values[1]), std::stoi(values[2]), std::stoi(values[3]));
+	}
+	sf::FloatRect getFloatRectFromString(std::string str)
+	{
+		short varNumber = 0;
+		std::string values[4];
+
+		for (auto i : str)
+		{
+			if (i == ',')
+			{
+				if (varNumber == 3) { break; }
+				varNumber++;
+			}
+			else
+			{
+				values[varNumber] += i;
+			}
+		}
+
+		return sf::FloatRect(std::stof(values[0]), std::stof(values[1]), std::stof(values[2]), std::stof(values[3]));
+	}
+	Yield getYieldFromString(std::string str)
+	{
+		return Yield(str.substr(0, str.find(',')), std::stoul(str.substr(str.find(',') + 1, str.size() - 1)));
+	}
+
+
 public:
 	void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects,std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
 	{
@@ -20,92 +73,52 @@ public:
 		rapidxml::xml_document<> document;
 		document.parse<0>(File.data());
 
-		for (rapidxml::xml_node<>* node1 = document.first_node(); node1 != nullptr;
-			node1 = node1->next_sibling())
+		for (rapidxml::xml_node<>* mainNode = document.first_node(); mainNode != nullptr;
+			mainNode = mainNode->next_sibling())
 		{
-			ObjectsGraphicsFile = node1->first_attribute()->value();
-				for (rapidxml::xml_node<>* node2 = node1->first_node(); node2 != nullptr;
-					node2 = node2->next_sibling())
+			ObjectsGraphicsFile = mainNode->first_attribute()->value();
+			for (rapidxml::xml_node<>* objectsNode = mainNode->first_node(); objectsNode != nullptr;
+				objectsNode = objectsNode->next_sibling())
+			{
+				std::string newObjName = objectsNode->first_attribute()->value();
+				bool newObjDestructible = false;
+				Yield newObjYield;
+				sf::Vector2i newObjSize;
+				sf::IntRect newObjTextureCoord;
+				sf::FloatRect newObjCollisionBox;
+
+
+				for (rapidxml::xml_node<>* objectsParamNode = objectsNode->first_node(); objectsParamNode != nullptr;
+					objectsParamNode = objectsParamNode->next_sibling())
 				{
-					rapidxml::xml_node<>* node3 = node2->first_node();
+					std::string paramName = objectsParamNode->name();
 
-					std::string ObjName = node2->first_attribute()->value();
-					bool isDestructible = false;
-					Yield IFDESTROYED;
-					sf::Vector2f size;
-					sf::IntRect textureCords;
-					sf::FloatRect collisionBox;
-
-					for (node3; node3 != nullptr; node3 = node3->next_sibling())
+					if (paramName == "Size")
 					{
-						std::string parametrName(node3->name());
-						rapidxml::xml_node<>* node4 = node3->first_node();
-						if (parametrName == "ISDESTRUCTIBLE")
-						{
-							if (node4->value() == "1")
-							{
-								isDestructible = true;
-							}
-						}
-
-						for (node4; node4 != nullptr; node4 = node4->next_sibling())
-						{
-							std::string nodeName = node4->name();
-							if (nodeName == "DROP")
-							{
-								IFDESTROYED.first = std::string(node4->value());
-							}
-							else if (nodeName == "AMOUNT")
-							{
-								IFDESTROYED.second
-									= static_cast<unsigned>(std::stoi(std::string(node4->value())));
-							}
-							else if (nodeName == "X")
-							{
-								size.x = static_cast<float>(std::stoi(std::string(node4->value())));
-							}
-							else if (nodeName == "Y")
-							{
-								size.y = static_cast<float>(std::stoi(std::string(node4->value())));
-							}
-							else if (nodeName == "TOP")
-							{
-								if (parametrName == "COLLISION")
-									collisionBox.top
-									= static_cast<float>(std::stoi(std::string(node4->value())));
-								else if (parametrName == "GRAPHICS")
-									textureCords.top = std::stoi(std::string(node4->value()));
-							}
-							else if (nodeName == "LEFT")
-							{
-								if (parametrName == "COLLISION")
-									collisionBox.left
-									= static_cast<float>(std::stoi(std::string(node4->value())));
-								else if (parametrName == "GRAPHICS")
-									textureCords.left = std::stoi(std::string(node4->value()));
-							}
-							else if (nodeName == "WIDTH")
-							{
-								if (parametrName == "COLLISION")
-									collisionBox.width
-									= static_cast<float>(std::stoi(std::string(node4->value())));
-								else if (parametrName == "GRAPHICS")
-									textureCords.width = std::stoi(std::string(node4->value()));
-							}
-							else if (nodeName == "HEIGHT")
-							{
-								if (parametrName == "COLLISION")
-									collisionBox.height
-									= static_cast<float>(std::stoi(std::string(node4->value())));
-								else if (parametrName == "GRAPHICS")
-									textureCords.height = std::stoi(std::string(node4->value()));
-							}
-						}
+						newObjSize = getVectorFromString(std::string(objectsParamNode->value()));
 					}
-					Objects.push_back(new ObjectDef(ObjName, size, collisionBox, IFDESTROYED, isDestructible));
-					Textures.push_back(textureCords);
+					else if(paramName == "Graphics")
+					{
+						newObjTextureCoord = getIntRectFromString(std::string(objectsParamNode->value()));
+					}
+					else if(paramName == "Collision")
+					{
+						newObjCollisionBox = getFloatRectFromString(std::string(objectsParamNode->value()));
+					}
+					else if(paramName == "Isdestructible")
+					{
+						std::string temp = objectsParamNode->value();
+						if (temp == "1") { newObjDestructible = true; }
+					}
+					else if(paramName == "Ifdestroyed")
+					{
+						newObjYield = getYieldFromString(std::string(objectsParamNode->value()));
+					}
 				}
+				Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible));
+				Textures.push_back(newObjTextureCoord);
 			}
+		}
 		Objects.shrink_to_fit();
 	}
 
@@ -128,79 +141,47 @@ public:
 		rapidxml::xml_document<> document;
 		document.parse<0>(File.data());
 
-		int textureSize;
-
-		for (auto node1 = document.first_node(); node1 != nullptr; node1 = node1->next_sibling())
+		for (rapidxml::xml_node<>* mainNode = document.first_node(); mainNode != nullptr;
+			mainNode = mainNode->next_sibling())
 		{
-			std::string node1Name = node1->name();
-			if (node1Name == "Items")
-			{
-				auto attrib = node1->first_attribute();
+			unsigned textureSize;
 
-				std::string attribName = attrib->name();
-				if (attribName == "graphics")
+			rapidxml::xml_attribute<>* mainAttrib;
+			mainAttrib = mainNode->first_attribute();
+			ItemsGraphicsFile = mainAttrib->value();
+			mainAttrib = mainAttrib->next_attribute();
+			textureSize = std::stoul(std::string(mainAttrib->value()));
+
+			for (rapidxml::xml_node<>* itemsNode = mainNode->first_node(); itemsNode != nullptr;
+				itemsNode = itemsNode->next_sibling())
+			{
+				std::string newItemName;
+				unsigned newItemMaxStack;
+
+				sf::Vector2i texturePos;
+
+				sf::IntRect newItemTextureCoord;
+
+				newItemName = itemsNode->first_attribute()->value();
+
+				for (rapidxml::xml_node<>* itemParamNode = itemsNode->first_node(); itemParamNode != nullptr;
+					itemParamNode = itemParamNode->next_sibling())
 				{
-					ItemsGraphicsFile = attrib->value();
-					attrib = attrib->next_attribute();
-					attribName = attrib->name();
-					if (attribName == "textureSize")
+					std::string paramName = itemParamNode->name();
+
+					if (paramName == "Graphics")
 					{
-						auto temp = std::stoi(attrib->value());
-						if (temp > 64) { temp = 64; }
-						textureSize = temp;
+						texturePos = getVectorFromString(std::string(itemParamNode->value()));
+					}
+					else if(paramName == "MaxStack")
+					{
+						newItemMaxStack = std::stoul(std::string(itemParamNode->value()));
 					}
 				}
+				Items.push_back(new RawMaterialDef(newItemName, newItemMaxStack));
+				textures.push_back(sf::IntRect(texturePos.x * textureSize, texturePos.y * textureSize, textureSize, textureSize));
 			}
-			for (auto node2 = node1->first_node(); node2 != nullptr; node2 = node2->next_sibling())
-			{
-				std::string node2Name = node2->name();
-				if (node2Name == "Item")
-				{
-					std::string name;
-					std::string type;
-					unsigned maxStack;
-					sf::Vector2i texturePos;
-
-					name = node2->first_attribute()->value();
-
-					for (auto node3 = node2->first_node(); node3 != nullptr; node3 = node3->next_sibling())
-					{
-						std::string node3Name = node3->name();
-						if (node3Name == "GRAPHICS")
-						{
-							for (auto node4 = node3->first_node(); node4 != nullptr; node4 = node4->next_sibling())
-							{
-
-								auto tempPos = std::stoi(node4->value());
-								std::string node4Name = node4->name();
-
-								if (node4Name == "POSX")
-								{
-									texturePos.x = tempPos;
-								}
-								else if (node4Name == "POSY")
-								{
-									texturePos.y = tempPos;
-								}
-							}
-						}
-						else if(node3Name == "MAXSTACK")
-						{
-							maxStack = static_cast<unsigned>(std::stoi(node3->value()));
-						}
-						else if(node3Name == "TYPE")
-						{
-							type = node3->value();
-						}
-					}
-
-					if (type == "Material")
-					{
-						Items.push_back(new RawMaterialDef(name, maxStack));
-						textures.push_back(sf::IntRect(texturePos.x * textureSize, texturePos.y * textureSize, textureSize, textureSize));
-					}
-				}
-			}
+			Items.shrink_to_fit();
 		}
 	}
 };

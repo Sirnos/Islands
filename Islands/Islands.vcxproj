@@ -157,7 +157,7 @@
   <ItemGroup>
     <Image Include="Data\char.png" />
     <Image Include="Data\Items.png" />
-    <Image Include="Data\Tiles.png" />
+    <Image Include="Data\Objects.png" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Data\Items.xml">

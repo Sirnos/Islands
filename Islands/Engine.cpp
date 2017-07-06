@@ -603,10 +603,8 @@ void Engine::drawWorld(IslandApp & app)
 {
 	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape,
-		LyingItemShape,
-		ObjectShape;
+		LyingItemShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-	ObjectShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 	LyingItemShape.setSize(sf::Vector2f(32, 32));
 
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
