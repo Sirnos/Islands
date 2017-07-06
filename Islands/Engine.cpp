@@ -322,16 +322,16 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 	auto tmp = GameConsole(event, mousePos, isMouseRClick);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		if (GameConsole.getLastHistoryCmdNumber() == 0)
-		{
-			GameConsole.setCurrentText(GameConsole.getLastCmdFromHistory());
-			GameConsole.getLastHistoryCmdNumber() = GameConsole.getHistorySize() - 2;
-		}
-		else
-		{
-			GameConsole.setCurrentText(GameConsole.getCmdFromHistory(GameConsole.getLastHistoryCmdNumber()));
-			GameConsole.getLastHistoryCmdNumber() -= 1;
-		}
+			if (GameConsole.getLastHistoryCmdNumber() == 0)
+			{
+				GameConsole.setCurrentText(GameConsole.getLastCmdFromHistory());
+				GameConsole.getLastHistoryCmdNumber() = GameConsole.getHistorySize() - 2;
+			}
+			else
+			{
+				GameConsole.setCurrentText(GameConsole.getCmdFromHistory(GameConsole.getLastHistoryCmdNumber()));
+				GameConsole.getLastHistoryCmdNumber() -= 1;
+			}
 	}
 
 	if (tmp.size() > 0 )

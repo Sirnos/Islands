@@ -146,6 +146,7 @@
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectDef.hpp" />
+    <ClInclude Include="ObjectMap.hpp" />
     <ClInclude Include="ObjectsContainer.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="PlayerEquipmentGui.hpp" />
