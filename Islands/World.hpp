@@ -46,15 +46,25 @@ public:
 		return WorldMap.getTile(tileIndex);
 	}
 
-	/*
-	bool setObject(sf::Vector2u objectIndex, unsigned objectId)
+	bool setObject(sf::Vector2u objectIndex, Object* newObject)
 	{
-		if (WorldObjects.getElementID(objectIndex) != 0) { return false; }
+		if (WorldObjects.getObject(objectIndex) != nullptr)
+		{
+			WorldObjects.clearObject(objectIndex);
+			WorldObjects.setObject(objectIndex, newObject);
 
-		WorldObjects.pushNewObject(objectId, objectIndex);
-		return true;
+			return true;
+		}
+		else
+		{
+			WorldObjects.setObject(objectIndex,newObject);
+		}
+		return false;
 	}
-	*/
+	void clearObject(sf::Vector2u objectIndex)
+	{
+		WorldObjects.clearObject(objectIndex);
+	}
 
 	ObjectType getObjectType(sf::Vector2u objectIndex)
 	{

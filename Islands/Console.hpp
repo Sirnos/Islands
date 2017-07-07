@@ -123,7 +123,6 @@ public:
 	}
 
 	//function for /placeObject command
-	/*
 	void placeObjectCheck(std::string command, ObjectDefContainer &GObjects, World &GWorld)
 	{
 		uint16_t param = 1;
@@ -186,12 +185,10 @@ public:
 			return;
 		}
 
-		if (!GWorld.setObject(static_cast<sf::Vector2u>(tile), static_cast<unsigned>(objId)))
+		if (GObjects.getDefinition(objId)->getType() == ObjectType::Default)
 		{
-			commands.push_back(std::string("this place is busy!"));
-			return;
+			GWorld.setObject(static_cast<sf::Vector2u>(tile), new Object(objId));
 		}
 		pushCommandToHistory(command);
 	}
-	*/
 };

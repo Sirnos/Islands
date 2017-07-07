@@ -375,7 +375,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			}
 			else if(tmp.find("/placeObject") != std::string::npos)
 			{
-				//GameConsole.placeObjectCheck(tmp, Objects, GameWorld);
+				GameConsole.placeObjectCheck(tmp, Objects, GameWorld);
 			}
 			else
 			{
