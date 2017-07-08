@@ -7,6 +7,10 @@ void Engine::loadGameComponents()
 	std::vector<sf::IntRect> objectTextureCords;
 
 	loader.LoadObjectDefFromFile(Objects.getContainer(), objectGraphicsfile, objectTextureCords);
+	for (size_t i = 0; i < Objects.getSize(); i++)
+	{
+		ErrorHandler::log("Load Object: " + Objects.getDefinition(i)->getName() + " Type: " + std::to_string(static_cast<int>(Objects.getDefinition(i)->getType())));
+	}
 
 	for (auto & i : objectTextureCords)
 	{
@@ -557,14 +561,13 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 						{
 							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), ItemField(0, 0));
 						}
-						/*
-						if (GameWorld.setObject(objectPos, itemId + 1))
+						
+						if (GameWorld.placeObject(objectPos, itemId + 1, Objects.getContainer()))
 						{
 							ItemField temp = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField());
 							temp -= 1;
 							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), temp);
 						}
-						*/
 					}
 				}
 			}

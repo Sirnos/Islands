@@ -62,7 +62,6 @@ class GameComponentsLoader
 		return Yield(str.substr(0, str.find(',')), std::stoul(str.substr(str.find(',') + 1, str.size() - 1)));
 	}
 
-
 public:
 	void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects,std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
 	{
@@ -76,6 +75,10 @@ public:
 		for (rapidxml::xml_node<>* mainNode = document.first_node(); mainNode != nullptr;
 			mainNode = mainNode->next_sibling())
 		{
+			std::vector<unsigned> tempUint;
+			std::vector<float> tempFloat;
+			std::vector<std::string> tempString;
+
 			ObjectsGraphicsFile = mainNode->first_attribute()->value();
 			for (rapidxml::xml_node<>* objectsNode = mainNode->first_node(); objectsNode != nullptr;
 				objectsNode = objectsNode->next_sibling())
@@ -86,6 +89,8 @@ public:
 				sf::Vector2i newObjSize;
 				sf::IntRect newObjTextureCoord;
 				sf::FloatRect newObjCollisionBox;
+
+				ObjectType newObjType = ObjectType::Default;
 
 
 				for (rapidxml::xml_node<>* objectsParamNode = objectsNode->first_node(); objectsParamNode != nullptr;
@@ -114,9 +119,41 @@ public:
 					{
 						newObjYield = getYieldFromString(std::string(objectsParamNode->value()));
 					}
+					else if(paramName == "ChestDef")
+					{
+						newObjType = ObjectType::Chest;
+						tempUint.push_back(std::stoul(std::string(objectsParamNode->first_node()->value())));
+					}
+					else if(paramName == "SaplingDef")
+					{
+						newObjType = ObjectType::Sapling;
+						tempFloat.push_back(std::stof(std::string(objectsParamNode->first_node()->value())));
+						tempString.push_back(std::string(objectsParamNode->first_node()->next_sibling()->value()));
+					}
 				}
-				Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible));
+
+				switch (newObjType)
+				{
+				case ObjectType::Default:
+					Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible));
+					break;
+				case ObjectType::Chest:
+					Objects.push_back(new ChestDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible, tempUint.back()));
+					break;
+				case ObjectType::Tree:
+					break;
+				case ObjectType::Sapling:
+					Objects.push_back(new SaplingDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));
+					break;
+				case ObjectType::Spawner:
+					break;
+				default:
+					break;
+				}
 				Textures.push_back(newObjTextureCoord);
+				tempFloat.clear();
+				tempString.clear();
+				tempUint.clear();
 			}
 		}
 		Objects.shrink_to_fit();

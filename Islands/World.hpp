@@ -36,18 +36,27 @@ public:
 		return WorldMap.getTile(tileIndex);
 	}
 
-	bool setObject(sf::Vector2u objectIndex, Object* newObject)
+	void setObject(sf::Vector2u objectIndex, Object* newObject)
 	{
 		if (WorldObjects.getObject(objectIndex) != nullptr)
 		{
 			WorldObjects.clearObject(objectIndex);
 			WorldObjects.setObject(objectIndex, newObject);
-
-			return true;
 		}
 		else
 		{
 			WorldObjects.setObject(objectIndex,newObject);
+		}
+	}
+	bool placeObject(sf::Vector2u objectIndex, unsigned objectId,std::vector<ObjectDef*>& ObjectsDefs)
+	{
+		if (WorldObjects.getObject(objectIndex) == nullptr)
+		{
+			if (ObjectsDefs[objectId]->getType() == ObjectType::Default)
+			{
+				WorldObjects.setObject(objectIndex, new Object(objectId));
+				return true;
+			}
 		}
 		return false;
 	}
