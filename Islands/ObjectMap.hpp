@@ -40,6 +40,7 @@ public:
 		if (ObjectsMap[index.x][index.y] != nullptr)
 		{
 			delete ObjectsMap[index.x][index.y];
+			setObject(index, nullptr);
 		}
 	}
 

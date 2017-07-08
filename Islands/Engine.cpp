@@ -547,13 +547,14 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	else if (!GameGui.getIsEqGuiEnable() && GameGui.getHoldedItem().isClear() && isMouseClick)
 		{
 			unsigned itemId = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemId;
+			sf::Vector2f mousePos = app.getMousePosInWorld();
+			sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE),
+				static_cast<unsigned>(mousePos.x / TILE_SIZE));
+
 			if (itemId != 0)
 			{
 				if (Items.getDefinition(itemId)->getType() == ItemType::Placeable)
 				{
-					sf::Vector2f mousePos = app.getMousePosInWorld();
-					sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE),
-						static_cast<unsigned>(mousePos.x / TILE_SIZE));
 					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
 						sf::Vector2f(WorldSize * TILE_SIZE,WorldSize * TILE_SIZE)))
 					{
@@ -567,6 +568,25 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 							ItemField temp = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField());
 							temp -= 1;
 							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), temp);
+						}
+					}
+				}
+			}
+			else
+			{
+				if (GameWorld.getObjectId(objectPos) > 0)
+				{
+					sf::Time timeAtMouseClick = GameClock.getElapsedTime();
+					sf::Time timeOfMouseClickHold;
+
+					while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+					{
+						timeOfMouseClickHold = GameClock.getElapsedTime();
+						if (timeOfMouseClickHold.asMilliseconds() - timeAtMouseClick.asMilliseconds() >= 101)
+						{
+							LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, ItemField(GameWorld.getObjectId(objectPos) - 1, 1));
+							GameWorld.clearObject(objectPos);
+							break;
 						}
 					}
 				}
