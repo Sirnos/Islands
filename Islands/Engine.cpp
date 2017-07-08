@@ -613,7 +613,8 @@ void Engine::drawWorld(IslandApp & app)
 	{
 		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 31; j++)
 		{
-			if (j < 0 && i < 0) { continue; }
+			if (j < 0 || i < 0) { continue; }
+			if (j >= WorldSize || i >= WorldSize) { break; }
 			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 		}

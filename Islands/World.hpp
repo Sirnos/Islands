@@ -31,18 +31,8 @@ public:
 	}
 	//bool isPositionImpasable(sf::Vector2i position);
 
-	TILE getTile(sf::Vector2u tileIndex, bool safeVersion = true)
+	TILE getTile(sf::Vector2u tileIndex)
 	{
-		if (safeVersion == true)
-		{
-			if (tileIndex.x < WorldSize && tileIndex.y < WorldSize)
-			{
-				return WorldMap.getTile(tileIndex);
-			}
-
-			return TILE();
-		}
-
 		return WorldMap.getTile(tileIndex);
 	}
 
