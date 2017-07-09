@@ -563,7 +563,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), ItemField(0, 0));
 						}
 						
-						if (GameWorld.placeObject(objectPos, itemId + 1, Objects.getContainer()))
+						if (GameWorld.placeObject(objectPos, itemId, Objects.getContainer()))
 						{
 							ItemField temp = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField());
 							temp -= 1;
@@ -574,7 +574,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			}
 			else
 			{
-				if (GameWorld.getObjectId(objectPos) > 0)
+				unsigned objectId = GameWorld.getObjectId(objectPos);
+				if (objectId > 0)
 				{
 					sf::Time timeAtMouseClick = GameClock.getElapsedTime();
 					sf::Time timeOfMouseClickHold;
@@ -584,7 +585,21 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 						timeOfMouseClickHold = GameClock.getElapsedTime();
 						if (timeOfMouseClickHold.asMilliseconds() - timeAtMouseClick.asMilliseconds() >= 101)
 						{
-							LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, ItemField(GameWorld.getObjectId(objectPos) - 1, 1));
+							Yield objectYield = Objects.getDefinition(objectId)->getYield();
+							if (objectYield.first != "NULL")
+							{
+								if (objectYield.first == "SELF")
+								{
+									LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, ItemField(objectId-1, objectYield.second));
+								}
+								else
+								{
+									ItemField item;
+									item.ItemId = Items.getDefIdbyName(objectYield.first);
+									item.ItemAmount = objectYield.second;
+									LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, item);
+								}
+							}
 							GameWorld.clearObject(objectPos);
 							break;
 						}
@@ -621,7 +636,6 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	GameGui.HudGui.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
 	GameGui.HudGui.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
 	pushChangesToGui();
-
 }
 
 void Engine::drawWorld(IslandApp & app)

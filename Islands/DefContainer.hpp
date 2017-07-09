@@ -34,6 +34,20 @@ public:
 		}
 		return nullptr;
 	}
+
+	unsigned getDefIdbyName(std::string DefName)
+	{
+		for (size_t i = 0; i < Container.size(); i++)
+		{
+			if (Container[i]->getName() == DefName.data())
+			{
+				return i;
+			}
+		}
+
+		return 0;
+	}
+
 	std::vector<DefType> &getContainer() { return Container; }
 
 	void pushNewDef(DefType def)

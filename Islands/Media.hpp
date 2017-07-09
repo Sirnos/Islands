@@ -118,7 +118,6 @@ public:
 	Media()
 	{
 		TileTexture.push_back(sf::Texture());
-		ObjectsTexture.push_back(sf::Texture());
 		CharacterTexture.push_back(sf::Texture());
 	}
 	~Media()

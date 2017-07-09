@@ -161,13 +161,9 @@ public:
 
 	void GenerateItemsFromObjectDef(std::vector<ObjectDef*> &Objs,std::vector<ItemDef*> &Items)
 	{
-		for (unsigned i = 1; i < Objs.size(); i++)
+		for (unsigned i = 0; i < Objs.size(); i++)
 		{
 			Items.push_back(new PlaceableDef(Objs[i]->getName()));
-			if (Items.back() == nullptr)
-			{
-				Items.pop_back();
-			}
 		}
 		Items.shrink_to_fit();
 	}

@@ -16,7 +16,7 @@
     <Type>Material</Type>
   </Item>
   <Item name="Pebble">
-    <Graphics>5,0</Graphics>
+    <Graphics>4,0</Graphics>
     <MaxStack>64</MaxStack>
     <Type>Material</Type>
   </Item>
