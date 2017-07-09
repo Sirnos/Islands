@@ -139,11 +139,16 @@ void Engine::pushChangesToGui()
 		}
 
 		unsigned itemId = player.getHandInventoryField(i).ItemId;
+		unsigned itemAmount = player.getHandInventoryField(i).ItemAmount;
 
-		if (itemId != 0)
+		if (itemId != 0 && itemAmount != 0)
 		{
 			GameGui.HudGui.pushTextureToBeltField(i, mediaContainer.getTexture(itemId,
 				TextureContainer::ItemsTextures));
+		}
+		else if(itemAmount == 0)
+		{
+			player.setHandInventoryField(i, ItemField());
 		}
 
 		for (size_t j = 0; j < PlayerFieldsNumber; j++)
@@ -155,10 +160,15 @@ void Engine::pushChangesToGui()
 			}
 
 			unsigned tempItemId = player.getInventoryField(sf::Vector2u(i, j)).ItemId;
-			if (tempItemId != 0)
+			unsigned tempItemAmount = player.getInventoryField(sf::Vector2u(i, j)).ItemAmount;
+			if (tempItemId != 0 && tempItemAmount != 0)
 			{
 				GameGui.EquipmentGui.pushTextureToFields(sf::Vector2u(i, j), mediaContainer.getTexture(tempItemId,
 					TextureContainer::ItemsTextures));
+			}
+			else if(tempItemAmount == 0)
+			{
+				player.setInventoryField(sf::Vector2u(i, j), ItemField());
 			}
 		}
 
