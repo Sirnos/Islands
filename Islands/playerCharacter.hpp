@@ -14,17 +14,7 @@ class playerCharacter :public Character
 public:
 	playerCharacter()
 		:Character()
-	{
-		/*
-		Inventory[0][0] = ItemField(2, 20);
-		Inventory[1][1] = ItemField(3, 40);
-		Inventory[3][3] = ItemField(11, 140);
-		Inventory[4][4] = ItemField(11, 120);
-
-		HandInventory[1] = ItemField(10, 20);
-		HandInventory[2] = ItemField(3, 10);
-		*/
-	}
+	{}
 	playerCharacter(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
 		:Character(stats)
 	{
@@ -84,8 +74,12 @@ public:
 				{
 					item.ItemAmount = temp.ItemAmount - maxStack;
 					temp.ItemAmount -= (temp.ItemAmount - maxStack);
-					setHandInventoryField(i, temp);
 				}
+				else
+				{
+					item = ItemField();
+				}
+				setHandInventoryField(i, temp);
 			}
 			else if (getHandInventoryField(i).ItemId == 0)
 			{
@@ -104,8 +98,12 @@ public:
 					{
 						item.ItemAmount = temp.ItemAmount - maxStack;
 						temp.ItemAmount -= (temp.ItemAmount - maxStack);
-						setInventoryField(sf::Vector2u(i, j), temp);
 					}
+					else
+					{
+						item = ItemField();
+					}
+					setInventoryField(sf::Vector2u(i, j), temp);
 				}
 				else if (getInventoryField(sf::Vector2u(i, j)).ItemId == 0)
 				{
