@@ -1,64 +1,15 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <Objects graphics="Data/Objects.png">
-  <Object name="Tree">
-    <Size>1,1</Size>
-    <Graphics>0,40,10,30</Graphics>
-    <Collision>0,0,0,0</Collision>
-    <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>WoodLog,4</Ifdestroyed>
-  </Object>
   <Object name="Shrub">
     <Size>1,1</Size>
-    <Graphics>0,30,10,10</Graphics>
+    <Graphics>0,48,16,16</Graphics>
     <Collision>0,0,0,0</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>WoodLog,1</Ifdestroyed>
-  </Object>
-  <Object name="SmallStone">
-    <Size>1,1</Size>
-    <Graphics>20,30,10,10</Graphics>
-    <Collision>0,0,0,0</Collision>
-    <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Pebble,1</Ifdestroyed>
-  </Object>
-  <Object name="Stone">
-    <Size>1,1</Size>
-    <Graphics>30,30,10,10</Graphics>
-    <Collision>0,0,0,0</Collision>
-    <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Pebble,4</Ifdestroyed>
-  </Object>
-  <Object name="BigStone">
-    <Size>1,1</Size>
-    <Graphics>40,30,10,10</Graphics>
-    <Collision>0,0,0,0</Collision>
-    <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Pebble,8</Ifdestroyed>
-  </Object>
-  <Object name="FlintStone">
-    <Size>1,1</Size>
-    <Graphics>50,30,10,10</Graphics>
-    <Collision>0,0,0,0</Collision>
-    <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Flint,1</Ifdestroyed>
-  </Object>
-  <Object name="LeafPile">
-    <Size>1,1</Size>
-    <Graphics>60,30,10,10</Graphics>
-    <Collision>0,0,0,0</Collision>
-    <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>NULL,0</Ifdestroyed>
-  </Object>
-  <Object name="Vegetable">
-    <Size>1,1</Size>
-    <Graphics>80,30,10,10</Graphics>
-    <Collision>0,0,0,0</Collision>
-    <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>NULL,0</Ifdestroyed>
-  </Object>
-    <Object name="WoodChest">
+    <Ifdestroyed>Stick,1</Ifdestroyed>
+    </Object>
+  <Object name="WoodChest">
       <Size>1,1</Size>
-      <Graphics>10,30,10,10</Graphics>
+      <Graphics>16,48,16,16</Graphics>
       <Collision>0,0,1,1</Collision>
       <Isdestructible>1</Isdestructible>
       <Ifdestroyed>SELF,1</Ifdestroyed>
@@ -66,12 +17,33 @@
         <Capacity>24</Capacity>
       </ChestDef>
     </Object>
+  <Object name="SmallStone">
+    <Size>1,1</Size>
+    <Graphics>32,48,16,16</Graphics>
+    <Collision>0,0,0,0</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>Pebble,1</Ifdestroyed>
+  </Object>
+  <Object name="Stone">
+    <Size>1,1</Size>
+    <Graphics>48,48,16,16</Graphics>
+    <Collision>0,0,0,0</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>Pebble,4</Ifdestroyed>
+  </Object>
+  <Object name="BigStone">
+    <Size>1,1</Size>
+    <Graphics>64,48,16,16</Graphics>
+    <Collision>0,0,0,0</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>Pebble,8</Ifdestroyed>
+  </Object>
     <Object name="TreeSapling">
       <Size>1,1</Size>
-      <Graphics>90,30,10,10</Graphics>
+      <Graphics>80,48,16,16</Graphics>
       <Collision>0,0,0,0</Collision>
       <Isdestructible>1</Isdestructible>
-      <Ifdestroyed>Stick,1</Ifdestroyed>
+      <Ifdestroyed>SELF,1</Ifdestroyed>
       <SaplingDef>
         <GrowTime>10</GrowTime>
         <For>Tree</For>

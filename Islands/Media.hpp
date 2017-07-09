@@ -13,8 +13,8 @@ enum class TextureContainer : unsigned
 
 class Media
 {
-	const int size = 10;
-	const int pos = 10;
+	int size = 16;
+	int pos = 16;
 
 	sf::Image TileImage;
 
