@@ -48,15 +48,32 @@ public:
 			WorldObjects.setObject(objectIndex,newObject);
 		}
 	}
-	bool placeObject(sf::Vector2u objectIndex, unsigned objectId,std::vector<ObjectDef*>& ObjectsDefs)
+	bool placeObject(sf::Vector2u objectIndex, unsigned objectId,std::vector<ObjectDef*>& ObjectsDefs,sf::Time AtTime)
 	{
 		if (WorldObjects.getObject(objectIndex) == nullptr)
 		{
-			if (ObjectsDefs[objectId]->getType() == ObjectType::Default)
+			ObjectType objType= ObjectsDefs[objectId]->getType();
+
+			switch (objType)
 			{
+			case ObjectType::Default:
 				WorldObjects.setObject(objectIndex, new Object(objectId));
-				return true;
+				break;
+			case ObjectType::Chest:
+				WorldObjects.setObject(objectIndex, new ChestObject(objectId,
+					dynamic_cast<ChestDef*>(ObjectsDefs[objectId])->getCapacity()));
+				break;
+			case ObjectType::Tree:
+				break;
+			case ObjectType::Sapling:
+				WorldObjects.setObject(objectIndex, new SaplingObject(objectId, AtTime.asSeconds()));
+				break;
+			case ObjectType::Spawner:
+				break;
+			default:
+				break;
 			}
+			return true;
 		}
 		return false;
 	}

@@ -573,7 +573,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), ItemField(0, 0));
 						}
 						
-						if (GameWorld.placeObject(objectPos, itemId, Objects.getContainer()))
+						if (GameWorld.placeObject(objectPos, itemId, Objects.getContainer(),GameClock.getElapsedTime()))
 						{
 							ItemField temp = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField());
 							temp -= 1;
@@ -600,7 +600,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 							{
 								if (objectYield.first == "SELF")
 								{
-									LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, ItemField(objectId-1, objectYield.second));
+									LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, ItemField(objectId, objectYield.second));
 								}
 								else
 								{
