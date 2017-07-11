@@ -438,9 +438,21 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 	unsigned ObjectID = GameWorld.getObjectId(sf::Vector2u(objectIndex.y,objectIndex.x));
 	if (ObjectID == 0) { return; }
 	if (ObjectID > Objects.getSize()) { return; }
-	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
-	shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures),true);
-	window.draw(shp);
+
+	int sizeY = Objects.getDefinition(ObjectID)->getSize().y;
+	if (sizeY < 0)
+	{
+		shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y+(sizeY+1)))));
+		shp.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE * (-sizeY)));
+		shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures), true);
+		window.draw(shp);
+		shp.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+		return;
+	}
+
+		shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
+		shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures), true);
+		window.draw(shp);
 }
 
 bool Engine::checkPlayerPos()

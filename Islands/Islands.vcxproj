@@ -168,6 +168,7 @@
     <Xml Include="Data\Objects.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="Data\PlayerRecipes.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf" />

@@ -147,6 +147,9 @@
     <Xml Include="Data\Items.xml">
       <Filter>IslandData</Filter>
     </Xml>
+    <Xml Include="Data\PlayerRecipes.xml">
+      <Filter>IslandData</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf">

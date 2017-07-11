@@ -7,7 +7,7 @@
         </In>
     </Recipe>
     <Recipe>
-        <Out>Stick,4<Out>
+        <Out>Stick,4</Out>
         <In amount="1">
             <li>Plank,1</li>
         </In>
