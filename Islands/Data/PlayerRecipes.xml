@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Recipes>
+    <Recipe>
+        <Out>Stick,16</Out>
+        <In amount="1">
+            <li>WoodLog,1</li>
+        </In>
+    </Recipe>
+    <Recipe>
+        <Out>Stick,4<Out>
+        <In amount="1">
+            <li>Plank,1</li>
+        </In>
+    </Recipe>
+    <Recipe>
+        <Out>Plank,4</Out>
+        <In amount="1">
+            <li>WoodLog,1</li>
+        </In>
+    </Recipe>
+</Recipes>

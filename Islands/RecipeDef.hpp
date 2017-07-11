@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-typedef std::vector<RecipeDef> RecipeVector;
 typedef std::pair<std::string, unsigned> RecipeElement;
 
 class RecipeDef
@@ -41,3 +40,5 @@ class RecipeDef
 		return In[index];
 	}
 };
+
+typedef std::vector<RecipeDef> RecipeVector;

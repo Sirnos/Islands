@@ -3,21 +3,57 @@
   <Item name="WoodLog">
     <Graphics>0,0</Graphics>
     <MaxStack>32</MaxStack>
-    <Type>Material</Type>
   </Item>
   <Item name="Stick">
     <Graphics>1,0</Graphics>
     <MaxStack>128</MaxStack>
-    <Type>Material</Type>
   </Item>
   <Item name="Plank">
     <Graphics>2,0</Graphics>
     <MaxStack>64</MaxStack>
-    <Type>Material</Type>
   </Item>
   <Item name="Pebble">
     <Graphics>4,0</Graphics>
     <MaxStack>64</MaxStack>
-    <Type>Material</Type>
+  </Item>
+  <Item name="IronSword">
+    <Graphics>3,0</Graphics>
+    <MaxStack>1</MaxStack>
+    <MeleeWeaponDef>
+      <Damage>6</Damage>
+      <Reach>48</Reach>
+    </MeleeWeaponDef>
+  </Item>
+  <Item name="WoodBow">
+    <Graphics>5,0</Graphics>
+    <MaxStack>1</MaxStack>
+    <DistantWeaponDef>
+      <Damage>4</Damage>
+      <Range>2048</Range>
+    </DistantWeaponDef>
+  </Item>
+  <Item name="IronHelm">
+    <Graphics>6,0</Graphics>
+    <MaxStack>1</MaxStack>
+    <ArmorDef>
+      <Protection>4</Protection>
+      <Part>Head</Part>
+    </ArmorDef>
+  </Item>
+  <Item name="IronBreatsplate">
+    <Graphics>7,0</Graphics>
+    <MaxStack>1</MaxStack>
+    <ArmorDef>
+      <Protection>6</Protection>
+      <Part>Chest</Part>
+    </ArmorDef>
+  </Item>
+  <Item name="IronLegs">
+    <Graphics>8,0</Graphics>
+    <MaxStack>1</MaxStack>
+    <ArmorDef>
+      <Protection>5</Protection>
+      <Part>Legs</Part>
+    </ArmorDef>
   </Item>
 </Items>

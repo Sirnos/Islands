@@ -114,7 +114,7 @@ public:
 		int amount = std::stoi(amountStr);
 		if (amount <= 0) { commands.push_back("amount is equal 0 or smaller"); return; }
 		if (static_cast<unsigned>(amount) > MAXIMUM_STACK_SIZE) { commands.push_back("amount is higher than MAXIMUM_STACK_SIZE"); return; }
-		if (static_cast<unsigned>(amount) > Items.getDefinition(id)->getMaxStack()-1) { commands.push_back("amount is higher than Item::MaxStack"); return; }
+		if (static_cast<unsigned>(amount) > Items.getDefinition(id)->getMaxStack()) { commands.push_back("amount is higher than Item::MaxStack"); return; }
 
 		player.pushItemToPlayer(ItemField(id, amount), Items);
 		pushCommandToHistory(command);

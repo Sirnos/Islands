@@ -7,6 +7,7 @@
 #include <rapidxml.hpp>
 
 #include "DefContainer.hpp"
+#include "RecipeDef.hpp"
 
 class GameComponentsLoader
 {
@@ -188,11 +189,17 @@ public:
 			for (rapidxml::xml_node<>* itemsNode = mainNode->first_node(); itemsNode != nullptr;
 				itemsNode = itemsNode->next_sibling())
 			{
+				std::vector<int> IntTemp;
+				std::vector<float> FloatTemp;
+				std::vector<std::string> StringTemp;
+				ArmorPart newArmorPart = ArmorPart::Head;
+
+				ItemType newItemType = ItemType::Default;
+
 				std::string newItemName;
 				unsigned newItemMaxStack;
 
 				sf::Vector2i texturePos;
-
 				sf::IntRect newItemTextureCoord;
 
 				newItemName = itemsNode->first_attribute()->value();
@@ -210,11 +217,64 @@ public:
 					{
 						newItemMaxStack = std::stoul(std::string(itemParamNode->value()));
 					}
+					else if(paramName == "MeleeWeaponDef")
+					{
+						newItemType = ItemType::MeleeWeapon;
+						IntTemp.push_back(std::stoi(std::string(itemParamNode->first_node()->value())));
+						FloatTemp.push_back(std::stof(std::string(itemParamNode->first_node()->next_sibling()->value())));
+					}
+					else if(paramName == "DistantWeaponDef")
+					{
+						newItemType = ItemType::DistanceWeapon;
+						IntTemp.push_back(std::stoi(std::string(itemParamNode->first_node()->value())));
+						FloatTemp.push_back(std::stof(std::string(itemParamNode->first_node()->next_sibling()->value())));
+					}
+					else if(paramName == "ArmorDef")
+					{
+						newItemType = ItemType::Armor;
+						IntTemp.push_back(std::stoi(std::string(itemParamNode->first_node()->value())));
+						StringTemp.push_back(std::string(itemParamNode->first_node()->next_sibling()->value()));
+					}
 				}
-				Items.push_back(new RawMaterialDef(newItemName, newItemMaxStack));
+
+				switch (newItemType)
+				{
+				case ItemType::Default:
+					Items.push_back(new RawMaterialDef(newItemName, newItemMaxStack));
+					break;
+				case ItemType::Placeable:
+					break;
+				case ItemType::MeleeWeapon:
+					Items.push_back(new MeleeWeaponDef(newItemName, IntTemp.back(), FloatTemp.back()));
+					break;
+				case ItemType::DistanceWeapon:
+					Items.push_back(new DistantWeaponDef(newItemName, IntTemp.back(), FloatTemp.back()));
+					break;
+				case ItemType::Armor:
+					if (StringTemp.back() == "Head"){}
+					else if(StringTemp.back() == "Chest")
+					{
+						newArmorPart = ArmorPart::Chest;
+					}
+					else if(StringTemp.back() == "Legs")
+					{
+						newArmorPart = ArmorPart::Legs;
+					}
+
+					Items.push_back(new ArmorDef(newItemName, newArmorPart, IntTemp.back()));
+					break;
+				default:
+					break;
+				}
+
+				IntTemp.clear();
+				FloatTemp.clear();
+				StringTemp.clear();
 				textures.push_back(sf::IntRect(texturePos.x * textureSize, texturePos.y * textureSize, textureSize, textureSize));
 			}
 			Items.shrink_to_fit();
 		}
 	}
+
+	//void LoadRecipeDefFromFile(RecipeVector &recipes, std::string file)
 };
