@@ -276,5 +276,44 @@ public:
 		}
 	}
 
-	//void LoadRecipeDefFromFile(RecipeVector &recipes, std::string file)
+	void LoadRecipeDefFromFile(RecipeVector &recipes, std::string file)
+	{
+		rapidxml::file<char> rfile(file.data());
+		rapidxml::xml_document<> document;
+		document.parse<0>(rfile.data());
+
+		for (rapidxml::xml_node<> *mainNode = document.first_node(); mainNode != nullptr;
+			mainNode = mainNode->next_sibling())
+		{
+			RecipeElement newRecipeOut;
+			std::vector<RecipeElement> newRecipeIn;
+			for (rapidxml::xml_node<> *recipeNode = mainNode->first_node(); recipeNode != nullptr;
+				recipeNode = recipeNode->next_sibling())
+			{
+
+				for (rapidxml::xml_node<> *recipeParamNode = recipeNode->first_node(); recipeParamNode != nullptr;
+					recipeParamNode = recipeParamNode->next_sibling())
+				{
+					std::string paramName = recipeParamNode->name();
+
+					if (paramName == "Out")
+					{
+						newRecipeOut = getYieldFromString(std::string(recipeParamNode->value()));
+					}
+					else if(paramName == "In")
+					{
+						for (rapidxml::xml_node<>* recipeIn = recipeParamNode->first_node(); recipeIn != nullptr;
+							recipeIn = recipeIn->next_sibling())
+						{
+							newRecipeIn.push_back(getYieldFromString(std::string(recipeIn->value())));
+						}
+					}
+
+				}
+				recipes.push_back(RecipeDef(newRecipeOut,newRecipeIn));
+				newRecipeIn.clear();
+			}
+		}
+		recipes.shrink_to_fit();
+	}
 };

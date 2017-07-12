@@ -5,26 +5,22 @@
 #include <vector>
 
 typedef std::pair<std::string, unsigned> RecipeElement;
+typedef std::vector<RecipeElement> InRec;
 
 class RecipeDef
 {
 	RecipeElement Out;
-
-	size_t InElementSize;
-	RecipeElement* In;
-
-	RecipeDef(RecipeElement outElement, size_t inElementsAmount, RecipeElement *inElements)
+	InRec In;
+public:
+	RecipeDef(RecipeElement outElement,const InRec &inElements)
 	{
 		Out = outElement;
-		In = new RecipeElement[inElementsAmount];
-		for (size_t i = 0; i < inElementsAmount; i++)
-		{
-			In[i] = inElements[i];
-		}
+		In = inElements;
+		In.shrink_to_fit();
 	}
 	~RecipeDef()
 	{
-		delete[] In;
+		In.clear();
 	}
 
 	RecipeElement getOutElement()
@@ -33,7 +29,7 @@ class RecipeDef
 	}
 	size_t getInElementSize()
 	{
-		return InElementSize;
+		return In.size();
 	}
 	RecipeElement getInElement(size_t index)
 	{
