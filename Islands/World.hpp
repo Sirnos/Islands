@@ -82,6 +82,10 @@ public:
 		WorldObjects.clearObject(objectIndex);
 	}
 
+	Object* getObject(sf::Vector2u objectIndex)
+	{
+		return WorldObjects.getObject(objectIndex);
+	}
 	ObjectType getObjectType(sf::Vector2u objectIndex)
 	{
 		if (WorldObjects.getObject(objectIndex) == nullptr)

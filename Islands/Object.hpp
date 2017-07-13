@@ -12,6 +12,7 @@ struct Object
 	Object(unsigned objectId, ObjectType objectType = ObjectType::Default)
 	{
 		Id = objectId;
+		type = objectType;
 	}
 	virtual ~Object(){}
 };
@@ -27,23 +28,21 @@ struct SaplingObject : Object
 
 struct ChestObject : Object
 {
-	ItemField *Contain;
+	std::vector<ItemField> Contain;
 
-	ChestObject(unsigned objectId, size_t ChestContainSize, ItemField *objectContain = nullptr)
+	ChestObject(unsigned objectId, size_t ChestSize)
 		:Object(objectId, ObjectType::Chest)
 	{
-		Contain = new ItemField[ChestContainSize];
-		if (objectContain != nullptr)
-		{
-			for (size_t i = 0; i < ChestContainSize; i++)
-			{
-				Contain[i] = objectContain[i];
-			}
-		}
+		Contain.resize(ChestSize);
+	}
+	ChestObject(unsigned objectId, std::vector<ItemField> &otherContainer)
+		:Object(objectId, ObjectType::Chest)
+	{
+		Contain = otherContainer;
 	}
 
 	~ChestObject()
 	{
-		delete[] Contain;
+		Contain.clear();
 	}
 };

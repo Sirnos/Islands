@@ -66,18 +66,22 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
+		GameGui.popInteractionWithChest();
 		movevctr.x -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
+		GameGui.popInteractionWithChest();
 		movevctr.x += 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
+		GameGui.popInteractionWithChest();
 		movevctr.y -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
+		GameGui.popInteractionWithChest();
 		movevctr.y += 5;
 	}
 
@@ -629,7 +633,17 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 			}
 		}
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		sf::Vector2f mousePos = app.getMousePosInWorld();
+		sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE), 
+			static_cast<unsigned>(mousePos.x / TILE_SIZE));
 
+			if (GameWorld.getObjectType(objectPos) == ObjectType::Chest)
+			{
+				GameGui.pushInteractionWithChest(dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos)));
+			}
+	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.getIsEqGuiEnable())
 	{
 		if (GameGui.getHoldedItem().ItemId != 0)
@@ -639,7 +653,6 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			GameGui.clearHoldedItem();
 		}
 	}
-
 	switch (last)
 	{
 	case mouseWheel::Up:
@@ -760,6 +773,45 @@ void Engine::drawPlayerGui(IslandApp & app)
 				app.draw(amountItem);
 			}
 		}
+	}
+	if (GameGui.isChestExist())
+	{
+		EquipmentField chestField;
+		chestField.create(sf::Vector2f(), DefaultEqFieldSize, DefaultEqFieldColor);
+		sf::Vector2i screenCenter = static_cast<sf::Vector2i>(app.getIslandWindow()->getSize());
+		screenCenter.x /= 2;
+		screenCenter.y /= 8;
+		sf::Vector2f pos = app.getIslandWindow()->mapPixelToCoords(screenCenter);
+		pos.y += -10.0f;
+
+		for (size_t i = 0; i < GameGui.getChestCapSize(); i++)
+		{
+			if (i != 0 && i % 5 == 0) 
+			{ 
+				pos.y += DefaultEqFieldSize + 20;
+				pos.x += -((5 * 20.0f) + 5 * 64.0f);
+			}
+
+			ItemField temp = GameGui.getChestItem(i);
+			if (temp.ItemId != 0 && temp.ItemAmount != 0)
+			{
+				chestField.setTexture(mediaContainer.getTexture(temp.ItemId, TextureContainer::ItemsTextures));
+				amountItem.setString(std::to_string(temp.ItemAmount));
+
+				app.draw(chestField.FieldRect);
+				app.draw(chestField.TextureRect);
+				app.draw(amountItem);
+			}
+			else
+			{
+				app.draw(chestField.FieldRect);
+			}
+			chestField.setPosition(pos);
+			amountItem.setPosition(pos);
+
+			pos.x += DefaultEqFieldSize + 20;
+		}
+
 	}
 		
 }

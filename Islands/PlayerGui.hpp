@@ -2,6 +2,7 @@
 
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include "Object.hpp"
 #include "PlayerEquipmentGui.hpp"
 #include "PlayerHud.hpp"
 
@@ -23,6 +24,9 @@ class PlayerGui
 	unsigned SelectedBeltField = 0;
 
 	ItemField holdedItem;
+
+	ChestObject *interactedChest;
+
 public:
 	PlayerEquipmentGui EquipmentGui;
 	PlayerHud HudGui;
@@ -68,6 +72,7 @@ public:
 		}
 	}
 
+	unsigned getNumberOfSelectedBeltField() { return SelectedBeltField; }
 	void incrSelectedBeltField()
 	{
 		if (SelectedBeltField >= PlayerFieldsNumber - 1)
@@ -88,10 +93,44 @@ public:
 		}
 	}
 
-	//void pushInteractionWithChestObjectType(/*chest* obj*/){}
+	ItemField getChestItem(unsigned index)
+	{
+		if (interactedChest == nullptr)
+		{
+			return ItemField();
+		}
+		return interactedChest->Contain[index];
+	}
+	void setChestItem(unsigned index,ItemField item)
+	{
+		if (interactedChest == nullptr) { return; }
+
+		interactedChest->Contain[index] = item;
+	}
+	void pushInteractionWithChest(ChestObject *chest)
+	{
+		if (chest == nullptr)
+		{
+			return;
+		}
+
+		interactedChest = chest;
+	}
+	void popInteractionWithChest()
+	{
+		interactedChest = nullptr;
+	}
+	bool isChestExist()
+	{
+		if (interactedChest == nullptr) { return false; }
+		return true;
+	}
+	size_t getChestCapSize()
+	{
+		if (interactedChest == nullptr) { return 0; }
+		return interactedChest->Contain.size();
+	}
 
 	void switchEqGuiEnable() { isEqGuiEnable = !isEqGuiEnable; }
-	unsigned getNumberOfSelectedBeltField() { return SelectedBeltField; }
-
 	bool getIsEqGuiEnable() { return isEqGuiEnable; }
 };
