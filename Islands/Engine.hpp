@@ -9,7 +9,7 @@
 #include "ErrorHandler.hpp"
 #include "CollisionDetect.hpp"
 
-#include "PlayerGui.hpp"
+#include "Gui.hpp"
 
 #include "GameComponentsLoader.hpp"
 
@@ -29,7 +29,7 @@ class Engine
 	Media mediaContainer;
 	playerCharacter player;
 
-	PlayerGui GameGui;
+	Gui GameGui;
 
 	ObjectDefContainer Objects;
 	ItemDefContainer Items;
@@ -47,7 +47,6 @@ class Engine
 
 	void spawnPlayer();
 
-	void pushChangesToGui();
 	void checkGuiOperations(EquipmentType type, sf::Vector2u field);
 
 	void drawConsole(IslandApp &app);
@@ -58,6 +57,7 @@ class Engine
 	void drawWorld(IslandApp &app);
 
 	void drawPlayerGui(IslandApp & app);
+	void pushChangesToEquipmentField(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
 public:
 	~Engine();
 

@@ -133,7 +133,7 @@
     <ClInclude Include="Console.hpp" />
     <ClInclude Include="DefContainer.hpp" />
     <ClInclude Include="Engine.hpp" />
-    <ClInclude Include="EquipmentField.hpp" />
+    <ClInclude Include="EquipmentFieldInfo.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
@@ -148,9 +148,7 @@
     <ClInclude Include="ObjectDef.hpp" />
     <ClInclude Include="ObjectMap.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
-    <ClInclude Include="PlayerEquipmentGui.hpp" />
-    <ClInclude Include="PlayerGui.hpp" />
-    <ClInclude Include="PlayerHud.hpp" />
+    <ClInclude Include="Gui.hpp" />
     <ClInclude Include="RecipeDef.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="Tile.hpp" />

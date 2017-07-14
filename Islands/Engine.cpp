@@ -66,22 +66,22 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		GameGui.popInteractionWithChest();
+		//GameGui.popInteractionWithChest();
 		movevctr.x -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		GameGui.popInteractionWithChest();
+		//GameGui.popInteractionWithChest();
 		movevctr.x += 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		GameGui.popInteractionWithChest();
+		//GameGui.popInteractionWithChest();
 		movevctr.y -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		GameGui.popInteractionWithChest();
+		//GameGui.popInteractionWithChest();
 		movevctr.y += 5;
 	}
 
@@ -112,76 +112,9 @@ void Engine::spawnPlayer()
 	player.setSpawnPoint(spawnPoint);
 }
 
-void Engine::pushChangesToGui()
-{
-	for (size_t i = 0; i < PlayerFieldsNumber; i++)
-	{
-		if (i < 3)
-		{
-			GameGui.EquipmentGui.clearArmorField(i);
-			if (GameGui.EquipmentGui.getHoverFromArmorField(i))
-			{
-				GameGui.EquipmentGui.getArmorFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
-			}
-
-			unsigned ArmorItemId = player.getArmorInventoryField(i).ItemId;
-			if (ArmorItemId != 0)
-			{
-				GameGui.EquipmentGui.pushTextureToArmorFields(i, mediaContainer.getTexture(ArmorItemId,
-					TextureContainer::ItemsTextures));
-			}
-		}
-
-		GameGui.HudGui.clearBeltField(i);
-		if (i == GameGui.getNumberOfSelectedBeltField())
-		{
-			GameGui.HudGui.getBeltFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
-		}
-		if (GameGui.HudGui.getHoverFromBeltField(i))
-		{
-			GameGui.HudGui.getBeltFieldRect(i).setFillColor(EqFieldColorWhenIsSelected);
-		}
-
-		unsigned itemId = player.getHandInventoryField(i).ItemId;
-		unsigned itemAmount = player.getHandInventoryField(i).ItemAmount;
-
-		if (itemId != 0 && itemAmount != 0)
-		{
-			GameGui.HudGui.pushTextureToBeltField(i, mediaContainer.getTexture(itemId,
-				TextureContainer::ItemsTextures));
-		}
-		else if(itemAmount == 0)
-		{
-			player.setHandInventoryField(i, ItemField());
-		}
-
-		for (size_t j = 0; j < PlayerFieldsNumber; j++)
-		{
-			GameGui.EquipmentGui.clearInventoryField(sf::Vector2u(i, j));
-			if (GameGui.EquipmentGui.getHoverFromInventoryField(sf::Vector2u(i,j)))
-			{
-				GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).setFillColor(EqFieldColorWhenIsSelected);
-			}
-
-			unsigned tempItemId = player.getInventoryField(sf::Vector2u(i, j)).ItemId;
-			unsigned tempItemAmount = player.getInventoryField(sf::Vector2u(i, j)).ItemAmount;
-			if (tempItemId != 0 && tempItemAmount != 0)
-			{
-				GameGui.EquipmentGui.pushTextureToFields(sf::Vector2u(i, j), mediaContainer.getTexture(tempItemId,
-					TextureContainer::ItemsTextures));
-			}
-			else if(tempItemAmount == 0)
-			{
-				player.setInventoryField(sf::Vector2u(i, j), ItemField());
-			}
-		}
-
-	}
-}
-
 void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 {
-	unsigned holdedItemId = GameGui.getHoldedItem().ItemId;
+	unsigned holdedItemId = player.getHoldItem().ItemId;
 	switch (type)
 	{
 	case EquipmentType::Inventory:
@@ -190,7 +123,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 			if (player.getInventoryField(field).ItemId == holdedItemId)
 			{
 				player.setInventoryField(field, ItemField(holdedItemId,
-					player.getInventoryField(field).ItemAmount + GameGui.getHoldedItem().ItemAmount));
+					player.getInventoryField(field).ItemAmount + player.getHoldItem().ItemAmount));
 
 				unsigned maxStack = Items.getDefinition(holdedItemId)->getMaxStack();
 				if (player.getInventoryField(field).ItemAmount >= maxStack)
@@ -199,31 +132,31 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 					player.setInventoryField(field, ItemField(holdedItemId,
 						player.getInventoryField(field).ItemAmount - amountForHold));
 
-					GameGui.assingNewItemToHold(ItemField(holdedItemId, amountForHold));
+					player.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
 				else
 				{
-					GameGui.clearHoldedItem();
+					player.setHoldItem(ItemField(0,0));
 				}
 
 			}
 			else if(player.getInventoryField(field).ItemId != 0)
 			{
 				ItemField temp(player.getInventoryField(field));
-				player.setInventoryField(field, GameGui.getHoldedItem());
-				GameGui.assingNewItemToHold(temp);
+				player.setInventoryField(field, player.getHoldItem());
+				player.setHoldItem(temp);
 			}
 			else
 			{
-				player.setInventoryField(field, GameGui.getHoldedItem());
-				GameGui.clearHoldedItem();
+				player.setInventoryField(field, player.getHoldItem());
+				player.setHoldItem(ItemField(0, 0));
 			}
 		}
 		else
 		{
 			if (player.getInventoryField(field).ItemId != 0)
 			{
-				GameGui.assingNewItemToHold(player.getInventoryField(field));
+				player.setHoldItem(player.getInventoryField(field));
 				player.setInventoryField(field, ItemField());
 			}
 		}
@@ -234,20 +167,20 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 			if (player.getArmorInventoryField(field.x).ItemId != 0)
 			{
 				ItemField temp(player.getArmorInventoryField(field.x));
-				player.setArmorField(field.x, GameGui.getHoldedItem());
-				GameGui.assingNewItemToHold(temp);
+				player.setArmorField(field.x, player.getHoldItem());
+				player.setHoldItem(temp);
 			}
 			else
 			{
-				player.setArmorField(field.x, GameGui.getHoldedItem());
-				GameGui.clearHoldedItem();
+				player.setArmorField(field.x, player.getHoldItem());
+				player.setHoldItem(ItemField(0, 0));
 			}
 		}
 		else
 		{
 			if (player.getArmorInventoryField(field.x).ItemId != 0)
 			{
-				GameGui.assingNewItemToHold(player.getArmorInventoryField(field.x));
+				player.setHoldItem(player.getArmorInventoryField(field.x));
 				player.setArmorField(field.x, ItemField());
 			}
 		}
@@ -258,7 +191,7 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 			if (player.getHandInventoryField(field.x).ItemId == holdedItemId)
 			{
 				player.setHandInventoryField(field.x, ItemField(holdedItemId,
-					player.getHandInventoryField(field.x).ItemAmount + GameGui.getHoldedItem().ItemAmount));
+					player.getHandInventoryField(field.x).ItemAmount + player.getHoldItem().ItemAmount));
 
 				unsigned maxStack = Items.getDefinition(holdedItemId)->getMaxStack();
 				if (player.getHandInventoryField(field.x).ItemAmount >= maxStack)
@@ -267,31 +200,31 @@ void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 					player.setHandInventoryField(field.x, ItemField(holdedItemId,
 						player.getHandInventoryField(field.x).ItemAmount - amountForHold));
 
-					GameGui.assingNewItemToHold(ItemField(holdedItemId, amountForHold));
+					player.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
 				else
 				{
-					GameGui.clearHoldedItem();
+					player.setHoldItem(ItemField(0, 0));
 				}
 
 			}
 			else if (player.getHandInventoryField(field.x).ItemId != 0)
 			{
 				ItemField temp(player.getHandInventoryField(field.x));
-				player.setHandInventoryField(field.x, GameGui.getHoldedItem());
-				GameGui.assingNewItemToHold(temp);
+				player.setHandInventoryField(field.x, player.getHoldItem());
+				player.setHoldItem(temp);
 			}
 			else
 			{
-				player.setHandInventoryField(field.x, GameGui.getHoldedItem());
-				GameGui.clearHoldedItem();
+				player.setHandInventoryField(field.x, player.getHoldItem());
+				player.setHoldItem(ItemField(0, 0));
 			}
 		}
 		else
 		{
 			if (player.getHandInventoryField(field.x).ItemId != 0)
 			{
-				GameGui.assingNewItemToHold(player.getHandInventoryField(field.x));
+				player.setHoldItem(player.getHandInventoryField(field.x));
 				player.setHandInventoryField(field.x, ItemField());
 			}
 		}
@@ -484,8 +417,6 @@ void Engine::init()
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(WorldSize) + " x " + std::to_string(WorldSize));
 	spawnPlayer();
-
-	GameGui.create();
 }
 
 void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseClick)
@@ -495,17 +426,12 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	checkPlayerBehaviour(app);
 	checkPlayerEnvironment();
 
-	camera.setCenter(player.getCharacterCenterPosition());
 	app.getIslandWindow()->setView(camera);
 
 	auto Window = app.getIslandWindow();
+	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(800, 200)));
 
 	if (key == '`') { GameConsole.setEnable(!GameConsole.getEnable()); }
-
-	GameGui.setNewPosition(Window->mapPixelToCoords(GameGui.EquipmentGui.defaultEquipmentGuiPosOnScreen));
-	GameGui.HudGui.setNewPosition(Window->mapPixelToCoords(GameGui.HudGui.HpInfoScreenPos),
-		Window->mapPixelToCoords(GameGui.HudGui.MpInfoScreenPos),Window->mapPixelToCoords(GameGui.HudGui.BeltFieldPosOnScreen));
-	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(800, 200)));
 
 	if (!checkPlayerPos())
 	{ 
@@ -514,22 +440,15 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			" :Y " + std::to_string(+player.getCharacterCenterPosition().y));
 	}
 
-	if (GameGui.getIsEqGuiEnable())
+	if (GameGui.Eq.isEnable)
 	{
 		sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
 		for (size_t i = 0; i < PlayerFieldsNumber; i++)
 		{
 			if (i < 3)
 			{
-				if (GameGui.EquipmentGui.getHoverFromArmorField(i))
+				if (GameGui.Eq.ArmorEquipment[i].isHover)
 				{
-					GameGui.EquipmentGui.setHoverForArmorField(i, false);
-				}
-				sf::Vector2f fieldPos = GameGui.EquipmentGui.getArmorFieldRect(i).getPosition();
-
-				if (GameGui.EquipmentGui.getArmorFieldRect(i).getGlobalBounds().contains(mousePosInWorld))
-				{
-					GameGui.EquipmentGui.setHoverForArmorField(i, true);
 					if (isMouseClick)
 					{
 						checkGuiOperations(EquipmentType::Armor, sf::Vector2u(i, 0));
@@ -537,14 +456,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 			}
 
-			if (GameGui.HudGui.getHoverFromBeltField(i))
+			if (GameGui.Hud.Belt[i].isHover)
 			{
-				GameGui.HudGui.setHoverForBeltField(i, false);
-			}
-			sf::Vector2f beltFieldPos = GameGui.HudGui.getBeltFieldRect(i).getPosition();
-			if (GameGui.HudGui.getBeltFieldRect(i).getGlobalBounds().contains(mousePosInWorld))
-			{
-				GameGui.HudGui.setHoverForBeltField(i, true);
 				if (isMouseClick)
 				{
 					checkGuiOperations(EquipmentType::Belt, sf::Vector2u(i, 0));
@@ -553,15 +466,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 
 			for (size_t j = 0; j < PlayerFieldsNumber; j++)
 			{
-				if (GameGui.EquipmentGui.getHoverFromInventoryField(sf::Vector2u(i, j)))
+				if (GameGui.Eq.Equipment[i][j].isHover)
 				{
-					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), false);
-				}
-
-				sf::Vector2f fieldPos = GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i, j)).getPosition();
-				if (GameGui.EquipmentGui.getFieldRect(sf::Vector2u(i,j)).getGlobalBounds().contains(mousePosInWorld))
-				{
-					GameGui.EquipmentGui.setHoverForInventoryField(sf::Vector2u(i, j), true);
 					if (isMouseClick)
 					{
 						checkGuiOperations(EquipmentType::Inventory, sf::Vector2u(i, j));
@@ -570,9 +476,9 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			}
 		}
 	}
-	else if (!GameGui.getIsEqGuiEnable() && GameGui.getHoldedItem().isClear() && isMouseClick)
+	else if (!GameGui.Eq.isEnable && player.getHoldItem().isClear() && isMouseClick)
 		{
-			unsigned itemId = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemId;
+			unsigned itemId = player.getHandInventoryField(GameGui.Hud.ActiveBeltField).ItemId;
 			sf::Vector2f mousePos = app.getMousePosInWorld();
 			sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE),
 				static_cast<unsigned>(mousePos.x / TILE_SIZE));
@@ -584,16 +490,16 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
 						sf::Vector2f(WorldSize * TILE_SIZE,WorldSize * TILE_SIZE)))
 					{
-						if (player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField()).ItemAmount == 0)
+						if (player.getHandInventoryField(GameGui.Hud.ActiveBeltField).ItemAmount == 0)
 						{
-							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), ItemField(0, 0));
+							player.setHandInventoryField(GameGui.Hud.ActiveBeltField, ItemField(0, 0));
 						}
 						
 						if (GameWorld.placeObject(objectPos, itemId, Objects.getContainer(),GameClock.getElapsedTime()))
 						{
-							ItemField temp = player.getHandInventoryField(GameGui.getNumberOfSelectedBeltField());
+							ItemField temp = player.getHandInventoryField(GameGui.Hud.ActiveBeltField);
 							temp -= 1;
-							player.setHandInventoryField(GameGui.getNumberOfSelectedBeltField(), temp);
+							player.setHandInventoryField(GameGui.Hud.ActiveBeltField, temp);
 						}
 					}
 				}
@@ -641,25 +547,24 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 
 			if (GameWorld.getObjectType(objectPos) == ObjectType::Chest)
 			{
-				GameGui.pushInteractionWithChest(dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos)));
+				//GameGui.pushInteractionWithChest(dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos)));
 			}
 	}
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.getIsEqGuiEnable())
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.Eq.isEnable)
 	{
-		if (GameGui.getHoldedItem().ItemId != 0)
+		if (player.getHoldItem().ItemId != 0)
 		{
-			LyingItems.pushNewItem(GameClock.getElapsedTime(),
-				app.getMousePosInWorld(), GameGui.getHoldedItem());
-			GameGui.clearHoldedItem();
+			LyingItems.pushNewItem(GameClock.getElapsedTime(), app.getMousePosInWorld(), player.getHoldItem());
+			player.setHoldItem(ItemField(0, 0));
 		}
 	}
 	switch (last)
 	{
 	case mouseWheel::Up:
-		GameGui.incrSelectedBeltField();
+		GameGui.incrActiveBeltField();
 		break;
 	case mouseWheel::Down:
-		GameGui.decrSelectedBeltField();
+		GameGui.decrActiveBeltField();
 		break;
 	case mouseWheel::Stop:
 		break;
@@ -668,9 +573,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	}
 
 	GameGui.pushKeyState(key);
-	GameGui.HudGui.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
-	GameGui.HudGui.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
-	pushChangesToGui();
+	GameGui.Hud.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
+	GameGui.Hud.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
 }
 
 void Engine::drawWorld(IslandApp & app)
@@ -706,74 +610,96 @@ void Engine::drawWorld(IslandApp & app)
 
 void Engine::drawPlayerGui(IslandApp & app)
 {
-	app.draw(GameGui.HudGui.getHudElement(false));
-	app.draw(GameGui.HudGui.getHudElement(true));
-
-	sf::Font font;
-	font.loadFromFile("Data/Fonts/ariali.ttf");
+	GameGui.Hud.HpInfo.setPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.Hud.HpInfoScreenPos));
+	GameGui.Hud.MpInfo.setPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.Hud.MpInfoScreenPos));
+	app.draw(GameGui.Hud.HpInfo);
+	app.draw(GameGui.Hud.MpInfo);
 
 	sf::Text amountItem;
 	amountItem.setCharacterSize(16);
-	amountItem.setFont(font);
+	amountItem.setFont(GameGui.GuiFont);
 	amountItem.setFillColor(sf::Color(255, 0, 0, 255));
 
+	sf::RectangleShape FieldShape;
+	FieldShape.setSize(sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize));
+	sf::RectangleShape TextureFieldShape;
+	TextureFieldShape.setSize(FieldShape.getSize());
+	sf::Vector2f mousePosition = app.getMousePosInWorld();
 
-	if (GameGui.getHoldedItem().ItemId != 0)
+	if (player.getHoldItem().ItemId != 0)
 	{
-		sf::RectangleShape holdedItemRep;
-		holdedItemRep.setSize(sf::Vector2f(DefaultEqFieldSize, DefaultEqFieldSize));
-		holdedItemRep.setTexture(mediaContainer.getTexture(GameGui.getHoldedItem().ItemId,
+		sf::RectangleShape holdItemRep;
+		holdItemRep.setSize(sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize));
+		holdItemRep.setTexture(mediaContainer.getTexture(player.getHoldItem().ItemId,
 			TextureContainer::ItemsTextures));
-		holdedItemRep.setPosition(app.getMousePosInWorld());
-		amountItem.setString(std::to_string(GameGui.getHoldedItem().ItemAmount));
-		amountItem.setPosition(app.getMousePosInWorld());
+		holdItemRep.setPosition(app.getMousePosInWorld());
 
-		app.draw(holdedItemRep);
-		app.draw(amountItem);
+		app.draw(holdItemRep);
 	}
+
 
 	for (size_t i = 0; i < PlayerFieldsNumber; i++)
 	{
-		app.draw(GameGui.HudGui.getBeltFieldRect(i));
+		amountItem.setString("");
 
-		if (player.getHandInventoryField(i).ItemId != 0)
-		{
-			app.draw(GameGui.HudGui.getBeltFieldTextureRect(i));
-			amountItem.setPosition(GameGui.HudGui.getBeltFieldRect(i).getPosition());
-			amountItem.setString(std::to_string(player.getHandInventoryField(i).ItemAmount));
-			app.draw(amountItem);
-		}
+		GameGui.Hud.Belt[i].checkIsHover(mousePosition);
+		sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(getScreenPositionForBeltEquipmentField(i));
+		GameGui.Hud.Belt[i].Position = newPos;
+		GameGui.Hud.Belt[i].pushChangesToRectangleShape(FieldShape);
+		ItemField temp = player.getHandInventoryField(i);
+		pushChangesToEquipmentField(newPos,temp.ItemId, TextureFieldShape);
+		amountItem.setPosition(FieldShape.getPosition());
+
+		if (temp.ItemAmount != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
+
+		app.draw(FieldShape);
+		if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
+		if (amountItem.getString().getSize() > 0) { app.draw(amountItem); }
 	}
 
-	if (!GameGui.getIsEqGuiEnable()) { return; }
+	if (!GameGui.Eq.isEnable) { return; }
 
-	sf::Vector2u field;
-	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	sf::Vector2u field = sf::Vector2u(0,0);
+	for (field.x; field.x < PlayerFieldsNumber; field.x++)
 	{
-		if (i < 3)
+		if (field.x < 3)
 		{
-			app.draw(GameGui.EquipmentGui.getArmorFieldRect(i));
-			if (player.getArmorInventoryField(i).ItemId != 0)
-			{
-				app.draw(GameGui.EquipmentGui.getArmorTextureRect(i));
-			}
+			sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords
+			(getScreenPositionForArmorEquipmentField(field.x));
+
+			GameGui.Eq.ArmorEquipment[field.x].checkIsHover(mousePosition);
+			GameGui.Eq.ArmorEquipment[field.x].Position = newPos;
+
+			GameGui.Eq.ArmorEquipment[field.x].pushChangesToRectangleShape(FieldShape);
+			ItemField temp = player.getArmorInventoryField(field.x);
+			pushChangesToEquipmentField(newPos, temp.ItemId, TextureFieldShape);
+
+			app.draw(FieldShape);
+			if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
 		}
-		field.x = i;
-		for (size_t j = 0; j < PlayerFieldsNumber; j++)
+
+		for (field.y; field.y < PlayerFieldsNumber; field.y++)
 		{
-			field.y = j;
+			amountItem.setString("");
 
-			app.draw(GameGui.EquipmentGui.getFieldRect(field));
+			GameGui.Eq.Equipment[field.x][field.y].checkIsHover(mousePosition);
+			sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(getScreenPositionForEquipmentField(field));
+			GameGui.Eq.Equipment[field.x][field.y].Position = newPos;
 
-			if (player.getInventoryField(field).ItemId != 0)
-			{
-				app.draw(GameGui.EquipmentGui.getTextureRect(field));
-				amountItem.setPosition(GameGui.EquipmentGui.getFieldRect(field).getPosition());
-				amountItem.setString(std::to_string(player.getInventoryField(field).ItemAmount));
-				app.draw(amountItem);
-			}
+			GameGui.Eq.Equipment[field.x][field.y].pushChangesToRectangleShape(FieldShape);
+			ItemField temp = player.getInventoryField(field);
+			pushChangesToEquipmentField(newPos, temp.ItemId, TextureFieldShape);
+			amountItem.setPosition(newPos);
+
+			if (temp.ItemAmount != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
+
+			app.draw(FieldShape);
+			if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
+			if (amountItem.getString().getSize() > 0) { app.draw(amountItem); }
 		}
 	}
+
+	/*
 	if (GameGui.isChestExist())
 	{
 		EquipmentField chestField;
@@ -813,11 +739,21 @@ void Engine::drawPlayerGui(IslandApp & app)
 		}
 
 	}
+	*/
 		
+}
+
+void Engine::pushChangesToEquipmentField(sf::Vector2f pos, unsigned itemId, sf::RectangleShape & rect)
+{
+	rect.setPosition(pos);
+	if (itemId > 0) { rect.setTexture(mediaContainer.getTexture(itemId, TextureContainer::ItemsTextures)); }
+	else { rect.setTexture(nullptr); }
 }
 
 void Engine::DrawAll(IslandApp &app)
 {
+	camera.setCenter(player.getCharacterCenterPosition());
+
 	drawWorld(app);
 	drawPlayerGui(app);
 	drawConsole(app);

@@ -9,6 +9,7 @@ class playerCharacter :public Character
 	ItemField Inventory[PlayerFieldsNumber][PlayerFieldsNumber];
 	ItemField HandInventory[PlayerFieldsNumber];
 	ItemField ArmorFields[3];
+	ItemField HoldItem;
 
 	sf::Vector2f spawnPoint;
 public:
@@ -46,6 +47,7 @@ public:
 		return HandInventory[field];
 	}
 	ItemField getArmorInventoryField(unsigned field) { return ArmorFields[field]; }
+	ItemField getHoldItem() { return HoldItem; }
 
 	void setInventoryField(sf::Vector2u field, ItemField newVal)
 	{
@@ -59,6 +61,7 @@ public:
 	{
 		ArmorFields[field] = newVal;
 	}
+	void setHoldItem(ItemField newVal) { HoldItem = newVal; }
 
 	void pushItemToPlayer(ItemField &item,ItemDefContainer &Items)
 	{

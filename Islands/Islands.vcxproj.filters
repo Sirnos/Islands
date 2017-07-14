@@ -86,20 +86,8 @@
     <ClInclude Include="GameComponentsLoader.hpp">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerGui.hpp">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerEquipmentGui.hpp">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerHud.hpp">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="Engine.hpp">
       <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="EquipmentField.hpp">
-      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="ItemField.hpp">
       <Filter>Header Files\Item</Filter>
@@ -127,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="RecipeDef.hpp">
       <Filter>Header Files\other</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EquipmentFieldInfo.hpp">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
