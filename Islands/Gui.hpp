@@ -7,7 +7,8 @@ enum class EquipmentType
 {
 	Inventory,
 	Armor,
-	Belt
+	Belt,
+	Chest
 };
 
 struct EquipmentGui
@@ -46,11 +47,17 @@ struct HudGui
 
 struct ChestGui
 {
-	std::vector<EquipmentFieldInfo> Chest;
+	std::vector<EquipmentFieldInfo> ChestContain;
 };
 
-struct Gui
+class Gui
 {
+	const int static EqFieldSizeI = 64;
+	const int static EqFieldMarginI = 16;
+public:
+
+
+	ChestGui Chest;
 	EquipmentGui Eq;
 	HudGui Hud;
 
@@ -118,4 +125,41 @@ struct Gui
 			Hud.ActiveBeltField--;
 		}
 	}
+	void createChestFields(unsigned size)
+	{
+		sf::Vector2i ScreenPos = BeginChestFieldPosition;
+		for (size_t i = 0; i < size; i++)
+		{
+			Chest.ChestContain.push_back(EquipmentFieldInfo());
+			if (i != 0 && i % 5 == 0) 
+			{ 
+				ScreenPos.x = BeginChestFieldPosition.x;
+				ScreenPos.y += (EqFieldMarginI + EqFieldSizeI);
+			}
+			Chest.ChestContain.back().ScreenPosition = ScreenPos;
+
+			ScreenPos.x += (EqFieldSizeI + EqFieldMarginI);
+		}
+	}
+	void deleteChestFields() { Chest.ChestContain.clear(); }
+
+private:
+	sf::Vector2i getScreenPositionForEquipmentField(sf::Vector2u field)
+	{
+		return sf::Vector2i(BeginEquipmentFieldPosition.x + (field.x * EqFieldMarginI) + (field.x * EqFieldSizeI),
+			BeginEquipmentFieldPosition.y + (field.y * EqFieldMarginI) + (field.y * EqFieldSizeI));
+	}
+
+	sf::Vector2i getScreenPositionForArmorEquipmentField(unsigned field)
+	{
+		return sf::Vector2i(BeginArmorEquipmentFieldPosition.x,
+			BeginArmorEquipmentFieldPosition.y + (field * EqFieldMarginI + (field * EqFieldSizeI)));
+	}
+
+	sf::Vector2i getScreenPositionForBeltEquipmentField(unsigned field)
+	{
+		return sf::Vector2i(BeginBeltEquipmentFieldPosition.x + (field * EqFieldMarginI) +
+			(field * EqFieldSizeI), BeginBeltEquipmentFieldPosition.y);
+	}
+
 };

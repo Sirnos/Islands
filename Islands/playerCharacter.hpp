@@ -11,6 +11,8 @@ class playerCharacter :public Character
 	ItemField ArmorFields[3];
 	ItemField HoldItem;
 
+	std::vector<ItemField> *InteractedChest;
+
 	sf::Vector2f spawnPoint;
 public:
 	playerCharacter()
@@ -48,6 +50,34 @@ public:
 	}
 	ItemField getArmorInventoryField(unsigned field) { return ArmorFields[field]; }
 	ItemField getHoldItem() { return HoldItem; }
+
+	void pushInteractionWithChest(std::vector<ItemField> *Chest)
+	{
+		InteractedChest = Chest;
+	}
+	ItemField getItemFromInteractedChest(unsigned field)
+	{
+		if (InteractedChest == nullptr) { return ItemField(); }
+		return InteractedChest->operator[](field);
+	}
+	size_t getInteractedChestSize()
+	{
+		if (InteractedChest == nullptr) { return 0; }
+		return InteractedChest->size();
+	}
+	void setInteractedChestItemField(unsigned field, ItemField item)
+	{
+		InteractedChest->operator[](field) = item;
+	}
+	void popInteractionWithChest()
+	{
+		InteractedChest = nullptr;
+	}
+	bool isInteractedChestExist()
+	{
+		if (InteractedChest == nullptr) { return false; }
+		return true;
+	}
 
 	void setInventoryField(sf::Vector2u field, ItemField newVal)
 	{
