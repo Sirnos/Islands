@@ -643,14 +643,15 @@ void Engine::drawPlayerGui(IslandApp & app)
 		amountItem.setString("");
 
 		GameGui.Hud.Belt[i].checkIsHover(mousePosition);
-		sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(getScreenPositionForBeltEquipmentField(i));
+		sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(GameGui.Hud.Belt[i].ScreenPosition);
 		GameGui.Hud.Belt[i].Position = newPos;
 		GameGui.Hud.Belt[i].pushChangesToRectangleShape(FieldShape);
 		ItemField temp = player.getHandInventoryField(i);
-		pushChangesToEquipmentField(newPos,temp.ItemId, TextureFieldShape);
+		pushItemTextureToRect(newPos,temp.ItemId, TextureFieldShape);
 		amountItem.setPosition(FieldShape.getPosition());
 
 		if (temp.ItemAmount != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
+		if (i == GameGui.Hud.ActiveBeltField) { FieldShape.setFillColor(ActiveBeltFieldColor); }
 
 		app.draw(FieldShape);
 		if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
@@ -662,17 +663,18 @@ void Engine::drawPlayerGui(IslandApp & app)
 	sf::Vector2u field = sf::Vector2u(0,0);
 	for (field.x; field.x < PlayerFieldsNumber; field.x++)
 	{
+		field.y = 0;
 		if (field.x < 3)
 		{
 			sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords
-			(getScreenPositionForArmorEquipmentField(field.x));
+			(GameGui.Eq.ArmorEquipment[field.x].ScreenPosition);
 
 			GameGui.Eq.ArmorEquipment[field.x].checkIsHover(mousePosition);
 			GameGui.Eq.ArmorEquipment[field.x].Position = newPos;
 
 			GameGui.Eq.ArmorEquipment[field.x].pushChangesToRectangleShape(FieldShape);
 			ItemField temp = player.getArmorInventoryField(field.x);
-			pushChangesToEquipmentField(newPos, temp.ItemId, TextureFieldShape);
+			pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
 
 			app.draw(FieldShape);
 			if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
@@ -683,12 +685,12 @@ void Engine::drawPlayerGui(IslandApp & app)
 			amountItem.setString("");
 
 			GameGui.Eq.Equipment[field.x][field.y].checkIsHover(mousePosition);
-			sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(getScreenPositionForEquipmentField(field));
+			sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(GameGui.Eq.Equipment[field.x][field.y].ScreenPosition);
 			GameGui.Eq.Equipment[field.x][field.y].Position = newPos;
 
 			GameGui.Eq.Equipment[field.x][field.y].pushChangesToRectangleShape(FieldShape);
 			ItemField temp = player.getInventoryField(field);
-			pushChangesToEquipmentField(newPos, temp.ItemId, TextureFieldShape);
+			pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
 			amountItem.setPosition(newPos);
 
 			if (temp.ItemAmount != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
@@ -743,7 +745,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 		
 }
 
-void Engine::pushChangesToEquipmentField(sf::Vector2f pos, unsigned itemId, sf::RectangleShape & rect)
+void Engine::pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::RectangleShape & rect)
 {
 	rect.setPosition(pos);
 	if (itemId > 0) { rect.setTexture(mediaContainer.getTexture(itemId, TextureContainer::ItemsTextures)); }

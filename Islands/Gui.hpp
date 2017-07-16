@@ -66,6 +66,19 @@ struct Gui
 		Hud.HpInfo.setFont(GuiFont);
 		Hud.MpInfo.setFillColor(sf::Color::Blue);
 		Hud.HpInfo.setFillColor(sf::Color::Red);
+
+		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		{
+			if (i < 3)
+			{
+				Eq.ArmorEquipment[i].ScreenPosition = getScreenPositionForArmorEquipmentField(i);
+			}
+			Hud.Belt[i].ScreenPosition = getScreenPositionForBeltEquipmentField(i);
+			for (size_t j = 0; j < PlayerFieldsNumber; j++)
+			{
+				Eq.Equipment[i][j].ScreenPosition = getScreenPositionForEquipmentField(sf::Vector2u(i, j));
+			}
+		}
 	}
 
 	void pushKeyState(char key)
@@ -80,7 +93,7 @@ struct Gui
 		{
 			if (keyVar == keyForBeltFields[i])
 			{
-				Hud.ActiveBeltField = i-1;
+				Hud.ActiveBeltField = i;
 				break;
 			}
 		}

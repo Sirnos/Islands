@@ -57,7 +57,7 @@ class Engine
 	void drawWorld(IslandApp &app);
 
 	void drawPlayerGui(IslandApp & app);
-	void pushChangesToEquipmentField(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
+	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
 public:
 	~Engine();
 

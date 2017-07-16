@@ -10,6 +10,7 @@ const float EquipmentFieldMargin = 16.0f;
 const float EquipmentFieldSize = 64.0f;
 const sf::Color EquipmentFieldColor = sf::Color(120, 250, 120, 250);
 const sf::Color HoverEquipmentFieldColor = sf::Color(250, 60, 80, 250);
+const sf::Color ActiveBeltFieldColor = sf::Color(255, 40, 60, 250);
 
 const int EqFieldSizeI = 64;
 const int EqFieldMarginI = 16;
@@ -34,6 +35,7 @@ inline sf::Vector2i getScreenPositionForBeltEquipmentField(unsigned field)
 
 struct EquipmentFieldInfo
 {
+	sf::Vector2i ScreenPosition;
 	sf::Vector2f Position;
 	bool isHover;
 
