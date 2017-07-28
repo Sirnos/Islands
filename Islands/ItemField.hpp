@@ -1,6 +1,6 @@
 #pragma once
 
-const unsigned PlayerFieldsNumber = 5;
+const unsigned PlayerInventorySize = 5;
 
 struct ItemField
 {
@@ -12,9 +12,10 @@ struct ItemField
 		:ItemId(newItemId),
 		ItemAmount(newItemAmount)
 	{}
-	ItemField(ItemField &other)
+	ItemField(const ItemField &other)
 	{
-		this->operator=(other);
+		ItemId = other.ItemId;
+		ItemAmount = other.ItemAmount;
 	}
 
 	void operator= (ItemField &other)
@@ -31,7 +32,7 @@ struct ItemField
 		ItemAmount -= amount;
 	}
 
-	bool isClear() 
+	bool isEmpty() 
 	{
 		if (ItemId == 0 || ItemAmount == 0)
 		{
@@ -39,5 +40,5 @@ struct ItemField
 		}
 		return false;
 	}
-	void clear() { ItemId = 0; ItemAmount = 0; }
+	void empty() { ItemId = 0; ItemAmount = 0; }
 };

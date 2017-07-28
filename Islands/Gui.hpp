@@ -13,7 +13,7 @@ enum class EquipmentType
 
 struct EquipmentGui
 {
-	EquipmentFieldInfo Equipment[PlayerFieldsNumber][PlayerFieldsNumber];
+	EquipmentFieldInfo Equipment[PlayerInventorySize][PlayerInventorySize];
 	EquipmentFieldInfo ArmorEquipment[3];
 
 	bool isEnable;
@@ -29,7 +29,7 @@ struct HudGui
 	sf::Text HpInfo;
 	sf::Text MpInfo;
 
-	EquipmentFieldInfo Belt[PlayerFieldsNumber];
+	EquipmentFieldInfo Belt[PlayerInventorySize];
 
 	unsigned ActiveBeltField;
 
@@ -64,7 +64,7 @@ public:
 	sf::Font GuiFont;
 
 	const int keyForEqGuiEnable = 'e';
-	const int keyForBeltFields[PlayerFieldsNumber] = { '1','2','3','4','5' };
+	const int keyForBeltFields[PlayerInventorySize] = { '1','2','3','4','5' };
 
 	Gui() 
 	{ 
@@ -74,14 +74,14 @@ public:
 		Hud.MpInfo.setFillColor(sf::Color::Blue);
 		Hud.HpInfo.setFillColor(sf::Color::Red);
 
-		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		for (size_t i = 0; i < PlayerInventorySize; i++)
 		{
 			if (i < 3)
 			{
 				Eq.ArmorEquipment[i].ScreenPosition = getScreenPositionForArmorEquipmentField(i);
 			}
 			Hud.Belt[i].ScreenPosition = getScreenPositionForBeltEquipmentField(i);
-			for (size_t j = 0; j < PlayerFieldsNumber; j++)
+			for (size_t j = 0; j < PlayerInventorySize; j++)
 			{
 				Eq.Equipment[i][j].ScreenPosition = getScreenPositionForEquipmentField(sf::Vector2u(i, j));
 			}
@@ -96,7 +96,7 @@ public:
 		{
 			Eq.isEnable = !Eq.isEnable;
 		}
-		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		for (size_t i = 0; i < PlayerInventorySize; i++)
 		{
 			if (keyVar == keyForBeltFields[i])
 			{
@@ -108,7 +108,7 @@ public:
 
 	void incrActiveBeltField()
 	{
-		if (Hud.ActiveBeltField >= PlayerFieldsNumber - 1)
+		if (Hud.ActiveBeltField >= PlayerInventorySize - 1)
 			Hud.ActiveBeltField = 0;
 		else
 		{
@@ -119,7 +119,7 @@ public:
 	void decrActiveBeltField()
 	{
 		if (Hud.ActiveBeltField == 0)
-			Hud.ActiveBeltField = PlayerFieldsNumber - 1;
+			Hud.ActiveBeltField = PlayerInventorySize - 1;
 		else
 		{
 			Hud.ActiveBeltField--;

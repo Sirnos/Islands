@@ -15,6 +15,7 @@
 
 #include "DefContainer.hpp"
 #include "LyingItemsContainer.hpp"
+#include "CraftingSystem.hpp"
 
 #include "playerCharacter.hpp"
 

@@ -49,7 +49,7 @@ void Engine::checkPlayerEnvironment()
 		{
 			ItemField temp = LyingItems.getItem(i);
 			player.pushItemToPlayer(temp, Items);
-			if (temp.isClear())
+			if (temp.isEmpty())
 			{
 				LyingItems.eraseItem(i);
 			}
@@ -490,7 +490,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	if (GameGui.Eq.isEnable)
 	{
 		sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
-		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		for (size_t i = 0; i < PlayerInventorySize; i++)
 		{
 			if (i < 3)
 			{
@@ -505,7 +505,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 					checkGuiOperations(EquipmentType::Belt, sf::Vector2u(i, 0));
 			}
 
-			for (size_t j = 0; j < PlayerFieldsNumber; j++)
+			for (size_t j = 0; j < PlayerInventorySize; j++)
 			{
 				if (GameGui.Eq.Equipment[i][j].isHover && isMouseClick)
 				{
@@ -524,7 +524,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			}
 		}
 	}
-	else if (!GameGui.Eq.isEnable && player.getHoldItem().isClear() && isMouseClick)
+	else if (!GameGui.Eq.isEnable && player.getHoldItem().isEmpty() && isMouseClick)
 		{
 			unsigned itemId = player.getHandInventoryField(GameGui.Hud.ActiveBeltField).ItemId;
 			sf::Vector2f mousePos = app.getMousePosInWorld();
@@ -687,7 +687,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 	}
 
 
-	for (size_t i = 0; i < PlayerFieldsNumber; i++)
+	for (size_t i = 0; i < PlayerInventorySize; i++)
 	{
 		amountItem.setString("");
 
@@ -710,7 +710,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 	if (!GameGui.Eq.isEnable) { return; }
 
 	sf::Vector2u field = sf::Vector2u(0,0);
-	for (field.x; field.x < PlayerFieldsNumber; field.x++)
+	for (field.x; field.x < PlayerInventorySize; field.x++)
 	{
 		field.y = 0;
 		if (field.x < 3)
@@ -729,7 +729,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 			if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
 		}
 
-		for (field.y; field.y < PlayerFieldsNumber; field.y++)
+		for (field.y; field.y < PlayerInventorySize; field.y++)
 		{
 			amountItem.setString("");
 
@@ -767,6 +767,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 			app.draw(FieldShape);
 			if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
 			if (amountItem.getString().getSize() > 0) { app.draw(amountItem); }
+			amountItem.setString("");
 		}
 
 	}	

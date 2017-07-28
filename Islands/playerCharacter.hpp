@@ -6,8 +6,8 @@
 
 class playerCharacter :public Character
 {
-	ItemField Inventory[PlayerFieldsNumber][PlayerFieldsNumber];
-	ItemField HandInventory[PlayerFieldsNumber];
+	ItemField Inventory[PlayerInventorySize][PlayerInventorySize];
+	ItemField HandInventory[PlayerInventorySize];
 	ItemField ArmorFields[3];
 	ItemField HoldItem;
 
@@ -95,7 +95,7 @@ public:
 
 	void pushItemToPlayer(ItemField &item,ItemDefContainer &Items)
 	{
-		for (size_t i = 0; i < PlayerFieldsNumber; i++)
+		for (size_t i = 0; i < PlayerInventorySize; i++)
 		{
 			if (getHandInventoryField(i).ItemId == item.ItemId)
 			{
@@ -117,10 +117,10 @@ public:
 			else if (getHandInventoryField(i).ItemId == 0)
 			{
 				setHandInventoryField(i, item);
-				item.clear();
+				item.empty();
 				return;
 			}
-			for (size_t j = 0; j < PlayerFieldsNumber; j++)
+			for (size_t j = 0; j < PlayerInventorySize; j++)
 			{
 				if (getInventoryField(sf::Vector2u(i, j)).ItemId == item.ItemId)
 				{
@@ -141,7 +141,7 @@ public:
 				else if (getInventoryField(sf::Vector2u(i, j)).ItemId == 0)
 				{
 					setInventoryField(sf::Vector2u(i, j), item);
-					item.clear();
+					item.empty();
 					return;
 				}
 			}

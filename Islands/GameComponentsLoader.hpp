@@ -7,7 +7,6 @@
 #include <rapidxml.hpp>
 
 #include "DefContainer.hpp"
-#include "RecipeDef.hpp"
 
 class GameComponentsLoader
 {
@@ -276,7 +275,7 @@ public:
 		}
 	}
 
-	void LoadRecipeDefFromFile(RecipeVector &recipes, std::string file)
+	void LoadRecipeDefFromFile(std::vector<RecipeDef> &recipes, std::string file)
 	{
 		rapidxml::file<char> rfile(file.data());
 		rapidxml::xml_document<> document;

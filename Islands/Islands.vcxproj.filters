@@ -113,14 +113,20 @@
     <ClInclude Include="ObjectMap.hpp">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="RecipeDef.hpp">
-      <Filter>Header Files\other</Filter>
-    </ClInclude>
     <ClInclude Include="Gui.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="EquipmentFieldInfo.hpp">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingGui.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingSystem.hpp">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Recipe.hpp">
+      <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

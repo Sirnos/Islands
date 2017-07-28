@@ -131,6 +131,8 @@
     <ClInclude Include="Character.hpp" />
     <ClInclude Include="CollisionDetect.hpp" />
     <ClInclude Include="Console.hpp" />
+    <ClInclude Include="CraftingGui.hpp" />
+    <ClInclude Include="CraftingSystem.hpp" />
     <ClInclude Include="DefContainer.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="EquipmentFieldInfo.hpp" />
@@ -149,7 +151,7 @@
     <ClInclude Include="ObjectMap.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="Gui.hpp" />
-    <ClInclude Include="RecipeDef.hpp" />
+    <ClInclude Include="Recipe.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="Tile.hpp" />
     <ClInclude Include="World.hpp" />
