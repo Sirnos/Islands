@@ -529,6 +529,23 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			}
 		}
 	}
+	else if(GameGui.Craft.isEnable)
+	{
+		size_t RecipeNumber = 0;
+		for (auto & i : GameGui.Craft.RecipeFields)
+		{
+			for (auto & j : i)
+			{
+
+				if (j.isHover && isMouseClick)
+				{
+					Crafting.setSelectedRecipe(RecipeNumber);
+				}
+
+				RecipeNumber++;
+			}
+		}
+	}
 	else if (!GameGui.Eq.isEnable && player.getHoldItem().isEmpty() && isMouseClick)
 		{
 			unsigned itemId = player.getHandInventoryField(GameGui.Hud.ActiveBeltField).ItemId;
@@ -790,7 +807,11 @@ void Engine::drawPlayerGui(IslandApp & app)
 
 				j.checkIsHover(mousePosition);
 				j.pushChangesToRectangleShape(FieldShape);
-			
+				
+				if (RecipeNumber == Crafting.getSelectedRecipeNumber())
+				{
+					FieldShape.setFillColor(HoverEquipmentFieldColor);
+				}
 
 				app.draw(FieldShape);
 				if (RecipeNumber < Crafting.getRecipesNumber())
