@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EquipmentFieldInfo.hpp"
+#include "CraftingGui.hpp"
 #include "Object.hpp"
 
 enum class EquipmentType
@@ -56,13 +56,14 @@ class Gui
 	const int static EqFieldMarginI = 16;
 public:
 
-
+	CraftingGui Craft;
 	ChestGui Chest;
 	EquipmentGui Eq;
 	HudGui Hud;
 
 	sf::Font GuiFont;
 
+	const int keyForCraftGuiEnable = 'c';
 	const int keyForEqGuiEnable = 'e';
 	const int keyForBeltFields[PlayerInventorySize] = { '1','2','3','4','5' };
 
@@ -96,6 +97,11 @@ public:
 		{
 			Eq.isEnable = !Eq.isEnable;
 		}
+		else if(keyVar == keyForCraftGuiEnable)
+		{
+			Craft.isEnable = !Craft.isEnable;
+		}
+
 		for (size_t i = 0; i < PlayerInventorySize; i++)
 		{
 			if (keyVar == keyForBeltFields[i])

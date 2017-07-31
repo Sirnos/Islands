@@ -39,8 +39,19 @@ public:
 	void setSelectedRecipe(unsigned newSelect) { SelectedRecipe = newSelect; }
 	unsigned getSelectedRecipeNumber() { return SelectedRecipe; }
 
+	ItemField getRecipeOut(unsigned Index)
+	{
+		return AvailableRecipes[Index].getOutElement();
+	}
+	unsigned getRecipesNumber() { return AvailableRecipes.size(); }
+
 	void setCraftAmount(unsigned newAmount) { CraftAmount = newAmount; }
 	unsigned getCraftAmount() { return CraftAmount; }
+
+	const std::vector<Recipe> & getRecipes()
+	{
+		return AvailableRecipes;
+	}
 
 	ItemField craftItemFromRecipe(playerCharacter &player,ItemDefContainer &ItemsDef)
 	{

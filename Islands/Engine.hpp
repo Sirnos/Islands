@@ -32,6 +32,7 @@ class Engine
 
 	Gui GameGui;
 
+	CraftingSystem Crafting;
 	ObjectDefContainer Objects;
 	ItemDefContainer Items;
 	LyingItemsContainer LyingItems;
