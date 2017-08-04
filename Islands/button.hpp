@@ -15,20 +15,18 @@ public:
 	sf::Vector2i getInterBoxSize() { return InteractionBoxSize; }
 	sf::Vector2i getInterBoxPos() { return InteractionBoxPosition; }
 
-	bool isClick(sf::Vector2i mousePos, bool isClicked)
+	bool isClick(sf::Vector2i mousePos)
 	{
 		sf::Vector2i BoxPos = InteractionBoxPosition;
 		sf::Vector2i BoxSize = InteractionBoxSize;
 
 		if (mousePos.x >= BoxPos.x && mousePos.x <= BoxPos.x + BoxSize.x
-			&& mousePos.y >= BoxPos.y && mousePos.y <= BoxPos.y + BoxSize.y && isClicked == true)
+			&& mousePos.y >= BoxPos.y && mousePos.y <= BoxPos.y + BoxSize.y)
 		{
 			return true;
 		}
-		else
-		{
+
 			return false;
-		}
 	}
 
 	void setLogicBoxSize(sf::Vector2i newSize) { InteractionBoxSize = newSize; }

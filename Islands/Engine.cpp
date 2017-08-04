@@ -545,6 +545,11 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				RecipeNumber++;
 			}
 		}
+		if (isMouseClick && GameGui.Craft.RecipeInfo.CraftButton.isClick(sf::Mouse::getPosition(*app.getIslandWindow())))
+		{
+			Crafting.setCraftAmount(1);
+			player.pushItemToPlayer(Crafting.craftItemFromRecipe(player, Items), Items);
+		}
 	}
 	else if (!GameGui.Eq.isEnable && player.getHoldItem().isEmpty() && isMouseClick)
 		{
@@ -830,6 +835,11 @@ void Engine::drawPlayerGui(IslandApp & app)
 				RecipeNumber++;
 			}
 		}
+		GameGui.Craft.RecipeInfo.Window.setPosition(app.getIslandWindow()->mapPixelToCoords(GameGui.Craft.RecipeInfo.WindowScreenPosition));
+		app.draw(GameGui.Craft.RecipeInfo.Window);
+		GameGui.Craft.RecipeInfo.CraftButton.setButtonPosition(
+			app.getIslandWindow()->mapPixelToCoords(GameGui.Craft.RecipeInfo.CraftButton.getInterBoxPos()));
+		app.draw(GameGui.Craft.RecipeInfo.CraftButton.getText());
 	}
 }
 

@@ -55,6 +55,8 @@ public:
 
 	ItemField craftItemFromRecipe(playerCharacter &player,ItemDefContainer &ItemsDef)
 	{
+		if (SelectedRecipe >= AvailableRecipes.size()) { return ItemField(); }
+
 		unsigned craftedItemId = AvailableRecipes[SelectedRecipe].getOutElement().ItemId;
 		unsigned craftedItemAmount = CraftAmount * AvailableRecipes[SelectedRecipe].getOutElement().ItemAmount;
 		std::vector<ItemField> neededResources = AvailableRecipes[SelectedRecipe].getIn();

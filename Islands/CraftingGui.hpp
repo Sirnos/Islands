@@ -10,8 +10,26 @@
 
 struct CraftingInfo
 {
+	sf::Vector2i WindowScreenPosition;
+
 	sf::RectangleShape Window;
 	std::vector<sf::Text> InfoText;
+
+	sf::Text CraftAmountInfo;
+
+	button CraftButton;
+
+	button CraftAmountAddOne;
+	button CraftAmountSubOne;
+
+	button CraftAmountAddTen;
+	button CraftAmountSubTen;
+
+	CraftingInfo()
+	{
+		Window.setFillColor(EquipmentFieldColor);
+		Window.setSize(sf::Vector2f(200, 400));
+	}
 };
 
 struct CraftingGui
@@ -23,7 +41,6 @@ struct CraftingGui
 
 	std::array<std::array<EquipmentFieldInfo, 10>, 4> RecipeFields;
 	CraftingInfo RecipeInfo;
-	button CraftButton;
 
 	CraftingGui()
 	{
@@ -40,5 +57,12 @@ struct CraftingGui
 			pos.y = BeginCraftFieldPosition.y;
 			pos.x += (RecipeFieldMargin + RecipeFieldSize);
 		}
+		pos.x += (RecipeFieldSize);
+		RecipeInfo.WindowScreenPosition = pos;
+	}
+	void PushFontToCraftingInfo(sf::Font &font)
+	{
+		RecipeInfo.CraftButton.create(sf::Vector2f(), RecipeInfo.WindowScreenPosition + sf::Vector2i(28,360), sf::Vector2i(128, 64), "Craft", font);
+		RecipeInfo.CraftButton.setColor(HoverEquipmentFieldColor);
 	}
 };

@@ -3,6 +3,7 @@
 #include "CraftingGui.hpp"
 #include "Object.hpp"
 
+
 enum class EquipmentType
 {
 	Inventory,
@@ -13,8 +14,8 @@ enum class EquipmentType
 
 struct EquipmentGui
 {
-	EquipmentFieldInfo Equipment[PlayerInventorySize][PlayerInventorySize];
-	EquipmentFieldInfo ArmorEquipment[3];
+	std::array<std::array<EquipmentFieldInfo, PlayerInventorySize>, PlayerInventorySize> Equipment;
+	std::array<EquipmentFieldInfo, 3> ArmorEquipment;
 
 	bool isEnable;
 
@@ -29,7 +30,7 @@ struct HudGui
 	sf::Text HpInfo;
 	sf::Text MpInfo;
 
-	EquipmentFieldInfo Belt[PlayerInventorySize];
+	std::array<EquipmentFieldInfo, PlayerInventorySize> Belt;
 
 	unsigned ActiveBeltField;
 
@@ -87,6 +88,8 @@ public:
 				Eq.Equipment[i][j].ScreenPosition = getScreenPositionForEquipmentField(sf::Vector2u(i, j));
 			}
 		}
+		
+		Craft.PushFontToCraftingInfo(GuiFont);
 	}
 
 	void pushKeyState(char key)
@@ -96,10 +99,12 @@ public:
 		if (keyVar == keyForEqGuiEnable)
 		{
 			Eq.isEnable = !Eq.isEnable;
+			Craft.isEnable = false;
 		}
 		else if(keyVar == keyForCraftGuiEnable)
 		{
 			Craft.isEnable = !Craft.isEnable;
+			Eq.isEnable = false;
 		}
 
 		for (size_t i = 0; i < PlayerInventorySize; i++)

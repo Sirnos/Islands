@@ -2,13 +2,15 @@
 
 #include "Character.hpp"
 #include "ItemField.hpp"
+#include <array>
 
 
 class playerCharacter :public Character
 {
-	ItemField Inventory[PlayerInventorySize][PlayerInventorySize];
-	ItemField HandInventory[PlayerInventorySize];
-	ItemField ArmorFields[3];
+	std::array<std::array<ItemField, PlayerInventorySize>, PlayerInventorySize> Inventory;
+	std::array<ItemField, PlayerInventorySize> HandInventory;
+	std::array<ItemField, 3> ArmorInventory;
+
 	ItemField HoldItem;
 
 	std::vector<ItemField> *InteractedChest;
@@ -48,7 +50,7 @@ public:
 	{
 		return HandInventory[field];
 	}
-	ItemField getArmorInventoryField(unsigned field) { return ArmorFields[field]; }
+	ItemField getArmorInventoryField(unsigned field) { return ArmorInventory[field]; }
 	ItemField getHoldItem() { return HoldItem; }
 
 	void pushInteractionWithChest(std::vector<ItemField> *Chest)
@@ -89,7 +91,7 @@ public:
 	}
 	void setArmorField(unsigned field, ItemField newVal)
 	{
-		ArmorFields[field] = newVal;
+		ArmorInventory[field] = newVal;
 	}
 	void setHoldItem(ItemField newVal) { HoldItem = newVal; }
 
