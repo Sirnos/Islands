@@ -389,27 +389,23 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 
 void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
-	TILE tile = GameWorld.getTile(sf::Vector2u(tileIndex.y,tileIndex.x));
-	if (tile == TILE::EMPTY) { return; }
-	shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(tileIndex.x,tileIndex.y))));
-	switch (tile)
+	TerrainType TerrainType = GameWorld.getTileTerrain(tileIndex);
+	if (TerrainType == TerrainType::Null) { return; }
+	shp.setTexture(nullptr);
+	shp.setPosition(sf::Vector2f(Map::getNormalPosition(static_cast<sf::Vector2i>(tileIndex))));
+	switch (TerrainType)
 	{
-	case TILE::EMPTY:
-		break;
-	case TILE::DIRT:
+	case TerrainType::Dirt:
 		shp.setTexture(mediaContainer.getTexture(1,TextureContainer::TileTextures));
 		break;
-	case TILE::GRASS:
+	case TerrainType::Grass:
 		shp.setTexture(mediaContainer.getTexture(2, TextureContainer::TileTextures));
 		break;
-	case TILE::ROCK:
+	case TerrainType::Rock:
 		shp.setTexture(mediaContainer.getTexture(4, TextureContainer::TileTextures));
 		break;
-	case TILE::BRIGDE:
-		shp.setTexture(mediaContainer.getTexture(2, TextureContainer::TileTextures));
-		break;
-	case TILE::CLOUD:
-		shp.setTexture(mediaContainer.getTexture(6, TextureContainer::TileTextures));
+	case TerrainType::Water:
+		shp.setTexture(mediaContainer.getTexture(5, TextureContainer::TileTextures));
 		break;
 	default:
 		break;
@@ -419,7 +415,7 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 
 void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
 {
-	unsigned ObjectID = GameWorld.getObjectId(sf::Vector2u(objectIndex.y,objectIndex.x));
+	unsigned ObjectID = GameWorld.getObjectId(objectIndex);
 	if (ObjectID == 0) { return; }
 	if (ObjectID > Objects.getSize()) { return; }
 
@@ -434,7 +430,7 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 		return;
 	}
 
-		shp.setPosition(sf::Vector2f(Map::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y))));
+		shp.setPosition(sf::Vector2f(Map::getNormalPosition(static_cast<sf::Vector2i>(objectIndex))));
 		shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures), true);
 		window.draw(shp);
 }
@@ -680,12 +676,14 @@ void Engine::drawWorld(IslandApp & app)
 
 	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
 	{
+		if (i < 0) { continue; }
+		if (i > WorldSize - 1) { break; }
 		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 31; j++)
 		{
-			if (j < 0 || i < 0) { continue; }
-			if (j >= WorldSize || i >= WorldSize) { break; }
-			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
-			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			if (j < 0) { continue; }
+			if (j > WorldSize - 1) { break; }
+				drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+				drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 		}
 	}
 	sf::Vector2f cameraPos = camera.getCenter() - sf::Vector2f(camera.getSize().x / 2, camera.getSize().y / 2);

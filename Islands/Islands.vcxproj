@@ -148,12 +148,11 @@
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectDef.hpp" />
-    <ClInclude Include="ObjectMap.hpp" />
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="Gui.hpp" />
     <ClInclude Include="Recipe.hpp" />
     <ClInclude Include="textbox.hpp" />
-    <ClInclude Include="Tile.hpp" />
+    <ClInclude Include="MapTile.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>

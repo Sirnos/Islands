@@ -4,30 +4,25 @@
 #include <SFML/System/Vector2.hpp>
 #include <vector>
 #include <ctime>
-#include "Tile.hpp"
+#include "MapTile.hpp"
 #include "ErrorHandler.hpp"
 
 class Map
 {
 
-	std::vector<std::vector<TILE>> TilesMap;
+	std::vector<std::vector<MapTile>> Tiles;
 	void fitMap()
 	{
-		for (auto & i : TilesMap)
+		for (auto & i : Tiles)
 		{
 			i.shrink_to_fit();
 		}
-		TilesMap.shrink_to_fit();
+		Tiles.shrink_to_fit();
 	}
 public:
 	~Map()
 	{
-		unloadMap();
-	}
-
-	void unloadMap()
-	{
-		TilesMap.clear();
+		Tiles.clear();
 	}
 
 	//void loadMapFromFile(std::string file);
@@ -39,34 +34,30 @@ public:
 		noiseModule.SetFrequency(1.0);
 		noiseModule.SetPersistence(0.25);
 
-		TilesMap.resize(Size, std::vector<TILE>(Size));
+		Tiles.resize(Size, std::vector<MapTile>(Size));
 
 		double mnX = 0;
-		for (auto & i : TilesMap)
+		for (auto & i : Tiles)
 		{
 			double mnY = 0;
 			for (auto & j : i)
 			{
-				double TileValue = noiseModule.GetValue(1.25 + (0.1 * mnX), 0.75 + (0.1 * mnY), 0.5);
-				if (TileValue > 0.75)
+				double noise = noiseModule.GetValue(1.25 + (0.1 * mnX), 0.75 + (0.1 * mnY), 0.5);
+				if (noise > 0.75)
 				{
-					j = TILE::ROCK;
+					j.Terrain = TerrainType::Rock;
 				}
-				else if (TileValue > 0.5)
+				else if (noise > 0.35)
 				{
-					j = TILE::DIRT;
+					j.Terrain = TerrainType::Dirt;
 				}
-				else if (TileValue > 0.05)
+				else if (noise > -0.25)
 				{
-					j = TILE::GRASS;
-				}
-				else if (TileValue > -0.5)
-				{
-					j = TILE::CLOUD;
+					j.Terrain = TerrainType::Grass;
 				}
 				else
 				{
-					j = TILE::EMPTY;
+					j.Terrain = TerrainType::Water;
 				}
 				mnY += 1;
 			}
@@ -75,13 +66,12 @@ public:
 		fitMap();
 	}
 
-	const static sf::Vector2i getTiledPosition(sf::Vector2f characterPos)
+	static sf::Vector2i getTiledPosition(sf::Vector2f characterPos)
 	{
 		characterPos = characterPos / TILE_SIZE;
 		return static_cast<sf::Vector2i>(characterPos);
 	}
-
-	const static sf::Vector2f getNormalPosition(sf::Vector2i tileNumber)
+	static sf::Vector2f getNormalPosition(sf::Vector2i tileNumber)
 	{
 		return sf::Vector2f(static_cast<float>(tileNumber.x) * TILE_SIZE,
 			static_cast<float>(tileNumber.y) * TILE_SIZE);
@@ -89,10 +79,27 @@ public:
 
 	sf::Vector2u getMapSize()
 	{
-		return sf::Vector2u(TilesMap.size(), TilesMap[0].size());
+		return sf::Vector2u(Tiles.size(), Tiles[0].size());
 	}
-	TILE getTile(sf::Vector2u tileNumber)
+	TerrainType getTileTerrain(sf::Vector2u tileNumber)
 	{
-		return TilesMap[tileNumber.x][tileNumber.y];
+		return Tiles[tileNumber.x][tileNumber.y].Terrain;
+	}
+
+	Object* getTileObject(sf::Vector2u index)
+	{
+		return Tiles[index.x][index.y].TileObject;
+	}
+	void setTileObject(sf::Vector2u index, Object* object)
+	{
+		Tiles[index.x][index.y].TileObject = object;
+	}
+	void clearTileObject(sf::Vector2u index)
+	{
+		if (Tiles[index.x][index.y].TileObject != nullptr)
+		{
+			delete Tiles[index.x][index.y].TileObject;
+			setTileObject(index, nullptr);
+		}
 	}
 };

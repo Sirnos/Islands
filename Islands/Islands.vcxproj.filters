@@ -59,9 +59,6 @@
     <ClInclude Include="textbox.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Character.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -110,9 +107,6 @@
     <ClInclude Include="Object.hpp">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectMap.hpp">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Gui.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
@@ -127,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="Recipe.hpp">
       <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTile.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
