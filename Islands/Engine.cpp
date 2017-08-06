@@ -545,10 +545,27 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				RecipeNumber++;
 			}
 		}
-		if (isMouseClick && GameGui.Craft.RecipeInfo.CraftButton.isClick(sf::Mouse::getPosition(*app.getIslandWindow())))
+		if (isMouseClick)
 		{
-			Crafting.setCraftAmount(1);
-			player.pushItemToPlayer(Crafting.craftItemFromRecipe(player, Items), Items);
+			sf::Vector2i mousePos = sf::Mouse::getPosition(*app.getIslandWindow());
+			if (GameGui.Craft.RecipeInfo.CraftButton.isClick(mousePos))
+			{
+				player.pushItemToPlayer(Crafting.craftItemFromRecipe(player, Items), Items);
+				Crafting.clearPlayerSelects();
+			}
+			if (GameGui.Craft.RecipeInfo.CraftAmountAddOne.isClick(mousePos))
+			{
+				Crafting.setCraftAmount(Crafting.getCraftAmount() + 1);
+			}
+			if (GameGui.Craft.RecipeInfo.CraftAmountSubOne.isClick(mousePos))
+			{
+				unsigned craftAmount = Crafting.getCraftAmount();
+				if (craftAmount == 0 || craftAmount == -1)
+				{
+					Crafting.setCraftAmount(0);
+				}
+				else { Crafting.setCraftAmount(craftAmount - 1); }
+			}
 		}
 	}
 	else if (!GameGui.Eq.isEnable && player.getHoldItem().isEmpty() && isMouseClick)
@@ -839,7 +856,17 @@ void Engine::drawPlayerGui(IslandApp & app)
 		app.draw(GameGui.Craft.RecipeInfo.Window);
 		GameGui.Craft.RecipeInfo.CraftButton.setButtonPosition(
 			app.getIslandWindow()->mapPixelToCoords(GameGui.Craft.RecipeInfo.CraftButton.getInterBoxPos()));
+		GameGui.Craft.RecipeInfo.CraftAmountAddOne.setButtonPosition(
+			app.getIslandWindow()->mapPixelToCoords(GameGui.Craft.RecipeInfo.CraftAmountAddOne.getInterBoxPos()));
+		GameGui.Craft.RecipeInfo.CraftAmountSubOne.setButtonPosition(
+			app.getIslandWindow()->mapPixelToCoords(GameGui.Craft.RecipeInfo.CraftAmountSubOne.getInterBoxPos()));
+		GameGui.Craft.RecipeInfo.CraftAmountInfo.setString(std::to_string(Crafting.getCraftAmount()));
+		GameGui.Craft.RecipeInfo.CraftAmountInfo.setPosition(
+			app.getIslandWindow()->mapPixelToCoords(GameGui.Craft.RecipeInfo.CraftamountInfoScreenPos));
 		app.draw(GameGui.Craft.RecipeInfo.CraftButton.getText());
+		app.draw(GameGui.Craft.RecipeInfo.CraftAmountAddOne.getText());
+		app.draw(GameGui.Craft.RecipeInfo.CraftAmountSubOne.getText());
+		app.draw(GameGui.Craft.RecipeInfo.CraftAmountInfo);
 	}
 }
 

@@ -16,6 +16,7 @@ struct CraftingInfo
 	std::vector<sf::Text> InfoText;
 
 	sf::Text CraftAmountInfo;
+	sf::Vector2i CraftamountInfoScreenPos;
 
 	button CraftButton;
 
@@ -29,6 +30,10 @@ struct CraftingInfo
 	{
 		Window.setFillColor(EquipmentFieldColor);
 		Window.setSize(sf::Vector2f(200, 400));
+
+		CraftButton.setColor(HoverEquipmentFieldColor);
+		CraftAmountAddOne.setColor(HoverEquipmentFieldColor);
+		CraftAmountSubOne.setColor(HoverEquipmentFieldColor);
 	}
 };
 
@@ -62,7 +67,10 @@ struct CraftingGui
 	}
 	void PushFontToCraftingInfo(sf::Font &font)
 	{
-		RecipeInfo.CraftButton.create(sf::Vector2f(), RecipeInfo.WindowScreenPosition + sf::Vector2i(28,360), sf::Vector2i(128, 64), "Craft", font);
-		RecipeInfo.CraftButton.setColor(HoverEquipmentFieldColor);
+		RecipeInfo.CraftButton.create(sf::Vector2f(), RecipeInfo.WindowScreenPosition + sf::Vector2i(48,360), sf::Vector2i(128, 64), "Craft", font);
+		RecipeInfo.CraftAmountInfo.setFont(font);
+		RecipeInfo.CraftAmountAddOne.create(sf::Vector2f(), RecipeInfo.WindowScreenPosition + sf::Vector2i(96, 264), sf::Vector2i(64, 48), "+1", font);
+		RecipeInfo.CraftAmountSubOne.create(sf::Vector2f(), RecipeInfo.WindowScreenPosition + sf::Vector2i(24, 264), sf::Vector2i(64, 48), "-1", font);
+		RecipeInfo.CraftamountInfoScreenPos = RecipeInfo.WindowScreenPosition + sf::Vector2i(48, 316);
 	}
 };

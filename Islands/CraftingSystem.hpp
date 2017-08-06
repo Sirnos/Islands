@@ -11,7 +11,7 @@ class CraftingSystem
 	unsigned SelectedRecipe;
 	unsigned CraftAmount;
 public:
-	CraftingSystem(){}
+	CraftingSystem() { CraftAmount = 1; }
 	~CraftingSystem(){}
 
 	void PopRecipes()
@@ -28,7 +28,7 @@ public:
 	void clearPlayerSelects()
 	{
 		SelectedRecipe = 0;
-		CraftAmount = 0;
+		CraftAmount = 1;
 	}
 	void clear()
 	{
