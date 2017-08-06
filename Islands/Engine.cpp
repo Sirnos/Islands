@@ -88,8 +88,51 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 		GameGui.deleteChestFields();
 		movevctr.y += 5;
 	}
-
 	player.move(movevctr);
+
+	//collision
+	sf::Vector2f playerPos = player.getCharacterCenterPosition();
+	sf::Vector2i tilePlayerPosition = Map::getTiledPosition(playerPos);
+	sf::IntRect collideObject;
+	unsigned collideObjectId;
+	if (sf::IntRect(0, 0, WorldSize, WorldSize).contains(tilePlayerPosition))
+	{
+		collideObjectId = GameWorld.getObjectId(static_cast<sf::Vector2u>(tilePlayerPosition));
+		if (collideObjectId != 0)
+		{
+			sf::FloatRect collideObjectBox = Objects.getDefinition(collideObjectId)->getCollisionBox();
+			if (collideObjectBox.top <= 0.01f && collideObjectBox.left <= 0.01f
+				&& collideObjectBox.height <= 0.01f && collideObjectBox.width <= 0.01f)
+			{
+				return;
+			}
+			collideObject.top = tilePlayerPosition.y * static_cast<int>(TILE_SIZE);
+			collideObject.left = tilePlayerPosition.x * static_cast<int>(TILE_SIZE);
+			collideObject.width = static_cast<int>(TILE_SIZE);
+			collideObject.height = static_cast<int>(TILE_SIZE);
+
+			if (collideObjectBox.top < 1.0f)
+			{
+				collideObject.top += static_cast<int>(TILE_SIZE * collideObjectBox.top);
+			}
+			if (collideObjectBox.left < 1.0f)
+			{
+				collideObject.left += static_cast<int>(TILE_SIZE * collideObjectBox.left);
+			}
+			if (collideObjectBox.height < 1.0f)
+			{
+				collideObject.height -= static_cast<int>(TILE_SIZE * collideObjectBox.height);
+			}
+			if (collideObjectBox.width < 1.0f)
+			{
+				collideObject.width -= static_cast<int>(TILE_SIZE * collideObjectBox.width);
+			}
+			if (static_cast<sf::IntRect>(player.getShape()->getGlobalBounds()).intersects(collideObject))
+			{
+				player.move(-movevctr);
+			}
+		}
+	}
 }
 
 void Engine::spawnPlayer()
@@ -566,24 +609,18 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	}
 	else if (!GameGui.Eq.isEnable && player.getHoldItem().isEmpty() && isMouseClick)
 		{
-			unsigned itemId = player.getHandInventoryField(GameGui.Hud.ActiveBeltField).ItemId;
+			ItemField item = player.getHandInventoryField(GameGui.Hud.ActiveBeltField);
 			sf::Vector2f mousePos = app.getMousePosInWorld();
-			sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE),
-				static_cast<unsigned>(mousePos.x / TILE_SIZE));
+			sf::Vector2u objectPos(static_cast<sf::Vector2u>(mousePos / TILE_SIZE));
 
-			if (itemId != 0)
+			if (!item.isEmpty())
 			{
-				if (Items.getDefinition(itemId)->getType() == ItemType::Placeable)
+				if (Items.getDefinition(item.ItemId)->getType() == ItemType::Placeable)
 				{
 					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
 						sf::Vector2f(WorldSize * TILE_SIZE,WorldSize * TILE_SIZE)))
 					{
-						if (player.getHandInventoryField(GameGui.Hud.ActiveBeltField).ItemAmount == 0)
-						{
-							player.setHandInventoryField(GameGui.Hud.ActiveBeltField, ItemField(0, 0));
-						}
-						
-						if (GameWorld.placeObject(objectPos, itemId, Objects.getContainer(),GameClock.getElapsedTime()))
+						if (GameWorld.placeObject(objectPos, item.ItemId, Objects.getContainer(),GameClock.getElapsedTime()))
 						{
 							ItemField temp = player.getHandInventoryField(GameGui.Hud.ActiveBeltField);
 							temp -= 1;
@@ -630,8 +667,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
 		sf::Vector2f mousePos = app.getMousePosInWorld();
-		sf::Vector2u objectPos(static_cast<unsigned>(mousePos.y / TILE_SIZE), 
-			static_cast<unsigned>(mousePos.x / TILE_SIZE));
+		sf::Vector2u objectPos(static_cast<sf::Vector2u>(mousePos / TILE_SIZE));
 
 			if (GameWorld.getObjectType(objectPos) == ObjectType::Chest)
 			{
@@ -741,7 +777,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 		pushItemTextureToRect(newPos,temp.ItemId, TextureFieldShape);
 		amountItem.setPosition(FieldShape.getPosition());
 
-		if (temp.ItemAmount != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
+		if (temp.ItemId != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
 		if (i == GameGui.Hud.ActiveBeltField) { FieldShape.setFillColor(ActiveBeltFieldColor); }
 
 		app.draw(FieldShape);
