@@ -90,48 +90,12 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 	}
 	player.move(movevctr);
 
-	//collision
 	sf::Vector2f playerPos = player.getCharacterCenterPosition();
 	sf::Vector2i tilePlayerPosition = Map::getTiledPosition(playerPos);
-	sf::IntRect collideObject;
-	unsigned collideObjectId;
-	if (sf::IntRect(0, 0, WorldSize, WorldSize).contains(tilePlayerPosition))
+	if (GameWorld.getTileCollisionBox(static_cast<sf::Vector2u>(tilePlayerPosition), Objects.getContainer())
+		.intersects(sf::IntRect(static_cast<sf::Vector2i>(player.getPosition()), static_cast<sf::Vector2i>(player.getSize()))))
 	{
-		collideObjectId = GameWorld.getObjectId(static_cast<sf::Vector2u>(tilePlayerPosition));
-		if (collideObjectId != 0)
-		{
-			sf::FloatRect collideObjectBox = Objects.getDefinition(collideObjectId)->getCollisionBox();
-			if (collideObjectBox.top <= 0.01f && collideObjectBox.left <= 0.01f
-				&& collideObjectBox.height <= 0.01f && collideObjectBox.width <= 0.01f)
-			{
-				return;
-			}
-			collideObject.top = tilePlayerPosition.y * static_cast<int>(TILE_SIZE);
-			collideObject.left = tilePlayerPosition.x * static_cast<int>(TILE_SIZE);
-			collideObject.width = static_cast<int>(TILE_SIZE);
-			collideObject.height = static_cast<int>(TILE_SIZE);
-
-			if (collideObjectBox.top < 1.0f)
-			{
-				collideObject.top += static_cast<int>(TILE_SIZE * collideObjectBox.top);
-			}
-			if (collideObjectBox.left < 1.0f)
-			{
-				collideObject.left += static_cast<int>(TILE_SIZE * collideObjectBox.left);
-			}
-			if (collideObjectBox.height < 1.0f)
-			{
-				collideObject.height -= static_cast<int>(TILE_SIZE * collideObjectBox.height);
-			}
-			if (collideObjectBox.width < 1.0f)
-			{
-				collideObject.width -= static_cast<int>(TILE_SIZE * collideObjectBox.width);
-			}
-			if (static_cast<sf::IntRect>(player.getShape()->getGlobalBounds()).intersects(collideObject))
-			{
-				player.move(-movevctr);
-			}
-		}
+		player.move(-movevctr);
 	}
 }
 
@@ -673,6 +637,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			{
 				player.pushInteractionWithChest(&dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos))->Contain);
 				GameGui.createChestFields(player.getInteractedChestSize());
+				GameGui.Eq.isEnable = true;
 			}
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.Eq.isEnable)

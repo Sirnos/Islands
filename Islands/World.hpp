@@ -25,7 +25,43 @@ public:
 		if (getTileTerrain(uPos) == TerrainType::Null) { return true; }
 		return false;
 	}
-	//bool isPositionImpasable(sf::Vector2i position);
+
+	sf::IntRect getTileCollisionBox(sf::Vector2u tile,const std::vector<ObjectDef*> Def)
+	{
+		sf::IntRect collideObject;
+		unsigned collideObjectId = getObjectId(tile);
+		if (collideObjectId != 0)
+		{
+			sf::FloatRect collideObjectBox = Def[collideObjectId]->getCollisionBox();
+			if (collideObjectBox.top <= 0.01f && collideObjectBox.left <= 0.01f
+				&& collideObjectBox.height <= 0.01f && collideObjectBox.width <= 0.01f)
+			{
+				return collideObject;
+			}
+			collideObject.top = tile.y * static_cast<int>(TILE_SIZE);
+			collideObject.left = tile.x * static_cast<int>(TILE_SIZE);
+			collideObject.width = static_cast<int>(TILE_SIZE);
+			collideObject.height = static_cast<int>(TILE_SIZE);
+
+			if (collideObjectBox.top < 1.0f)
+			{
+				collideObject.top += static_cast<int>(TILE_SIZE * collideObjectBox.top);
+			}
+			if (collideObjectBox.left < 1.0f)
+			{
+				collideObject.left += static_cast<int>(TILE_SIZE * collideObjectBox.left);
+			}
+			if (collideObjectBox.height < 1.0f)
+			{
+				collideObject.height -= static_cast<int>(TILE_SIZE * collideObjectBox.height);
+			}
+			if (collideObjectBox.width < 1.0f)
+			{
+				collideObject.width -= static_cast<int>(TILE_SIZE * collideObjectBox.width);
+			}
+		}
+		return collideObject;
+	}
 
 	TerrainType getTileTerrain(sf::Vector2u tileIndex)
 	{
