@@ -125,6 +125,12 @@
     <ClInclude Include="MapTile.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EngineVars.hpp">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="SFMLTypesFromText.hpp">
+      <Filter>Header Files\other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">
@@ -146,6 +152,9 @@
     </Xml>
     <Xml Include="Data\PlayerRecipes.xml">
       <Filter>IslandData</Filter>
+    </Xml>
+    <Xml Include="Engine.xml">
+      <Filter>Header Files\Engine</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>

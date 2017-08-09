@@ -1,16 +1,19 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "IslandApp.hpp"
 #include "Engine.hpp"
+#include "EngineVars.hpp"
 
 const sf::Color skyColor = { 54,128,235,60 };
 
 int main()
 {
-	IslandApp app;
-	Engine IslandEngine;
+	EngineVars Vars;
 
-	app.init(sf::VideoMode(1280,1024),62,true);
-	IslandEngine.init();
+	IslandApp app{ sf::VideoMode(Vars.Video.WindowSize.x,Vars.Video.WindowSize.y,Vars.Video.BitsPerPixel)
+		,Vars.Video.FrameRate,Vars.Video.VerticalSync,Vars.Video.Windowed };
+
+	Engine IslandEngine{ Vars.Game.LocalMapSize,Vars.Game.MaxNumberOfLyingItems,
+		Vars.Game.PlayerPickUpItemsRange,Vars.Render.TileDrawRange };
 
 	bool isClick = false;
 	char lastKey = 'U';

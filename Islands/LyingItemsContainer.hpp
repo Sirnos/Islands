@@ -25,9 +25,11 @@ struct LyingItem
 class LyingItemsContainer
 {
 	std::vector<LyingItem> LyingItems;
-
+	size_t MaxNumberOfLyingItems;
 public:
 	~LyingItemsContainer() { LyingItems.clear(); }
+
+	void init(unsigned Max) { MaxNumberOfLyingItems = Max; }
 
 	size_t getSize() { return LyingItems.size(); }
 
@@ -37,6 +39,7 @@ public:
 	void pushNewItem(sf::Time time, sf::Vector2f position, ItemField item)
 	{
 		LyingItems.push_back(LyingItem(time, position, item));
+		if (LyingItems.size() >= MaxNumberOfLyingItems) { eraseFirstItem(); }
 	}
 
 	sf::Time getTime(unsigned index) { return LyingItems[index].lyingTime; }

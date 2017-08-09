@@ -26,6 +26,8 @@
 
 class Engine
 {
+	unsigned TileDrawRange;
+
 	World GameWorld;
 	Media mediaContainer;
 	playerCharacter player;
@@ -61,9 +63,9 @@ class Engine
 	void drawPlayerGui(IslandApp & app);
 	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
 public:
+	Engine(unsigned LocalMapSize, unsigned MaxNumberOfLyingItems, unsigned PlayerPickUpItemsRange, unsigned MaxTileDrawRange);
 	~Engine();
 
-	void init();
 	void operator()(IslandApp &app,char key,mouseWheel last,bool isMouseClick);
 
 	void manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick);

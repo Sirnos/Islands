@@ -6,10 +6,12 @@
 #include <rapidxml_iterators.hpp>
 #include <rapidxml.hpp>
 
+#include "SFMLTypesFromText.hpp"
 #include "DefContainer.hpp"
 
 class GameComponentsLoader
 {
+	/*
 	sf::Vector2i getVectorFromString(std::string str)
 	{
 		sf::Vector2i temp;
@@ -57,6 +59,7 @@ class GameComponentsLoader
 
 		return sf::FloatRect(std::stof(values[0]), std::stof(values[1]), std::stof(values[2]), std::stof(values[3]));
 	}
+	*/
 	Yield getYieldFromString(std::string str)
 	{
 		return Yield(str.substr(0, str.find(',')), std::stoul(str.substr(str.find(',') + 1, str.size() - 1)));
@@ -100,15 +103,15 @@ public:
 
 					if (paramName == "Size")
 					{
-						newObjSize = getVectorFromString(std::string(objectsParamNode->value()));
+						newObjSize = getVectorFromString<int>(std::string(objectsParamNode->value()));
 					}
 					else if(paramName == "Graphics")
 					{
-						newObjTextureCoord = getIntRectFromString(std::string(objectsParamNode->value()));
+						newObjTextureCoord = getRectFromString<int>(std::string(objectsParamNode->value()));
 					}
 					else if(paramName == "Collision")
 					{
-						newObjCollisionBox = getFloatRectFromString(std::string(objectsParamNode->value()));
+						newObjCollisionBox = getRectFromString<float>(std::string(objectsParamNode->value()));
 					}
 					else if(paramName == "Isdestructible")
 					{
@@ -210,7 +213,7 @@ public:
 
 					if (paramName == "Graphics")
 					{
-						texturePos = getVectorFromString(std::string(itemParamNode->value()));
+						texturePos = getVectorFromString<int>(std::string(itemParamNode->value()));
 					}
 					else if(paramName == "MaxStack")
 					{

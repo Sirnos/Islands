@@ -5,7 +5,7 @@
 
 enum class TextureContainer : unsigned
 {
-	TileTextures,
+	TerrainTextures,
 	CharacterTextures,
 	ObjectTextures,
 	ItemsTextures,
@@ -18,7 +18,7 @@ class Media
 
 	sf::Image TileImage;
 
-	std::vector <sf::Texture> TileTexture;
+	std::vector <sf::Texture> TerrainTexture;
 	
 	std::vector<sf::Texture> CharacterTexture;
 	std::vector<sf::Texture> ObjectsTexture;
@@ -29,14 +29,14 @@ public:
 	{
 		TileImage.loadFromFile("Data/Objects.png");
 
-		TileTexture.resize(12);
+		TerrainTexture.resize(12);
 
-		TileTexture[1].loadFromImage(TileImage, sf::IntRect(0, 0, size, size));//dirt
-		TileTexture[2].loadFromImage(TileImage, sf::IntRect(pos,0, size, size));//grass
-		TileTexture[3].loadFromImage(TileImage, sf::IntRect(pos * 2, 0, size, size));//sand
-		TileTexture[4].loadFromImage(TileImage, sf::IntRect(pos * 3, 0, size, size));//rocks
-		TileTexture[5].loadFromImage(TileImage, sf::IntRect(pos * 4, 0, size, size));//water
-		TileTexture[6].loadFromImage(TileImage, sf::IntRect(pos * 5, 0, size, size));//cloud
+		TerrainTexture[1].loadFromImage(TileImage, sf::IntRect(0, 0, size, size));//dirt
+		TerrainTexture[2].loadFromImage(TileImage, sf::IntRect(pos,0, size, size));//grass
+		TerrainTexture[3].loadFromImage(TileImage, sf::IntRect(pos * 2, 0, size, size));//sand
+		TerrainTexture[4].loadFromImage(TileImage, sf::IntRect(pos * 3, 0, size, size));//rocks
+		TerrainTexture[5].loadFromImage(TileImage, sf::IntRect(pos * 4, 0, size, size));//water
+		TerrainTexture[6].loadFromImage(TileImage, sf::IntRect(pos * 5, 0, size, size));//cloud
 
 		CharacterTexture.push_back(sf::Texture());
 		CharacterTexture.back().loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
@@ -46,9 +46,9 @@ public:
 	{
 		switch (destinationContainer)
 		{
-		case TextureContainer::TileTextures:
-			TileTexture.push_back(sf::Texture());
-			if (!TileTexture.back().loadFromFile(fileName, textCord))
+		case TextureContainer::TerrainTextures:
+			TerrainTexture.push_back(sf::Texture());
+			if (!TerrainTexture.back().loadFromFile(fileName, textCord))
 			{
 				ErrorHandler::log("Tile texture load incorectly");
 			}
@@ -80,8 +80,8 @@ public:
 	{
 		switch (typeOfContainer)
 		{
-		case TextureContainer::TileTextures:
-			return &TileTexture[index];
+		case TextureContainer::TerrainTextures:
+			return &TerrainTexture[index];
 			break;
 		case TextureContainer::CharacterTextures:
 			return &CharacterTexture[index];
@@ -100,8 +100,8 @@ public:
 	{
 		switch (typeOfContainer)
 		{
-		case TextureContainer::TileTextures:
-			return TileTexture.size();
+		case TextureContainer::TerrainTextures:
+			return TerrainTexture.size();
 			break;
 		case TextureContainer::CharacterTextures:
 			return CharacterTexture.size();
@@ -117,14 +117,14 @@ public:
 
 	Media()
 	{
-		TileTexture.push_back(sf::Texture());
+		TerrainTexture.push_back(sf::Texture());
 		CharacterTexture.push_back(sf::Texture());
 	}
 	~Media()
 	{
 		ObjectsTexture.clear();
 		ItemsTexture.clear();
-		TileTexture.clear();
+		TerrainTexture.clear();
 		CharacterTexture.clear();
 	}
 };

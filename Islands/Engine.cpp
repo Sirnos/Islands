@@ -403,16 +403,16 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 	switch (TerrainType)
 	{
 	case TerrainType::Dirt:
-		shp.setTexture(mediaContainer.getTexture(1,TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(1,TextureContainer::TerrainTextures));
 		break;
 	case TerrainType::Grass:
-		shp.setTexture(mediaContainer.getTexture(2, TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(2, TextureContainer::TerrainTextures));
 		break;
 	case TerrainType::Rock:
-		shp.setTexture(mediaContainer.getTexture(4, TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(4, TextureContainer::TerrainTextures));
 		break;
 	case TerrainType::Water:
-		shp.setTexture(mediaContainer.getTexture(5, TextureContainer::TileTextures));
+		shp.setTexture(mediaContainer.getTexture(5, TextureContainer::TerrainTextures));
 		break;
 	default:
 		break;
@@ -450,20 +450,15 @@ bool Engine::checkPlayerPos()
 	return true;
 }
 
-Engine::~Engine()
-{
-	ErrorHandler::log("Clear data");
-}
-
-void Engine::init()
+Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned PlayerPickUpItemsRange,unsigned MaxTileDrawRange)
 {
 	mediaContainer.load(); ErrorHandler::log("Load media");
 	loadGameComponents(); ErrorHandler::log("Load game components");
 
-	player.set(mediaContainer.getTexture(1,TextureContainer::CharacterTextures), sf::Vector2f(100, 100),sf::Vector2f(10,8));
+	player.set(mediaContainer.getTexture(1, TextureContainer::CharacterTextures), sf::Vector2f(100, 100), sf::Vector2f(10, 8));
 	camera.setSize(sf::Vector2f(1280, 1024));
 
-	GameWorld.init();
+	GameWorld.init(LocalMapSize);
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(WorldSize) + " x " + std::to_string(WorldSize));
 	spawnPlayer();
@@ -472,6 +467,14 @@ void Engine::init()
 	std::vector<RecipeDef> PlayerRecipesDef;
 	RecipeLoader.LoadRecipeDefFromFile(PlayerRecipesDef, "Data/PlayerRecipes.xml");
 	Crafting.AddNewRecipes(makeRecipe(PlayerRecipesDef, Items));
+
+	LyingItems.init(MaxNumberOfLyingItems);
+	TileDrawRange = MaxTileDrawRange;
+}
+
+Engine::~Engine()
+{
+	ErrorHandler::log("Clear data");
 }
 
 void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseClick)
@@ -675,11 +678,12 @@ void Engine::drawWorld(IslandApp & app)
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 	LyingItemShape.setSize(sf::Vector2f(32, 32));
 
-	for (int i = PlayerPosToTile.x - 30; i < PlayerPosToTile.x + 31; i++)
+	int iTileDrawRange = static_cast<int>(TileDrawRange);
+	for (int i = PlayerPosToTile.x - iTileDrawRange; i < PlayerPosToTile.x + iTileDrawRange+1; i++)
 	{
 		if (i < 0) { continue; }
 		if (i > WorldSize - 1) { break; }
-		for (int j = PlayerPosToTile.y - 30; j < PlayerPosToTile.y + 31; j++)
+		for (int j = PlayerPosToTile.y - iTileDrawRange; j < PlayerPosToTile.y + iTileDrawRange+1; j++)
 		{
 			if (j < 0) { continue; }
 			if (j > WorldSize - 1) { break; }

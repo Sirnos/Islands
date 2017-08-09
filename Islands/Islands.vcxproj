@@ -74,7 +74,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\LIBCPP\SFML-2.4.0\include;E:\LIBCPP\libnoise\include;E:\LIBCPP\rapidxml-1.13</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\LIBCPP\SFML-2.4.0\include;E:\LIBCPP\libnoise\include;E:\LIBCPP\rapidxml-1.13;E:\LIBCPP\boost_1_63_0</AdditionalIncludeDirectories>
+      <AdditionalOptions>/std:c++14 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>E:\LIBCPP\SFML-2.4.0\lib;E:\LIBCPP\libnoise\bin</AdditionalLibraryDirectories>
@@ -135,6 +136,7 @@
     <ClInclude Include="CraftingSystem.hpp" />
     <ClInclude Include="DefContainer.hpp" />
     <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="EngineVars.hpp" />
     <ClInclude Include="EquipmentFieldInfo.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
     <ClInclude Include="IslandApp.hpp" />
@@ -151,6 +153,7 @@
     <ClInclude Include="playerCharacter.hpp" />
     <ClInclude Include="Gui.hpp" />
     <ClInclude Include="Recipe.hpp" />
+    <ClInclude Include="SFMLTypesFromText.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="MapTile.hpp" />
     <ClInclude Include="World.hpp" />
@@ -168,6 +171,7 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="Data\PlayerRecipes.xml" />
+    <Xml Include="Engine.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf" />

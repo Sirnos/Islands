@@ -16,12 +16,25 @@ class IslandApp
 	sf::View Camera;
 
 public:
-	void init(sf::VideoMode WindowMode = sf::VideoMode(1280,1024,32),unsigned FPS = 62,bool vertSync = false)
+	IslandApp(sf::VideoMode AppVideoMode,unsigned FPS,bool VerticalSync,bool Windowed)
 	{
-		IslandWindow.create(WindowMode, "Islands", sf::Style::Fullscreen);
+		const std::string AppTitle("Islands");
+		if (!AppVideoMode.isValid())
+		{
+			IslandWindow.create(sf::VideoMode::getFullscreenModes()[0], AppTitle, sf::Style::Fullscreen);
+		}
+		else
+		{
+			IslandWindow.create(AppVideoMode, AppTitle,sf::Style::Fullscreen);
+			if (Windowed)
+			{
+				IslandWindow.create(AppVideoMode, AppTitle, sf::Style::Default);
+			}
+		}
 		IslandWindow.setFramerateLimit(FPS);
-		IslandWindow.setVerticalSyncEnabled(vertSync);
+		IslandWindow.setVerticalSyncEnabled(VerticalSync);
 	}
+
 	void clearContext() { IslandWindow.clear(); }
 	void clearContext(sf::Color BufferColor) { IslandWindow.clear(BufferColor); }
 	void displayContext() { IslandWindow.display(); }
