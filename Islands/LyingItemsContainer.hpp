@@ -26,10 +26,15 @@ class LyingItemsContainer
 {
 	std::vector<LyingItem> LyingItems;
 	size_t MaxNumberOfLyingItems;
+	sf::Vector2f LyingItemsPickUpRange;
 public:
 	~LyingItemsContainer() { LyingItems.clear(); }
 
-	void init(unsigned Max) { MaxNumberOfLyingItems = Max; }
+	void init(unsigned MaxSize,sf::Vector2f MinimalItemPickUpDistance) 
+	{
+		MaxNumberOfLyingItems = MaxSize;
+		LyingItemsPickUpRange = MinimalItemPickUpDistance;
+	}
 
 	size_t getSize() { return LyingItems.size(); }
 
@@ -68,4 +73,6 @@ public:
 			}
 		}
 	}
+
+	sf::Vector2f getLyingItemsPickUpRange() { return LyingItemsPickUpRange; }
 };

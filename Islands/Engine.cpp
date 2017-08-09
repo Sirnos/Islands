@@ -38,14 +38,15 @@ void Engine::loadGameComponents()
 
 void Engine::checkPlayerEnvironment()
 {
-	sf::Vector2f playerCollectRectSize(128, 128);
-	sf::Vector2f playerCollectRectPos = player.getPosition() - sf::Vector2f(playerCollectRectSize.x / 2,
-		playerCollectRectSize.y / 2);
+	sf::Vector2i playerCollectRectPos{ static_cast<sf::Vector2i>(player.getCharacterCenterPosition()) - 
+		static_cast<sf::Vector2i>((LyingItems.getLyingItemsPickUpRange() / 2.0f)) };
+	sf::Vector2i playerColletRectSize{ static_cast<sf::Vector2i>(LyingItems.getLyingItemsPickUpRange()) };
+
+	sf::FloatRect playerCollectRect{ static_cast<sf::Vector2f>(playerCollectRectPos),static_cast<sf::Vector2f>(playerColletRectSize) };
 
 	for (size_t i = 0; i < LyingItems.getSize(); i++)
 	{
-		if (CollisionDetect::isPointInRectangle(LyingItems.getPosition(i),
-			playerCollectRectPos, playerCollectRectSize))
+		if (playerCollectRect.contains(LyingItems.getPosition(i)))
 		{
 			ItemField temp = LyingItems.getItem(i);
 			player.pushItemToPlayer(temp, Items);
@@ -468,7 +469,7 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	RecipeLoader.LoadRecipeDefFromFile(PlayerRecipesDef, "Data/PlayerRecipes.xml");
 	Crafting.AddNewRecipes(makeRecipe(PlayerRecipesDef, Items));
 
-	LyingItems.init(MaxNumberOfLyingItems);
+	LyingItems.init(MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(PlayerPickUpItemsRange, PlayerPickUpItemsRange)));
 	TileDrawRange = MaxTileDrawRange;
 }
 
