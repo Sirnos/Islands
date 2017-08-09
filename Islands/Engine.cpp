@@ -457,8 +457,7 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	loadGameComponents(); ErrorHandler::log("Load game components");
 
 	player.set(mediaContainer.getTexture(1, TextureContainer::CharacterTextures), sf::Vector2f(100, 100), sf::Vector2f(10, 8));
-	camera.setSize(sf::Vector2f(1280, 1024));
-
+	
 	GameWorld.init(LocalMapSize);
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(WorldSize) + " x " + std::to_string(WorldSize));
@@ -485,7 +484,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	checkPlayerBehaviour(app);
 	checkPlayerEnvironment();
 
-	app.getIslandWindow()->setView(camera);
+	app.getIslandWindow()->setView(*app.getIslandView());
 
 	auto Window = app.getIslandWindow();
 	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(800, 200)));
@@ -692,10 +691,14 @@ void Engine::drawWorld(IslandApp & app)
 				drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 		}
 	}
-	sf::Vector2f cameraPos = camera.getCenter() - sf::Vector2f(camera.getSize().x / 2, camera.getSize().y / 2);
+
+	sf::Vector2f cameraPos{ app.getIslandView()->getCenter() - sf::Vector2f(app.getIslandView()->getSize() / 2.0f )};
+	sf::Vector2f cameraSize{ app.getIslandView()->getSize() };
+	sf::FloatRect cameraRange{ cameraPos,cameraSize };
+
 	for (size_t i = 0; i < LyingItems.getSize(); i++)
 	{
-		if (CollisionDetect::isPointInRectangle(LyingItems.getPosition(i), cameraPos, camera.getSize()))
+		if (cameraRange.contains(LyingItems.getPosition(i)))
 		{
 			LyingItemShape.setPosition(LyingItems.getPosition(i));
 			LyingItemShape.setTexture(mediaContainer.getTexture(LyingItems.getItem(i).ItemId,
@@ -883,7 +886,7 @@ void Engine::pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::Rectan
 
 void Engine::DrawAll(IslandApp &app)
 {
-	camera.setCenter(player.getCharacterCenterPosition());
+	app.getIslandView()->setCenter(player.getCharacterCenterPosition());
 
 	drawWorld(app);
 	drawPlayerGui(app);

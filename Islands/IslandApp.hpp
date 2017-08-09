@@ -33,6 +33,7 @@ public:
 		}
 		IslandWindow.setFramerateLimit(FPS);
 		IslandWindow.setVerticalSyncEnabled(VerticalSync);
+		Camera.setSize(static_cast<sf::Vector2f>(IslandWindow.getSize()));
 	}
 
 	void clearContext() { IslandWindow.clear(); }
@@ -65,6 +66,8 @@ public:
 
 	sf::Event *getIslandWindowEvent() { return &IslandWindowEvent; }
 	sf::RenderWindow *getIslandWindow() { return &IslandWindow; }
+	sf::View *getIslandView() { return &Camera; }
+
 	bool getEvents(sf::Event::EventType EventType)
 	{
 		while (IslandWindow.pollEvent(IslandWindowEvent))

@@ -39,7 +39,6 @@ class Engine
 	ItemDefContainer Items;
 	LyingItemsContainer LyingItems;
 
-	sf::View camera;
 	sf::Clock GameClock;
 	Console GameConsole;
 
