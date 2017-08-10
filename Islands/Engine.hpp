@@ -17,7 +17,7 @@
 #include "LyingItemsContainer.hpp"
 #include "CraftingSystem.hpp"
 
-#include "playerCharacter.hpp"
+#include "PlayerEntity.hpp"
 
 #include "Media.hpp"
 #include "World.hpp"
@@ -30,7 +30,7 @@ class Engine
 
 	World GameWorld;
 	Media mediaContainer;
-	playerCharacter player;
+	PlayerEntity Player;
 
 	Gui GameGui;
 

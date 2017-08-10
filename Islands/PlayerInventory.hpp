@@ -1,47 +1,21 @@
 #pragma once
 
-#include "Character.hpp"
-#include "ItemField.hpp"
+#include <SFML/System/Vector2.hpp>
 #include <array>
+#include <vector>
 
+#include "ItemField.hpp"
 
-class playerCharacter :public Character
+class PlayerInventory
 {
 	std::array<std::array<ItemField, PlayerInventorySize>, PlayerInventorySize> Inventory;
 	std::array<ItemField, PlayerInventorySize> HandInventory;
 	std::array<ItemField, 3> ArmorInventory;
-
 	ItemField HoldItem;
 
 	std::vector<ItemField> *InteractedChest;
 
-	sf::Vector2f spawnPoint;
 public:
-	playerCharacter()
-		:Character()
-	{}
-	playerCharacter(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
-		:Character(stats)
-	{
-		CharacterShape.setPosition(position);
-		CharacterShape.setTexture(texture);
-		CharacterShape.setSize(sf::Vector2f(10, 10));
-	}
-
-	void move(sf::Vector2f moveVector) { CharacterShape.move(moveVector); }
-	sf::RectangleShape *getShape() { return &CharacterShape; }
-	void set(sf::Texture *texture, sf::Vector2f position,sf::Vector2f stats)
-	{
-		CharacterShape.setPosition(position);
-		CharacterShape.setTexture(texture);
-		CharacterShape.setSize(sf::Vector2f(40, 60));
-		HP = stats.x;
-		MP = stats.y;
-	}
-
-	void setSpawnPoint(sf::Vector2f newSpawnPoint) { spawnPoint = newSpawnPoint; }
-	sf::Vector2f getSpawnPoint() { return spawnPoint; }
-
 	ItemField getInventoryField(sf::Vector2u field)
 	{
 		return Inventory[field.x][field.y];
@@ -95,7 +69,7 @@ public:
 	}
 	void setHoldItem(ItemField newVal) { HoldItem = newVal; }
 
-	void pushItemToPlayer(ItemField &item,ItemDefContainer &Items)
+	void pushItem(ItemField &item, unsigned ItemMaxStack)
 	{
 		for (size_t i = 0; i < PlayerInventorySize; i++)
 		{
@@ -103,12 +77,11 @@ public:
 			{
 				ItemField temp = getHandInventoryField(i);
 				temp += item.ItemAmount;
-				unsigned maxStack = Items.getDefinition(item.ItemId)->getMaxStack();
 
-				if (temp.ItemAmount >= maxStack)
+				if (temp.ItemAmount >= ItemMaxStack)
 				{
-					item.ItemAmount = temp.ItemAmount - maxStack;
-					temp.ItemAmount -= (temp.ItemAmount - maxStack);
+					item.ItemAmount = temp.ItemAmount - ItemMaxStack;
+					temp.ItemAmount -= (temp.ItemAmount - ItemMaxStack);
 				}
 				else
 				{
@@ -128,11 +101,10 @@ public:
 				{
 					ItemField temp = getInventoryField(sf::Vector2u(i, j));
 					temp += item.ItemAmount;
-					unsigned maxStack = Items.getDefinition(item.ItemId)->getMaxStack();
-					if (temp.ItemAmount >= maxStack)
+					if (temp.ItemAmount >= ItemMaxStack)
 					{
-						item.ItemAmount = temp.ItemAmount - maxStack;
-						temp.ItemAmount -= (temp.ItemAmount - maxStack);
+						item.ItemAmount = temp.ItemAmount - ItemMaxStack;
+						temp.ItemAmount -= (temp.ItemAmount - ItemMaxStack);
 					}
 					else
 					{

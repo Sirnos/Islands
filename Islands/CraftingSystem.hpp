@@ -2,7 +2,7 @@
 
 #include "Recipe.hpp"
 #include "DefContainer.hpp"
-#include "playerCharacter.hpp"
+#include "PlayerInventory.hpp"
 
 class CraftingSystem
 {
@@ -53,7 +53,7 @@ public:
 		return AvailableRecipes;
 	}
 
-	ItemField craftItemFromRecipe(playerCharacter &player,ItemDefContainer &ItemsDef)
+	ItemField craftItemFromRecipe(PlayerInventory &Inv,ItemDefContainer &ItemsDef)
 	{
 		if (SelectedRecipe >= AvailableRecipes.size()) { return ItemField(); }
 
@@ -71,7 +71,7 @@ public:
 			inventoryIndex.y = 0;
 			for (inventoryIndex.y; inventoryIndex.y < PlayerInventorySize; inventoryIndex.y++)
 			{
-				ItemField inventoryItem = player.getInventoryField(inventoryIndex);
+				ItemField inventoryItem = Inv.getInventoryField(inventoryIndex);
 				if (inventoryItem.ItemId != 0)
 				{
 					for (size_t i = 0; i < neededResources.size(); i++)
@@ -79,7 +79,7 @@ public:
 						if (neededResources[i].ItemId == inventoryItem.ItemId)
 						{
 							availableResources[i] += inventoryItem.ItemAmount;
-							player.setInventoryField(inventoryIndex, ItemField());
+							Inv.setInventoryField(inventoryIndex, ItemField());
 							break;
 						}
 					}
@@ -125,9 +125,9 @@ public:
 			for (inventoryIndex.y; inventoryIndex.y < PlayerInventorySize; inventoryIndex.y++)
 			{
 				if (restResources.size() == 0) { return craftedItem; }
-				if (player.getInventoryField(inventoryIndex).isEmpty())
+				if (Inv.getInventoryField(inventoryIndex).isEmpty())
 				{
-					player.setInventoryField(inventoryIndex, restResources.back());
+					Inv.setInventoryField(inventoryIndex, restResources.back());
 					restResources.pop_back();
 				}
 			}

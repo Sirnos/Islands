@@ -38,18 +38,18 @@ void Engine::loadGameComponents()
 
 void Engine::checkPlayerEnvironment()
 {
-	sf::Vector2i playerCollectRectPos{ static_cast<sf::Vector2i>(player.getCharacterCenterPosition()) - 
+	sf::Vector2i PlayerCollectRectPos{ static_cast<sf::Vector2i>(Player.getCharacterCenterPosition()) - 
 		static_cast<sf::Vector2i>((LyingItems.getLyingItemsPickUpRange() / 2.0f)) };
-	sf::Vector2i playerColletRectSize{ static_cast<sf::Vector2i>(LyingItems.getLyingItemsPickUpRange()) };
+	sf::Vector2i PlayerColletRectSize{ static_cast<sf::Vector2i>(LyingItems.getLyingItemsPickUpRange()) };
 
-	sf::FloatRect playerCollectRect{ static_cast<sf::Vector2f>(playerCollectRectPos),static_cast<sf::Vector2f>(playerColletRectSize) };
+	sf::FloatRect PlayerCollectRect{ static_cast<sf::Vector2f>(PlayerCollectRectPos),static_cast<sf::Vector2f>(PlayerColletRectSize) };
 
 	for (size_t i = 0; i < LyingItems.getSize(); i++)
 	{
-		if (playerCollectRect.contains(LyingItems.getPosition(i)))
+		if (PlayerCollectRect.contains(LyingItems.getPosition(i)))
 		{
 			ItemField temp = LyingItems.getItem(i);
-			player.pushItemToPlayer(temp, Items);
+			Player.Inventory.pushItem(temp, Items.getDefinition(temp.ItemId)->getMaxStack());
 			if (temp.isEmpty())
 			{
 				LyingItems.eraseItem(i);
@@ -67,36 +67,36 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		player.popInteractionWithChest();
+		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
 		movevctr.x -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		player.popInteractionWithChest();
+		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
 		movevctr.x += 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		player.popInteractionWithChest();
+		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
 		movevctr.y -= 5;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		player.popInteractionWithChest();
+		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
 		movevctr.y += 5;
 	}
-	player.move(movevctr);
+	Player.move(movevctr);
 
-	sf::Vector2f playerPos = player.getCharacterCenterPosition();
-	sf::Vector2i tilePlayerPosition = Map::getTiledPosition(playerPos);
+	sf::Vector2f PlayerPos = Player.getCharacterCenterPosition();
+	sf::Vector2i tilePlayerPosition = Map::getTiledPosition(PlayerPos);
 	if (GameWorld.getTileCollisionBox(static_cast<sf::Vector2u>(tilePlayerPosition), Objects.getContainer())
-		.intersects(sf::IntRect(static_cast<sf::Vector2i>(player.getPosition()), static_cast<sf::Vector2i>(player.getSize()))))
+		.intersects(sf::IntRect(static_cast<sf::Vector2i>(Player.getBody().getPosition()), static_cast<sf::Vector2i>(Player.getBody().getSize()))))
 	{
-		player.move(-movevctr);
+		Player.move(-movevctr);
 	}
 }
 
@@ -114,174 +114,174 @@ void Engine::spawnPlayer()
 
 		if (GameWorld.isPlaceImpassable(sf::Vector2f(spawnPoint.y,spawnPoint.x)) == false)
 		{
-			ErrorHandler::log(std::string("Spawn player position:"));
+			ErrorHandler::log(std::string("Spawn Player position:"));
 			ErrorHandler::log("Tile Y " + std::to_string(Map::getTiledPosition(spawnPoint).y));
 			ErrorHandler::log("Tile X " + std::to_string(Map::getTiledPosition(spawnPoint).x));
 			break;
 		}
 	}
-	player.setPosition(spawnPoint);
-	player.setSpawnPoint(spawnPoint);
+	Player.setPosition(spawnPoint);
+	Player.setSpawnPoint(spawnPoint);
 }
 
 void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
 {
-	unsigned holdedItemId = player.getHoldItem().ItemId;
+	unsigned holdedItemId = Player.Inventory.getHoldItem().ItemId;
 	switch (type)
 	{
 	case EquipmentType::Inventory:
 		if (holdedItemId != 0)
 		{
-			if (player.getInventoryField(field).ItemId == holdedItemId)
+			if (Player.Inventory.getInventoryField(field).ItemId == holdedItemId)
 			{
-				player.setInventoryField(field, ItemField(holdedItemId,
-					player.getInventoryField(field).ItemAmount + player.getHoldItem().ItemAmount));
+				Player.Inventory.setInventoryField(field, ItemField(holdedItemId,
+					Player.Inventory.getInventoryField(field).ItemAmount + Player.Inventory.getHoldItem().ItemAmount));
 
 				unsigned maxStack = Items.getDefinition(holdedItemId)->getMaxStack();
-				if (player.getInventoryField(field).ItemAmount >= maxStack)
+				if (Player.Inventory.getInventoryField(field).ItemAmount >= maxStack)
 				{
-					unsigned amountForHold = player.getInventoryField(field).ItemAmount - maxStack;
-					player.setInventoryField(field, ItemField(holdedItemId,
-						player.getInventoryField(field).ItemAmount - amountForHold));
+					unsigned amountForHold = Player.Inventory.getInventoryField(field).ItemAmount - maxStack;
+					Player.Inventory.setInventoryField(field, ItemField(holdedItemId,
+						Player.Inventory.getInventoryField(field).ItemAmount - amountForHold));
 
-					player.setHoldItem(ItemField(holdedItemId, amountForHold));
+					Player.Inventory.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
 				else
 				{
-					player.setHoldItem(ItemField(0,0));
+					Player.Inventory.setHoldItem(ItemField(0,0));
 				}
 
 			}
-			else if(player.getInventoryField(field).ItemId != 0)
+			else if(Player.Inventory.getInventoryField(field).ItemId != 0)
 			{
-				ItemField temp(player.getInventoryField(field));
-				player.setInventoryField(field, player.getHoldItem());
-				player.setHoldItem(temp);
+				ItemField temp(Player.Inventory.getInventoryField(field));
+				Player.Inventory.setInventoryField(field, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(temp);
 			}
 			else
 			{
-				player.setInventoryField(field, player.getHoldItem());
-				player.setHoldItem(ItemField(0, 0));
+				Player.Inventory.setInventoryField(field, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(ItemField(0, 0));
 			}
 		}
 		else
 		{
-			if (player.getInventoryField(field).ItemId != 0)
+			if (Player.Inventory.getInventoryField(field).ItemId != 0)
 			{
-				player.setHoldItem(player.getInventoryField(field));
-				player.setInventoryField(field, ItemField());
+				Player.Inventory.setHoldItem(Player.Inventory.getInventoryField(field));
+				Player.Inventory.setInventoryField(field, ItemField());
 			}
 		}
 		break;
 	case EquipmentType::Armor:
 		if (holdedItemId != 0)
 		{
-			if (player.getArmorInventoryField(field.x).ItemId != 0)
+			if (Player.Inventory.getArmorInventoryField(field.x).ItemId != 0)
 			{
-				ItemField temp(player.getArmorInventoryField(field.x));
-				player.setArmorField(field.x, player.getHoldItem());
-				player.setHoldItem(temp);
+				ItemField temp(Player.Inventory.getArmorInventoryField(field.x));
+				Player.Inventory.setArmorField(field.x, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(temp);
 			}
 			else
 			{
-				player.setArmorField(field.x, player.getHoldItem());
-				player.setHoldItem(ItemField(0, 0));
+				Player.Inventory.setArmorField(field.x, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(ItemField(0, 0));
 			}
 		}
 		else
 		{
-			if (player.getArmorInventoryField(field.x).ItemId != 0)
+			if (Player.Inventory.getArmorInventoryField(field.x).ItemId != 0)
 			{
-				player.setHoldItem(player.getArmorInventoryField(field.x));
-				player.setArmorField(field.x, ItemField());
+				Player.Inventory.setHoldItem(Player.Inventory.getArmorInventoryField(field.x));
+				Player.Inventory.setArmorField(field.x, ItemField());
 			}
 		}
 		break;
 	case EquipmentType::Belt:
 		if (holdedItemId != 0)
 		{
-			if (player.getHandInventoryField(field.x).ItemId == holdedItemId)
+			if (Player.Inventory.getHandInventoryField(field.x).ItemId == holdedItemId)
 			{
-				player.setHandInventoryField(field.x, ItemField(holdedItemId,
-					player.getHandInventoryField(field.x).ItemAmount + player.getHoldItem().ItemAmount));
+				Player.Inventory.setHandInventoryField(field.x, ItemField(holdedItemId,
+					Player.Inventory.getHandInventoryField(field.x).ItemAmount + Player.Inventory.getHoldItem().ItemAmount));
 
 				unsigned maxStack = Items.getDefinition(holdedItemId)->getMaxStack();
-				if (player.getHandInventoryField(field.x).ItemAmount >= maxStack)
+				if (Player.Inventory.getHandInventoryField(field.x).ItemAmount >= maxStack)
 				{
-					unsigned amountForHold = player.getHandInventoryField(field.x).ItemAmount - maxStack;
-					player.setHandInventoryField(field.x, ItemField(holdedItemId,
-						player.getHandInventoryField(field.x).ItemAmount - amountForHold));
+					unsigned amountForHold = Player.Inventory.getHandInventoryField(field.x).ItemAmount - maxStack;
+					Player.Inventory.setHandInventoryField(field.x, ItemField(holdedItemId,
+						Player.Inventory.getHandInventoryField(field.x).ItemAmount - amountForHold));
 
-					player.setHoldItem(ItemField(holdedItemId, amountForHold));
+					Player.Inventory.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
 				else
 				{
-					player.setHoldItem(ItemField(0, 0));
+					Player.Inventory.setHoldItem(ItemField(0, 0));
 				}
 
 			}
-			else if (player.getHandInventoryField(field.x).ItemId != 0)
+			else if (Player.Inventory.getHandInventoryField(field.x).ItemId != 0)
 			{
-				ItemField temp(player.getHandInventoryField(field.x));
-				player.setHandInventoryField(field.x, player.getHoldItem());
-				player.setHoldItem(temp);
+				ItemField temp(Player.Inventory.getHandInventoryField(field.x));
+				Player.Inventory.setHandInventoryField(field.x, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(temp);
 			}
 			else
 			{
-				player.setHandInventoryField(field.x, player.getHoldItem());
-				player.setHoldItem(ItemField(0, 0));
+				Player.Inventory.setHandInventoryField(field.x, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(ItemField(0, 0));
 			}
 		}
 		else
 		{
-			if (player.getHandInventoryField(field.x).ItemId != 0)
+			if (Player.Inventory.getHandInventoryField(field.x).ItemId != 0)
 			{
-				player.setHoldItem(player.getHandInventoryField(field.x));
-				player.setHandInventoryField(field.x, ItemField());
+				Player.Inventory.setHoldItem(Player.Inventory.getHandInventoryField(field.x));
+				Player.Inventory.setHandInventoryField(field.x, ItemField());
 			}
 		}
 		break;
 	case EquipmentType::Chest:
 		if (holdedItemId != 0)
 		{
-			if (holdedItemId == player.getItemFromInteractedChest(field.x).ItemId)
+			if (holdedItemId == Player.Inventory.getItemFromInteractedChest(field.x).ItemId)
 			{
-				player.setInteractedChestItemField(field.x, ItemField(holdedItemId,
-					player.getItemFromInteractedChest(field.x).ItemAmount + player.getHoldItem().ItemAmount));
+				Player.Inventory.setInteractedChestItemField(field.x, ItemField(holdedItemId,
+					Player.Inventory.getItemFromInteractedChest(field.x).ItemAmount + Player.Inventory.getHoldItem().ItemAmount));
 
 				unsigned maxStack = Items.getDefinition(holdedItemId)->getMaxStack();
-				if (player.getItemFromInteractedChest(field.x).ItemAmount >= maxStack)
+				if (Player.Inventory.getItemFromInteractedChest(field.x).ItemAmount >= maxStack)
 				{
-					unsigned amountForHold = player.getInventoryField(field).ItemAmount - maxStack;
-					player.setInteractedChestItemField(field.x, ItemField(holdedItemId,
-						player.getItemFromInteractedChest(field.x).ItemAmount - amountForHold));
+					unsigned amountForHold = Player.Inventory.getInventoryField(field).ItemAmount - maxStack;
+					Player.Inventory.setInteractedChestItemField(field.x, ItemField(holdedItemId,
+						Player.Inventory.getItemFromInteractedChest(field.x).ItemAmount - amountForHold));
 
-					player.setHoldItem(ItemField(holdedItemId, amountForHold));
+					Player.Inventory.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
 				else
 				{
-					player.setHoldItem(ItemField(0, 0));
+					Player.Inventory.setHoldItem(ItemField(0, 0));
 				}
 			}
-			else if(player.getItemFromInteractedChest(field.x).ItemId != 0)
+			else if(Player.Inventory.getItemFromInteractedChest(field.x).ItemId != 0)
 			{
 
-				ItemField temp(player.getItemFromInteractedChest(field.x));
-				player.setInteractedChestItemField(field.x, player.getHoldItem());
-				player.setHoldItem(temp);
+				ItemField temp(Player.Inventory.getItemFromInteractedChest(field.x));
+				Player.Inventory.setInteractedChestItemField(field.x, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(temp);
 			}
 			else
 			{
-				player.setInteractedChestItemField(field.x, player.getHoldItem());
-				player.setHoldItem(ItemField(0, 0));
+				Player.Inventory.setInteractedChestItemField(field.x, Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(ItemField(0, 0));
 			}
 		}
 		else
 		{
-			if (player.getItemFromInteractedChest(field.x).ItemId != 0)
+			if (Player.Inventory.getItemFromInteractedChest(field.x).ItemId != 0)
 			{
-				player.setHoldItem(player.getItemFromInteractedChest(field.x));
-				player.setInteractedChestItemField(field.x, ItemField());
+				Player.Inventory.setHoldItem(Player.Inventory.getItemFromInteractedChest(field.x));
+				Player.Inventory.setInteractedChestItemField(field.x, ItemField());
 			}
 		}
 	default:
@@ -349,15 +349,15 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			{
 				GameConsole.pushText(std::string("Commands:/giveItem,/spawnmonster"));
 				GameConsole.pushText(std::string("/placeObject,/settile,/settime"));
-				GameConsole.pushText(std::string("/playerposition,/time,/worldsize"));
+				GameConsole.pushText(std::string("/Playerposition,/time,/worldsize"));
 				GameConsole.pushText(std::string("/clear,/"));
 
 				GameConsole.pushCommandToHistory(tmp);
 			}
-			else if(tmp == "/playerposition")
+			else if(tmp == "/Playerposition")
 			{
-				GameConsole.pushText(std::string("Pos-x: ") + std::to_string(player.getCharacterCenterPosition().x));
-				GameConsole.pushText(std::string("Pos-y: ") + std::to_string(player.getCharacterCenterPosition().y));
+				GameConsole.pushText(std::string("Pos-x: ") + std::to_string(Player.getCharacterCenterPosition().x));
+				GameConsole.pushText(std::string("Pos-y: ") + std::to_string(Player.getCharacterCenterPosition().y));
 				GameConsole.pushCommandToHistory(tmp);
 			}
 			else if(tmp == "/time")
@@ -377,7 +377,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			}
 			else if(tmp.find("/giveItem") != std::string::npos)
 			{
-				GameConsole.giveItemCheck(tmp, Items, player);
+				GameConsole.giveItemCheck(tmp, Items, Player.Inventory);
 			}
 			else if(tmp.find("/placeObject") != std::string::npos)
 			{
@@ -445,23 +445,23 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 
 bool Engine::checkPlayerPos()
 {
-	sf::Vector2f playerPos = player.getCharacterCenterPosition();
-	if (GameWorld.isPlaceImpassable(sf::Vector2f(playerPos.y,playerPos.x)) == true) { return false; }
+	sf::Vector2f PlayerPos = Player.getCharacterCenterPosition();
+	if (GameWorld.isPlaceImpassable(sf::Vector2f(PlayerPos.y,PlayerPos.x)) == true) { return false; }
 
 	return true;
 }
 
 Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned PlayerPickUpItemsRange,unsigned MaxTileDrawRange)
+	:Player(sf::RectangleShape{sf::Vector2f(48,64)}, sf::Vector2f(), 20.0f, 10.0f, 5.0f)
 {
 	mediaContainer.load(); ErrorHandler::log("Load media");
 	loadGameComponents(); ErrorHandler::log("Load game components");
 
-	player.set(mediaContainer.getTexture(1, TextureContainer::CharacterTextures), sf::Vector2f(100, 100), sf::Vector2f(10, 8));
-	
 	GameWorld.init(LocalMapSize);
 	ErrorHandler::log("Generate map");
 	ErrorHandler::log("Map Size " + std::to_string(WorldSize) + " x " + std::to_string(WorldSize));
 	spawnPlayer();
+	Player.pushTexture(mediaContainer.getTexture(1, TextureContainer::CharacterTextures));
 
 	GameComponentsLoader RecipeLoader;
 	std::vector<RecipeDef> PlayerRecipesDef;
@@ -494,8 +494,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	if (!checkPlayerPos())
 	{ 
 		ErrorHandler::log("Player move above map");
-		ErrorHandler::log("Pos:X" + std::to_string(player.getCharacterCenterPosition().x) +
-			" :Y " + std::to_string(+player.getCharacterCenterPosition().y));
+		ErrorHandler::log("Pos:X" + std::to_string(Player.getCharacterCenterPosition().x) +
+			" :Y " + std::to_string(+Player.getCharacterCenterPosition().y));
 	}
 
 	if (GameGui.Eq.isEnable)
@@ -524,9 +524,9 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				}
 			}
 		}
-		if (player.isInteractedChestExist())
+		if (Player.Inventory.isInteractedChestExist())
 		{
-			for (size_t i = 0; i < player.getInteractedChestSize(); i++)
+			for (size_t i = 0; i < Player.Inventory.getInteractedChestSize(); i++)
 			{
 				if (GameGui.Chest.ChestContain[i].isHover && isMouseClick)
 				{
@@ -556,8 +556,12 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			sf::Vector2i mousePos = sf::Mouse::getPosition(*app.getIslandWindow());
 			if (GameGui.Craft.RecipeInfo.CraftButton.isClick(mousePos))
 			{
-				player.pushItemToPlayer(Crafting.craftItemFromRecipe(player, Items), Items);
-				Crafting.clearPlayerSelects();
+				ItemField craftedItem = Crafting.craftItemFromRecipe(Player.Inventory, Items);
+				if (!craftedItem.isEmpty())
+				{
+					Player.Inventory.pushItem(craftedItem, Items.getDefinition(craftedItem.ItemId)->getMaxStack());
+					Crafting.clearPlayerSelects();
+				}
 			}
 			if (GameGui.Craft.RecipeInfo.CraftAmountAddOne.isClick(mousePos))
 			{
@@ -574,9 +578,9 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			}
 		}
 	}
-	else if (!GameGui.Eq.isEnable && player.getHoldItem().isEmpty() && isMouseClick)
+	else if (!GameGui.Eq.isEnable && Player.Inventory.getHoldItem().isEmpty() && isMouseClick)
 		{
-			ItemField item = player.getHandInventoryField(GameGui.Hud.ActiveBeltField);
+			ItemField item = Player.Inventory.getHandInventoryField(GameGui.Hud.ActiveBeltField);
 			sf::Vector2f mousePos = app.getMousePosInWorld();
 			sf::Vector2u objectPos(static_cast<sf::Vector2u>(mousePos / TILE_SIZE));
 
@@ -589,9 +593,9 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 					{
 						if (GameWorld.placeObject(objectPos, item.ItemId, Objects.getContainer(),GameClock.getElapsedTime()))
 						{
-							ItemField temp = player.getHandInventoryField(GameGui.Hud.ActiveBeltField);
+							ItemField temp = Player.Inventory.getHandInventoryField(GameGui.Hud.ActiveBeltField);
 							temp -= 1;
-							player.setHandInventoryField(GameGui.Hud.ActiveBeltField, temp);
+							Player.Inventory.setHandInventoryField(GameGui.Hud.ActiveBeltField, temp);
 						}
 					}
 				}
@@ -638,17 +642,17 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 
 			if (GameWorld.getObjectType(objectPos) == ObjectType::Chest)
 			{
-				player.pushInteractionWithChest(&dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos))->Contain);
-				GameGui.createChestFields(player.getInteractedChestSize());
+				Player.Inventory.pushInteractionWithChest(&dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos))->Contain);
+				GameGui.createChestFields(Player.Inventory.getInteractedChestSize());
 				GameGui.Eq.isEnable = true;
 			}
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.Eq.isEnable)
 	{
-		if (player.getHoldItem().ItemId != 0)
+		if (Player.Inventory.getHoldItem().ItemId != 0)
 		{
-			LyingItems.pushNewItem(GameClock.getElapsedTime(), app.getMousePosInWorld(), player.getHoldItem());
-			player.setHoldItem(ItemField(0, 0));
+			LyingItems.pushNewItem(GameClock.getElapsedTime(), app.getMousePosInWorld(), Player.Inventory.getHoldItem());
+			Player.Inventory.setHoldItem(ItemField(0, 0));
 		}
 	}
 	switch (last)
@@ -666,13 +670,13 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	}
 
 	GameGui.pushKeyState(key);
-	GameGui.Hud.pushNewValuesForHpInfo(200, static_cast<unsigned>(player.getHP()));
-	GameGui.Hud.pushNewValuesForMpInfo(200, static_cast<unsigned>(player.getMP()));
+	GameGui.Hud.pushNewValuesForHpInfo(200, static_cast<unsigned>(Player.Stats.HP.getVar()));
+	GameGui.Hud.pushNewValuesForMpInfo(200, static_cast<unsigned>(Player.Stats.MP.getVar()));
 }
 
 void Engine::drawWorld(IslandApp & app)
 {
-	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(player.getCharacterCenterPosition());
+	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(Player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape,
 		LyingItemShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
@@ -726,11 +730,11 @@ void Engine::drawPlayerGui(IslandApp & app)
 	TextureFieldShape.setSize(FieldShape.getSize());
 	sf::Vector2f mousePosition = app.getMousePosInWorld();
 
-	if (player.getHoldItem().ItemId != 0)
+	if (Player.Inventory.getHoldItem().ItemId != 0)
 	{
 		sf::RectangleShape holdItemRep;
 		holdItemRep.setSize(sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize));
-		holdItemRep.setTexture(mediaContainer.getTexture(player.getHoldItem().ItemId,
+		holdItemRep.setTexture(mediaContainer.getTexture(Player.Inventory.getHoldItem().ItemId,
 			TextureContainer::ItemsTextures));
 		holdItemRep.setPosition(app.getMousePosInWorld());
 
@@ -746,7 +750,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 		sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(GameGui.Hud.Belt[i].ScreenPosition);
 		GameGui.Hud.Belt[i].Position = newPos;
 		GameGui.Hud.Belt[i].pushChangesToRectangleShape(FieldShape);
-		ItemField temp = player.getHandInventoryField(i);
+		ItemField temp = Player.Inventory.getHandInventoryField(i);
 		pushItemTextureToRect(newPos,temp.ItemId, TextureFieldShape);
 		amountItem.setPosition(FieldShape.getPosition());
 
@@ -773,7 +777,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 				GameGui.Eq.ArmorEquipment[field.x].Position = newPos;
 
 				GameGui.Eq.ArmorEquipment[field.x].pushChangesToRectangleShape(FieldShape);
-				ItemField temp = player.getArmorInventoryField(field.x);
+				ItemField temp = Player.Inventory.getArmorInventoryField(field.x);
 				pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
 
 				app.draw(FieldShape);
@@ -789,7 +793,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 				GameGui.Eq.Equipment[field.x][field.y].Position = newPos;
 
 				GameGui.Eq.Equipment[field.x][field.y].pushChangesToRectangleShape(FieldShape);
-				ItemField temp = player.getInventoryField(field);
+				ItemField temp = Player.Inventory.getInventoryField(field);
 				pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
 				amountItem.setPosition(newPos);
 
@@ -802,15 +806,15 @@ void Engine::drawPlayerGui(IslandApp & app)
 		}
 	}
 
-	if (player.isInteractedChestExist() && GameGui.Eq.isEnable)
+	if (Player.Inventory.isInteractedChestExist() && GameGui.Eq.isEnable)
 	{
-		for (size_t i = 0; i < player.getInteractedChestSize(); i++)
+		for (size_t i = 0; i < Player.Inventory.getInteractedChestSize(); i++)
 		{
 			GameGui.Chest.ChestContain[i].checkIsHover(mousePosition);
 			sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords(GameGui.Chest.ChestContain[i].ScreenPosition);
 			GameGui.Chest.ChestContain[i].Position = newPos;
 			GameGui.Chest.ChestContain[i].pushChangesToRectangleShape(FieldShape);
-			ItemField temp = player.getItemFromInteractedChest(i);
+			ItemField temp = Player.Inventory.getItemFromInteractedChest(i);
 			pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
 			amountItem.setPosition(newPos);
 
@@ -886,11 +890,11 @@ void Engine::pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::Rectan
 
 void Engine::DrawAll(IslandApp &app)
 {
-	app.getIslandView()->setCenter(player.getCharacterCenterPosition());
+	app.getIslandView()->setCenter(Player.getCharacterCenterPosition());
 
 	drawWorld(app);
 	drawPlayerGui(app);
 	drawConsole(app);
 
-	app.draw(*player.getShape());
+	app.draw(Player.getBody());
 }

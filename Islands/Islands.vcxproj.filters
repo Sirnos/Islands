@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Engine">
       <UniqueIdentifier>{c27c5217-fa50-4947-8271-511657bf7786}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{581cfd8b-198c-4243-b78e-dc4ce7081575}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,12 +60,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="textbox.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Character.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="playerCharacter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Media.hpp">
@@ -130,6 +127,18 @@
     </ClInclude>
     <ClInclude Include="SFMLTypesFromText.hpp">
       <Filter>Header Files\other</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityStats.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInventory.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerEntity.hpp">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

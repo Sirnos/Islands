@@ -129,7 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.hpp" />
-    <ClInclude Include="Character.hpp" />
+    <ClInclude Include="Entity.hpp" />
     <ClInclude Include="CollisionDetect.hpp" />
     <ClInclude Include="Console.hpp" />
     <ClInclude Include="CraftingGui.hpp" />
@@ -137,8 +137,10 @@
     <ClInclude Include="DefContainer.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="EngineVars.hpp" />
+    <ClInclude Include="EntityStats.hpp" />
     <ClInclude Include="EquipmentFieldInfo.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
+    <ClInclude Include="PlayerInventory.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
     <ClInclude Include="ItemDef.hpp" />
@@ -150,7 +152,7 @@
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectDef.hpp" />
-    <ClInclude Include="playerCharacter.hpp" />
+    <ClInclude Include="PlayerEntity.hpp" />
     <ClInclude Include="Gui.hpp" />
     <ClInclude Include="Recipe.hpp" />
     <ClInclude Include="SFMLTypesFromText.hpp" />

@@ -2,7 +2,6 @@
 
 #include "textbox.hpp"
 #include <vector>
-#include <regex>
 
 class Console
 {
@@ -80,7 +79,7 @@ public:
 	sf::Text getInputText() { return ConsoleInput.getText(); }
 
 	//function for /giveItem command
-	void giveItemCheck(std::string command, ItemDefContainer &Items, playerCharacter &player)
+	void giveItemCheck(std::string command, ItemDefContainer &Items, PlayerInventory &Inv)
 	{
 		bool firstParam = true;
 		std::string idStr;
@@ -116,7 +115,7 @@ public:
 		if (static_cast<unsigned>(amount) > MAXIMUM_STACK_SIZE) { commands.push_back("amount is higher than MAXIMUM_STACK_SIZE"); return; }
 		if (static_cast<unsigned>(amount) > Items.getDefinition(id)->getMaxStack()) { commands.push_back("amount is higher than Item::MaxStack"); return; }
 
-		player.pushItemToPlayer(ItemField(id, amount), Items);
+		Inv.pushItem(ItemField(id, amount), Items.getDefinition(id)->getMaxStack());
 		pushCommandToHistory(command);
 
 		return;
