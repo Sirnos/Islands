@@ -40,5 +40,13 @@ struct ItemField
 		}
 		return false;
 	}
-	void empty() { ItemId = 0; ItemAmount = 0; }
+	bool isCorrect()
+	{
+		if (ItemAmount == 0 && ItemId != 0)
+		{
+			return false;
+		}
+		return true;
+	}
+	void empty() { *this = ItemField(); }
 };

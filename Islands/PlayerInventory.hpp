@@ -24,7 +24,10 @@ public:
 	{
 		return HandInventory[field];
 	}
-	ItemField getArmorInventoryField(unsigned field) { return ArmorInventory[field]; }
+	ItemField getArmorInventoryField(unsigned field) 
+	{ 
+		return ArmorInventory[field];
+	}
 	ItemField getHoldItem() { return HoldItem; }
 
 	void pushInteractionWithChest(std::vector<ItemField> *Chest)
@@ -43,6 +46,10 @@ public:
 	}
 	void setInteractedChestItemField(unsigned field, ItemField item)
 	{
+		if (!item.isCorrect())
+		{
+			item.empty();
+		}
 		InteractedChest->operator[](field) = item;
 	}
 	void popInteractionWithChest()
@@ -57,20 +64,41 @@ public:
 
 	void setInventoryField(sf::Vector2u field, ItemField newVal)
 	{
+		if (!newVal.isCorrect()) 
+		{ 
+			newVal.empty();
+		}
 		Inventory[field.x][field.y] = newVal;
 	}
 	void setHandInventoryField(unsigned field, ItemField newVal)
 	{
+		if (!newVal.isCorrect())
+		{
+			newVal.empty();
+		}
 		HandInventory[field] = newVal;
 	}
 	void setArmorField(unsigned field, ItemField newVal)
 	{
+		if (!newVal.isCorrect())
+		{
+			newVal.empty();
+		}
 		ArmorInventory[field] = newVal;
 	}
-	void setHoldItem(ItemField newVal) { HoldItem = newVal; }
+	void setHoldItem(ItemField newVal) 
+	{
+		if (!newVal.isCorrect())
+		{
+			newVal.empty();
+		}
+		HoldItem = newVal; 
+	}
 
 	void pushItem(ItemField &item, unsigned ItemMaxStack)
 	{
+		if (!item.isCorrect()) { item.empty(); return; }
+
 		for (size_t i = 0; i < PlayerInventorySize; i++)
 		{
 			if (getHandInventoryField(i).ItemId == item.ItemId)

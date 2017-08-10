@@ -13,7 +13,7 @@ class LimitedVar
 public:
 	LimitedVar(T Max)
 		:Limit(Max),
-		Var(Limit)
+		Var(Max)
 	{}
 
 	LimitedVar<T> &operator+=(const LimitedVar<T> &Other)

@@ -69,25 +69,25 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 	{
 		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
-		movevctr.x -= 5;
+		movevctr.x -= Player.Stats.Speed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
-		movevctr.x += 5;
+		movevctr.x += Player.Stats.Speed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
-		movevctr.y -= 5;
+		movevctr.y -= Player.Stats.Speed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
-		movevctr.y += 5;
+		movevctr.y += Player.Stats.Speed;
 	}
 	Player.move(movevctr);
 
@@ -670,8 +670,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	}
 
 	GameGui.pushKeyState(key);
-	GameGui.Hud.pushNewValuesForHpInfo(200, static_cast<unsigned>(Player.Stats.HP.getVar()));
-	GameGui.Hud.pushNewValuesForMpInfo(200, static_cast<unsigned>(Player.Stats.MP.getVar()));
+	GameGui.Hud.pushNewValuesForHpInfo(static_cast<unsigned>(Player.Stats.HP.getLimit()), static_cast<unsigned>(Player.Stats.HP.getVar()));
+	GameGui.Hud.pushNewValuesForMpInfo(static_cast<unsigned>(Player.Stats.MP.getLimit()), static_cast<unsigned>(Player.Stats.MP.getVar()));
 }
 
 void Engine::drawWorld(IslandApp & app)
@@ -730,7 +730,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 	TextureFieldShape.setSize(FieldShape.getSize());
 	sf::Vector2f mousePosition = app.getMousePosInWorld();
 
-	if (Player.Inventory.getHoldItem().ItemId != 0)
+	if (!Player.Inventory.getHoldItem().isEmpty())
 	{
 		sf::RectangleShape holdItemRep;
 		holdItemRep.setSize(sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize));
@@ -751,6 +751,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 		GameGui.Hud.Belt[i].Position = newPos;
 		GameGui.Hud.Belt[i].pushChangesToRectangleShape(FieldShape);
 		ItemField temp = Player.Inventory.getHandInventoryField(i);
+
 		pushItemTextureToRect(newPos,temp.ItemId, TextureFieldShape);
 		amountItem.setPosition(FieldShape.getPosition());
 
