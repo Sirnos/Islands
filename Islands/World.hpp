@@ -2,7 +2,7 @@
 
 #include "Map.hpp"
 
-const size_t WorldSize = 512;
+const size_t DefaultWorldSize = 512;
 
 class World
 {
@@ -13,7 +13,7 @@ public:
 	World(){}
 	~World(){}
 
-	void init(size_t Size = WorldSize)
+	void init(size_t Size = DefaultWorldSize)
 	{
 		LocalMap.generateMap(Size);
 	}
@@ -21,7 +21,7 @@ public:
 	bool isPlaceImpassable(sf::Vector2f position)
 	{
 		sf::Vector2u uPos = static_cast<sf::Vector2u>(Map::getTiledPosition(position));
-		if(uPos.x >= 0 && uPos.y >= 0 && uPos.x < WorldSize && uPos.y < WorldSize)
+		if(uPos.x >= 0 && uPos.y >= 0 && uPos.x < getLocalMapSize() && uPos.y < getLocalMapSize())
 		if (getTileTerrain(uPos) == TerrainType::Null) { return true; }
 		return false;
 	}
@@ -80,35 +80,6 @@ public:
 			LocalMap.setTileObject(objectIndex,newObject);
 		}
 	}
-	bool placeObject(sf::Vector2u objectIndex, unsigned objectId,std::vector<ObjectDef*>& ObjectsDefs,sf::Time AtTime)
-	{
-		if (LocalMap.getTileObject(objectIndex) == nullptr)
-		{
-			ObjectType objType= ObjectsDefs[objectId]->getType();
-
-			switch (objType)
-			{
-			case ObjectType::Default:
-				LocalMap.setTileObject(objectIndex, new Object(objectId));
-				break;
-			case ObjectType::Chest:
-				LocalMap.setTileObject(objectIndex, new ChestObject(objectId,
-					dynamic_cast<ChestDef*>(ObjectsDefs[objectId])->getCapacity()));
-				break;
-			case ObjectType::Tree:
-				break;
-			case ObjectType::Sapling:
-				LocalMap.setTileObject(objectIndex, new SaplingObject(objectId, AtTime.asSeconds()));
-				break;
-			case ObjectType::Spawner:
-				break;
-			default:
-				break;
-			}
-			return true;
-		}
-		return false;
-	}
 	void clearObject(sf::Vector2u objectIndex)
 	{
 		LocalMap.clearTileObject(objectIndex);
@@ -134,4 +105,6 @@ public:
 		}
 		return LocalMap.getTileObject(objectIndex)->Id;
 	}
+
+	size_t getLocalMapSize() { return LocalMap.getMapSize(); }
 };

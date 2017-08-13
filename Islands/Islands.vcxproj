@@ -166,6 +166,7 @@
     <Image Include="Data\Objects.png" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="Data\CraftingTableRecipes.xml" />
     <Xml Include="Data\Items.xml">
       <SubType>Designer</SubType>
     </Xml>
@@ -177,7 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf" />
-    <None Include="Data\Tiles.xcf" />
+    <None Include="Data\Objects.xcf" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Data\Fonts\ariali.ttf" />

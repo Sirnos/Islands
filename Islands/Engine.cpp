@@ -2,11 +2,10 @@
 
 void Engine::loadGameComponents()
 {
-	GameComponentsLoader loader;
 	std::string objectGraphicsfile;
 	std::vector<sf::IntRect> objectTextureCords;
 
-	loader.LoadObjectDefFromFile(Objects.getContainer(), objectGraphicsfile, objectTextureCords);
+	GameComponentsLoader::LoadObjectDefFromFile(Objects.getContainer(), objectGraphicsfile, objectTextureCords);
 	for (size_t i = 0; i < Objects.getSize(); i++)
 	{
 		ErrorHandler::log("Load Object: " + Objects.getDefinition(i)->getName() + " Type: " + std::to_string(static_cast<int>(Objects.getDefinition(i)->getType())));
@@ -18,11 +17,11 @@ void Engine::loadGameComponents()
 		mediaContainer.pushTexture(TextureContainer::ItemsTextures, objectGraphicsfile, i);
 	}
 
-	loader.GenerateItemsFromObjectDef(Objects.getContainer(), Items.getContainer());
+	GameComponentsLoader::GenerateItemsFromObjectDef(Objects.getContainer(), Items.getContainer());
 
 	std::string itemGraphicsFile;
 	std::vector<sf::IntRect> itemTextureCords;
-	loader.LoadItemDefFromFile(Items.getContainer(), itemGraphicsFile, itemTextureCords);
+	GameComponentsLoader::LoadItemDefFromFile(Items.getContainer(), itemGraphicsFile, itemTextureCords);
 
 	for (auto & i : itemTextureCords)
 	{
@@ -102,7 +101,7 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 
 void Engine::spawnPlayer()
 {
-	const int MaxPosition = WorldSize - 10;
+	const int MaxPosition = GameWorld.getLocalMapSize() - 10;
 
 	srand(static_cast<unsigned int>(time(NULL)));
 	sf::Vector2f spawnPoint;
@@ -372,7 +371,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			}
 			else if(tmp == "/worldsize")
 			{
-				GameConsole.pushText(std::string("Size: ") + std::to_string(WorldSize));
+				GameConsole.pushText(std::string("Size: ") + std::to_string(GameWorld.getLocalMapSize()));
 				GameConsole.pushCommandToHistory(tmp);
 			}
 			else if(tmp.find("/giveItem") != std::string::npos)
@@ -459,14 +458,14 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 
 	GameWorld.init(LocalMapSize);
 	ErrorHandler::log("Generate map");
-	ErrorHandler::log("Map Size " + std::to_string(WorldSize) + " x " + std::to_string(WorldSize));
+	ErrorHandler::log("Map Size " + std::to_string(GameWorld.getLocalMapSize()) + " x " + std::to_string(GameWorld.getLocalMapSize()));
 	spawnPlayer();
 	Player.pushTexture(mediaContainer.getTexture(1, TextureContainer::CharacterTextures));
 
-	GameComponentsLoader RecipeLoader;
 	std::vector<RecipeDef> PlayerRecipesDef;
-	RecipeLoader.LoadRecipeDefFromFile(PlayerRecipesDef, "Data/PlayerRecipes.xml");
-	Crafting.AddNewRecipes(makeRecipe(PlayerRecipesDef, Items));
+	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/PlayerRecipes.xml");
+	Crafting.loadPlayerRecipes(makeRecipe(PlayerRecipesDef, Items));
+	Crafting.usePlayerRecipes();
 
 	LyingItems.init(MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(PlayerPickUpItemsRange, PlayerPickUpItemsRange)));
 	TileDrawRange = MaxTileDrawRange;
@@ -589,13 +588,12 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 				if (Items.getDefinition(item.ItemId)->getType() == ItemType::Placeable)
 				{
 					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
-						sf::Vector2f(WorldSize * TILE_SIZE,WorldSize * TILE_SIZE)))
+						sf::Vector2f(GameWorld.getLocalMapSize() * TILE_SIZE,GameWorld.getLocalMapSize() * TILE_SIZE)))
 					{
-						if (GameWorld.placeObject(objectPos, item.ItemId, Objects.getContainer(),GameClock.getElapsedTime()))
+						if (placeObjectInMap(objectPos,item))
 						{
-							ItemField temp = Player.Inventory.getHandInventoryField(GameGui.Hud.ActiveBeltField);
-							temp -= 1;
-							Player.Inventory.setHandInventoryField(GameGui.Hud.ActiveBeltField, temp);
+							item -= 1;
+							Player.Inventory.setHandInventoryField(GameGui.Hud.ActiveBeltField, item);
 						}
 					}
 				}
@@ -677,26 +675,32 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 void Engine::drawWorld(IslandApp & app)
 {
 	sf::Vector2i PlayerPosToTile = Map::getTiledPosition(Player.getCharacterCenterPosition());
-	sf::RectangleShape TileShape,
-		LyingItemShape;
+	sf::RectangleShape TileShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-	LyingItemShape.setSize(sf::Vector2f(32, 32));
 
 	int iTileDrawRange = static_cast<int>(TileDrawRange);
-	for (int i = PlayerPosToTile.x - iTileDrawRange; i < PlayerPosToTile.x + iTileDrawRange+1; i++)
+	int MapSize = static_cast<int>(GameWorld.getLocalMapSize());
+	for (int i = PlayerPosToTile.x - iTileDrawRange; i < PlayerPosToTile.x + iTileDrawRange + 1; i++)
 	{
 		if (i < 0) { continue; }
-		if (i > WorldSize - 1) { break; }
-		for (int j = PlayerPosToTile.y - iTileDrawRange; j < PlayerPosToTile.y + iTileDrawRange+1; j++)
+		if (i > MapSize - 1) { break; }
+		for (int j = PlayerPosToTile.y - iTileDrawRange; j < PlayerPosToTile.y + iTileDrawRange + 1; j++)
 		{
 			if (j < 0) { continue; }
-			if (j > WorldSize - 1) { break; }
-				drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
-				drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			if (j > MapSize - 1) { break; }
+			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 		}
 	}
+}
 
-	sf::Vector2f cameraPos{ app.getIslandView()->getCenter() - sf::Vector2f(app.getIslandView()->getSize() / 2.0f )};
+void Engine::drawLyingItems(IslandApp & app)
+{
+	if (LyingItems.getSize() == 0) { return; }
+
+	sf::RectangleShape LyingItemShape(sf::Vector2f(32, 32));
+
+	sf::Vector2f cameraPos{ app.getIslandView()->getCenter() - sf::Vector2f(app.getIslandView()->getSize() / 2.0f) };
 	sf::Vector2f cameraSize{ app.getIslandView()->getSize() };
 	sf::FloatRect cameraRange{ cameraPos,cameraSize };
 
@@ -889,11 +893,50 @@ void Engine::pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::Rectan
 	else { rect.setTexture(nullptr); }
 }
 
+bool Engine::placeObjectInMap(sf::Vector2u tile,ItemField item)
+{
+	if (item.isEmpty() || tile.x >= GameWorld.getLocalMapSize() || tile.y >= GameWorld.getLocalMapSize()) 
+	{ 
+		return false; 
+	}
+	if (Items.getDefinition(item.ItemId)->getType() != ItemType::Placeable) { return false; }
+	if (GameWorld.getObject(tile) != nullptr) { return false; }
+
+	ObjectType placeObjectType = Objects.getDefinition(item.ItemId)->getType();
+
+	switch (placeObjectType)
+	{
+	case ObjectType::Default:
+		GameWorld.setObject(tile, new Object(item.ItemId));
+		break;
+	case ObjectType::Chest:
+		GameWorld.setObject(tile, new ChestObject(item.ItemId,
+			dynamic_cast<ChestDef*>(Objects.getDefinition(item.ItemId))->getCapacity()));
+		break;
+	case ObjectType::CraftingPlace:
+		GameWorld.setObject(tile, new CraftingPlaceObject(item.ItemId, makeRecipe(dynamic_cast<CraftingPlaceDef*>(Objects.getDefinition(item.ItemId))->getRecipes(), Items)));
+		break;
+	case ObjectType::Tree:
+		break;
+	case ObjectType::Sapling:
+		GameWorld.setObject(tile, new SaplingObject(item.ItemId, GameClock.getElapsedTime().asSeconds()));
+		break;
+	case ObjectType::Spawner:
+		break;
+	default:
+		break;
+	}
+
+
+	return true;
+}
+
 void Engine::DrawAll(IslandApp &app)
 {
 	app.getIslandView()->setCenter(Player.getCharacterCenterPosition());
 
 	drawWorld(app);
+	drawLyingItems(app);
 	drawPlayerGui(app);
 	drawConsole(app);
 

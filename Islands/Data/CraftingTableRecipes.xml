@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Recipes>
+    <Recipe>
+        <Out>WoodChest,1</Out>
+        <In>
+            <li>Plank,8</li>
+        </In>
+    </Recipe>
+</Recipes>

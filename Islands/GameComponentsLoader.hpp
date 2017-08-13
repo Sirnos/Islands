@@ -11,62 +11,13 @@
 
 class GameComponentsLoader
 {
-	/*
-	sf::Vector2i getVectorFromString(std::string str)
-	{
-		sf::Vector2i temp;
-		temp.x = std::stoi(str.substr(0, str.find(',')));
-		temp.y = std::stoi(str.substr(str.find(',') + 1, str.size() - 1));
-		return temp;
-	}
-	sf::IntRect getIntRectFromString(std::string str)
-	{
-		short varNumber = 0;
-		std::string values[4];
-
-		for (auto i : str)
-		{
-			if (i == ',')
-			{
-				if (varNumber == 3) { break; }
-				varNumber++;
-			}
-			else
-			{
-				values[varNumber] += i;
-			}
-		}
-
-		return sf::IntRect(std::stoi(values[0]), std::stoi(values[1]), std::stoi(values[2]), std::stoi(values[3]));
-	}
-	sf::FloatRect getFloatRectFromString(std::string str)
-	{
-		short varNumber = 0;
-		std::string values[4];
-
-		for (auto i : str)
-		{
-			if (i == ',')
-			{
-				if (varNumber == 3) { break; }
-				varNumber++;
-			}
-			else
-			{
-				values[varNumber] += i;
-			}
-		}
-
-		return sf::FloatRect(std::stof(values[0]), std::stof(values[1]), std::stof(values[2]), std::stof(values[3]));
-	}
-	*/
-	Yield getYieldFromString(std::string str)
+	static Yield getYieldFromString(std::string str)
 	{
 		return Yield(str.substr(0, str.find(',')), std::stoul(str.substr(str.find(',') + 1, str.size() - 1)));
 	}
 
 public:
-	void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects,std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
+	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects,std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
 	{
 		Objects.push_back(new ObjectDef());
 		Textures.push_back(sf::IntRect());
@@ -81,6 +32,7 @@ public:
 			std::vector<unsigned> tempUint;
 			std::vector<float> tempFloat;
 			std::vector<std::string> tempString;
+			std::vector<RecipeDef> tempRecipes;
 
 			ObjectsGraphicsFile = mainNode->first_attribute()->value();
 			for (rapidxml::xml_node<>* objectsNode = mainNode->first_node(); objectsNode != nullptr;
@@ -133,6 +85,11 @@ public:
 						tempFloat.push_back(std::stof(std::string(objectsParamNode->first_node()->value())));
 						tempString.push_back(std::string(objectsParamNode->first_node()->next_sibling()->value()));
 					}
+					else if(paramName == "CraftingPlaceDef")
+					{
+						newObjType = ObjectType::CraftingPlace;
+						LoadRecipeDefFromFile(tempRecipes,std::string(objectsParamNode->value()));
+					}
 				}
 
 				switch (newObjType)
@@ -150,6 +107,9 @@ public:
 					break;
 				case ObjectType::Spawner:
 					break;
+				case ObjectType::CraftingPlace:
+					Objects.push_back(new CraftingPlaceDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible, tempRecipes));
+					break;
 				default:
 					break;
 				}
@@ -157,12 +117,13 @@ public:
 				tempFloat.clear();
 				tempString.clear();
 				tempUint.clear();
+				tempRecipes.clear();
 			}
 		}
 		Objects.shrink_to_fit();
 	}
 
-	void GenerateItemsFromObjectDef(std::vector<ObjectDef*> &Objs,std::vector<ItemDef*> &Items)
+	static void GenerateItemsFromObjectDef(std::vector<ObjectDef*> &Objs,std::vector<ItemDef*> &Items)
 	{
 		for (unsigned i = 0; i < Objs.size(); i++)
 		{
@@ -171,7 +132,7 @@ public:
 		Items.shrink_to_fit();
 	}
 
-	void LoadItemDefFromFile(std::vector<ItemDef*> &Items,std::string &ItemsGraphicsFile,std::vector<sf::IntRect> &textures)
+	static void LoadItemDefFromFile(std::vector<ItemDef*> &Items,std::string &ItemsGraphicsFile,std::vector<sf::IntRect> &textures)
 	{
 		rapidxml::file<char> File("Data/Items.xml");
 		rapidxml::xml_document<> document;
@@ -278,7 +239,7 @@ public:
 		}
 	}
 
-	void LoadRecipeDefFromFile(std::vector<RecipeDef> &recipes, std::string file)
+	static void LoadRecipeDefFromFile(std::vector<RecipeDef> &recipes, std::string file)
 	{
 		rapidxml::file<char> rfile(file.data());
 		rapidxml::xml_document<> document;

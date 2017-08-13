@@ -165,12 +165,15 @@
     <Xml Include="Engine.xml">
       <Filter>Header Files\Engine</Filter>
     </Xml>
+    <Xml Include="Data\CraftingTableRecipes.xml">
+      <Filter>IslandData</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Data\Tiles.xcf">
+    <None Include="Data\Objects.xcf">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

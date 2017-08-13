@@ -49,4 +49,12 @@
         <For>Tree</For>
       </SaplingDef>
     </Object>
+  <Object name="CraftingTable">
+    <Size>1,1</Size>
+    <Graphics>96,48,16,16</Graphics>
+    <Collision>0,0,1,1</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <CraftingPlaceDef>Data/CraftingTableRecipes.xml</CraftingPlaceDef>
+  </Object>
 </Objects>

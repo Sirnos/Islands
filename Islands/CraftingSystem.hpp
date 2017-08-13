@@ -6,12 +6,17 @@
 
 class CraftingSystem
 {
+	std::vector<Recipe> PlayerBaseRecipes;
+
 	std::vector<Recipe> AvailableRecipes;
 
 	unsigned SelectedRecipe;
 	unsigned CraftAmount;
 public:
-	CraftingSystem() { CraftAmount = 1; }
+	CraftingSystem() 
+	{
+		CraftAmount = 1;
+	}
 	~CraftingSystem(){}
 
 	void PopRecipes()
@@ -35,6 +40,12 @@ public:
 		AvailableRecipes.clear();
 		clearPlayerSelects();
 	}
+
+	void loadPlayerRecipes(std::vector<Recipe> &DefaultRecipes)
+	{
+		PlayerBaseRecipes = DefaultRecipes;
+	}
+	void usePlayerRecipes() { AvailableRecipes = PlayerBaseRecipes; }
 
 	void setSelectedRecipe(unsigned newSelect) { SelectedRecipe = newSelect; }
 	unsigned getSelectedRecipeNumber() { return SelectedRecipe; }

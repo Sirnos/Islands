@@ -58,9 +58,12 @@ class Engine
 	void drawObject(sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 
 	void drawWorld(IslandApp &app);
+	void drawLyingItems(IslandApp &app);
 
 	void drawPlayerGui(IslandApp & app);
 	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
+
+	bool placeObjectInMap(sf::Vector2u tile,ItemField item);
 public:
 	Engine(unsigned LocalMapSize, unsigned MaxNumberOfLyingItems, unsigned PlayerPickUpItemsRange, unsigned MaxTileDrawRange);
 	~Engine();

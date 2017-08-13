@@ -9,21 +9,9 @@
 
 class Map
 {
-
 	std::vector<std::vector<MapTile>> Tiles;
-	void fitMap()
-	{
-		for (auto & i : Tiles)
-		{
-			i.shrink_to_fit();
-		}
-		Tiles.shrink_to_fit();
-	}
 public:
-	~Map()
-	{
-		Tiles.clear();
-	}
+	~Map() { Tiles.clear(); }
 
 	//void loadMapFromFile(std::string file);
 	void generateMap(size_t Size)
@@ -63,7 +51,12 @@ public:
 			}
 			mnX += 1;
 		}
-		fitMap();
+
+		for (auto & i : Tiles)
+		{
+			i.shrink_to_fit();
+		}
+		Tiles.shrink_to_fit();
 	}
 
 	static sf::Vector2i getTiledPosition(sf::Vector2f characterPos)
@@ -77,9 +70,9 @@ public:
 			static_cast<float>(tileNumber.y) * TILE_SIZE);
 	}
 
-	sf::Vector2u getMapSize()
+	size_t getMapSize()
 	{
-		return sf::Vector2u(Tiles.size(), Tiles[0].size());
+		return Tiles.size();
 	}
 	TerrainType getTileTerrain(sf::Vector2u tileNumber)
 	{

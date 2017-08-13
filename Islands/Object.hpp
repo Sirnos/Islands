@@ -46,3 +46,13 @@ struct ChestObject : Object
 		Contain.clear();
 	}
 };
+
+struct CraftingPlaceObject : Object
+{
+	std::vector<Recipe> Recipes;
+	CraftingPlaceObject(unsigned objectId, std::vector<Recipe> ObjectRecipes)
+		:Object(objectId, ObjectType::CraftingPlace)
+	{
+		Recipes = ObjectRecipes;
+	}
+};

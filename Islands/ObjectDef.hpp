@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Recipe.hpp"
+
 #include <SFML/Graphics/Rect.hpp>
 #include <string>
-
 
 typedef std::pair<std::string, unsigned> Yield;
 
@@ -10,6 +11,7 @@ enum class ObjectType
 {
 	Default,
 	Chest,
+	CraftingPlace,
 	Tree,
 	Sapling,
 	Spawner
@@ -64,6 +66,21 @@ public:
 		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Chest)
 	{
 		Capacity = ChestCapacity;
+	}
+};
+
+class CraftingPlaceDef : public ObjectDef
+{
+	std::vector<RecipeDef> Recipes;
+
+public:
+	std::vector<RecipeDef> & getRecipes() { return Recipes; }
+
+	CraftingPlaceDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
+		Yield yield, bool Destructible, std::vector<RecipeDef> RecipeVect)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::CraftingPlace)
+	{
+		Recipes = RecipeVect;
 	}
 };
 

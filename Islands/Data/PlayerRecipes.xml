@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Recipes>
     <Recipe>
-        <Out>Stick,16</Out>
-        <In>
-            <li>WoodLog,1</li>
-        </In>
-    </Recipe>
-    <Recipe>
         <Out>Stick,4</Out>
         <In>
             <li>Plank,1</li>
