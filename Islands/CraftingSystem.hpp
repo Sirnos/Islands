@@ -29,6 +29,10 @@ public:
 		for (auto & i : recs) { AvailableRecipes.push_back(i); }
 		clearPlayerSelects();
 	}
+	void AssingRecipes(std::vector<Recipe> & recs)
+	{
+		AvailableRecipes = recs;
+	}
 
 	void clearPlayerSelects()
 	{
@@ -46,6 +50,15 @@ public:
 		PlayerBaseRecipes = DefaultRecipes;
 	}
 	void usePlayerRecipes() { AvailableRecipes = PlayerBaseRecipes; }
+	bool isUsedPlayerRecipes()
+	{
+		if (PlayerBaseRecipes[0].getOutElement().ItemId == AvailableRecipes[0].getOutElement().ItemId)
+		{
+			return true;
+		}
+
+		return false;
+	}
 
 	void setSelectedRecipe(unsigned newSelect) { SelectedRecipe = newSelect; }
 	unsigned getSelectedRecipeNumber() { return SelectedRecipe; }

@@ -12,4 +12,10 @@
             <li>WoodLog,1</li>
         </In>
     </Recipe>
+  <Recipe>
+    <Out>CraftingTable,1</Out>
+    <In>
+      <li>Plank,4</li>
+    </In>
+  </Recipe>
 </Recipes>

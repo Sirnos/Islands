@@ -66,28 +66,32 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		Player.Inventory.popInteractionWithChest();
-		GameGui.deleteChestFields();
 		movevctr.x -= Player.Stats.Speed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		Player.Inventory.popInteractionWithChest();
-		GameGui.deleteChestFields();
 		movevctr.x += Player.Stats.Speed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		Player.Inventory.popInteractionWithChest();
-		GameGui.deleteChestFields();
 		movevctr.y -= Player.Stats.Speed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		Player.Inventory.popInteractionWithChest();
-		GameGui.deleteChestFields();
 		movevctr.y += Player.Stats.Speed;
 	}
+
+	if (movevctr != sf::Vector2f())
+	{
+		Player.Inventory.popInteractionWithChest();
+		GameGui.deleteChestFields();
+		if (!Crafting.isUsedPlayerRecipes())
+		{
+			Crafting.clear();
+			Crafting.usePlayerRecipes();
+		}
+	}
+
 	Player.move(movevctr);
 
 	sf::Vector2f PlayerPos = Player.getCharacterCenterPosition();
@@ -638,12 +642,30 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 		sf::Vector2f mousePos = app.getMousePosInWorld();
 		sf::Vector2u objectPos(static_cast<sf::Vector2u>(mousePos / TILE_SIZE));
 
-			if (GameWorld.getObjectType(objectPos) == ObjectType::Chest)
-			{
-				Player.Inventory.pushInteractionWithChest(&dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos))->Contain);
-				GameGui.createChestFields(Player.Inventory.getInteractedChestSize());
-				GameGui.Eq.isEnable = true;
-			}
+		ObjectType clickedObjectType = GameWorld.getObjectType(objectPos);
+
+		switch (clickedObjectType)
+		{
+		case ObjectType::Default:
+			break;
+		case ObjectType::Chest:
+			Player.Inventory.pushInteractionWithChest(&dynamic_cast<ChestObject*>(GameWorld.getObject(objectPos))->Contain);
+			GameGui.createChestFields(Player.Inventory.getInteractedChestSize());
+			GameGui.Eq.isEnable = true;
+			break;
+		case ObjectType::CraftingPlace:
+			Crafting.clear();
+			Crafting.AssingRecipes(dynamic_cast<CraftingPlaceObject*>(GameWorld.getObject(objectPos))->Recipes);
+			break;
+		case ObjectType::Tree:
+			break;
+		case ObjectType::Sapling:
+			break;
+		case ObjectType::Spawner:
+			break;
+		default:
+			break;
+		}
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.Eq.isEnable)
 	{
