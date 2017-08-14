@@ -65,7 +65,7 @@ class Engine
 	void drawPlayerGui(IslandApp & app);
 	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
 
-	bool placeObjectInMap(sf::Vector2u tile,ItemField item);
+	bool placeObjectInMap(sf::Vector2u tile,unsigned ObjectId);
 public:
 	Engine(unsigned LocalMapSize, unsigned MaxNumberOfLyingItems, unsigned PlayerPickUpItemsRange, unsigned MaxTileDrawRange);
 	~Engine();

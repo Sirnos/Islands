@@ -32,6 +32,16 @@ struct ItemField
 		ItemAmount -= amount;
 	}
 
+	bool operator==(const ItemField &other)
+	{
+		if (ItemId == other.ItemId) { return true; }
+		return false;
+	}
+	bool operator!=(const ItemField &other)
+	{
+		return !(operator==(other));
+	}
+
 	bool isEmpty() 
 	{
 		if (ItemId == 0 || ItemAmount == 0)

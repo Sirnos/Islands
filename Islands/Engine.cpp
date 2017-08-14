@@ -615,18 +615,15 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 
 			if (!item.isEmpty())
 			{
-				if (Items.getDefinition(item.ItemId)->getType() == ItemType::Placeable)
-				{
 					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
 						sf::Vector2f(GameWorld.getLocalMapSize() * TILE_SIZE,GameWorld.getLocalMapSize() * TILE_SIZE)))
 					{
-						if (placeObjectInMap(objectPos,item))
+						if (placeObjectInMap(objectPos,item.ItemId))
 						{
 							item -= 1;
 							Player.Inventory.setHandInventoryField(GameGui.Hud.ActiveBeltField, item);
 						}
 					}
-				}
 			}
 			else
 			{
@@ -682,6 +679,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 		case ObjectType::CraftingPlace:
 			Crafting.clear();
 			Crafting.AssingRecipes(dynamic_cast<CraftingPlaceObject*>(GameWorld.getObject(objectPos))->Recipes);
+			GameGui.Craft.isEnable = true;
 			break;
 		case ObjectType::Tree:
 			break;
@@ -943,33 +941,33 @@ void Engine::pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::Rectan
 	else { rect.setTexture(nullptr); }
 }
 
-bool Engine::placeObjectInMap(sf::Vector2u tile,ItemField item)
+bool Engine::placeObjectInMap(sf::Vector2u tile,unsigned ObjectId)
 {
-	if (item.isEmpty() || tile.x >= GameWorld.getLocalMapSize() || tile.y >= GameWorld.getLocalMapSize()) 
+	if (ObjectId == 0 || tile.x >= GameWorld.getLocalMapSize() || tile.y >= GameWorld.getLocalMapSize()) 
 	{ 
 		return false; 
 	}
-	if (Items.getDefinition(item.ItemId)->getType() != ItemType::Placeable) { return false; }
+	if (Items.getDefinition(ObjectId)->getType() != ItemType::Placeable) { return false; }
 	if (GameWorld.getObject(tile) != nullptr) { return false; }
 
-	ObjectType placeObjectType = Objects.getDefinition(item.ItemId)->getType();
+	ObjectType placeObjectType = Objects.getDefinition(ObjectId)->getType();
 
 	switch (placeObjectType)
 	{
 	case ObjectType::Default:
-		GameWorld.setObject(tile, new Object(item.ItemId));
+		GameWorld.setObject(tile, new Object(ObjectId));
 		break;
 	case ObjectType::Chest:
-		GameWorld.setObject(tile, new ChestObject(item.ItemId,
-			dynamic_cast<ChestDef*>(Objects.getDefinition(item.ItemId))->getCapacity()));
+		GameWorld.setObject(tile, new ChestObject(ObjectId,
+			dynamic_cast<ChestDef*>(Objects.getDefinition(ObjectId))->getCapacity()));
 		break;
 	case ObjectType::CraftingPlace:
-		GameWorld.setObject(tile, new CraftingPlaceObject(item.ItemId, makeRecipe(dynamic_cast<CraftingPlaceDef*>(Objects.getDefinition(item.ItemId))->getRecipes(), Items)));
+		GameWorld.setObject(tile, new CraftingPlaceObject(ObjectId, makeRecipe(dynamic_cast<CraftingPlaceDef*>(Objects.getDefinition(ObjectId))->getRecipes(), Items)));
 		break;
 	case ObjectType::Tree:
 		break;
 	case ObjectType::Sapling:
-		GameWorld.setObject(tile, new SaplingObject(item.ItemId, GameClock.getElapsedTime().asSeconds()));
+		GameWorld.setObject(tile, new SaplingObject(ObjectId, GameClock.getElapsedTime().asSeconds()));
 		break;
 	case ObjectType::Spawner:
 		break;
