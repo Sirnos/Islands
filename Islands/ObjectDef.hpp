@@ -91,6 +91,7 @@ class SaplingDef : public ObjectDef
 
 public:
 	float getGrowTime() { return GrowTime; }
+	std::string getGrowTo() { return GrowTo; }
 
 	SaplingDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
 		Yield yield, bool Destructible, float TimeForGrow,std::string For)

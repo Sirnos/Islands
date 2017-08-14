@@ -23,7 +23,9 @@ struct SaplingObject : Object
 
 	SaplingObject(unsigned objectId, float AtTime)
 		:Object(objectId, ObjectType::Sapling)
-	{}
+	{
+		PlantTime = AtTime;
+	}
 };
 
 struct ChestObject : Object

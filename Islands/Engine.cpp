@@ -2,6 +2,8 @@
 
 void Engine::loadGameComponents()
 {
+	sf::Clock TestClock;
+
 	std::string objectGraphicsfile;
 	std::vector<sf::IntRect> objectTextureCords;
 
@@ -33,6 +35,8 @@ void Engine::loadGameComponents()
 		ErrorHandler::log("Load Item: " + Items.getDefinition(i)->getName() + " MaxStack: " + std::to_string(Items.getDefinition(i)->getMaxStack())
 			+ " Type: " + std::to_string(static_cast<int>(Items.getDefinition(i)->getType())));
 	}
+
+	ErrorHandler::log("Load Game Components in " + std::to_string(TestClock.getElapsedTime().asMilliseconds()) + " milisecs");
 }
 
 void Engine::checkPlayerEnvironment()
@@ -324,6 +328,30 @@ void Engine::drawConsole(IslandApp & app)
 	}
 }
 
+void Engine::updateTile(sf::Vector2u tileIndex)
+{
+	unsigned objectId = GameWorld.getObjectId(tileIndex);
+	if (objectId == 0) { return; }
+	float Time = GameClock.getElapsedTime().asSeconds();
+
+	if (GameWorld.getObject(tileIndex)->type == ObjectType::Sapling)
+	{
+		float Time = GameClock.getElapsedTime().asSeconds();
+		float plantTime = dynamic_cast<SaplingObject*>(GameWorld.getObject(tileIndex))->PlantTime;
+		float growTime = dynamic_cast<SaplingDef*>(Objects.getDefinition(objectId))->getGrowTime();
+
+		if (sf::seconds(Time) >= sf::seconds(plantTime) + sf::seconds(growTime))
+		{
+			unsigned GrowToId = Objects.getDefIdbyName(dynamic_cast<SaplingDef*>(Objects.getDefinition(objectId))->getGrowTo());
+			if (GrowToId != 0)
+			{
+				GameWorld.clearObject(tileIndex);
+				GameWorld.setObject(tileIndex, new Object(GrowToId));
+			}
+		}
+	}
+}
+
 void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick)
 {
 	if (!GameConsole.getEnable()) { return; }
@@ -458,11 +486,9 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	:Player(sf::RectangleShape{sf::Vector2f(48,64)}, sf::Vector2f(), 20.0f, 10.0f, 5.0f)
 {
 	mediaContainer.load(); ErrorHandler::log("Load media");
-	loadGameComponents(); ErrorHandler::log("Load game components");
+	loadGameComponents();
 
 	GameWorld.init(LocalMapSize);
-	ErrorHandler::log("Generate map");
-	ErrorHandler::log("Map Size " + std::to_string(GameWorld.getLocalMapSize()) + " x " + std::to_string(GameWorld.getLocalMapSize()));
 	spawnPlayer();
 	Player.pushTexture(mediaContainer.getTexture(1, TextureContainer::CharacterTextures));
 
@@ -702,6 +728,7 @@ void Engine::drawWorld(IslandApp & app)
 
 	int iTileDrawRange = static_cast<int>(TileDrawRange);
 	int MapSize = static_cast<int>(GameWorld.getLocalMapSize());
+
 	for (int i = PlayerPosToTile.x - iTileDrawRange; i < PlayerPosToTile.x + iTileDrawRange + 1; i++)
 	{
 		if (i < 0) { continue; }
@@ -712,6 +739,7 @@ void Engine::drawWorld(IslandApp & app)
 			if (j > MapSize - 1) { break; }
 			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			updateTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)));
 		}
 	}
 }

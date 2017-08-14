@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/System/Clock.hpp>
 #include <noise/noise.h>
 #include <SFML/System/Vector2.hpp>
 #include <vector>
@@ -16,6 +17,8 @@ public:
 	//void loadMapFromFile(std::string file);
 	void generateMap(size_t Size)
 	{
+		sf::Clock TestClock;
+
 		noise::module::Perlin noiseModule;
 		noiseModule.SetSeed(static_cast<int>(time(time_t(NULL))));
 		noiseModule.SetOctaveCount(6);
@@ -57,6 +60,9 @@ public:
 			i.shrink_to_fit();
 		}
 		Tiles.shrink_to_fit();
+
+		ErrorHandler::log("Generate Local Map with size " + std::to_string(getMapSize()) +
+			" In " + std::to_string(TestClock.getElapsedTime().asMilliseconds()) + " milisecs ");
 	}
 
 	static sf::Vector2i getTiledPosition(sf::Vector2f characterPos)
