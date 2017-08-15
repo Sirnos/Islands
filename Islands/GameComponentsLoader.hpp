@@ -8,12 +8,17 @@
 
 #include "SFMLTypesFromText.hpp"
 #include "DefContainer.hpp"
+#include "Structure.hpp"
 
 class GameComponentsLoader
 {
-	static Yield getYieldFromString(std::string str)
+	static Yield getYieldFromString(const std::string &str)
 	{
 		return Yield(str.substr(0, str.find(',')), std::stoul(str.substr(str.find(',') + 1, str.size() - 1)));
+	}
+	static StructureInfoKey getStructureInfoKeyFromString(const std::string &str)
+	{
+		return StructureInfoKey(std::stoul(str.substr(0, str.find(','))), str.substr(str.find(',') + 1, str.size() - 1));
 	}
 
 public:
@@ -278,5 +283,57 @@ public:
 			}
 		}
 		recipes.shrink_to_fit();
+	}
+
+	static Structure LoadStructureFromFile(std::string file)
+	{
+		rapidxml::file<> StructureFile(file.data());
+		rapidxml::xml_document<> StructureDoc;
+		StructureDoc.parse<0>(StructureFile.data());
+
+		std::string Name;
+		unsigned SpawnChance;
+		StructureInfo Info;
+		StructureData Data;
+
+		rapidxml::xml_node<> *BaseNode = StructureDoc.first_node();
+		for (BaseNode; BaseNode != nullptr; BaseNode = BaseNode->next_sibling())
+		{
+			rapidxml::xml_node<> *ParamsNode = BaseNode->first_node();
+			for (ParamsNode; ParamsNode != nullptr; ParamsNode = ParamsNode->next_sibling())
+			{
+				std::string ParamName = ParamsNode->name();
+				if (ParamName == "Name")
+				{
+					Name = std::string(ParamsNode->value());
+				}
+				else if(ParamName == "SpawnChance")
+				{
+					SpawnChance = std::stoul(std::string(ParamsNode->value()));
+				}
+				else if(ParamName == "Info")
+				{
+					rapidxml::xml_node<> *InfoParamNode;
+					for (InfoParamNode; InfoParamNode != nullptr; InfoParamNode = InfoParamNode->next_sibling())
+					{
+						Info.push_back(getStructureInfoKeyFromString(std::string(InfoParamNode->value())));
+					}
+				}
+				else if(ParamName == "Data")
+				{
+					rapidxml::xml_node<> *DataNode;
+					for (DataNode; DataNode != nullptr; DataNode = DataNode->next_sibling())
+					{
+						Data.push_back(std::vector<unsigned>());
+						rapidxml::xml_node<> *DataValues;
+						for (DataValues; DataValues != nullptr; DataValues = DataValues->next_sibling())
+						{
+							Data.back().push_back(std::stoul(std::string(DataValues->value())));
+						}
+					}
+				}
+			}
+		}
+		return Structure{ Name, SpawnChance, Data, Info };
 	}
 };

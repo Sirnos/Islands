@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Structure>
+        <Name>Ruin</Name>
+        <SpawnChance>20</SpawnChance>
+        <Info>
+        <li>1,CobblestoneWall</li>
+        <li>2,DestroyedCobblestoneWall</li>
+        <li>3,Chest</li>
+        </Info>
+        <Data>
+        <td><tr>1</tr><tr>1</tr><tr>2</tr><tr>1</tr><tr>1</tr></td>
+        <td><tr>0</tr><tr>0</tr><tr>3</tr></td>
+        </Data>
+</Structure>

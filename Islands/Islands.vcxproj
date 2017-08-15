@@ -157,6 +157,7 @@
     <ClInclude Include="Gui.hpp" />
     <ClInclude Include="Recipe.hpp" />
     <ClInclude Include="SFMLTypesFromText.hpp" />
+    <ClInclude Include="Structure.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="MapTile.hpp" />
     <ClInclude Include="World.hpp" />
