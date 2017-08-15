@@ -21,6 +21,58 @@ class GameComponentsLoader
 		return StructureInfoKey(std::stoul(str.substr(0, str.find(','))), str.substr(str.find(',') + 1, str.size() - 1));
 	}
 
+	static Structure LoadStructureFromFile(const std::string &file)
+	{
+		rapidxml::file<> StructureFile(file.data());
+		rapidxml::xml_document<> StructureDoc;
+		StructureDoc.parse<0>(StructureFile.data());
+
+		std::string Name;
+		unsigned SpawnChance;
+		StructureInfo Info;
+		StructureData Data;
+
+		rapidxml::xml_node<> *BaseNode = StructureDoc.first_node();
+		for (BaseNode; BaseNode != nullptr; BaseNode = BaseNode->next_sibling())
+		{
+			rapidxml::xml_node<> *ParamsNode = BaseNode->first_node();
+			for (ParamsNode; ParamsNode != nullptr; ParamsNode = ParamsNode->next_sibling())
+			{
+				std::string ParamName = ParamsNode->name();
+				if (ParamName == "Name")
+				{
+					Name = std::string(ParamsNode->value());
+				}
+				else if (ParamName == "SpawnChance")
+				{
+					SpawnChance = std::stoul(std::string(ParamsNode->value()));
+				}
+				else if (ParamName == "Info")
+				{
+					rapidxml::xml_node<> *InfoParamNode = ParamsNode->first_node();
+					for (InfoParamNode; InfoParamNode != nullptr; InfoParamNode = InfoParamNode->next_sibling())
+					{
+						Info.push_back(getStructureInfoKeyFromString(std::string(InfoParamNode->value())));
+					}
+				}
+				else if (ParamName == "Data")
+				{
+					rapidxml::xml_node<> *DataNode = ParamsNode->first_node();
+					for (DataNode; DataNode != nullptr; DataNode = DataNode->next_sibling())
+					{
+						Data.push_back(std::vector<unsigned>());
+						rapidxml::xml_node<> *DataValues = DataNode->first_node();
+						for (DataValues; DataValues != nullptr; DataValues = DataValues->next_sibling())
+						{
+							Data.back().push_back(std::stoul(std::string(DataValues->value())));
+						}
+					}
+				}
+			}
+		}
+		return Structure{ Name, SpawnChance, Data, Info };
+	}
+
 public:
 	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects,std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
 	{
@@ -244,7 +296,7 @@ public:
 		}
 	}
 
-	static void LoadRecipeDefFromFile(std::vector<RecipeDef> &recipes, std::string file)
+	static void LoadRecipeDefFromFile(std::vector<RecipeDef> &recipes,const std::string &file)
 	{
 		rapidxml::file<char> rfile(file.data());
 		rapidxml::xml_document<> document;
@@ -285,55 +337,23 @@ public:
 		recipes.shrink_to_fit();
 	}
 
-	static Structure LoadStructureFromFile(std::string file)
+	static void LoadStructures(std::vector<Structure> & Structures)
 	{
-		rapidxml::file<> StructureFile(file.data());
-		rapidxml::xml_document<> StructureDoc;
-		StructureDoc.parse<0>(StructureFile.data());
+		rapidxml::file<> File("Data/World/Structures.xml");
+		rapidxml::xml_document<> Doc;
+		Doc.parse<0>(File.data());
 
-		std::string Name;
-		unsigned SpawnChance;
-		StructureInfo Info;
-		StructureData Data;
-
-		rapidxml::xml_node<> *BaseNode = StructureDoc.first_node();
+		rapidxml::xml_node<> *BaseNode = Doc.first_node();
 		for (BaseNode; BaseNode != nullptr; BaseNode = BaseNode->next_sibling())
 		{
-			rapidxml::xml_node<> *ParamsNode = BaseNode->first_node();
-			for (ParamsNode; ParamsNode != nullptr; ParamsNode = ParamsNode->next_sibling())
+			rapidxml::xml_node<> *StructuresNode = BaseNode->first_node();
+			for (StructuresNode; StructuresNode != nullptr; StructuresNode = StructuresNode->next_sibling())
 			{
-				std::string ParamName = ParamsNode->name();
-				if (ParamName == "Name")
-				{
-					Name = std::string(ParamsNode->value());
-				}
-				else if(ParamName == "SpawnChance")
-				{
-					SpawnChance = std::stoul(std::string(ParamsNode->value()));
-				}
-				else if(ParamName == "Info")
-				{
-					rapidxml::xml_node<> *InfoParamNode;
-					for (InfoParamNode; InfoParamNode != nullptr; InfoParamNode = InfoParamNode->next_sibling())
-					{
-						Info.push_back(getStructureInfoKeyFromString(std::string(InfoParamNode->value())));
-					}
-				}
-				else if(ParamName == "Data")
-				{
-					rapidxml::xml_node<> *DataNode;
-					for (DataNode; DataNode != nullptr; DataNode = DataNode->next_sibling())
-					{
-						Data.push_back(std::vector<unsigned>());
-						rapidxml::xml_node<> *DataValues;
-						for (DataValues; DataValues != nullptr; DataValues = DataValues->next_sibling())
-						{
-							Data.back().push_back(std::stoul(std::string(DataValues->value())));
-						}
-					}
-				}
+				std::string StructureFile = "Data/World/Structures/";
+				StructureFile += std::string(StructuresNode->value());
+				Structures.push_back(LoadStructureFromFile(StructureFile));
 			}
 		}
-		return Structure{ Name, SpawnChance, Data, Info };
 	}
+
 };
