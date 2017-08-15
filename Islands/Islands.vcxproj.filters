@@ -37,6 +37,15 @@
     <Filter Include="Header Files\Entity">
       <UniqueIdentifier>{581cfd8b-198c-4243-b78e-dc4ce7081575}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IslandData\World">
+      <UniqueIdentifier>{93a985b2-33b8-46bb-88ca-3ae19ece70c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IslandData\World\Structures">
+      <UniqueIdentifier>{7dba4e72-0d5f-4473-9598-953f0ecb9fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IslandData\Recipes">
+      <UniqueIdentifier>{565afc8c-1555-4317-af33-10195d164a23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,14 +171,20 @@
     <Xml Include="Data\Items.xml">
       <Filter>IslandData</Filter>
     </Xml>
-    <Xml Include="Data\PlayerRecipes.xml">
-      <Filter>IslandData</Filter>
-    </Xml>
     <Xml Include="Engine.xml">
       <Filter>Header Files\Engine</Filter>
     </Xml>
+    <Xml Include="Data\World\Structures\Ruin.xml">
+      <Filter>IslandData\World\Structures</Filter>
+    </Xml>
+    <Xml Include="Data\World\Structures.xml">
+      <Filter>IslandData\World</Filter>
+    </Xml>
     <Xml Include="Data\CraftingTableRecipes.xml">
-      <Filter>IslandData</Filter>
+      <Filter>IslandData\Recipes</Filter>
+    </Xml>
+    <Xml Include="Data\PlayerRecipes.xml">
+      <Filter>IslandData\Recipes</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>

@@ -55,6 +55,6 @@
     <Collision>0,0,1,1</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>SELF,1</Ifdestroyed>
-    <CraftingPlaceDef>Data/CraftingTableRecipes.xml</CraftingPlaceDef>
+    <CraftingPlaceDef>Data/Recipes/CraftingTableRecipes.xml</CraftingPlaceDef>
   </Object>
 </Objects>

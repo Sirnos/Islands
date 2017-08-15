@@ -493,7 +493,7 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	Player.pushTexture(mediaContainer.getTexture(1, TextureContainer::CharacterTextures));
 
 	std::vector<RecipeDef> PlayerRecipesDef;
-	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/PlayerRecipes.xml");
+	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/Recipes/PlayerRecipes.xml");
 	Crafting.loadPlayerRecipes(makeRecipe(PlayerRecipesDef, Items));
 	Crafting.usePlayerRecipes();
 

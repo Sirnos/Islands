@@ -176,6 +176,8 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="Data\PlayerRecipes.xml" />
+    <Xml Include="Data\World\Structures.xml" />
+    <Xml Include="Data\World\Structures\Ruin.xml" />
     <Xml Include="Engine.xml" />
   </ItemGroup>
   <ItemGroup>
