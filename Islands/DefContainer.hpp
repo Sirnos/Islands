@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Recipe.hpp"
+#include "Structure.hpp"
 #include "ItemDef.hpp"
 #include "ObjectDef.hpp"
 #include <vector>
@@ -60,31 +61,77 @@ public:
 typedef DefContainer<ItemDef*> ItemDefContainer;
 typedef DefContainer<ObjectDef*> ObjectDefContainer;
 
-inline std::vector<Recipe> makeRecipe(std::vector<RecipeDef> &def, ItemDefContainer &itemsDef)
+namespace makeFromDef
 {
-	std::vector<Recipe> out;
-
-	std::vector<ItemField> recipeInElement;
-	for (size_t i = 0; i < def.size(); i++)
+	inline std::vector<Recipe> makeRecipe(std::vector<RecipeDef> &def,ItemDefContainer &itemsDef)
 	{
-		ItemField recipeOutElement;
+		std::vector<Recipe> out;
 
-		recipeOutElement.ItemId = itemsDef.getDefIdbyName(def[i].getOutElement().first);
-		recipeOutElement.ItemAmount = def[i].getOutElement().second;
-
-		for (size_t j = 0; j < def[i].getInSize(); j++)
+		std::vector<ItemField> recipeInElement;
+		for (size_t i = 0; i < def.size(); i++)
 		{
-			recipeInElement.push_back(ItemField(itemsDef.getDefIdbyName(def[i].getInElement(j).first),
-				def[i].getInElement(j).second));
-			if (recipeInElement.back().isEmpty()) { recipeInElement.pop_back(); }
-		}
-		out.push_back(Recipe(recipeOutElement, recipeInElement));
+			ItemField recipeOutElement;
 
-		if (out.back().getOutElement().isEmpty() && out.size() > 0)
-		{
-			out.pop_back();
+			recipeOutElement.ItemId = itemsDef.getDefIdbyName(def[i].getOutElement().first);
+			recipeOutElement.ItemAmount = def[i].getOutElement().second;
+
+			for (size_t j = 0; j < def[i].getInSize(); j++)
+			{
+				recipeInElement.push_back(ItemField(itemsDef.getDefIdbyName(def[i].getInElement(j).first),
+					def[i].getInElement(j).second));
+				if (recipeInElement.back().isEmpty()) { recipeInElement.pop_back(); }
+			}
+			out.push_back(Recipe(recipeOutElement, recipeInElement));
+
+			if (out.back().getOutElement().isEmpty() && out.size() > 0)
+			{
+				out.pop_back();
+			}
+			recipeInElement.clear();
 		}
-		recipeInElement.clear();
+		return out;
 	}
-	return out;
+
+	inline std::vector<Structure> makeStructure(std::vector<StructureDef> &Def,ObjectDefContainer & ObjsDef)
+	{
+		std::vector<Structure> Structs;
+
+		for (auto & i : Def)
+		{
+			std::vector<unsigned> Ids;
+			StructureData Data;
+
+			for (auto & DefInfo : i.getInfo())
+			{
+				Ids.push_back(ObjsDef.getDefIdbyName(DefInfo.second));
+			}
+
+			for (auto & DataRow : i.getData())
+			{
+				Data.push_back(std::vector<unsigned>());
+				for (auto & DataCell : DataRow)
+				{
+					if (DataCell == 0)
+					{
+						Data.back().push_back(0);
+					}
+					else
+					{
+						for (size_t infoIndex = 0; infoIndex < i.getInfo().size(); infoIndex++)
+						{
+							if (DataCell == i.getInfo()[infoIndex].first)
+							{
+								Data.back().push_back(Ids[infoIndex]);
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			Structs.push_back(Structure(i.getName(), i.getSpawnChance(), Data));
+		}
+		return Structs;
+	}
 }
+

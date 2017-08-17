@@ -3,12 +3,10 @@
 #include <vector>
 
 #include <rapidxml_utils.hpp>
-#include <rapidxml_iterators.hpp>
 #include <rapidxml.hpp>
 
 #include "SFMLTypesFromText.hpp"
 #include "DefContainer.hpp"
-#include "Structure.hpp"
 
 class GameComponentsLoader
 {
@@ -21,7 +19,7 @@ class GameComponentsLoader
 		return StructureInfoKey(std::stoul(str.substr(0, str.find(','))), str.substr(str.find(',') + 1, str.size() - 1));
 	}
 
-	static Structure LoadStructureFromFile(const std::string &file)
+	static StructureDef LoadStructureDefFromFile(const std::string &file)
 	{
 		rapidxml::file<> StructureFile(file.data());
 		rapidxml::xml_document<> StructureDoc;
@@ -70,7 +68,7 @@ class GameComponentsLoader
 				}
 			}
 		}
-		return Structure{ Name, SpawnChance, Data, Info };
+		return StructureDef{ Name, SpawnChance, Data, Info };
 	}
 
 public:
@@ -337,7 +335,7 @@ public:
 		recipes.shrink_to_fit();
 	}
 
-	static void LoadStructures(std::vector<Structure> & Structures)
+	static void LoadStructuresDef(std::vector<StructureDef> & Structures)
 	{
 		rapidxml::file<> File("Data/World/Structures.xml");
 		rapidxml::xml_document<> Doc;
@@ -351,7 +349,7 @@ public:
 			{
 				std::string StructureFile = "Data/World/Structures/";
 				StructureFile += std::string(StructuresNode->value());
-				Structures.push_back(LoadStructureFromFile(StructureFile));
+				Structures.push_back(LoadStructureDefFromFile(StructureFile));
 			}
 		}
 	}

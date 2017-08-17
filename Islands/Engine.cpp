@@ -480,13 +480,13 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	mediaContainer.load(); ErrorHandler::log("Load media");
 	loadGameComponents();
 
-	GameWorld.init(LocalMapSize);
+	GameWorld.Generate(LocalMapSize);
 	spawnPlayer();
 	Player.pushTexture(mediaContainer.getTexture(1, TextureContainer::CharacterTextures));
 
 	std::vector<RecipeDef> PlayerRecipesDef;
 	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/Recipes/PlayerRecipes.xml");
-	Crafting.loadPlayerRecipes(makeRecipe(PlayerRecipesDef, Items));
+	Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(PlayerRecipesDef, Items));
 	Crafting.usePlayerRecipes();
 
 	LyingItems.init(MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(PlayerPickUpItemsRange, PlayerPickUpItemsRange)));
@@ -947,7 +947,7 @@ bool Engine::placeObjectInMap(sf::Vector2u tile,unsigned ObjectId)
 			dynamic_cast<ChestDef*>(Objects.getDefinition(ObjectId))->getCapacity()));
 		break;
 	case ObjectType::CraftingPlace:
-		GameWorld.setObject(tile, new CraftingPlaceObject(ObjectId, makeRecipe(dynamic_cast<CraftingPlaceDef*>(Objects.getDefinition(ObjectId))->getRecipes(), Items)));
+		GameWorld.setObject(tile, new CraftingPlaceObject(ObjectId, makeFromDef::makeRecipe(dynamic_cast<CraftingPlaceDef*>(Objects.getDefinition(ObjectId))->getRecipes(), Items)));
 		break;
 	case ObjectType::Tree:
 		break;

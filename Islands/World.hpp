@@ -6,16 +6,12 @@ const size_t DefaultWorldSize = 512;
 
 class World
 {
-
 	Map LocalMap;
 
 public:
-	World(){}
-	~World(){}
-
-	void init(size_t Size = DefaultWorldSize)
+	void Generate(size_t LocalMapSize = DefaultWorldSize)
 	{
-		LocalMap.generateMap(Size);
+		LocalMap.generateMap(LocalMapSize);
 	}
 
 	bool isPlaceImpassable(sf::Vector2f position)
