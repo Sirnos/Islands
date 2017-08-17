@@ -474,14 +474,6 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 		window.draw(shp);
 }
 
-bool Engine::checkPlayerPos()
-{
-	sf::Vector2f PlayerPos = Player.getCharacterCenterPosition();
-	if (GameWorld.isPlaceImpassable(sf::Vector2f(PlayerPos.y,PlayerPos.x)) == true) { return false; }
-
-	return true;
-}
-
 Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned PlayerPickUpItemsRange,unsigned MaxTileDrawRange)
 	:Player(sf::RectangleShape{sf::Vector2f(48,64)}, sf::Vector2f(), 20.0f, 10.0f, 5.0f)
 {
@@ -519,13 +511,6 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(800, 200)));
 
 	if (key == '`') { GameConsole.setEnable(!GameConsole.getEnable()); }
-
-	if (!checkPlayerPos())
-	{ 
-		ErrorHandler::log("Player move above map");
-		ErrorHandler::log("Pos:X" + std::to_string(Player.getCharacterCenterPosition().x) +
-			" :Y " + std::to_string(+Player.getCharacterCenterPosition().y));
-	}
 
 	if (GameGui.Eq.isEnable)
 	{

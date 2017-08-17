@@ -46,7 +46,6 @@ class Engine
 
 	void checkPlayerEnvironment();
 	void checkPlayerBehaviour(IslandApp &app);
-	bool checkPlayerPos();
 
 	void spawnPlayer();
 

@@ -5,7 +5,7 @@
         <Info>
         <li>1,CobblestoneWall</li>
         <li>2,DestroyedCobblestoneWall</li>
-        <li>3,Chest</li>
+        <li>3,WoodChest</li>
         </Info>
         <Data>
         <td><tr>1</tr><tr>1</tr><tr>2</tr><tr>1</tr><tr>1</tr></td>
