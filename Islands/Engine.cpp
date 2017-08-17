@@ -600,8 +600,8 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 
 			if (!item.isEmpty())
 			{
-					if (CollisionDetect::isPointInRectangle(mousePos,sf::Vector2f(0,0),
-						sf::Vector2f(GameWorld.getLocalMapSize() * TILE_SIZE,GameWorld.getLocalMapSize() * TILE_SIZE)))
+					if (sf::FloatRect(sf::Vector2f(),sf::Vector2f(GameWorld.getLocalMapSize() * TILE_SIZE,
+						GameWorld.getLocalMapSize() * TILE_SIZE)).contains(mousePos))
 					{
 						if (placeObjectInMap(objectPos,item.ItemId))
 						{

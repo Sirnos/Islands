@@ -7,7 +7,6 @@
 #include "IslandApp.hpp"
 
 #include "ErrorHandler.hpp"
-#include "CollisionDetect.hpp"
 
 #include "Gui.hpp"
 

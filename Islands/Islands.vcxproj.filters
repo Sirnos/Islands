@@ -65,12 +65,6 @@
     <ClInclude Include="menus.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="button.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="textbox.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Media.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -97,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="LyingItemsContainer.hpp">
       <Filter>Header Files\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionDetect.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Console.hpp">
       <Filter>Header Files\GUI</Filter>
@@ -151,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="Structure.hpp">
       <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="button.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="textbox.hpp">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

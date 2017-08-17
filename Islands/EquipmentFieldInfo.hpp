@@ -29,7 +29,7 @@ struct EquipmentFieldInfo
 	}
 	void checkIsHover(sf::Vector2f mousePos)
 	{
-		isHover = CollisionDetect::isPointInRectangle(mousePos, Position, sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize));
+		isHover = sf::Rect<float>(Position, sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize)).contains(mousePos);
 	}
 
 	EquipmentFieldInfo()

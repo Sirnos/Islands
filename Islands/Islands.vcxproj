@@ -131,7 +131,6 @@
   <ItemGroup>
     <ClInclude Include="button.hpp" />
     <ClInclude Include="Entity.hpp" />
-    <ClInclude Include="CollisionDetect.hpp" />
     <ClInclude Include="Console.hpp" />
     <ClInclude Include="CraftingGui.hpp" />
     <ClInclude Include="CraftingSystem.hpp" />

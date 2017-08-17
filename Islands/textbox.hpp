@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics/Text.hpp>
-#include "CollisionDetect.hpp"
 
 class textbox
 {
