@@ -1,106 +1,82 @@
 #pragma once
 
-#include "Map.hpp"
+#include <vector>
 
-const size_t DefaultWorldSize = 512;
+#include "MapTile.hpp"
 
 class World
 {
-	Map LocalMap;
+	std::vector<std::vector<TerrainType>> WorldMap;
+	std::vector<std::vector<MapTile>> LocalMap;
 
 public:
-	void Generate(size_t LocalMapSize = DefaultWorldSize)
+	const static size_t DefaultMapSize = 512;
+	const static size_t DefaultWorldSize = 256;
+
+
+	size_t getWorldMapSize() { return WorldMap.size(); }
+	size_t getLocalMapSize() { return LocalMap.size(); }
+
+
+	void resizeWorldMap(size_t Size = DefaultWorldSize)
 	{
-		LocalMap.generateMap(LocalMapSize);
+		WorldMap.resize(Size, std::vector<TerrainType>(Size, TerrainType::Null));
+		WorldMap.shrink_to_fit();
+	}
+	void resizeLocalMap(size_t Size = DefaultMapSize)
+	{
+		LocalMap.resize(Size, std::vector<MapTile>(Size, MapTile()));
+		LocalMap.shrink_to_fit();
 	}
 
-	bool isPlaceImpassable(sf::Vector2f position)
+
+	TerrainType getWorldMapTileTerrain(sf::Vector2u tile) { return WorldMap[tile.x][tile.y]; }
+	TerrainType getLocalMapTileTerrain(sf::Vector2u tile) { return LocalMap[tile.x][tile.y].Terrain; }
+
+	void setWorldMapTileTerrain(sf::Vector2u tile, TerrainType Terrain)
 	{
-		sf::Vector2u uPos = static_cast<sf::Vector2u>(Map::getTiledPosition(position));
-		if(uPos.x >= 0 && uPos.y >= 0 && uPos.x < getLocalMapSize() && uPos.y < getLocalMapSize())
-		if (getTileTerrain(uPos) == TerrainType::Null) { return true; }
-		return false;
+		WorldMap[tile.x][tile.y] = Terrain;
+	}
+	void setLocalMapTileTerrain(sf::Vector2u tile, TerrainType Terrain)
+	{
+		LocalMap[tile.x][tile.y].Terrain = Terrain;
 	}
 
-	sf::IntRect getTileCollisionBox(sf::Vector2u tile,const std::vector<ObjectDef*> Def)
+	Object* getLocalMapTileObject(sf::Vector2u tile)
 	{
-		sf::IntRect collideObject;
-		unsigned collideObjectId = getObjectId(tile);
-		if (collideObjectId != 0)
+		return LocalMap[tile.x][tile.y].TileObject;
+	}
+	unsigned getLocalMapTileObjectId(sf::Vector2u tile)
+	{
+		if (LocalMap[tile.x][tile.y].TileObject != nullptr)
 		{
-			sf::FloatRect collideObjectBox = Def[collideObjectId]->getCollisionBox();
-			if (collideObjectBox.top <= 0.01f && collideObjectBox.left <= 0.01f
-				&& collideObjectBox.height <= 0.01f && collideObjectBox.width <= 0.01f)
-			{
-				return collideObject;
-			}
-			collideObject.top = tile.y * static_cast<int>(TILE_SIZE);
-			collideObject.left = tile.x * static_cast<int>(TILE_SIZE);
-			collideObject.width = static_cast<int>(TILE_SIZE);
-			collideObject.height = static_cast<int>(TILE_SIZE);
-
-			if (collideObjectBox.top < 1.0f)
-			{
-				collideObject.top += static_cast<int>(TILE_SIZE * collideObjectBox.top);
-			}
-			if (collideObjectBox.left < 1.0f)
-			{
-				collideObject.left += static_cast<int>(TILE_SIZE * collideObjectBox.left);
-			}
-			if (collideObjectBox.height < 1.0f)
-			{
-				collideObject.height -= static_cast<int>(TILE_SIZE * collideObjectBox.height);
-			}
-			if (collideObjectBox.width < 1.0f)
-			{
-				collideObject.width -= static_cast<int>(TILE_SIZE * collideObjectBox.width);
-			}
+			return LocalMap[tile.x][tile.y].TileObject->Id;
 		}
-		return collideObject;
+		return 0;
 	}
-
-	TerrainType getTileTerrain(sf::Vector2u tileIndex)
+	
+	void removeLocalMapTileObject(sf::Vector2u tile)
 	{
-		return LocalMap.getTileTerrain(tileIndex);
-	}
-
-	void setObject(sf::Vector2u objectIndex, Object* newObject)
-	{
-		if (LocalMap.getTileObject(objectIndex) != nullptr)
+		if (LocalMap[tile.x][tile.y].TileObject != nullptr)
 		{
-			LocalMap.clearTileObject(objectIndex);
-			LocalMap.setTileObject(objectIndex, newObject);
-		}
-		else
-		{
-			LocalMap.setTileObject(objectIndex,newObject);
+			delete LocalMap[tile.x][tile.y].TileObject;
+			LocalMap[tile.x][tile.y].TileObject = nullptr;
 		}
 	}
-	void clearObject(sf::Vector2u objectIndex)
+	void setLocalMapTileObject(sf::Vector2u tile, Object* objectToSet)
 	{
-		LocalMap.clearTileObject(objectIndex);
+		LocalMap[tile.x][tile.y].TileObject = objectToSet;
 	}
 
-	Object* getObject(sf::Vector2u objectIndex)
-	{
-		return LocalMap.getTileObject(objectIndex);
-	}
-	ObjectType getObjectType(sf::Vector2u objectIndex)
-	{
-		if (LocalMap.getTileObject(objectIndex) == nullptr)
-		{
-			return ObjectType::Default;
-		}
-		return LocalMap.getTileObject(objectIndex)->type;
-	}
-	unsigned getObjectId(sf::Vector2u objectIndex)
-	{
-		if (LocalMap.getTileObject(objectIndex) == nullptr)
-		{
-			return 0;
-		}
-		return LocalMap.getTileObject(objectIndex)->Id;
-	}
 
-	size_t getLocalMapSize() { return LocalMap.getMapSize(); }
+	static sf::Vector2i getTiledPosition(sf::Vector2f characterPos)
+	{
+		characterPos = characterPos / TILE_SIZE;
+		return static_cast<sf::Vector2i>(characterPos);
+	}
+	static sf::Vector2f getNormalPosition(sf::Vector2i tileNumber)
+	{
+		return sf::Vector2f(static_cast<float>(tileNumber.x) * TILE_SIZE,
+			static_cast<float>(tileNumber.y) * TILE_SIZE);
+	}
 };

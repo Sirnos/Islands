@@ -147,7 +147,6 @@
     <ClInclude Include="ItemField.hpp" />
     <ClInclude Include="ErrorHandler.hpp" />
     <ClInclude Include="LyingItemsContainer.hpp" />
-    <ClInclude Include="Map.hpp" />
     <ClInclude Include="Media.hpp" />
     <ClInclude Include="menus.hpp" />
     <ClInclude Include="Object.hpp" />
@@ -160,6 +159,7 @@
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="MapTile.hpp" />
     <ClInclude Include="World.hpp" />
+    <ClInclude Include="WorldManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png" />

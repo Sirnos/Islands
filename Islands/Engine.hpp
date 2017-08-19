@@ -6,20 +6,18 @@
 
 #include "IslandApp.hpp"
 
-#include "ErrorHandler.hpp"
+#include "WorldManager.hpp"
 
 #include "Gui.hpp"
 
 #include "GameComponentsLoader.hpp"
 
-#include "DefContainer.hpp"
 #include "LyingItemsContainer.hpp"
 #include "CraftingSystem.hpp"
 
 #include "PlayerEntity.hpp"
 
 #include "Media.hpp"
-#include "World.hpp"
 
 #include "Console.hpp"
 
@@ -27,15 +25,19 @@ class Engine
 {
 	unsigned TileDrawRange;
 
-	World GameWorld;
+	WorldManager GWorldManager;
+
+	std::shared_ptr<World> GameWorld{ new World };
+	std::shared_ptr<ObjectDefContainer> Objects{ new ObjectDefContainer };
+	std::shared_ptr<ItemDefContainer> Items{ new ItemDefContainer };
+
+
 	Media mediaContainer;
 	PlayerEntity Player;
 
 	Gui GameGui;
 
 	CraftingSystem Crafting;
-	ObjectDefContainer Objects;
-	ItemDefContainer Items;
 	LyingItemsContainer LyingItems;
 
 	sf::Clock GameClock;
@@ -63,7 +65,6 @@ class Engine
 	void drawPlayerGui(IslandApp & app);
 	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
 
-	bool placeObjectInMap(sf::Vector2u tile,unsigned ObjectId);
 public:
 	Engine(unsigned LocalMapSize, unsigned MaxNumberOfLyingItems, unsigned PlayerPickUpItemsRange, unsigned MaxTileDrawRange);
 	~Engine();

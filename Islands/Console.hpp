@@ -186,7 +186,7 @@ public:
 
 		if (GObjects.getDefinition(objId)->getType() == ObjectType::Default)
 		{
-			GWorld.setObject(static_cast<sf::Vector2u>(tile), new Object(objId));
+			GWorld.setLocalMapTileObject(static_cast<sf::Vector2u>(tile), new Object(objId));
 		}
 		pushCommandToHistory(command);
 	}
