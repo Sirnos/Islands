@@ -63,4 +63,8 @@ public:
 	{
 		this->Data = Data;
 	}
+	const StructureData &getData()
+	{
+		return Data;
+	}
 };

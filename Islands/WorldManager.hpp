@@ -144,6 +144,21 @@ public:
 			return false;
 		}
 
+		sf::Vector2u tile = begin;
+
+		for (auto & x : Structures[StructureId].getData())
+		{
+			if (tile.x >= ManagementWorld->getLocalMapSize()) { break; }
+			for (auto & y : x)
+			{
+				if (tile.y >= ManagementWorld->getLocalMapSize()) { break; }
+
+				placeObject(tile, y);
+				tile.y++;
+			}
+			tile.x++;
+			tile.y = begin.y;
+		}
 
 		return true;
 	}
