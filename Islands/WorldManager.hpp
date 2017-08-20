@@ -82,8 +82,8 @@ public:
 			}
 		}
 
-		ErrorHandler::log("Generate Local Map with size " + std::to_string(ManagementWorld->getLocalMapSize()) +
-			" In " + std::to_string(TestClock.getElapsedTime().asMilliseconds()) + " milisecs ");
+		ErrorHandler::logToFile("Generate Local Map [Size] = " + std::to_string(ManagementWorld->getLocalMapSize()) +
+			" [Time] = " + std::to_string(TestClock.getElapsedTime().asMilliseconds()) + " milisecs ");
 	}
 	void buildWorld(size_t WorldSize = World::DefaultWorldSize,unsigned Seed = 1)
 	{
@@ -117,6 +117,7 @@ public:
 			break;
 		case ObjectType::CraftingPlace:
 			ManagementWorld->setLocalMapTileObject(tile, new CraftingPlaceObject(ObjectId, makeFromDef::makeRecipe(dynamic_cast<CraftingPlaceDef*>(ObjectsDef->getDefinition(ObjectId))->getRecipes(),*ItemsDef.get())));
+			return true;
 			break;
 		case ObjectType::Tree:
 			break;

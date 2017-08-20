@@ -2,16 +2,11 @@
 
 void Engine::loadGameComponents()
 {
-	sf::Clock TestClock;
-
 	std::string objectGraphicsfile;
 	std::vector<sf::IntRect> objectTextureCords;
 
+	sf::Clock ObjectsDefLoadClock;
 	GameComponentsLoader::LoadObjectDefFromFile(Objects->getContainer(), objectGraphicsfile, objectTextureCords);
-	for (size_t i = 0; i < Objects->getSize(); i++)
-	{
-		ErrorHandler::log("Load Object: " + Objects->getDefinition(i)->getName() + " Type: " + std::to_string(static_cast<int>(Objects->getDefinition(i)->getType())));
-	}
 
 	for (auto & i : objectTextureCords)
 	{
@@ -19,6 +14,10 @@ void Engine::loadGameComponents()
 		mediaContainer.pushTexture(TextureContainer::ItemsTextures, objectGraphicsfile, i);
 	}
 
+	ErrorHandler::logToFile("Load Objects Definitions [Size] = " + std::to_string(Objects->getSize()) + 
+		" [Time] = " + std::to_string(ObjectsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
+
+	sf::Clock ItemsDefLoadClock;
 	GameComponentsLoader::GenerateItemsFromObjectDef(Objects->getContainer(), Items->getContainer());
 
 	std::string itemGraphicsFile;
@@ -30,13 +29,8 @@ void Engine::loadGameComponents()
 		mediaContainer.pushTexture(TextureContainer::ItemsTextures, itemGraphicsFile, i);
 	}
 
-	for (size_t i = 0; i < Items->getSize(); i++)
-	{
-		ErrorHandler::log("Load Item: " + Items->getDefinition(i)->getName() + " MaxStack: " + std::to_string(Items->getDefinition(i)->getMaxStack())
-			+ " Type: " + std::to_string(static_cast<int>(Items->getDefinition(i)->getType())));
-	}
-
-	ErrorHandler::log("Load Game Components in " + std::to_string(TestClock.getElapsedTime().asMilliseconds()) + " milisecs");
+	ErrorHandler::logToFile("Load Items Definitions [Size] = " + std::to_string(Items->getSize()) + 
+		" [Time] = " + std::to_string(ItemsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
 }
 
 void Engine::checkPlayerEnvironment()
@@ -403,10 +397,6 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			{
 				GameConsole.giveItemCheck(tmp, *Items, Player.Inventory);
 			}
-			else if(tmp.find("/placeObject") != std::string::npos)
-			{
-				GameConsole.placeObjectCheck(tmp, *Objects, *GameWorld);
-			}
 			else
 			{
 				GameConsole.pushText(std::string("Unspecified command"));
@@ -470,7 +460,9 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned PlayerPickUpItemsRange,unsigned MaxTileDrawRange)
 	:Player(sf::RectangleShape{sf::Vector2f(48,64)}, sf::Vector2f(), 20.0f, 10.0f, 5.0f)
 {
-	mediaContainer.load(); ErrorHandler::log("Load media");
+	ErrorHandler::clearLogFile();
+
+	mediaContainer.load();
 	loadGameComponents();
 
 	spawnPlayer();
@@ -480,13 +472,19 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/Recipes/PlayerRecipes.xml");
 	Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(PlayerRecipesDef, *Items));
 	Crafting.usePlayerRecipes();
+	Crafting.AssingItemDef(Items);
 
 	LyingItems.init(MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(PlayerPickUpItemsRange, PlayerPickUpItemsRange)));
 	TileDrawRange = MaxTileDrawRange;
 
+	std::vector<StructureDef> StructuresDef;
+	GameComponentsLoader::LoadStructuresDef(StructuresDef);
+	std::vector<Structure> Structures = makeFromDef::makeStructure(StructuresDef, *Objects);
+
 	GWorldManager.AssingClock(GameClock);
 	GWorldManager.AssingItemsDef(Items);
 	GWorldManager.AssingObjectsDef(Objects);
+	GWorldManager.AssingStructures(Structures);
 	GWorldManager.AssingWorld(GameWorld);
 	GWorldManager.buildLocalMap(TerrainType::Null, LocalMapSize);
 }
@@ -568,7 +566,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 			sf::Vector2i mousePos = sf::Mouse::getPosition(*app.getIslandWindow());
 			if (GameGui.Craft.RecipeInfo.CraftButton.isClick(mousePos))
 			{
-				ItemField craftedItem = Crafting.craftItemFromRecipe(Player.Inventory, *Items);
+				ItemField craftedItem = Crafting.craftItemFromRecipe(Player.Inventory);
 				if (!craftedItem.isEmpty())
 				{
 					Player.Inventory.pushItem(craftedItem, Items->getDefinition(craftedItem.ItemId)->getMaxStack());

@@ -6,8 +6,9 @@
 
 class CraftingSystem
 {
-	std::vector<Recipe> PlayerBaseRecipes;
+	std::shared_ptr<ItemDefContainer> ItemsDef;
 
+	std::vector<Recipe> PlayerBaseRecipes;
 	std::vector<Recipe> AvailableRecipes;
 
 	unsigned SelectedRecipe;
@@ -18,6 +19,11 @@ public:
 		CraftAmount = 1;
 	}
 	~CraftingSystem(){}
+
+	void AssingItemDef(std::shared_ptr<ItemDefContainer> &ItemsDef)
+	{
+		this->ItemsDef = ItemsDef;
+	}
 
 	void PopRecipes()
 	{
@@ -77,7 +83,7 @@ public:
 		return AvailableRecipes;
 	}
 
-	ItemField craftItemFromRecipe(PlayerInventory &Inv,ItemDefContainer &ItemsDef)
+	ItemField craftItemFromRecipe(PlayerInventory &Inv)
 	{
 		if (SelectedRecipe >= AvailableRecipes.size()) { return ItemField(); }
 
