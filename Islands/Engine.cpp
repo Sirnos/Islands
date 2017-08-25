@@ -7,12 +7,8 @@ void Engine::loadGameComponents()
 
 	sf::Clock ObjectsDefLoadClock;
 	GameComponentsLoader::LoadObjectDefFromFile(Objects->getContainer(), objectGraphicsfile, objectTextureCords);
-
-	for (auto & i : objectTextureCords)
-	{
-		mediaContainer.pushTexture(TextureContainer::ObjectTextures, objectGraphicsfile, i);
-		mediaContainer.pushTexture(TextureContainer::ItemsTextures, objectGraphicsfile, i);
-	}
+	mediaContainer.pushTextures(TextureContainer::ObjectTextures, objectGraphicsfile, objectTextureCords);
+	mediaContainer.pushTextures(TextureContainer::ItemsTextures, objectGraphicsfile, objectTextureCords);
 
 	ErrorHandler::logToFile("Load Objects Definitions [Size] = " + std::to_string(Objects->getSize()) + 
 		" [Time] = " + std::to_string(ObjectsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
@@ -23,11 +19,8 @@ void Engine::loadGameComponents()
 	std::string itemGraphicsFile;
 	std::vector<sf::IntRect> itemTextureCords;
 	GameComponentsLoader::LoadItemDefFromFile(Items->getContainer(), itemGraphicsFile, itemTextureCords);
+	mediaContainer.pushTextures(TextureContainer::ItemsTextures, itemGraphicsFile, itemTextureCords);
 
-	for (auto & i : itemTextureCords)
-	{
-		mediaContainer.pushTexture(TextureContainer::ItemsTextures, itemGraphicsFile, i);
-	}
 
 	ErrorHandler::logToFile("Load Items Definitions [Size] = " + std::to_string(Items->getSize()) + 
 		" [Time] = " + std::to_string(ItemsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
@@ -418,16 +411,16 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 	switch (TerrainType)
 	{
 	case TerrainType::Dirt:
-		shp.setTexture(mediaContainer.getTexture(1,TextureContainer::TerrainTextures));
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 1));
 		break;
 	case TerrainType::Grass:
-		shp.setTexture(mediaContainer.getTexture(2, TextureContainer::TerrainTextures));
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 2));
 		break;
 	case TerrainType::Rock:
-		shp.setTexture(mediaContainer.getTexture(4, TextureContainer::TerrainTextures));
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 4));
 		break;
 	case TerrainType::Water:
-		shp.setTexture(mediaContainer.getTexture(5, TextureContainer::TerrainTextures));
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 5));
 		break;
 	default:
 		break;
@@ -446,14 +439,14 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 	{
 		shp.setPosition(sf::Vector2f(World::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y+(sizeY+1)))));
 		shp.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE * (-sizeY)));
-		shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures), true);
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::ObjectTextures, ObjectID), true);
 		window.draw(shp);
 		shp.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 		return;
 	}
 
 		shp.setPosition(sf::Vector2f(World::getNormalPosition(static_cast<sf::Vector2i>(objectIndex))));
-		shp.setTexture(mediaContainer.getTexture(ObjectID, TextureContainer::ObjectTextures), true);
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::ObjectTextures, ObjectID), true);
 		window.draw(shp);
 }
 
@@ -466,7 +459,7 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	loadGameComponents();
 
 	spawnPlayer();
-	Player.pushTexture(mediaContainer.getTexture(1, TextureContainer::CharacterTextures));
+	Player.pushTexture(mediaContainer.getTexture(TextureContainer::CharacterTextures, 1));
 
 	std::vector<RecipeDef> PlayerRecipesDef;
 	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/Recipes/PlayerRecipes.xml");
@@ -742,8 +735,8 @@ void Engine::drawLyingItems(IslandApp & app)
 		if (cameraRange.contains(LyingItems.getPosition(i)))
 		{
 			LyingItemShape.setPosition(LyingItems.getPosition(i));
-			LyingItemShape.setTexture(mediaContainer.getTexture(LyingItems.getItem(i).ItemId,
-				TextureContainer::ItemsTextures), true);
+			LyingItemShape.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures,
+				LyingItems.getItem(i).ItemId), true);
 			app.draw(LyingItemShape);
 		}
 	}
@@ -771,8 +764,8 @@ void Engine::drawPlayerGui(IslandApp & app)
 	{
 		sf::RectangleShape holdItemRep;
 		holdItemRep.setSize(sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize));
-		holdItemRep.setTexture(mediaContainer.getTexture(Player.Inventory.getHoldItem().ItemId,
-			TextureContainer::ItemsTextures));
+		holdItemRep.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures,
+			Player.Inventory.getHoldItem().ItemId));
 		holdItemRep.setPosition(app.getMousePosInWorld());
 
 		app.draw(holdItemRep);
@@ -922,7 +915,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 void Engine::pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::RectangleShape & rect)
 {
 	rect.setPosition(pos);
-	if (itemId > 0) { rect.setTexture(mediaContainer.getTexture(itemId, TextureContainer::ItemsTextures)); }
+	if (itemId > 0) { rect.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures, itemId)); }
 	else { rect.setTexture(nullptr); }
 }
 

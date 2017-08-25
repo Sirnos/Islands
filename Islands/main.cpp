@@ -11,7 +11,6 @@ int main()
 
 	IslandApp app{ sf::VideoMode(Vars.Video.WindowSize.x,Vars.Video.WindowSize.y,Vars.Video.BitsPerPixel)
 		,Vars.Video.FrameRate,Vars.Video.VerticalSync,Vars.Video.Windowed };
-
 	Engine IslandEngine{ Vars.Game.LocalMapSize,Vars.Game.MaxNumberOfLyingItems,
 		Vars.Game.PlayerPickUpItemsRange,Vars.Render.TileDrawRange };
 

@@ -42,43 +42,42 @@ public:
 		CharacterTexture.back().loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
 	}
 
-	void pushTexture(TextureContainer destinationContainer, std::string fileName, sf::IntRect textCord)
+	bool pushTexture(TextureContainer container, std::string fileName, sf::IntRect textCord)
 	{
-		switch (destinationContainer)
+		sf::Texture texture;
+		bool isSuccefull = false;
+		isSuccefull = texture.loadFromFile(fileName, textCord);
+		
+		switch (container)
 		{
 		case TextureContainer::TerrainTextures:
-			TerrainTexture.push_back(sf::Texture());
-			if (!TerrainTexture.back().loadFromFile(fileName, textCord))
-			{
-				ErrorHandler::log("Tile texture load incorectly");
-			}
+			TerrainTexture.push_back(texture);
 			break;
 		case TextureContainer::CharacterTextures:
-			CharacterTexture.push_back(sf::Texture());
-			if (!CharacterTexture.back().loadFromFile(fileName, textCord))
-			{
-				ErrorHandler::log("Character texture load incorectly");
-			}
+			CharacterTexture.push_back(texture);
 			break;
 		case TextureContainer::ObjectTextures:
-			ObjectsTexture.push_back(sf::Texture());
-			if (!ObjectsTexture.back().loadFromFile(fileName, textCord))
-			{
-				ErrorHandler::log("Object texture load incorectly");
-			}
+			ObjectsTexture.push_back(texture);
 			break;
 		case TextureContainer::ItemsTextures:
-			ItemsTexture.push_back(sf::Texture());
-			if (!ItemsTexture.back().loadFromFile(fileName, textCord))
-			{
-				ErrorHandler::log("Item texture load incorectly");
-			}
+			ItemsTexture.push_back(texture);
+			break;
+		default:
 			break;
 		}
+		return isSuccefull;
 	}
-	sf::Texture* getTexture(size_t index, TextureContainer typeOfContainer)
+	void pushTextures(TextureContainer container, std::string fileName, std::vector<sf::IntRect> coords)
 	{
-		switch (typeOfContainer)
+		for (size_t i = 0; i < coords.size(); i++)
+		{
+			bool good = pushTexture(container, fileName, coords[i]);
+			if (!good) { ErrorHandler::log("Unable to load [Id] = " + std::to_string(i) + "Texture from file"); }
+		}
+	}
+	sf::Texture* getTexture(TextureContainer container, size_t index)
+	{
+		switch (container)
 		{
 		case TextureContainer::TerrainTextures:
 			return &TerrainTexture[index];
