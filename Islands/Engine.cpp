@@ -301,7 +301,7 @@ void Engine::drawConsole(IslandApp & app)
 
 
 		if (GameConsole.getCommandsSize() == 0) { return; }
-		for (size_t i = GameConsole.getCommandsSize() - 1; i > 0; i--)
+		for (size_t i = GameConsole.getCommandsSize() - 1; i != -1; i--)
 		{
 			if (begPos.y < GameConsole.getWindow().getPosition().y) { break; }
 			consoleText.setString(GameConsole.getText(i));
@@ -341,23 +341,27 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 	if (!GameConsole.getEnable()) { return; }
 
 	auto tmp = GameConsole(event, mousePos, isMouseRClick);
+
+	if (!GameConsole.getTextboxEnable()) { return; }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
+		if (GameConsole.getHistorySize() > 0)
+		{
 			if (GameConsole.getLastHistoryCmdNumber() == 0)
 			{
+				GameConsole.getLastHistoryCmdNumber() = GameConsole.getHistorySize() - 1;
 				GameConsole.setCurrentText(GameConsole.getLastCmdFromHistory());
-				GameConsole.getLastHistoryCmdNumber() = GameConsole.getHistorySize() - 2;
 			}
 			else
 			{
 				GameConsole.setCurrentText(GameConsole.getCmdFromHistory(GameConsole.getLastHistoryCmdNumber()));
 				GameConsole.getLastHistoryCmdNumber() -= 1;
 			}
+		}
 	}
 
 	if (tmp.size() > 0 )
 	{
-		GameConsole.getLastHistoryCmdNumber() = 0;
 		if (tmp[0] == '/')
 		{
 			if (tmp == "/help")
@@ -384,6 +388,8 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 			{
 				GameConsole.clearConsole();
 				GameConsole.pushCommandToHistory(tmp);
+				GameConsole.clearHistory();
+				GameConsole.getLastHistoryCmdNumber() = 0;
 			}
 			else if(tmp == "/worldsize")
 			{
@@ -487,7 +493,11 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 	auto Window = app.getIslandWindow();
 	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(800, 200)));
 
-	if (key == '`') { GameConsole.setEnable(!GameConsole.getEnable()); }
+	if (key == '`') 
+	{ 
+		GameConsole.setEnable(!GameConsole.getEnable()); 
+		GameConsole.setTexboxEnable(!GameConsole.getTextboxEnable());
+	}
 
 	if (GameGui.Eq.isEnable)
 	{

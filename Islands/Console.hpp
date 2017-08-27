@@ -38,7 +38,14 @@ public:
 	bool getEnable() { return enable; }
 	void setEnable(bool newVal) { enable = newVal; }
 
-	void pushCommandToHistory(std::string command) { history.push_back(command); }
+	bool getTextboxEnable() { return ConsoleInput.getIsEnable(); }
+	void setTexboxEnable(bool newVal) { ConsoleInput.setEnable(newVal); }
+
+	void pushCommandToHistory(std::string command) 
+	{ 
+		history.push_back(command); 
+		lastHistoryCmd = history.size() - 1;
+	}
 	std::string getCmdFromHistory(unsigned cmdNumber) { return history[cmdNumber]; }
 	std::string getLastCmdFromHistory() { return history.back(); }
 	unsigned getHistorySize() { return history.size(); }
