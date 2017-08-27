@@ -244,4 +244,4 @@ ModelManifest.xml
 *.sln
 
 # Engine Temp Files
-log.txt
+*.txt

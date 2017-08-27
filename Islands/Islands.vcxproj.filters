@@ -183,6 +183,9 @@
     <Xml Include="Data\PlayerRecipes.xml">
       <Filter>IslandData\Recipes</Filter>
     </Xml>
+    <Xml Include="Data\Terrain.xml">
+      <Filter>IslandData</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf">

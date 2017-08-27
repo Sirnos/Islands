@@ -13,35 +13,12 @@ enum class TextureContainer : unsigned
 
 class Media
 {
-	int size = 16;
-	int pos = 16;
-
-	sf::Image TileImage;
-
 	std::vector <sf::Texture> TerrainTexture;
-	
 	std::vector<sf::Texture> CharacterTexture;
 	std::vector<sf::Texture> ObjectsTexture;
 	std::vector<sf::Texture> ItemsTexture;
 
 public:
-	void load()
-	{
-		TileImage.loadFromFile("Data/Objects.png");
-
-		TerrainTexture.resize(12);
-
-		TerrainTexture[1].loadFromImage(TileImage, sf::IntRect(0, 0, size, size));//dirt
-		TerrainTexture[2].loadFromImage(TileImage, sf::IntRect(pos,0, size, size));//grass
-		TerrainTexture[3].loadFromImage(TileImage, sf::IntRect(pos * 2, 0, size, size));//sand
-		TerrainTexture[4].loadFromImage(TileImage, sf::IntRect(pos * 3, 0, size, size));//rocks
-		TerrainTexture[5].loadFromImage(TileImage, sf::IntRect(pos * 4, 0, size, size));//water
-		TerrainTexture[6].loadFromImage(TileImage, sf::IntRect(pos * 5, 0, size, size));//cloud
-
-		CharacterTexture.push_back(sf::Texture());
-		CharacterTexture.back().loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
-	}
-
 	bool pushTexture(TextureContainer container, std::string fileName, sf::IntRect textCord)
 	{
 		sf::Texture texture;
@@ -117,7 +94,8 @@ public:
 	Media()
 	{
 		TerrainTexture.push_back(sf::Texture());
-		CharacterTexture.push_back(sf::Texture());
+		CharacterTexture.resize(2);
+		CharacterTexture.back().loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
 	}
 	~Media()
 	{

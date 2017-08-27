@@ -24,6 +24,10 @@ void Engine::loadGameComponents()
 
 	ErrorHandler::logToFile("Load Items Definitions [Size] = " + std::to_string(Items->getSize()) + 
 		" [Time] = " + std::to_string(ItemsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
+
+	std::vector<sf::Rect<int>> terrainTextureCords;
+	GameComponentsLoader::LoadTerrainTextureCoords(terrainTextureCords);
+	mediaContainer.pushTextures(TextureContainer::TerrainTextures, objectGraphicsfile, terrainTextureCords);
 }
 
 void Engine::checkPlayerEnvironment()
@@ -408,23 +412,8 @@ void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::Rect
 	if (TerrainType == TerrainType::Null) { return; }
 	shp.setTexture(nullptr);
 	shp.setPosition(sf::Vector2f(World::getNormalPosition(static_cast<sf::Vector2i>(tileIndex))));
-	switch (TerrainType)
-	{
-	case TerrainType::Dirt:
-		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 1));
-		break;
-	case TerrainType::Grass:
-		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 2));
-		break;
-	case TerrainType::Rock:
-		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 4));
-		break;
-	case TerrainType::Water:
-		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, 5));
-		break;
-	default:
-		break;
-	}
+	shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, static_cast<size_t>(TerrainType)));
+
 	window.draw(shp);
 }
 
@@ -455,7 +444,6 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 {
 	ErrorHandler::clearLogFile();
 
-	mediaContainer.load();
 	loadGameComponents();
 
 	spawnPlayer();

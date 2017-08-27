@@ -1,0 +1,8 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<Terrain>
+	<Dirt>0,0,16,16</Dirt>
+	<Grass>16,0,16,16</Grass>
+	<Sand>32,0,16,16</Sand>
+	<Rock>48,0,16,16</Rock>
+	<Water>64,0,16,16</Water>
+</Terrain>

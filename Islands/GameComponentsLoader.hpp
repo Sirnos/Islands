@@ -354,4 +354,20 @@ public:
 		}
 	}
 
+	static void LoadTerrainTextureCoords(std::vector<sf::IntRect> & TerrainTextCoords)
+	{
+		rapidxml::file<> File("Data/Terrain.xml");
+		rapidxml::xml_document<> Doc;
+		Doc.parse<0>(File.data());
+
+		rapidxml::xml_node<>* BaseNode = Doc.first_node();
+		for (BaseNode; BaseNode != nullptr; BaseNode = BaseNode->next_sibling())
+		{
+			rapidxml::xml_node<>* TerrainNode = BaseNode->first_node();
+			for (TerrainNode; TerrainNode != nullptr; TerrainNode = TerrainNode->next_sibling())
+			{
+				TerrainTextCoords.push_back(getRectFromString<int>(std::string(TerrainNode->value())));
+			}
+		}
+	}
 };
