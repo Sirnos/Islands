@@ -241,7 +241,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
-*.sln
-
 # Engine Temp Files
-.txt
+*.txt

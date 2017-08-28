@@ -13,6 +13,34 @@ enum class ItemType
 	Armor
 };
 
+inline std::string ItemTypeToString(ItemType type)
+{
+	std::string ret("ItemType::");
+
+	switch (type)
+	{
+	case ItemType::Default:
+		ret += "Default";
+		break;
+	case ItemType::Placeable:
+		ret += "Placeable";
+		break;
+	case ItemType::MeleeWeapon:
+		ret += "MeleeWeapon";
+		break;
+	case ItemType::DistanceWeapon:
+		ret += "DistanceWeapon";
+		break;
+	case ItemType::Armor:
+		ret += "Armor";
+		break;
+	default:
+		ret += "!IsUndefided";
+		break;
+	}
+
+	return ret;
+}
 
 class ItemDef
 {

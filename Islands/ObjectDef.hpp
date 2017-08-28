@@ -17,6 +17,36 @@ enum class ObjectType
 	Spawner
 };
 
+inline std::string ObjectTypeToString(ObjectType type)
+{
+	std::string ret("Object::");
+	switch (type)
+	{
+	case ObjectType::Default:
+		ret += "Default";
+		break;
+	case ObjectType::Chest:
+		ret += "Chest";
+		break;
+	case ObjectType::CraftingPlace:
+		ret += "CraftingPlace";
+		break;
+	case ObjectType::Tree:
+		ret += "Tree";
+		break;
+	case ObjectType::Sapling:
+		ret += "Sapling";
+		break;
+	case ObjectType::Spawner:
+		ret += "Spawner";
+		break;
+	default:
+		ret += "!IsUndefided";
+		break;
+	}
+	return ret;
+}
+
 class ObjectDef
 {
 	ObjectType type;

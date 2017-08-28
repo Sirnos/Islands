@@ -11,6 +11,32 @@ enum class TextureContainer : unsigned
 	ItemsTextures,
 };
 
+inline std::string TextureContainerToString(TextureContainer type)
+{
+	std::string ret("TextureContainer::");
+	switch (type)
+	{
+	case TextureContainer::TerrainTextures:
+		ret += "Terrain";
+		break;
+	case TextureContainer::CharacterTextures:
+		ret += "Characters";
+		break;
+	case TextureContainer::ObjectTextures:
+		ret += "Objects";
+		break;
+	case TextureContainer::ItemsTextures:
+		ret += "Items";
+		break;
+	default:
+		ret += "!IsUndefided";
+		return ret;
+		break;
+	}
+	ret += "Textures";
+	return ret;
+}
+
 class Media
 {
 	std::vector <sf::Texture> TerrainTexture;
@@ -49,7 +75,8 @@ public:
 		for (size_t i = 0; i < coords.size(); i++)
 		{
 			bool good = pushTexture(container, fileName, coords[i]);
-			if (!good) { ErrorHandler::log("Unable to load [Id] = " + std::to_string(i) + "Texture from file"); }
+			if (!good) { ErrorHandler::log("Unable to load [Id] = " + std::to_string(i) 
+				+ " [Type] " + TextureContainerToString(container)); }
 		}
 	}
 	sf::Texture* getTexture(TextureContainer container, size_t index)
