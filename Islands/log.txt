@@ -1,3 +1,0 @@
-Load Objects Definitions [Size] = 10 [Time] = 95 milisecs
-Load Items Definitions [Size] = 19 [Time] = 33 milisecs
-Generate Local Map [Size] = 512 [Time] = 538 milisecs 
