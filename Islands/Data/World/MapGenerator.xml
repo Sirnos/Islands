@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<Generator>
+	<Biome type="Grass">
+		<Terrain>
+			<Tile type="Dirt">
+				<MinimalHeight>0.8</MinimalHeight>
+			</Tile>
+			<Tile type="Grass">
+				<MinimalHeight>-0.9</MinimalHeight>
+			</Tile>
+		</Terrain>
+		<Structures>
+		</Structures>
+		<Flora>
+			<Object name="Tree">
+				<Chance>0.05</Chance>
+				<SpawnOn>Grass</SpawnOn>
+			</Object>
+			<Object name="Bush">
+				<Chance>0.1</Chance>
+				<SpawnOn>Grass</SpawnOn>
+			</Object>
+			<Object name="HighGrass">
+				<Chance>0.8</Chance>
+				<SpawnOn>Grass</SpawnOn>
+			</Object>
+		</Flora>
+		<Creatures>
+		</Creatures>
+	</Biome>
+</Generator>

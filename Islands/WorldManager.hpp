@@ -18,7 +18,6 @@ class WorldManager
 	std::shared_ptr<ObjectDefContainer> ObjectsDef;
 	std::shared_ptr<sf::Clock> GameClockPtr;
 	std::vector<Structure> Structures;
-
 public:
 	void AssingStructures(std::vector<Structure> &Structs)
 	{

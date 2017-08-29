@@ -370,4 +370,74 @@ public:
 			}
 		}
 	}
+
+	static void LoadLocalMapVariables(std::vector<LocalMapVariablesDef> & Vars)
+	{
+		rapidxml::file<> File("Data/World/MapGenerator.xml");
+		rapidxml::xml_document<> Doc;
+		Doc.parse<0>(File.data());
+
+		rapidxml::xml_node<> * Base = Doc.first_node();
+		for (Base; Base != nullptr; Base = Base->next_sibling())
+		{
+			rapidxml::xml_node<> * Biome = Base->first_node();
+			for (Biome; Biome != nullptr; Biome = Biome->next_sibling())
+			{
+				Vars.push_back(LocalMapVariablesDef());
+				Vars.back().Biome = StringToTerrainType(std::string(Biome->first_attribute()->value()));
+				rapidxml::xml_node<> * BiomeVars = Biome->first_node();
+				for (BiomeVars; BiomeVars != nullptr; BiomeVars = BiomeVars->next_sibling())
+				{
+					std::string BiomeVarsName = std::string(BiomeVars->name());
+
+					if (BiomeVarsName == "Terrain")
+					{
+						rapidxml::xml_node<> * Terrain = BiomeVars->first_node();
+						for (Terrain; Terrain != nullptr; Terrain = Terrain->next_sibling())
+						{
+							Vars.back().TerrainTiles.push_back(std::pair<TerrainType, float>(TerrainType::Null, 0.0f));
+							Vars.back().TerrainTiles.back().first = StringToTerrainType(std::string(Terrain->first_attribute()->value()));
+							Vars.back().TerrainTiles.back().second = std::stof(std::string(Terrain->first_node()->value()));
+						}
+					}
+					else if(BiomeVarsName == "Structures")
+					{
+
+					}
+					else if(BiomeVarsName == "Flora")
+					{
+						rapidxml::xml_node<> * FloraVars = BiomeVars->first_node();
+						for (FloraVars; FloraVars != nullptr; FloraVars = FloraVars->next_sibling())
+						{
+							Vars.back().SpawnableObjects.push_back(std::tuple<std::string, float,TerrainType>());
+							rapidxml::xml_node<> *FloraObjVars = FloraVars->first_node();
+
+							std::string SpawnableObjName = FloraVars->first_attribute()->value();
+							float SpawnChance;
+							TerrainType SpawnTerrain;
+
+							for (FloraObjVars; FloraObjVars != nullptr; FloraObjVars = FloraObjVars->next_sibling())
+							{
+								std::string FloraObjVarName(FloraObjVars->name());
+								if (FloraObjVarName == "Chance")
+								{
+									SpawnChance = std::stof(std::string(FloraObjVars->value()));
+								}
+								else if(FloraObjVarName == "SpawnOn")
+								{
+									SpawnTerrain = StringToTerrainType(std::string(FloraObjVars->value()));
+								}
+							}
+							Vars.back().SpawnableObjects.back() = std::tuple<std::string, float, TerrainType>(SpawnableObjName, SpawnChance, SpawnTerrain);
+						}
+
+					}
+					else if(BiomeVarsName == "Creatures")
+					{
+
+					}
+				}
+			}
+		}
+	}
 };
