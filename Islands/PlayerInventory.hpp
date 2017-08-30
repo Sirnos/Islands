@@ -16,6 +16,9 @@ class PlayerInventory
 	std::vector<ItemField> *InteractedChest;
 
 public:
+	PlayerInventory() = default;
+	~PlayerInventory() { InteractedChest = nullptr; }
+
 	ItemField getInventoryField(sf::Vector2u field)
 	{
 		return Inventory[field.x][field.y];

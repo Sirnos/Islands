@@ -29,7 +29,7 @@ public:
 	{
 		return Container[index];
 	}
-	DefType getDefinition(std::string DefName)
+	DefType getDefinition(std::string &DefName)
 	{
 		for (size_t i = 0; i < Container.size(); i++)
 		{
@@ -154,8 +154,6 @@ namespace makeFromDef
 			{
 				ret.back().SpawnableObjects.push_back(std::tuple<size_t, float, TerrainType>());
 				size_t objectId = 0;
-				float objectChance = 0;
-				TerrainType objectTerrain = TerrainType::Null;
 				
 				objectId = ObjsDef.getDefIdbyName(std::get<0>(iobjects));
 				if (objectId == 0)
@@ -164,8 +162,9 @@ namespace makeFromDef
 				}
 				else
 				{
-					objectChance = std::get<1>(iobjects);
-					objectTerrain = std::get<2>(iobjects);
+					float objectChance = std::get<1>(iobjects);
+					TerrainType objectTerrain = std::get<2>(iobjects);
+
 					ret.back().SpawnableObjects.back() = std::tuple<size_t, float, TerrainType>(objectId, objectChance, objectTerrain);
 				}
 			}

@@ -13,10 +13,9 @@ class BaseRecipe
 	RecType Out;
 	std::vector<RecType> In;
 public:
-	BaseRecipe(RecType outElement,std::vector<RecType> &inElements)
+	BaseRecipe(RecType &outElement,std::vector<RecType> &inElements)
+		:Out(outElement), In(inElements)
 	{
-		Out = outElement;
-		In = inElements;
 		In.shrink_to_fit();
 	}
 

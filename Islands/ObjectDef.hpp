@@ -64,7 +64,7 @@ public:
 	bool getDestructible() { return ObjDestructible; }
 	Yield getYield() { return ObjYield; }
 
-	ObjectDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox, Yield yield, bool Destructible,ObjectType type = ObjectType::Default)
+	ObjectDef(std::string &Name, sf::Vector2i Size, sf::FloatRect CollisionBox, Yield &yield, bool Destructible,ObjectType type = ObjectType::Default)
 		:ObjDestructible(Destructible),
 		ObjName(Name),
 		ObjSize(Size),
@@ -91,12 +91,9 @@ class ChestDef : public ObjectDef
 public:
 	unsigned getCapacity() { return Capacity; }
 
-	ChestDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
-		Yield yield, bool Destructible, unsigned ChestCapacity)
-		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Chest)
-	{
-		Capacity = ChestCapacity;
-	}
+	ChestDef(std::string &Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
+		Yield &yield, bool Destructible, unsigned ChestCapacity)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Chest), Capacity(ChestCapacity){}
 };
 
 class CraftingPlaceDef : public ObjectDef
@@ -106,12 +103,9 @@ class CraftingPlaceDef : public ObjectDef
 public:
 	std::vector<RecipeDef> & getRecipes() { return Recipes; }
 
-	CraftingPlaceDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
-		Yield yield, bool Destructible, std::vector<RecipeDef> RecipeVect)
-		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::CraftingPlace)
-	{
-		Recipes = RecipeVect;
-	}
+	CraftingPlaceDef(std::string &Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
+		Yield &yield, bool Destructible, std::vector<RecipeDef> &RecipeVect)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::CraftingPlace), Recipes(RecipeVect){}
 };
 
 class SaplingDef : public ObjectDef
@@ -123,13 +117,9 @@ public:
 	float getGrowTime() { return GrowTime; }
 	std::string getGrowTo() { return GrowTo; }
 
-	SaplingDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
-		Yield yield, bool Destructible, float TimeForGrow,std::string For)
-		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Sapling)
-	{
-		GrowTo = For;
-		GrowTime = TimeForGrow;
-	}
+	SaplingDef(std::string &Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
+		Yield &yield, bool Destructible, float TimeForGrow,std::string &For)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Sapling), GrowTo(For), GrowTime(TimeForGrow){}
 };
 
 class SpawnerDef : public ObjectDef
@@ -140,11 +130,8 @@ public:
 	float getSpawnTime() { return SpawnTime; }
 	std::string getMonsterName() { return MonsterName; }
 
-	SpawnerDef(std::string Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
-		Yield yield, bool Destructible, float TimeForSpawn, std::string MonsterToSpawn)
-		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Spawner)
-	{
-		SpawnTime = TimeForSpawn;
-		MonsterName = MonsterToSpawn;
-	}
+	SpawnerDef(std::string &Name, sf::Vector2i Size, sf::FloatRect CollisionBox,
+		Yield &yield, bool Destructible, float TimeForSpawn, std::string &MonsterToSpawn)
+		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Spawner),
+		SpawnTime(TimeForSpawn), MonsterName(MonsterToSpawn){}
 };

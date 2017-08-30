@@ -10,10 +10,8 @@ struct Object
 	unsigned Id;
 
 	Object(unsigned objectId, ObjectType objectType = ObjectType::Default)
-	{
-		Id = objectId;
-		type = objectType;
-	}
+		:type(objectType), Id(objectId){}
+
 	virtual ~Object(){}
 };
 
@@ -22,10 +20,7 @@ struct SaplingObject : Object
 	float PlantTime;
 
 	SaplingObject(unsigned objectId, float AtTime)
-		:Object(objectId, ObjectType::Sapling)
-	{
-		PlantTime = AtTime;
-	}
+		:Object(objectId, ObjectType::Sapling), PlantTime(AtTime){}
 };
 
 struct ChestObject : Object
@@ -38,10 +33,7 @@ struct ChestObject : Object
 		Contain.resize(ChestSize);
 	}
 	ChestObject(unsigned objectId, std::vector<ItemField> &otherContainer)
-		:Object(objectId, ObjectType::Chest)
-	{
-		Contain = otherContainer;
-	}
+		:Object(objectId, ObjectType::Chest), Contain(otherContainer){}
 
 	~ChestObject()
 	{
@@ -52,9 +44,6 @@ struct ChestObject : Object
 struct CraftingPlaceObject : Object
 {
 	std::vector<Recipe> Recipes;
-	CraftingPlaceObject(unsigned objectId, std::vector<Recipe> ObjectRecipes)
-		:Object(objectId, ObjectType::CraftingPlace)
-	{
-		Recipes = ObjectRecipes;
-	}
+	CraftingPlaceObject(unsigned objectId, std::vector<Recipe> &ObjectRecipes)
+		:Object(objectId, ObjectType::CraftingPlace), Recipes(ObjectRecipes){}
 };

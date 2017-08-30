@@ -14,12 +14,10 @@ struct LyingItem
 
 	ItemField lyingItem;
 
-	LyingItem(sf::Time atTime, sf::Vector2f atPosition, ItemField item)
-	{
-		lyingTime = atTime;
-		lyingPosition = atPosition;
-		lyingItem = item;
-	}
+	
+	LyingItem() = default;
+	LyingItem(sf::Time atTime,sf::Vector2f atPosition,ItemField item) : 
+		lyingTime(atTime), lyingPosition(atPosition), lyingItem(item){}
 };
 
 class LyingItemsContainer
@@ -28,9 +26,10 @@ class LyingItemsContainer
 	size_t MaxNumberOfLyingItems;
 	sf::Vector2f LyingItemsPickUpRange;
 public:
+	LyingItemsContainer() { MaxNumberOfLyingItems = 0; LyingItemsPickUpRange = sf::Vector2f(); }
 	~LyingItemsContainer() { LyingItems.clear(); }
 
-	void init(unsigned MaxSize,sf::Vector2f MinimalItemPickUpDistance) 
+	void init(unsigned MaxSize, sf::Vector2f MinimalItemPickUpDistance)
 	{
 		MaxNumberOfLyingItems = MaxSize;
 		LyingItemsPickUpRange = MinimalItemPickUpDistance;

@@ -17,6 +17,7 @@ public:
 	CraftingSystem() 
 	{
 		CraftAmount = 1;
+		SelectedRecipe = 0;
 	}
 	~CraftingSystem(){}
 

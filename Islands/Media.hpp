@@ -45,7 +45,7 @@ class Media
 	std::vector<sf::Texture> ItemsTexture;
 
 public:
-	bool pushTexture(TextureContainer container, std::string fileName, sf::IntRect textCord)
+	bool pushTexture(TextureContainer container, std::string &fileName, sf::IntRect textCord)
 	{
 		sf::Texture texture;
 		bool isSuccefull = false;
@@ -70,7 +70,7 @@ public:
 		}
 		return isSuccefull;
 	}
-	void pushTextures(TextureContainer container, std::string fileName, std::vector<sf::IntRect> coords)
+	void pushTextures(TextureContainer container, std::string &fileName, std::vector<sf::IntRect> coords)
 	{
 		for (size_t i = 0; i < coords.size(); i++)
 		{

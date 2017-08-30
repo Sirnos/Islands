@@ -18,10 +18,12 @@ struct ItemField
 		ItemAmount = other.ItemAmount;
 	}
 
-	void operator= (ItemField &other)
+	ItemField &operator= (const ItemField &other)
 	{
 		ItemId = other.ItemId;
 		ItemAmount = other.ItemAmount;
+
+		return *this;
 	}
 	void operator+= (unsigned amount)
 	{
