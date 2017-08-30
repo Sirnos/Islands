@@ -140,6 +140,7 @@
     <ClInclude Include="EntityStats.hpp" />
     <ClInclude Include="EquipmentFieldInfo.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
+    <ClInclude Include="LocalMapVariables.hpp" />
     <ClInclude Include="PlayerInventory.hpp" />
     <ClInclude Include="IslandApp.hpp" />
     <ClInclude Include="IslandMenu.hpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Recipe.hpp" />
     <ClInclude Include="SFMLTypesFromText.hpp" />
     <ClInclude Include="Structure.hpp" />
+    <ClInclude Include="TerrainType.hpp" />
     <ClInclude Include="textbox.hpp" />
     <ClInclude Include="MapTile.hpp" />
     <ClInclude Include="World.hpp" />
@@ -176,6 +178,7 @@
     </Xml>
     <Xml Include="Data\PlayerRecipes.xml" />
     <Xml Include="Data\Terrain.xml" />
+    <Xml Include="Data\World\MapGenerator.xml" />
     <Xml Include="Data\World\Structures.xml" />
     <Xml Include="Data\World\Structures\Ruin.xml" />
     <Xml Include="Engine.xml" />

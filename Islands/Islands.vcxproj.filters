@@ -149,6 +149,12 @@
     <ClInclude Include="WorldManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LocalMapVariables.hpp">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainType.hpp">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">
@@ -185,6 +191,9 @@
     </Xml>
     <Xml Include="Data\Terrain.xml">
       <Filter>IslandData</Filter>
+    </Xml>
+    <Xml Include="Data\World\MapGenerator.xml">
+      <Filter>IslandData\World</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>

@@ -7,8 +7,6 @@
 
 class World
 {
-	std::vector<LocalMapVariables> VarsForLocalMaps;
-
 	std::vector<std::vector<TerrainType>> WorldMap;
 	std::vector<std::vector<MapTile>> LocalMap;
 

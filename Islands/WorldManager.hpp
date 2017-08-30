@@ -13,12 +13,18 @@
 
 class WorldManager
 {
+	std::vector<LocalMapVariables> LocalMapsBuilderVars;
+
 	std::shared_ptr<World> ManagementWorld;
 	std::shared_ptr<ItemDefContainer> ItemsDef;
 	std::shared_ptr<ObjectDefContainer> ObjectsDef;
 	std::shared_ptr<sf::Clock> GameClockPtr;
 	std::vector<Structure> Structures;
 public:
+	void AssingLocalMapsBuilderVars(std::vector<LocalMapVariables> &BuildVars)
+	{
+		LocalMapsBuilderVars = BuildVars;
+	}
 	void AssingStructures(std::vector<Structure> &Structs)
 	{
 		this->Structures = Structs;
@@ -56,28 +62,56 @@ public:
 		double noise;
 		TerrainType Terrain = TerrainType::Null;
 
-		for (size_t x = 0; x < ManagementWorld->getLocalMapSize(); x++)
+		size_t match = 0;
+		for (size_t i = 0; i < LocalMapsBuilderVars.size(); i++)
 		{
-			for (size_t y = 0; y < ManagementWorld->getLocalMapSize(); y++)
+			if (Base == LocalMapsBuilderVars[i].Biome) { match = i; break; }
+		}
+
+		if (match == 0)
+		{
+			for (size_t x = 0; x < ManagementWorld->getLocalMapSize(); x++)
 			{
-				noise = noiseModule.GetValue(1.25 + (0.1 * x), 0.75 + (0.1 * y), 0.5);
-				if (noise > 0.75)
+				for (size_t y = 0; y < ManagementWorld->getLocalMapSize(); y++)
 				{
-					Terrain = TerrainType::Rock;
+					noise = noiseModule.GetValue(1.25 + (0.1 * x), 0.75 + (0.1 * y), 0.5);
+					if (noise > 0.75)
+					{
+						Terrain = TerrainType::Rock;
+					}
+					else if (noise > 0.35)
+					{
+						Terrain = TerrainType::Dirt;
+					}
+					else if (noise > -0.25)
+					{
+						Terrain = TerrainType::Grass;
+					}
+					else
+					{
+						Terrain = TerrainType::Water;
+					}
+					ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), Terrain);
 				}
-				else if (noise > 0.35)
+			}
+		}
+		else
+		{
+			for (size_t x = 0; x < ManagementWorld->getLocalMapSize(); x++)
+			{
+				for (size_t y = 0; y < ManagementWorld->getLocalMapSize(); y++)
 				{
-					Terrain = TerrainType::Dirt;
+					noise = noiseModule.GetValue(1.25 + (0.1 * x), 0.75 + (0.1 * y), 0.5);
+					ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), TerrainType::Water);
+					for (auto & terrainChance : LocalMapsBuilderVars[match].TerrainTiles)
+					{
+						if (noise > terrainChance.second)
+						{
+							ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), terrainChance.first);
+							break;
+						}
+					}
 				}
-				else if (noise > -0.25)
-				{
-					Terrain = TerrainType::Grass;
-				}
-				else
-				{
-					Terrain = TerrainType::Water;
-				}
-				ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), Terrain);
 			}
 		}
 

@@ -468,12 +468,19 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	GameComponentsLoader::LoadStructuresDef(StructuresDef);
 	std::vector<Structure> Structures = makeFromDef::makeStructure(StructuresDef, *Objects);
 
+	std::vector<LocalMapVariablesDef> MapsDef;
+	MapsDef.push_back(LocalMapVariablesDef());
+	GameComponentsLoader::LoadLocalMapVariables(MapsDef);
+	std::vector<LocalMapVariables> MapsVars = makeFromDef::makeLocalMapVars(MapsDef, *Objects, Structures);
+	MapsVars.back();
+
 	GWorldManager.AssingClock(GameClock);
 	GWorldManager.AssingItemsDef(Items);
 	GWorldManager.AssingObjectsDef(Objects);
 	GWorldManager.AssingStructures(Structures);
 	GWorldManager.AssingWorld(GameWorld);
-	GWorldManager.buildLocalMap(TerrainType::Null, LocalMapSize);
+	GWorldManager.AssingLocalMapsBuilderVars(MapsVars);
+	GWorldManager.buildLocalMap(TerrainType::Grass, LocalMapSize);
 }
 
 Engine::~Engine()

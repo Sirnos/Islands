@@ -2,6 +2,7 @@
 
 #include "Recipe.hpp"
 #include "Structure.hpp"
+#include "LocalMapVariables.hpp"
 #include "ItemDef.hpp"
 #include "ObjectDef.hpp"
 #include <vector>
@@ -132,5 +133,67 @@ namespace makeFromDef
 			Structs.push_back(Structure(i.getName(), i.getSpawnChance(), Data));
 		}
 		return Structs;
+	}
+
+	inline std::vector<LocalMapVariables> makeLocalMapVars(std::vector<LocalMapVariablesDef> & Def, ObjectDefContainer & ObjsDef, std::vector<Structure> & Structs)
+	{
+		std::vector<LocalMapVariables> ret;
+
+		for (auto & i : Def)
+		{
+			ret.push_back(LocalMapVariables());
+			ret.back().Biome = i.Biome;
+
+			for (auto & iterrain : i.TerrainTiles)
+			{
+				ret.back().TerrainTiles.push_back(std::pair<TerrainType, float>());
+				ret.back().TerrainTiles.back() = iterrain;
+			}
+
+			for (auto & iobjects : i.SpawnableObjects)
+			{
+				ret.back().SpawnableObjects.push_back(std::tuple<size_t, float, TerrainType>());
+				size_t objectId = 0;
+				float objectChance = 0;
+				TerrainType objectTerrain = TerrainType::Null;
+				
+				objectId = ObjsDef.getDefIdbyName(std::get<0>(iobjects));
+				if (objectId == 0)
+				{
+					ret.back().SpawnableObjects.pop_back();
+				}
+				else
+				{
+					objectChance = std::get<1>(iobjects);
+					objectTerrain = std::get<2>(iobjects);
+					ret.back().SpawnableObjects.back() = std::tuple<size_t, float, TerrainType>(objectId, objectChance, objectTerrain);
+				}
+			}
+			for (auto & istructures : i.SpawnableStructures)
+			{
+				ret.back().SpawnableStructures.push_back(std::pair<size_t, float>());
+				size_t structId = 0;
+				float structChance = istructures.second;
+
+				for (size_t i = 0u; i < Structs.size(); i++)
+				{
+					if (istructures.first == Structs[i].getName())
+					{
+						structId = i;
+						break;
+					}
+				}
+
+				if (structId == 0)
+				{
+					ret.back().SpawnableStructures.pop_back();
+				}
+				else
+				{
+					ret.back().SpawnableStructures.back() = std::pair<size_t, float>(structId, structChance);
+				}
+			}
+		}
+		return ret;
 	}
 }
