@@ -56,7 +56,7 @@ class Engine
 
 	void updateTile(sf::Vector2u tileIndex);
 
-	void drawTile(sf::Vector2u tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
+	void drawTile(TerrainType &preTile, sf::Vector2u tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 	void drawObject(sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 
 	void drawWorld(IslandApp &app);

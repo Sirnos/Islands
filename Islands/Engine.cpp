@@ -412,14 +412,17 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 	}
 }
 
-void Engine::drawTile(sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
+void Engine::drawTile(TerrainType &preTile,sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
 {
 	TerrainType TerrainType = GameWorld->getLocalMapTileTerrain(tileIndex);
 	if (TerrainType == TerrainType::Null) { return; }
-	shp.setTexture(nullptr);
 	shp.setPosition(sf::Vector2f(World::getNormalPosition(static_cast<sf::Vector2i>(tileIndex))));
-	shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, static_cast<size_t>(TerrainType)));
-
+	if (preTile != TerrainType)
+	{
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, static_cast<size_t>(TerrainType)));
+	}
+	
+	preTile = TerrainType;
 	window.draw(shp);
 }
 
@@ -472,7 +475,6 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	MapsDef.push_back(LocalMapVariablesDef());
 	GameComponentsLoader::LoadLocalMapVariables(MapsDef);
 	std::vector<LocalMapVariables> MapsVars = makeFromDef::makeLocalMapVars(MapsDef, *Objects, Structures);
-	MapsVars.back();
 
 	GWorldManager.AssingClock(GameClock);
 	GWorldManager.AssingItemsDef(Items);
@@ -705,10 +707,13 @@ void Engine::drawWorld(IslandApp & app)
 {
 	sf::Vector2i PlayerPosToTile = World::getTiledPosition(Player.getCharacterCenterPosition());
 	sf::RectangleShape TileShape;
+	sf::RectangleShape ObjectShape;
 	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+	ObjectShape = TileShape;
 
 	int iTileDrawRange = static_cast<int>(TileDrawRange);
 	int MapSize = static_cast<int>(GameWorld->getLocalMapSize());
+	TerrainType preTile = TerrainType::Null;
 
 	for (int i = PlayerPosToTile.x - iTileDrawRange; i < PlayerPosToTile.x + iTileDrawRange + 1; i++)
 	{
@@ -718,8 +723,8 @@ void Engine::drawWorld(IslandApp & app)
 		{
 			if (j < 0) { continue; }
 			if (j > MapSize - 1) { break; }
-			drawTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
-			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			drawTile(preTile,static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), ObjectShape);
 			updateTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)));
 		}
 	}
