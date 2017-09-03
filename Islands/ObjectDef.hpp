@@ -135,3 +135,16 @@ public:
 		:ObjectDef(Name, Size, CollisionBox, yield, Destructible,ObjectType::Spawner),
 		SpawnTime(TimeForSpawn), MonsterName(MonsterToSpawn){}
 };
+
+class TreeDef : public ObjectDef
+{
+	sf::Vector2i treeSize;
+
+public:
+	sf::Vector2i getSize() { return treeSize; }
+
+	TreeDef(std::string &Name,sf::Vector2i Size,sf::FloatRect CollisionBox,
+		Yield &yield,bool Destructible,sf::Vector2i TreeSize)
+		:ObjectDef(Name,Size,CollisionBox,yield,Destructible,ObjectType::Tree),
+		treeSize(TreeSize){}
+};

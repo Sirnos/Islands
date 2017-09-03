@@ -8,13 +8,12 @@
 #include <vector>
 
 template<typename DefType>
-class DefContainer
+class DynamicDefContainer
 {
 	std::vector<DefType> Container;
-
 public:
-	DefContainer(){}
-	~DefContainer()
+	DynamicDefContainer() = default;
+	~DynamicDefContainer()
 	{
 		for (size_t i = 0; i < Container.size(); i++)
 		{
@@ -59,8 +58,8 @@ public:
 	}
 };
 
-typedef DefContainer<ItemDef*> ItemDefContainer;
-typedef DefContainer<ObjectDef*> ObjectDefContainer;
+typedef DynamicDefContainer<ItemDef*> ItemDefContainer;
+typedef DynamicDefContainer<ObjectDef*> ObjectDefContainer;
 
 namespace makeFromDef
 {

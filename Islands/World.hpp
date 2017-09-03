@@ -43,7 +43,7 @@ public:
 		LocalMap[tile.x][tile.y].Terrain = Terrain;
 	}
 
-	Object* getLocalMapTileObject(sf::Vector2u tile)
+	Object* const getLocalMapTileObject(sf::Vector2u tile)
 	{
 		return LocalMap[tile.x][tile.y].TileObject;
 	}
