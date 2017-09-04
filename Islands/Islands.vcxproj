@@ -140,6 +140,7 @@
     <ClInclude Include="EntityStats.hpp" />
     <ClInclude Include="EquipmentFieldInfo.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
+    <ClInclude Include="LimitedVar.hpp" />
     <ClInclude Include="LocalMapVariables.hpp" />
     <ClInclude Include="PlayerInventory.hpp" />
     <ClInclude Include="IslandApp.hpp" />

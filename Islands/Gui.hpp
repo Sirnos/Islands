@@ -3,7 +3,6 @@
 #include "CraftingGui.hpp"
 #include "Object.hpp"
 
-
 enum class EquipmentType
 {
 	Inventory,
@@ -19,7 +18,11 @@ struct EquipmentGui
 
 	bool isEnable;
 
-	EquipmentGui() { isEnable = false; }
+	EquipmentGui()
+		:isEnable(false), Equipment(), ArmorEquipment()
+	{}
+	EquipmentGui(const EquipmentGui & other) = delete;
+	~EquipmentGui() = default;
 };
 
 struct HudGui
@@ -34,7 +37,11 @@ struct HudGui
 
 	unsigned ActiveBeltField;
 
-	HudGui() { ActiveBeltField = 0; }
+	HudGui()
+		:ActiveBeltField(0), HpInfo(), MpInfo(), Belt()
+	{}
+	HudGui(const HudGui & other) = delete;
+	~HudGui() = default;
 
 	void pushNewValuesForHpInfo(unsigned newMaxPlayerHp, unsigned newActualPlayerHp)
 	{
@@ -49,24 +56,30 @@ struct HudGui
 struct ChestGui
 {
 	std::vector<EquipmentFieldInfo> ChestContain;
+
+	ChestGui()
+		:ChestContain()
+	{}
+	ChestGui(const ChestGui& other) = delete;
+	~ChestGui() = default;
 };
 
 class Gui
 {
 	const int static EqFieldSizeI = 64;
 	const int static EqFieldMarginI = 16;
-public:
 
+	const int static keyForCraftGui = 'c';
+	const int static keyForEqGui = 'e';
+
+	const std::array<int, PlayerInventorySize> keyForBeltFields = { '1','2','3','4','5' };
+public:
 	CraftingGui Craft;
 	ChestGui Chest;
 	EquipmentGui Eq;
 	HudGui Hud;
 
 	sf::Font GuiFont;
-
-	const int keyForCraftGuiEnable = 'c';
-	const int keyForEqGuiEnable = 'e';
-	const int keyForBeltFields[PlayerInventorySize] = { '1','2','3','4','5' };
 
 	Gui() 
 	{ 
@@ -91,20 +104,26 @@ public:
 		
 		Craft.PushFontToCraftingInfo(GuiFont);
 	}
+	Gui(const Gui & other) = delete;
+	~Gui() = default;
 
 	void pushKeyState(char key)
 	{
 		int keyVar = tolower(key);
 
-		if (keyVar == keyForEqGuiEnable)
+		if (keyVar == keyForEqGui)
 		{
 			Eq.isEnable = !Eq.isEnable;
 			Craft.isEnable = false;
+
+			return;
 		}
-		else if(keyVar == keyForCraftGuiEnable)
+		else if(keyVar == keyForCraftGui)
 		{
 			Craft.isEnable = !Craft.isEnable;
 			Eq.isEnable = false;
+
+			return;
 		}
 
 		for (size_t i = 0; i < PlayerInventorySize; i++)

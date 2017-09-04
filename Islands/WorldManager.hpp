@@ -21,6 +21,10 @@ class WorldManager
 	std::shared_ptr<sf::Clock> GameClockPtr;
 	std::vector<Structure> Structures;
 public:
+	WorldManager() = default;
+	WorldManager(const WorldManager & other) = delete;
+	~WorldManager() = default;
+
 	void AssingLocalMapsBuilderVars(std::vector<LocalMapVariables> &BuildVars)
 	{
 		LocalMapsBuilderVars = BuildVars;

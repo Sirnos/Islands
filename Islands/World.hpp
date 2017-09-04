@@ -11,6 +11,10 @@ class World
 	std::vector<std::vector<MapTile>> LocalMap;
 
 public:
+	World() = default;
+	World(const World & other) = delete;
+	~World() = default;
+
 	const static size_t DefaultMapSize = 512;
 	const static size_t DefaultWorldSize = 256;
 

@@ -155,6 +155,9 @@
     <ClInclude Include="TerrainType.hpp">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
+    <ClInclude Include="LimitedVar.hpp">
+      <Filter>Header Files\other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">

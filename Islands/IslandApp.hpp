@@ -35,6 +35,8 @@ public:
 		IslandWindow.setVerticalSyncEnabled(VerticalSync);
 		Camera.setSize(static_cast<sf::Vector2f>(IslandWindow.getSize()));
 	}
+	IslandApp(const IslandApp& other) = delete;
+	~IslandApp() = default;
 
 	void clearContext() { IslandWindow.clear(); }
 	void clearContext(sf::Color BufferColor) { IslandWindow.clear(BufferColor); }
@@ -77,6 +79,7 @@ public:
 				return true;
 			}
 		}
+		return false;
 	}
 
 	sf::Vector2f getMousePosInWorld()

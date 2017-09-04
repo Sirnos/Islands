@@ -17,6 +17,12 @@ struct MapTile
 		:Terrain(other.Terrain), TileObject(nullptr){}
 	~MapTile()
 	{
-		if(TileObject != nullptr){ delete TileObject; }
+		if (TileObject != nullptr) { delete TileObject; }
+	}
+
+	MapTile& operator=(const MapTile & other)
+	{
+		this->Terrain = other.Terrain;
+		return *this;
 	}
 };
