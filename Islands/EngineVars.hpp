@@ -29,6 +29,7 @@ struct GameVars
 	unsigned LocalMapSize{ 512 };
 	unsigned MaxNumberOfLyingItems{ 64 };
 	unsigned PlayerPickUpItemsRange{ 128 };
+	unsigned StructuresPerLocalMap{ 4 };
 
 	const std::array<unsigned, 4> AllowedLocalMapSize = { 256,512,1024,2048 };
 };
@@ -46,7 +47,6 @@ struct EngineVars
 		Vars.parse<0>(VarsFile.data());
 
 		rapidxml::xml_node<> *BaseNode = Vars.first_node();
-
 		for (BaseNode; BaseNode != nullptr; BaseNode = BaseNode->next_sibling())
 		{
 			rapidxml::xml_node<> *TypeNode = BaseNode->first_node();
@@ -118,6 +118,10 @@ struct EngineVars
 					else if(VarName == "PlayerPickUpItemsRange")
 					{
 						Game.PlayerPickUpItemsRange = std::stoul(VarValue);
+					}
+					else if(VarName == "StructuresPerLocalMap")
+					{
+						Game.StructuresPerLocalMap = std::stoul(VarValue);
 					}
 				}
 			}

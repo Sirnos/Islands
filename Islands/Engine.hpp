@@ -21,6 +21,8 @@
 
 #include "Console.hpp"
 
+#include "EngineVars.hpp"
+
 class Engine
 {
 	unsigned TileDrawRange;
@@ -66,7 +68,7 @@ class Engine
 	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
 
 public:
-	Engine(unsigned LocalMapSize, unsigned MaxNumberOfLyingItems, unsigned PlayerPickUpItemsRange, unsigned MaxTileDrawRange);
+	Engine(GameVars &v1, unsigned MaxTileDrawRange);
 	~Engine();
 
 	void operator()(IslandApp &app,char key,mouseWheel last,bool isMouseClick);

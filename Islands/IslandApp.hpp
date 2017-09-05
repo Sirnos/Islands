@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "EngineVars.hpp"
+
 enum class mouseWheel
 {
 	Up,
@@ -11,28 +13,31 @@ enum class mouseWheel
 
 class IslandApp
 {
+	const std::string Title{ "Islands" };
+
 	sf::RenderWindow IslandWindow;
 	sf::Event IslandWindowEvent;
 	sf::View Camera;
 
 public:
-	IslandApp(sf::VideoMode AppVideoMode,unsigned FPS,bool VerticalSync,bool Windowed)
+	IslandApp(VideoVars &v1)
 	{
-		const std::string AppTitle("Islands");
-		if (!AppVideoMode.isValid())
+		sf::VideoMode appVideoMode{ v1.WindowSize.x,v1.WindowSize.y,v1.BitsPerPixel };
+
+		if (!appVideoMode.isValid())
 		{
-			IslandWindow.create(sf::VideoMode::getFullscreenModes()[0], AppTitle, sf::Style::Fullscreen);
+			IslandWindow.create(sf::VideoMode::getFullscreenModes().front(), Title, sf::Style::Fullscreen);
 		}
 		else
 		{
-			IslandWindow.create(AppVideoMode, AppTitle,sf::Style::Fullscreen);
-			if (Windowed)
+			IslandWindow.create(appVideoMode, Title,sf::Style::Fullscreen);
+			if (v1.Windowed)
 			{
-				IslandWindow.create(AppVideoMode, AppTitle, sf::Style::Default);
+				IslandWindow.create(appVideoMode, Title, sf::Style::Default);
 			}
 		}
-		IslandWindow.setFramerateLimit(FPS);
-		IslandWindow.setVerticalSyncEnabled(VerticalSync);
+		IslandWindow.setFramerateLimit(v1.FrameRate);
+		IslandWindow.setVerticalSyncEnabled(v1.VerticalSync);
 		Camera.setSize(static_cast<sf::Vector2f>(IslandWindow.getSize()));
 	}
 	IslandApp(const IslandApp& other) = delete;

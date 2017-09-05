@@ -20,8 +20,12 @@ class WorldManager
 	std::shared_ptr<ObjectDefContainer> ObjectsDef;
 	std::shared_ptr<sf::Clock> GameClockPtr;
 	std::vector<Structure> Structures;
+
+	unsigned StructuresPerLocalMap;
 public:
-	WorldManager() = default;
+	WorldManager()
+		:StructuresPerLocalMap(0)
+	{}
 	WorldManager(const WorldManager & other) = delete;
 	~WorldManager() = default;
 
@@ -50,6 +54,11 @@ public:
 		GameClockPtr = std::make_shared<sf::Clock>(Clock);
 	}
 
+	void setStructuresAmountInLocalMap(unsigned Amount)
+	{
+		if (Amount >= 6) { Amount = 5; }
+		StructuresPerLocalMap = Amount;
+	}
 
 	void buildLocalMap(TerrainType Base,size_t LocalMapSize = World::DefaultMapSize)
 	{
@@ -123,9 +132,7 @@ public:
 			" [Time] = " + std::to_string(TestClock.getElapsedTime().asMilliseconds()) + " milisecs ");
 	}
 	void buildWorld(size_t WorldSize = World::DefaultWorldSize,unsigned Seed = 1)
-	{
-
-	}
+	{}
 
 
 	bool placeObject(sf::Vector2u tile, unsigned ObjectId)

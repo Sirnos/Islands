@@ -448,7 +448,7 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 		window.draw(shp);
 }
 
-Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned PlayerPickUpItemsRange,unsigned MaxTileDrawRange)
+Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	:Player(sf::RectangleShape{sf::Vector2f(48,64)}, sf::Vector2f(), 20.0f, 10.0f, 5.0f)
 {
 	ErrorHandler::clearLogFile();
@@ -464,7 +464,7 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	Crafting.usePlayerRecipes();
 	Crafting.AssingItemDef(Items);
 
-	LyingItems.init(MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(PlayerPickUpItemsRange, PlayerPickUpItemsRange)));
+	LyingItems.init(v1.MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(v1.PlayerPickUpItemsRange, v1.PlayerPickUpItemsRange)));
 	TileDrawRange = MaxTileDrawRange;
 
 	std::vector<StructureDef> StructuresDef;
@@ -476,13 +476,15 @@ Engine::Engine(unsigned LocalMapSize,unsigned MaxNumberOfLyingItems,unsigned Pla
 	GameComponentsLoader::LoadLocalMapVariables(MapsDef);
 	std::vector<LocalMapVariables> MapsVars = makeFromDef::makeLocalMapVars(MapsDef, *Objects, Structures);
 
+	GWorldManager.setStructuresAmountInLocalMap(v1.StructuresPerLocalMap);
+
 	GWorldManager.AssingClock(GameClock);
 	GWorldManager.AssingItemsDef(Items);
 	GWorldManager.AssingObjectsDef(Objects);
 	GWorldManager.AssingStructures(Structures);
 	GWorldManager.AssingWorld(GameWorld);
 	GWorldManager.AssingLocalMapsBuilderVars(MapsVars);
-	GWorldManager.buildLocalMap(TerrainType::Grass, LocalMapSize);
+	GWorldManager.buildLocalMap(TerrainType::Grass, v1.LocalMapSize);
 }
 
 Engine::~Engine()

@@ -9,10 +9,8 @@ int main()
 {
 	EngineVars Vars;
 
-	IslandApp app{ sf::VideoMode(Vars.Video.WindowSize.x,Vars.Video.WindowSize.y,Vars.Video.BitsPerPixel)
-		,Vars.Video.FrameRate,Vars.Video.VerticalSync,Vars.Video.Windowed };
-	Engine IslandEngine{ Vars.Game.LocalMapSize,Vars.Game.MaxNumberOfLyingItems,
-		Vars.Game.PlayerPickUpItemsRange,Vars.Render.TileDrawRange };
+	IslandApp app{ Vars.Video };
+	Engine IslandEngine{ Vars.Game, Vars.Render.TileDrawRange };
 
 	bool isClick = false;
 	char lastKey = 'U';
