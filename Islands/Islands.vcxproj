@@ -155,6 +155,7 @@
     <ClInclude Include="ObjectDef.hpp" />
     <ClInclude Include="PlayerEntity.hpp" />
     <ClInclude Include="Gui.hpp" />
+    <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="Recipe.hpp" />
     <ClInclude Include="SFMLTypesFromText.hpp" />
     <ClInclude Include="Structure.hpp" />

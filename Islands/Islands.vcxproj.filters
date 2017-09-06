@@ -158,6 +158,9 @@
     <ClInclude Include="LimitedVar.hpp">
       <Filter>Header Files\other</Filter>
     </ClInclude>
+    <ClInclude Include="RandomNumberGenerator.hpp">
+      <Filter>Header Files\other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">

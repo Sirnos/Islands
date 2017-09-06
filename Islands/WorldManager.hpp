@@ -1,11 +1,10 @@
 #pragma once
 
 #include <SFML/System/Clock.hpp>
+#include <memory>
 #include <noise/noise.h>
 
-#include <ctime>
-#include <memory>
-
+#include "RandomNumberGenerator.hpp"
 #include "ErrorHandler.hpp"
 #include "DefContainer.hpp"
 #include "Object.hpp"
@@ -65,7 +64,9 @@ public:
 		sf::Clock TestClock;
 
 		noise::module::Perlin noiseModule;
-		noiseModule.SetSeed(static_cast<int>(time(time_t(NULL))));
+
+		IntegerGenerator<unsigned> Gen;
+		noiseModule.SetSeed(Gen.get(1, std::numeric_limits<unsigned>::max() - 1));
 		noiseModule.SetOctaveCount(6);
 		noiseModule.SetFrequency(1.0);
 		noiseModule.SetPersistence(0.25);
@@ -197,6 +198,7 @@ public:
 			{
 				if (tile.y >= ManagementWorld->getLocalMapSize()) { break; }
 
+				ManagementWorld->removeLocalMapTileObject(tile);
 				placeObject(tile, y);
 				tile.y++;
 			}
