@@ -13,10 +13,13 @@ struct LocalMapVariablesDef
 	std::vector<std::pair<TerrainType, float>> TerrainTiles;
 	std::vector<std::tuple<std::string, float, TerrainType>> SpawnableObjects;
 	std::vector<std::pair<std::string, float>> SpawnableEntities;
-	std::vector<std::pair<std::string, float >> SpawnableStructures;
+	std::vector<std::pair<std::string, unsigned >> SpawnableStructures;
 
 
-	LocalMapVariablesDef() { Biome = TerrainType::Null; }
+	LocalMapVariablesDef()
+		:Biome(TerrainType::Null)
+	{}
+	~LocalMapVariablesDef() = default;
 };
 
 struct LocalMapVariables
@@ -25,7 +28,10 @@ struct LocalMapVariables
 	std::vector<std::pair<TerrainType, float>> TerrainTiles;
 	std::vector<std::tuple<size_t, float, TerrainType>> SpawnableObjects;
 	std::vector<std::pair<size_t, float>> SpawnableEntities;
-	std::vector<std::pair<size_t, float >> SpawnableStructures;
+	std::vector<std::pair<size_t, unsigned >> SpawnableStructures;
 
-	LocalMapVariables() { Biome = TerrainType::Null; }
+	LocalMapVariables()
+		:Biome(TerrainType::Null)
+	{}
+	~LocalMapVariables() = default;
 };

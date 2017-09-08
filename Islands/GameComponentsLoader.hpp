@@ -402,7 +402,17 @@ public:
 					}
 					else if(BiomeVarsName == "Structures")
 					{
+						rapidxml::xml_node<> *Structures = BiomeVars->first_node();
+						for (Structures; Structures != nullptr; Structures = Structures->next_sibling())
+						{
+							Vars.back().SpawnableStructures.push_back(std::pair<std::string, unsigned>());
+							Yield strct = getYieldFromString(std::string(Structures->value()));
+							if(strct.first != "" && strct.second != 0)
+							{
+								Vars.back().SpawnableStructures.back() = strct;
+							}
 
+						}
 					}
 					else if(BiomeVarsName == "Flora")
 					{

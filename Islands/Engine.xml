@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <EngineVars>
   <Video>
-    <Resolution>1280,1024</Resolution>
+    <Resolution>1920,1084</Resolution>
     <BitsPerPixel>32</BitsPerPixel>
     <Framerate>60</Framerate>
     <VerticalSync>1</VerticalSync><!--1 is true, 0 is false-->
     <Windowed>0</Windowed><!--as above-->
   </Video>
   <Render>
-    <TileDrawRange>30</TileDrawRange>
+    <TileDrawRange>24</TileDrawRange>
   </Render>
   <Game>
     <GlobalMapSize>0</GlobalMapSize>
-    <LocalMapSize>512</LocalMapSize>
+    <LocalMapSize>256</LocalMapSize>
     <MaxNumberOfLyingItems>64</MaxNumberOfLyingItems>
     <PlayerPickUpItemsRange>128</PlayerPickUpItemsRange><!--In pixels-->
-	<StructuresPerLocalMap>4</StructuresPerLocalMap>
+	<StructuresPerLocalMap>6</StructuresPerLocalMap>
   </Game>
 </EngineVars>

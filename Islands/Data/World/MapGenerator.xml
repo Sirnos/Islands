@@ -10,6 +10,7 @@
 			</Tile>
 		</Terrain>
 		<Structures>
+      <li>Ruin,30</li>
 		</Structures>
 		<Flora>
 			<Object name="Tree">

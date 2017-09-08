@@ -127,6 +127,25 @@ public:
 					}
 				}
 			}
+
+			size_t PlacedStructures = 0;
+			while (PlacedStructures <= StructuresPerLocalMap)
+			{
+				sf::Vector2u structurePosition;
+				structurePosition.x = Gen.get(0, ManagementWorld->getLocalMapSize());
+				structurePosition.y = Gen.get(0, ManagementWorld->getLocalMapSize());
+
+				unsigned dice = Gen.get(0, 100);
+				for (auto const & i : LocalMapsBuilderVars[match].SpawnableStructures)
+				{
+					if (dice <= i.second )
+					{
+						placeStructure(structurePosition, i.first);
+						PlacedStructures++;
+					}
+				}
+			}
+
 		}
 
 		ErrorHandler::logToFile("Generate Local Map [Size] = " + std::to_string(ManagementWorld->getLocalMapSize()) +

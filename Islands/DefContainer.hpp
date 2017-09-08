@@ -169,11 +169,11 @@ namespace makeFromDef
 			}
 			for (auto & istructures : i.SpawnableStructures)
 			{
-				ret.back().SpawnableStructures.push_back(std::pair<size_t, float>());
-				size_t structId = 0;
-				float structChance = istructures.second;
+				ret.back().SpawnableStructures.push_back(std::pair<size_t, unsigned>());
+				size_t structId = -1;
+				unsigned structChance = istructures.second;
 
-				for (size_t i = 0u; i < Structs.size(); i++)
+				for (size_t i = 0; i < Structs.size(); i++)
 				{
 					if (istructures.first == Structs[i].getName())
 					{
@@ -182,13 +182,13 @@ namespace makeFromDef
 					}
 				}
 
-				if (structId == 0)
+				if (structId == -1)
 				{
 					ret.back().SpawnableStructures.pop_back();
 				}
 				else
 				{
-					ret.back().SpawnableStructures.back() = std::pair<size_t, float>(structId, structChance);
+					ret.back().SpawnableStructures.back() = std::pair<size_t, unsigned>(structId, structChance);
 				}
 			}
 		}
