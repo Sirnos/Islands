@@ -14,12 +14,11 @@ class CraftingSystem
 	unsigned SelectedRecipe;
 	unsigned CraftAmount;
 public:
-	CraftingSystem() 
-	{
-		CraftAmount = 1;
-		SelectedRecipe = 0;
-	}
-	~CraftingSystem(){}
+	CraftingSystem()
+		:CraftAmount(1),SelectedRecipe(0)
+	{}
+	CraftingSystem(const CraftingSystem& other) = delete;
+	~CraftingSystem() = default;
 
 	void AssingItemDef(std::shared_ptr<ItemDefContainer> &ItemsDef)
 	{

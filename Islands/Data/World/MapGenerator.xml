@@ -17,7 +17,7 @@
 				<Chance>0.05</Chance>
 				<SpawnOn>Grass</SpawnOn>
 			</Object>
-			<Object name="Bush">
+			<Object name="Shrub">
 				<Chance>0.1</Chance>
 				<SpawnOn>Grass</SpawnOn>
 			</Object>

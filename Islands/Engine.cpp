@@ -426,12 +426,21 @@ void Engine::drawTile(TerrainType &preTile,sf::Vector2u tileIndex, sf::RenderWin
 	window.draw(shp);
 }
 
-void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
+void Engine::drawObject(size_t &preObjectId,sf::Vector2u objectIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
 {
 	unsigned ObjectID = GameWorld->getLocalMapTileObjectId(objectIndex);
 	if (ObjectID == 0) { return; }
 	if (ObjectID > Objects->getSize()) { return; }
 
+	shp.setPosition(sf::Vector2f(World::getNormalPosition(static_cast<sf::Vector2i>(objectIndex))));
+	if(preObjectId != ObjectID)
+	{
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::ObjectTextures, ObjectID), true);
+	}
+	preObjectId = ObjectID;
+	window.draw(shp);
+
+	/*
 	int sizeY = Objects->getDefinition(ObjectID)->getSize().y;
 	if (sizeY < 0)
 	{
@@ -442,10 +451,7 @@ void Engine::drawObject(sf::Vector2u objectIndex, sf::RenderWindow & window, sf:
 		shp.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 		return;
 	}
-
-		shp.setPosition(sf::Vector2f(World::getNormalPosition(static_cast<sf::Vector2i>(objectIndex))));
-		shp.setTexture(mediaContainer.getTexture(TextureContainer::ObjectTextures, ObjectID), true);
-		window.draw(shp);
+	*/
 }
 
 Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
@@ -716,6 +722,7 @@ void Engine::drawWorld(IslandApp & app)
 	int iTileDrawRange = static_cast<int>(TileDrawRange);
 	int MapSize = static_cast<int>(GameWorld->getLocalMapSize());
 	TerrainType preTile = TerrainType::Null;
+	size_t preObjectId = 0;
 
 	for (int i = PlayerPosToTile.x - iTileDrawRange; i < PlayerPosToTile.x + iTileDrawRange + 1; i++)
 	{
@@ -725,8 +732,8 @@ void Engine::drawWorld(IslandApp & app)
 		{
 			if (j < 0) { continue; }
 			if (j > MapSize - 1) { break; }
-			drawTile(preTile,static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
-			drawObject(static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), ObjectShape);
+			drawTile(preTile, static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
+			drawObject(preObjectId, static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), ObjectShape);
 			updateTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)));
 		}
 	}

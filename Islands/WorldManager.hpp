@@ -111,18 +111,37 @@ public:
 		}
 		else
 		{
+			float chanceForObjectSpawn = 0.0f;
+			FloatGenerator<float> RandomFloat;
+
 			for (size_t x = 0; x < ManagementWorld->getLocalMapSize(); x++)
 			{
 				for (size_t y = 0; y < ManagementWorld->getLocalMapSize(); y++)
 				{
 					noise = noiseModule.GetValue(1.25 + (0.1 * x), 0.75 + (0.1 * y), 0.5);
 					ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), TerrainType::Water);
-					for (auto & terrainChance : LocalMapsBuilderVars[match].TerrainTiles)
+					for (const auto & terrainChance : LocalMapsBuilderVars[match].TerrainTiles)
 					{
 						if (noise > terrainChance.second)
 						{
 							ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), terrainChance.first);
 							break;
+						}
+					}
+
+					for (const auto & SpawnObject : LocalMapsBuilderVars[match].SpawnableObjects)
+					{
+						size_t ObjectId = std::get<size_t>(SpawnObject);
+						float ObjectSpawnChance = std::get<float>(SpawnObject);
+						TerrainType ObjectTerrain = std::get<TerrainType>(SpawnObject);
+
+						if (ManagementWorld->getLocalMapTileTerrain(sf::Vector2u(x, y)) == ObjectTerrain)
+						{
+							chanceForObjectSpawn = RandomFloat.get(0.01f, 1.0f);
+							if (chanceForObjectSpawn <= ObjectSpawnChance)
+							{
+								placeObject(sf::Vector2u(x, y), ObjectId);
+							}
 						}
 					}
 				}

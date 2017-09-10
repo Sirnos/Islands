@@ -71,4 +71,11 @@
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>Pebble,8</Ifdestroyed>
   </Object>
+  <Object name="HighGrass">
+    <Size>1,1</Size>
+    <Graphics>144,48,16,16</Graphics>
+    <Collision>0,0,0,0</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>SELF,1</Ifdestroyed>
+  </Object>
 </Objects>

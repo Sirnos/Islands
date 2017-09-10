@@ -7,16 +7,16 @@ struct ItemField
 	unsigned ItemId;
 	unsigned ItemAmount;
 
-	ItemField() { ItemId = 0; ItemAmount = 0; }
+	ItemField()
+		:ItemId(0),ItemAmount(0)
+	{}
 	ItemField(unsigned newItemId, unsigned newItemAmount)
-		:ItemId(newItemId),
-		ItemAmount(newItemAmount)
+		:ItemId(newItemId),ItemAmount(newItemAmount)
 	{}
 	ItemField(const ItemField &other)
-	{
-		ItemId = other.ItemId;
-		ItemAmount = other.ItemAmount;
-	}
+		:ItemId(other.ItemId),ItemAmount(other.ItemAmount)
+	{}
+	~ItemField() = default;
 
 	ItemField &operator= (const ItemField &other)
 	{
@@ -54,7 +54,7 @@ struct ItemField
 	}
 	bool isCorrect()
 	{
-		if (ItemAmount == 0 && ItemId != 0)
+		if ((ItemAmount == 0 || ItemAmount == -1) && ItemId != 0)
 		{
 			return false;
 		}

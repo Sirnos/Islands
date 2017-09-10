@@ -8,13 +8,13 @@
     <Windowed>0</Windowed><!--as above-->
   </Video>
   <Render>
-    <TileDrawRange>24</TileDrawRange>
+    <TileDrawRange>16</TileDrawRange>
   </Render>
   <Game>
     <GlobalMapSize>0</GlobalMapSize>
     <LocalMapSize>256</LocalMapSize>
     <MaxNumberOfLyingItems>64</MaxNumberOfLyingItems>
     <PlayerPickUpItemsRange>128</PlayerPickUpItemsRange><!--In pixels-->
-	<StructuresPerLocalMap>6</StructuresPerLocalMap>
+	  <StructuresPerLocalMap>6</StructuresPerLocalMap>
   </Game>
 </EngineVars>
