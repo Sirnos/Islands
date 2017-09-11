@@ -74,11 +74,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\LIBCPP\SFML-2.4.0\include;E:\LIBCPP\libnoise\include;E:\LIBCPP\rapidxml-1.13;E:\LIBCPP\boost_1_63_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\cpplibs\SFML-2.4.0\include;C:\cpplibs\libnoise\include;C:\cpplibs\rapidxml-1.13;C:\cpplibs\boost_1_63_0</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++14 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>E:\LIBCPP\SFML-2.4.0\lib;E:\LIBCPP\libnoise\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\cpplibs\SFML-2.4.0\lib;C:\cpplibs\libnoise\bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>libnoise.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -180,9 +180,15 @@
     </Xml>
     <Xml Include="Data\PlayerRecipes.xml" />
     <Xml Include="Data\Terrain.xml" />
-    <Xml Include="Data\World\MapGenerator.xml" />
-    <Xml Include="Data\World\Structures.xml" />
-    <Xml Include="Data\World\Structures\Ruin.xml" />
+    <Xml Include="Data\World\MapGenerator.xml">
+      <SubType>Designer</SubType>
+    </Xml>
+    <Xml Include="Data\World\Structures.xml">
+      <SubType>Designer</SubType>
+    </Xml>
+    <Xml Include="Data\World\Structures\Ruin.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="Engine.xml" />
   </ItemGroup>
   <ItemGroup>

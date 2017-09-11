@@ -642,6 +642,12 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 									LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, item);
 								}
 							}
+							
+
+							for (const auto & Item : GWorldManager.getLocalMapTileObjectAsItems(objectPos))
+							{
+								LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, Item);
+							}
 							GameWorld->removeLocalMapTileObject(objectPos);
 							break;
 						}

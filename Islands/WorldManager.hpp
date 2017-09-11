@@ -248,6 +248,24 @@ public:
 	}
 
 
+	std::vector<ItemField> getLocalMapTileObjectAsItems(sf::Vector2u tile)
+	{
+		std::vector<ItemField> ret;
+		if (ManagementWorld->getLocalMapTileObject(tile) != nullptr)
+		{
+			if (ManagementWorld->getLocalMapTileObject(tile)->type == ObjectType::Chest)
+			{
+				for (const auto & chestItem : dynamic_cast<ChestObject*>(ManagementWorld->getLocalMapTileObject(tile))->Contain)
+				{
+					ret.push_back(chestItem);
+				}
+			}
+		}
+
+		return ret;
+	}
+
+
 	sf::IntRect getLocalMapTileCollisionBox(sf::Vector2u tile)
 	{
 		if (!sf::Rect<unsigned>(sf::Vector2u(), sf::Vector2u(ManagementWorld->getLocalMapSize(),

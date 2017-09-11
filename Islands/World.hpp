@@ -68,6 +68,7 @@ public:
 			LocalMap[tile.x][tile.y].TileObject = nullptr;
 		}
 	}
+
 	void setLocalMapTileObject(sf::Vector2u tile, Object* objectToSet)
 	{
 		LocalMap[tile.x][tile.y].TileObject = objectToSet;
