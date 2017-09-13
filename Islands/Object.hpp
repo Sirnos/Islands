@@ -32,7 +32,7 @@ struct ChestObject : Object
 	{
 		Contain.resize(ChestSize);
 	}
-	ChestObject(unsigned objectId, std::vector<ItemField> &otherContainer)
+	ChestObject(unsigned objectId,const std::vector<ItemField> &otherContainer)
 		:Object(objectId, ObjectType::Chest), Contain(otherContainer){}
 
 	~ChestObject()
@@ -44,6 +44,6 @@ struct ChestObject : Object
 struct CraftingPlaceObject : Object
 {
 	std::vector<Recipe> Recipes;
-	CraftingPlaceObject(unsigned objectId, std::vector<Recipe> &ObjectRecipes)
+	CraftingPlaceObject(unsigned objectId,const std::vector<Recipe> &ObjectRecipes)
 		:Object(objectId, ObjectType::CraftingPlace), Recipes(ObjectRecipes){}
 };

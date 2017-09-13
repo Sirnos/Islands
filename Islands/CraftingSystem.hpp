@@ -20,7 +20,7 @@ public:
 	CraftingSystem(const CraftingSystem& other) = delete;
 	~CraftingSystem() = default;
 
-	void AssingItemDef(std::shared_ptr<ItemDefContainer> &ItemsDef)
+	void AssingItemDef(const std::shared_ptr<ItemDefContainer> &ItemsDef)
 	{
 		this->ItemsDef = ItemsDef;
 	}
@@ -30,12 +30,12 @@ public:
 		AvailableRecipes.pop_back();
 		clearPlayerSelects();
 	}
-	void AddNewRecipes(std::vector<Recipe> & recs)
+	void AddNewRecipes(const std::vector<Recipe> & recs)
 	{
 		for (auto & i : recs) { AvailableRecipes.push_back(i); }
 		clearPlayerSelects();
 	}
-	void AssingRecipes(std::vector<Recipe> & recs)
+	void AssingRecipes(const std::vector<Recipe> & recs)
 	{
 		AvailableRecipes = recs;
 	}

@@ -9,12 +9,11 @@ struct MapTile
 	Object * TileObject;
 
 	MapTile()
-	{
-		Terrain = TerrainType::Null;
-		TileObject = nullptr;
-	}
+		:Terrain(TerrainType::Null), TileObject(nullptr)
+	{}
 	MapTile(const MapTile & other)
-		:Terrain(other.Terrain), TileObject(nullptr){}
+		:Terrain(other.Terrain), TileObject(nullptr)
+	{}
 	~MapTile()
 	{
 		if (TileObject != nullptr) { delete TileObject; }

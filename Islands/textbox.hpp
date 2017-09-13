@@ -4,14 +4,22 @@
 
 class textbox
 {
-	size_t MAX_TEXT_SIZE = 32;
+	size_t MAX_TEXT_SIZE;
 
-	bool IsEnable = false;
-	bool IsConstant = false;
+	bool IsEnable;
+	bool IsConstant;
 	std::string String;
 	sf::Text TXBOX_text;
 
 public:
+	textbox()
+		:MAX_TEXT_SIZE(32),IsEnable(false),IsConstant(false)
+	{}
+	textbox(const textbox &other)
+		:MAX_TEXT_SIZE(other.MAX_TEXT_SIZE),IsEnable(other.IsEnable),IsConstant(other.IsConstant),String(other.String),TXBOX_text(other.TXBOX_text)
+	{}
+	~textbox() = default;
+
 	//Return String when player press Return(Enter)
 	//Else return empty string
 	std::string operator()(sf::Event &event)
@@ -88,7 +96,6 @@ public:
 	void switchEnable()
 	{
 		IsEnable = !IsEnable;
-
 	}
 	bool getIsEnable() { return IsEnable; }
 

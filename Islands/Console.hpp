@@ -18,16 +18,14 @@ class Console
 	bool enable;
 public:
 	Console()
+		:lastHistoryCmd(0), enable(true)
 	{
 		ConsoleWindow.setSize(sf::Vector2f(400, 600));
 		ConsoleWindow.setFillColor(sf::Color(36, 10, 92, 120));
-		
+
 		ConsoleInput.changeVars(sf::Color::White, 16, sf::Text::Style::Regular);
 		ConsoleFont.loadFromFile("Data/Fonts/ariali.ttf");
 		ConsoleInput.create(ConsoleFont, false, "Type you command here! ", 64);
-
-		lastHistoryCmd = 0;
-		enable = true;
 	}
 	~Console()
 	{
@@ -72,7 +70,7 @@ public:
 	void setCurrentText(std::string text) { ConsoleInput.setString(text); }
 
 	size_t getCommandsSize() { return commands.size(); }
-	void pushText(std::string &text) { commands.push_back(text); }
+	void pushText(std::string text) { commands.push_back(text); }
 	std::string getText(unsigned index) { return commands[index]; }
 	std::string getLastText() { return commands.back(); }
 

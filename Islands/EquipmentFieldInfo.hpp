@@ -33,8 +33,10 @@ struct EquipmentFieldInfo
 	}
 
 	EquipmentFieldInfo()
-	{
-		Position = sf::Vector2f(0, 0);
-		isHover = false;
-	}
+		:isHover(false)
+	{}
+	EquipmentFieldInfo(const EquipmentFieldInfo &other)
+		:Position(other.Position),isHover(false),ScreenPosition(other.ScreenPosition)
+	{}
+	~EquipmentFieldInfo() = default;
 };
