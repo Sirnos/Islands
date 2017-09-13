@@ -161,6 +161,12 @@
     <ClInclude Include="RandomNumberGenerator.hpp">
       <Filter>Header Files\other</Filter>
     </ClInclude>
+    <ClInclude Include="EntityDef.hpp">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityBehauvior.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">

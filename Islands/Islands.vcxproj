@@ -137,6 +137,8 @@
     <ClInclude Include="DefContainer.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="EngineVars.hpp" />
+    <ClInclude Include="EntityBehauvior.hpp" />
+    <ClInclude Include="EntityDef.hpp" />
     <ClInclude Include="EntityStats.hpp" />
     <ClInclude Include="EquipmentFieldInfo.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />

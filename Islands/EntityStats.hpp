@@ -10,9 +10,6 @@ struct EntityStats
 	float Speed;
 
 	EntityStats(float EntityHP, float EntityMP, float EntitySpeed)
-		:HP(EntityHP),
-		MP(EntityMP)
-	{
-		Speed = EntitySpeed;
-	}
+		:HP(EntityHP),MP(EntityMP),Speed(EntitySpeed)
+	{}
 };
