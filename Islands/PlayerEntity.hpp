@@ -4,7 +4,6 @@
 #include "PlayerInventory.hpp"
 
 
-
 class PlayerEntity :public Entity
 {
 	sf::Vector2f spawnPoint;

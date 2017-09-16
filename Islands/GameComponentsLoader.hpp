@@ -7,6 +7,7 @@
 
 #include "SFMLTypesFromText.hpp"
 #include "DefContainer.hpp"
+#include "EntityDef.hpp"
 
 class GameComponentsLoader
 {
@@ -72,7 +73,7 @@ class GameComponentsLoader
 	}
 
 public:
-	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects,std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
+	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects, std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
 	{
 		Objects.push_back(new ObjectDef());
 		Textures.push_back(sf::IntRect());
@@ -187,7 +188,7 @@ public:
 		Items.shrink_to_fit();
 	}
 
-	static void LoadItemDefFromFile(std::vector<ItemDef*> &Items,std::string &ItemsGraphicsFile,std::vector<sf::IntRect> &textures)
+	static void LoadItemDefFromFile(std::vector<ItemDef*> &Items, std::string &ItemsGraphicsFile,std::vector<sf::IntRect> &textures)
 	{
 		rapidxml::file<char> File("Data/Items.xml");
 		rapidxml::xml_document<> document;
@@ -447,6 +448,63 @@ public:
 
 					}
 				}
+			}
+		}
+	}
+
+	static void LoadEntitiesDefFromFile(std::vector<EntityDef> &Entities)
+	{
+		rapidxml::file<> File("Data/Entities.xml");
+		rapidxml::xml_document<> Doc;
+		Doc.parse<0>(File.data());
+
+		rapidxml::xml_node<> *BaseNode = Doc.first_node();
+		for (BaseNode; BaseNode != nullptr; BaseNode = BaseNode->next_sibling())
+		{
+			rapidxml::xml_node<> *EntitiesNode = BaseNode->first_node();
+			for (EntitiesNode; EntitiesNode != nullptr; EntitiesNode = EntitiesNode->next_sibling())
+			{
+				std::string EntityName;
+				float EntityHp = 0.0f;
+				float EntityMp = 0.0f;
+				float EntitySpeed = 0.0f;
+				sf::Vector2f EntitySize;
+
+				rapidxml::xml_node<> *EntityAttribs = EntitiesNode->first_node();
+				for (EntityAttribs; EntityAttribs != nullptr; EntityAttribs = EntityAttribs->next_sibling())
+				{
+					std::string AttribName = EntityAttribs->name();
+
+					if (AttribName == "Name")
+					{
+						EntityName = EntityAttribs->value();
+					}
+					else if(AttribName == "Size")
+					{
+						EntitySize = getVectorFromString<float>(std::string(EntityAttribs->value()));
+					}
+					else if(AttribName == "Stats")
+					{
+						rapidxml::xml_node<>* EntityStats = EntityAttribs->first_node();
+						for (EntityStats; EntityStats != nullptr; EntityStats = EntityStats->next_sibling())
+						{
+							std::string StatName = EntityStats->name();
+							if (StatName == "Hp")
+							{
+								EntityHp = std::stof(std::string(EntityStats->value()));
+							}
+							else if(StatName == "Mp")
+							{
+								EntityMp = std::stof(std::string(EntityStats->value()));
+							}
+							else if(StatName == "Speed")
+							{
+								EntitySpeed = std::stof(std::string(EntityStats->value()));
+							}
+						}
+					}
+				}
+				Entities.push_back(EntityDef(EntityName, EntitySize, EntityHp, EntityMp, EntityMp));
 			}
 		}
 	}

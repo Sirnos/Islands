@@ -28,6 +28,9 @@ void Engine::loadGameComponents()
 	std::vector<sf::Rect<int>> terrainTextureCords;
 	GameComponentsLoader::LoadTerrainTextureCoords(terrainTextureCords);
 	mediaContainer.pushTextures(TextureContainer::TerrainTextures, objectGraphicsfile, terrainTextureCords);
+
+	GameComponentsLoader::LoadEntitiesDefFromFile(*Entities.get());
+
 }
 
 void Engine::checkPlayerEnvironment()

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entities>
+	<Entity>
+		<Name>Player</Name>
+		<Size>48,64</Size>
+		<Stats>
+			<Hp>20</Hp>
+			<Mp>10</Mp>
+			<Speed>5</Speed>
+		</Stats>
+	</Entity>
+	<Entity>
+		<Name>Cow</Name>
+		<Size>64,48</Size>
+		<Stats>
+			<Hp>6</Hp>
+			<Mp>2</Mp>
+			<Speed>4</Speed>
+		</Stats>
+		<Behauvior>
+			<Agressive>0</Agressive>
+			<CanGroup>1</CanGroup>
+			<GroupSize>4</GroupSize>
+			<AttackType>Melee</AttackType>
+		</Behauvior>
+	</Entity>
+</Entities>
