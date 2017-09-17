@@ -32,7 +32,7 @@ class Engine
 	std::shared_ptr<World> GameWorld{ new World };
 	std::shared_ptr<ObjectDefContainer> Objects{ new ObjectDefContainer };
 	std::shared_ptr<ItemDefContainer> Items{ new ItemDefContainer };
-	std::shared_ptr<std::vector<EntityDef>> Entities{ new std::vector<EntityDef> };
+	std::shared_ptr<EntityDefContainer> Entities{ new EntityDefContainer };
 
 
 	Media mediaContainer;

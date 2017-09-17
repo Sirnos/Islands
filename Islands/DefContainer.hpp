@@ -5,9 +5,10 @@
 #include "LocalMapVariables.hpp"
 #include "ItemDef.hpp"
 #include "ObjectDef.hpp"
+#include "EntityDef.hpp"
 #include <vector>
 
-template<typename DefType>
+template<typename DefType,typename = typename std::enable_if<std::is_pointer<DefType>::value,DefType>::type>
 class DynamicDefContainer
 {
 	std::vector<DefType> Container;
@@ -15,9 +16,9 @@ public:
 	DynamicDefContainer() = default;
 	~DynamicDefContainer()
 	{
-		for (size_t i = 0; i < Container.size(); i++)
+		for (const auto & elem : Container)
 		{
-			delete Container[i];
+			delete elem;
 		}
 		Container.clear();
 	}
@@ -58,8 +59,56 @@ public:
 	}
 };
 
+template<typename DefType>
+class StaticDefContainer
+{
+	std::vector<DefType> Container;
+public:
+	StaticDefContainer() = default;
+	StaticDefContainer(const StaticDefContainer &other) = delete;
+	~StaticDefContainer() = default;
+
+	size_t getSize() { return Container.size(); }
+
+	const DefType &getDefinition(unsigned index)
+	{
+		return Container[index];
+	}
+	const DefType &getDefinition(const std::string &defName)
+	{
+		for (const auto &elem : Container)
+		{
+			if (elem.getName() == defName)
+			{
+				return elem;
+			}
+		}
+		return Container.front();
+	}
+
+	unsigned getDefIdbyName(const std::string &defName)
+	{
+		for (size_t i = 0; i < getSize(); i++)
+		{
+			if (Container[i].getName() == defName)
+			{
+				return i;
+			}
+			return 0;
+		}
+	}
+
+	std::vector<DefType> &getContainer() { return Container; }
+
+	void pushNewDef(const DefType &def)
+	{
+		Container.push_back(def);
+	}
+};
+
 typedef DynamicDefContainer<ItemDef*> ItemDefContainer;
 typedef DynamicDefContainer<ObjectDef*> ObjectDefContainer;
+typedef StaticDefContainer <EntityDef> EntityDefContainer;
 
 namespace makeFromDef
 {
@@ -194,4 +243,5 @@ namespace makeFromDef
 		}
 		return ret;
 	}
+
 }

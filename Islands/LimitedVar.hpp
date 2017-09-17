@@ -1,10 +1,10 @@
 #pragma once
 
-template<typename T>
+template<typename T,typename = typename std::enable_if<std::is_arithmetic<T>::value,T>::type>
 class LimitedVar
 {
 	T Var;
-	const T Limit;
+	T Limit;
 
 	void _round()
 	{
@@ -79,4 +79,15 @@ public:
 
 	T getVar() { return Var; }
 	T getLimit() { return Limit; }
+
+	void setVar(T newVar)
+	{
+		Var = newVar;
+		_round();
+	}
+	void setLimit(T newLimit)
+	{
+		Limit = newLimit;
+		_round();
+	}
 };

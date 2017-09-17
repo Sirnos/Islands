@@ -7,7 +7,6 @@
 
 #include "SFMLTypesFromText.hpp"
 #include "DefContainer.hpp"
-#include "EntityDef.hpp"
 
 class GameComponentsLoader
 {

@@ -29,8 +29,11 @@ void Engine::loadGameComponents()
 	GameComponentsLoader::LoadTerrainTextureCoords(terrainTextureCords);
 	mediaContainer.pushTextures(TextureContainer::TerrainTextures, objectGraphicsfile, terrainTextureCords);
 
-	GameComponentsLoader::LoadEntitiesDefFromFile(*Entities.get());
+	sf::Clock entitiesDefLoadClock;
+	GameComponentsLoader::LoadEntitiesDefFromFile(Entities.get()->getContainer());
 
+	ErrorHandler::logToFile("Load Entities Definitions [Size] = " + std::to_string(Entities->getSize()) +
+		" [Time] = " + std::to_string(entitiesDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
 }
 
 void Engine::checkPlayerEnvironment()
@@ -461,9 +464,10 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	:Player(sf::RectangleShape{sf::Vector2f(48,64)}, sf::Vector2f(), 20.0f, 10.0f, 5.0f)
 {
 	ErrorHandler::clearLogFile();
-
 	loadGameComponents();
 
+
+	Player.Stats = Entities->getContainer().front().getStats();
 	spawnPlayer();
 	Player.pushTexture(mediaContainer.getTexture(TextureContainer::CharacterTextures, 1));
 
