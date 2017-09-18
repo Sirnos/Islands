@@ -16,5 +16,6 @@ struct EntityStats
 	EntityStats(const EntityStats &other)
 		:HP(other.HP),MP(other.MP),Speed(other.Speed)
 	{}
+
 	~EntityStats() = default;
 };

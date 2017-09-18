@@ -164,7 +164,7 @@
     <ClInclude Include="EntityDef.hpp">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
-    <ClInclude Include="EntityBehauvior.hpp">
+    <ClInclude Include="EntityBehavior.hpp">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>

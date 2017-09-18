@@ -14,6 +14,7 @@ class DynamicDefContainer
 	std::vector<DefType> Container;
 public:
 	DynamicDefContainer() = default;
+	DynamicDefContainer(const DynamicDefContainer & other) = delete;
 	~DynamicDefContainer()
 	{
 		for (const auto & elem : Container)
@@ -109,6 +110,7 @@ public:
 typedef DynamicDefContainer<ItemDef*> ItemDefContainer;
 typedef DynamicDefContainer<ObjectDef*> ObjectDefContainer;
 typedef StaticDefContainer <EntityDef> EntityDefContainer;
+typedef StaticDefContainer <MonsterEntityDef> MonsterDefContainer;
 
 namespace makeFromDef
 {
@@ -243,5 +245,4 @@ namespace makeFromDef
 		}
 		return ret;
 	}
-
 }

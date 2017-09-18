@@ -4,9 +4,11 @@
 #include <string>
 
 #include "EntityStats.hpp"
+#include "EntityBehavior.hpp"
 
 class EntityDef
 {
+protected:
 	EntityStats Stats;
 
 	sf::Vector2f EntitySize;
@@ -21,6 +23,9 @@ public:
 	EntityDef(const std::string &Name, sf::Vector2f Size, float Hp, float Mp, float Speed)
 		:Stats(Hp, Mp, Speed), EntityName(Name), EntitySize(Size)
 	{}
+	EntityDef(const std::string &Name, const EntityStats &stats, sf::Vector2f size)
+		:EntityName(Name), Stats(stats), EntitySize(size)
+	{}
 	~EntityDef() = default;
 
 
@@ -28,4 +33,20 @@ public:
 	sf::Vector2f getSize() { return EntitySize; }
 	const EntityStats& getStats() { return Stats; }
 
+};
+
+class MonsterEntityDef : public EntityDef
+{
+	BehaviorVariables Behavior;
+
+public:
+	MonsterEntityDef() = delete;
+	MonsterEntityDef(const MonsterEntityDef &other)
+		:EntityDef(other.EntityName, other.Stats, other.EntitySize), Behavior(other.Behavior)
+	{}
+	MonsterEntityDef(const std::string &name, const EntityStats &stats, const BehaviorVariables &behavior, sf::Vector2f size)
+		:EntityDef(name, stats, size), Behavior(behavior)
+	{}
+
+	BehaviorVariables getBehavior() { return Behavior; }
 };
