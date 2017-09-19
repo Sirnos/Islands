@@ -509,9 +509,9 @@ public:
 						for (EntityBehaviorNode; EntityBehaviorNode != nullptr; EntityBehaviorNode = EntityBehaviorNode->next_sibling())
 						{
 							std::string BehaviorVarName = EntityBehaviorNode->name();
-							if (BehaviorVarName == "Agressive")
+							if (BehaviorVarName == "Aggressive")
 							{
-								EntityBehavior.agressive = std::stoul(std::string(EntityBehaviorNode->value()));
+								EntityBehavior.aggressive = std::stoul(std::string(EntityBehaviorNode->value()));
 							}
 							else if(BehaviorVarName == "CanGroup")
 							{

@@ -8,7 +8,7 @@ enum class AttackTypePrefer
 
 struct BehaviorVariables
 {
-	unsigned agressive;
+	unsigned aggressive;
 
 	unsigned maxGroupSize;
 	bool canLiveInGroup;
@@ -17,10 +17,10 @@ struct BehaviorVariables
 
 
 	BehaviorVariables()
-		:agressive(0), maxGroupSize(0), canLiveInGroup(false), attackPrefer(AttackTypePrefer::Melee)
+		:aggressive(0), maxGroupSize(0), canLiveInGroup(false), attackPrefer(AttackTypePrefer::Melee)
 	{}
 	BehaviorVariables(unsigned aggres, unsigned groupSize, bool canGroup, AttackTypePrefer attckPref)
-		:agressive(aggres), maxGroupSize(groupSize), canLiveInGroup(canGroup), attackPrefer(attckPref)
+		:aggressive(aggres), maxGroupSize(groupSize), canLiveInGroup(canGroup), attackPrefer(attckPref)
 	{}
 	BehaviorVariables(const BehaviorVariables &other) = default;
 	~BehaviorVariables() = default;
