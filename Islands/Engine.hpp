@@ -1,8 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <cstdlib>
-#include <ctime>
 
 #include "IslandApp.hpp"
 
@@ -32,7 +30,7 @@ class Engine
 	std::shared_ptr<World> GameWorld{ new World };
 	std::shared_ptr<ObjectDefContainer> Objects{ new ObjectDefContainer };
 	std::shared_ptr<ItemDefContainer> Items{ new ItemDefContainer };
-	std::shared_ptr<EntityDefContainer> Entities{ new EntityDefContainer };
+	std::shared_ptr<MonsterDefContainer> Entities{ new MonsterDefContainer };
 
 
 	Media mediaContainer;
@@ -70,6 +68,7 @@ class Engine
 
 public:
 	Engine(GameVars &v1, unsigned MaxTileDrawRange);
+	Engine(const Engine &other) = delete;
 	~Engine();
 
 	void operator()(IslandApp &app,char key,mouseWheel last,bool isMouseClick);

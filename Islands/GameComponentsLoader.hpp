@@ -451,7 +451,7 @@ public:
 		}
 	}
 
-	static void LoadEntitiesDefFromFile(std::vector<EntityDef> &Entities)
+	static void LoadEntitiesDefFromFile(std::vector<MonsterEntityDef> &Entities)
 	{
 		rapidxml::file<> File("Data/Entities.xml");
 		rapidxml::xml_document<> Doc;
@@ -468,6 +468,7 @@ public:
 				float EntityMp = 0.0f;
 				float EntitySpeed = 0.0f;
 				sf::Vector2f EntitySize;
+				BehaviorVariables EntityBehavior;
 
 				rapidxml::xml_node<> *EntityAttribs = EntitiesNode->first_node();
 				for (EntityAttribs; EntityAttribs != nullptr; EntityAttribs = EntityAttribs->next_sibling())
@@ -502,8 +503,38 @@ public:
 							}
 						}
 					}
+					else if(AttribName == "Behavior")
+					{
+						rapidxml::xml_node<>* EntityBehaviorNode = EntityAttribs->first_node();
+						for (EntityBehaviorNode; EntityBehaviorNode != nullptr; EntityBehaviorNode = EntityBehaviorNode->next_sibling())
+						{
+							std::string BehaviorVarName = EntityBehaviorNode->name();
+							if (BehaviorVarName == "Agressive")
+							{
+								EntityBehavior.agressive = std::stoul(std::string(EntityBehaviorNode->value()));
+							}
+							else if(BehaviorVarName == "CanGroup")
+							{
+								if (std::string(EntityBehaviorNode->value()) == "1")
+								{
+									EntityBehavior.canLiveInGroup = true;
+								}
+							}
+							else if(BehaviorVarName == "GroupSize")
+							{
+								EntityBehavior.maxGroupSize = std::stoul(std::string(EntityBehaviorNode->value()));
+							}
+							else if(BehaviorVarName == "AttackType")
+							{
+								if (std::string(EntityBehaviorNode->value()) == "Distance")
+								{
+									EntityBehavior.attackPrefer = AttackTypePrefer::Distance;
+								}
+							}
+						}
+					}
 				}
-				Entities.push_back(EntityDef(EntityName, EntitySize, EntityHp, EntityMp, EntityMp));
+				Entities.push_back(MonsterEntityDef(EntityName, EntityStats(EntityHp, EntityMp, EntitySpeed), EntityBehavior, EntitySize));
 			}
 		}
 	}

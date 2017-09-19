@@ -207,6 +207,9 @@
     <Xml Include="Data\World\MapGenerator.xml">
       <Filter>IslandData\World</Filter>
     </Xml>
+    <Xml Include="Data\Entities.xml">
+      <Filter>IslandData</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Items.xcf">

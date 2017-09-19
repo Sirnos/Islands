@@ -17,11 +17,11 @@
 			<Mp>2</Mp>
 			<Speed>4</Speed>
 		</Stats>
-		<Behauvior>
+		<Behavior>
 			<Agressive>0</Agressive>
 			<CanGroup>1</CanGroup>
 			<GroupSize>4</GroupSize>
 			<AttackType>Melee</AttackType>
-		</Behauvior>
+		</Behavior>
 	</Entity>
 </Entities>
