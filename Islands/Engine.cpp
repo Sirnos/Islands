@@ -106,16 +106,16 @@ void Engine::checkPlayerBehaviour(IslandApp &app)
 
 void Engine::spawnPlayer()
 {
-	const int MaxPosition = GameWorld->getLocalMapSize() - 10;
-
-	srand(static_cast<unsigned int>(time(NULL)));
+	IntegerGenerator<unsigned> Gen;
 	sf::Vector2f spawnPoint;
 
-		spawnPoint = sf::Vector2f(static_cast<float>(rand() % MaxPosition * 64),
-			static_cast<float>(rand() % MaxPosition * 64));
-			ErrorHandler::log(std::string("Spawn Player position:"));
-			ErrorHandler::log("Tile Y " + std::to_string(World::getTiledPosition(spawnPoint).y));
-			ErrorHandler::log("Tile X " + std::to_string(World::getTiledPosition(spawnPoint).x));
+	spawnPoint.x = static_cast<float>(Gen.get(1, GameWorld->getLocalMapSize()));
+	spawnPoint.y = static_cast<float>(Gen.get(1, GameWorld->getLocalMapSize()));
+	spawnPoint.x *= TILE_SIZE;
+
+	ErrorHandler::log(std::string("Spawn Player position:"));
+	ErrorHandler::log("Tile Y " + std::to_string(World::getTiledPosition(spawnPoint).y));
+	ErrorHandler::log("Tile X " + std::to_string(World::getTiledPosition(spawnPoint).x));
 
 	Player.setPosition(spawnPoint);
 	Player.setSpawnPoint(spawnPoint);
@@ -418,7 +418,7 @@ void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouse
 	}
 }
 
-void Engine::drawTile(TerrainType &preTile,sf::Vector2u tileIndex, sf::RenderWindow & window,sf::RectangleShape &shp)
+void Engine::drawTile(TerrainType &preTile, sf::Vector2u tileIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
 {
 	TerrainType TerrainType = GameWorld->getLocalMapTileTerrain(tileIndex);
 	if (TerrainType == TerrainType::Null) { return; }
@@ -427,7 +427,7 @@ void Engine::drawTile(TerrainType &preTile,sf::Vector2u tileIndex, sf::RenderWin
 	{
 		shp.setTexture(mediaContainer.getTexture(TextureContainer::TerrainTextures, static_cast<size_t>(TerrainType)));
 	}
-	
+
 	preTile = TerrainType;
 	window.draw(shp);
 }
@@ -466,11 +466,6 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	ErrorHandler::clearLogFile();
 	loadGameComponents();
 
-
-	Player.Stats = Entities->getContainer().front().getStats();
-	spawnPlayer();
-	Player.pushTexture(mediaContainer.getTexture(TextureContainer::CharacterTextures, 1));
-
 	std::vector<RecipeDef> PlayerRecipesDef;
 	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/Recipes/PlayerRecipes.xml");
 	Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(PlayerRecipesDef, *Items));
@@ -490,7 +485,6 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	std::vector<LocalMapVariables> MapsVars = makeFromDef::makeLocalMapVars(MapsDef, *Objects, Structures);
 
 	GWorldManager.setStructuresAmountInLocalMap(v1.StructuresPerLocalMap);
-
 	GWorldManager.AssingClock(GameClock);
 	GWorldManager.AssingItemsDef(Items);
 	GWorldManager.AssingObjectsDef(Objects);
@@ -498,6 +492,10 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	GWorldManager.AssingWorld(GameWorld);
 	GWorldManager.AssingLocalMapsBuilderVars(MapsVars);
 	GWorldManager.buildLocalMap(TerrainType::Grass, v1.LocalMapSize);
+
+	Player.Stats = Entities->getContainer().front().getStats();
+	spawnPlayer();
+	Player.pushTexture(mediaContainer.getTexture(TextureContainer::CharacterTextures, 1));
 }
 
 Engine::~Engine()
