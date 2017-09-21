@@ -95,8 +95,8 @@ public:
 			{
 				return i;
 			}
-			return 0;
 		}
+		return 0;
 	}
 
 	std::vector<DefType> &getContainer() { return Container; }

@@ -1,6 +1,6 @@
 #pragma once
 
-template<typename T,typename = typename std::enable_if<std::is_arithmetic<T>::value,T>::type>
+template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value,T>::type>
 class LimitedVar
 {
 	T Var;
@@ -14,6 +14,9 @@ class LimitedVar
 		}
 	}
 public:
+	LimitedVar()
+		:Var(0), Limit(std::numeric_limits<T>.max() - 1)
+	{}
 	LimitedVar(T Max)
 		:Limit(Max), Var(Max)
 	{}

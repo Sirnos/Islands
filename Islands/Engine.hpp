@@ -5,6 +5,7 @@
 #include "IslandApp.hpp"
 
 #include "WorldManager.hpp"
+#include "MonsterManager.hpp"
 
 #include "Gui.hpp"
 
@@ -26,6 +27,7 @@ class Engine
 	unsigned TileDrawRange;
 
 	WorldManager GWorldManager;
+	MonsterManager GMonsterManager;
 
 	std::shared_ptr<World> GameWorld{ new World };
 	std::shared_ptr<ObjectDefContainer> Objects{ new ObjectDefContainer };
@@ -47,7 +49,7 @@ class Engine
 	void loadGameComponents();
 
 	void checkPlayerEnvironment();
-	void checkPlayerBehaviour(IslandApp &app);
+	void checkPlayerBehaviour();
 
 	void spawnPlayer();
 

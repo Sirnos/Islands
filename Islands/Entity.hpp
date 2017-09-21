@@ -13,9 +13,11 @@ protected:
 public:
 	EntityStats Stats;
 
-	Entity(sf::RectangleShape EntityBody,float HP,float MP,float Speed) 
-		:Stats(HP,MP,Speed),
-		Body(EntityBody)
+	Entity(sf::RectangleShape EBody, float EHP, float EMP, float ESpeed)
+		:Stats(EHP, EMP, ESpeed), Body(EBody)
+	{}
+	Entity(sf::RectangleShape EBody, EntityStats EStats)
+		:Body(EBody), Stats(Stats)
 	{}
 
 	virtual void move(){}
@@ -37,4 +39,18 @@ public:
 	const sf::RectangleShape &getBody() { return Body; }
 
 	void pushTexture(sf::Texture *Texture) { Body.setTexture(Texture); }
+};
+
+class Monster : public Entity
+{
+	unsigned Id;
+public:
+	Monster(sf::RectangleShape MBody, float MHP, float MMP, float MSpeed, unsigned MId)
+		:Entity(MBody, MHP, MMP, MSpeed), Id(MId)
+	{}
+	Monster(const Monster &other)
+		:Entity(other.Body, other.Stats), Id(other.Id)
+	{}
+
+	unsigned getId() { return Id; }
 };

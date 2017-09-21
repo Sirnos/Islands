@@ -62,7 +62,7 @@ void Engine::checkPlayerEnvironment()
 	}
 }
 
-void Engine::checkPlayerBehaviour(IslandApp &app)
+void Engine::checkPlayerBehaviour()
 {
 	sf::Vector2f movevctr;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -507,7 +507,7 @@ void Engine::operator()(IslandApp &app,char key,mouseWheel last, bool isMouseCli
 {
 	LyingItems.clearOldItems(GameClock.getElapsedTime());
 
-	checkPlayerBehaviour(app);
+	checkPlayerBehaviour();
 	checkPlayerEnvironment();
 
 	app.getIslandWindow()->setView(*app.getIslandView());
