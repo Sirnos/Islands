@@ -14,9 +14,6 @@ public:
 		:Entity(PlayerBody,HP,MP,Speed)
 	{}
 
-	void move(sf::Vector2f Vector) { Body.move(Vector); }
-
 	void setSpawnPoint(sf::Vector2f newSpawnPoint) { spawnPoint = newSpawnPoint; }
 	sf::Vector2f getSpawnPoint() { return spawnPoint; }
-
 };

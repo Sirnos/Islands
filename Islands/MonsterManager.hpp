@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Entity.hpp"
+#include "EntityDef.hpp"
 
 class MonsterManager
 {
@@ -19,6 +20,10 @@ public:
 	void addMonster(const Monster& toAdd)
 	{
 		ManagementMonsters.push_back(toAdd);
+	}
+	void addMonster(const MonsterEntityDef& toAdd, unsigned MonsterId)
+	{
+		ManagementMonsters.push_back(Monster(sf::RectangleShape(toAdd.getSize()), toAdd.getStats(), MonsterId));
 	}
 	void addMonsters(const std::vector<Monster> &Monsters)
 	{

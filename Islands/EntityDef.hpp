@@ -27,11 +27,11 @@ public:
 		:EntityName(Name), Stats(stats), EntitySize(size)
 	{}
 	~EntityDef() = default;
+	EntityDef& operator=(const EntityDef& other) = delete;
 
-
-	std::string getName() { return EntityName; }
-	sf::Vector2f getSize() { return EntitySize; }
-	const EntityStats& getStats() { return Stats; }
+	std::string getName() const { return EntityName; }
+	sf::Vector2f getSize() const { return EntitySize; }
+	const EntityStats& getStats() const { return Stats; }
 
 };
 
@@ -47,6 +47,7 @@ public:
 	MonsterEntityDef(const std::string &name, const EntityStats &stats, const BehaviorVariables &behavior, sf::Vector2f size)
 		:EntityDef(name, stats, size), Behavior(behavior)
 	{}
+	MonsterEntityDef& operator=(const MonsterEntityDef& other) = delete;
 
-	BehaviorVariables getBehavior() { return Behavior; }
+	BehaviorVariables getBehavior() const { return Behavior; }
 };

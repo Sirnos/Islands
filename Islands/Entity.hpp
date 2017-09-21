@@ -17,10 +17,10 @@ public:
 		:Stats(EHP, EMP, ESpeed), Body(EBody)
 	{}
 	Entity(sf::RectangleShape EBody, EntityStats EStats)
-		:Body(EBody), Stats(Stats)
+		:Body(EBody), Stats(EStats)
 	{}
 
-	virtual void move(){}
+	void move(sf::Vector2f vectr) { Body.move(vectr); }
 	virtual void operator()(){}
 
 	sf::Vector2f getCharacterCenterPosition()
@@ -48,9 +48,12 @@ public:
 	Monster(sf::RectangleShape MBody, float MHP, float MMP, float MSpeed, unsigned MId)
 		:Entity(MBody, MHP, MMP, MSpeed), Id(MId)
 	{}
+	Monster(sf::RectangleShape MBody, const EntityStats MStats, unsigned MId)
+		:Entity(MBody, MStats), Id(MId)
+	{}
 	Monster(const Monster &other)
 		:Entity(other.Body, other.Stats), Id(other.Id)
 	{}
 
-	unsigned getId() { return Id; }
+	unsigned getId() const { return Id; }
 };
