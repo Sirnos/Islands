@@ -2,7 +2,7 @@
 
 #include <SFML/System/Clock.hpp>
 #include <memory>
-#include <noise/noise.h>
+#include "FastNoise/FastNoise.h"
 
 #include "RandomNumberGenerator.hpp"
 #include "ErrorHandler.hpp"
@@ -63,13 +63,13 @@ public:
 	{
 		sf::Clock TestClock;
 
-		noise::module::Perlin noiseModule;
+		FastNoise noiseModule;
 
 		IntegerGenerator<unsigned> Gen;
 		noiseModule.SetSeed(Gen.get(1, std::numeric_limits<unsigned>::max() - 1));
-		noiseModule.SetOctaveCount(6);
+		noiseModule.SetNoiseType(FastNoise::Perlin);
+		noiseModule.SetFractalOctaves(6);
 		noiseModule.SetFrequency(1.0);
-		noiseModule.SetPersistence(0.25);
 
 		ManagementWorld->resizeLocalMap(LocalMapSize);
 
@@ -88,7 +88,7 @@ public:
 			{
 				for (size_t y = 0; y < ManagementWorld->getLocalMapSize(); y++)
 				{
-					noise = noiseModule.GetValue(1.25 + (0.1 * x), 0.75 + (0.1 * y), 0.5);
+					noise = noiseModule.GetValue(1.25f + (0.1f * x), 0.75f + (0.1f * y), 0.5f);
 					if (noise > 0.75)
 					{
 						Terrain = TerrainType::Rock;
@@ -118,7 +118,7 @@ public:
 			{
 				for (size_t y = 0; y < ManagementWorld->getLocalMapSize(); y++)
 				{
-					noise = noiseModule.GetValue(1.25 + (0.1 * x), 0.75 + (0.1 * y), 0.5);
+					noise = noiseModule.GetValue(1.25f + (0.1f * x), 0.75f + (0.1f * y), 0.5f);
 					ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), TerrainType::Water);
 					for (const auto & terrainChance : LocalMapsBuilderVars[match].TerrainTiles)
 					{

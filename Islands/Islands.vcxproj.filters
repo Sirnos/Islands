@@ -46,6 +46,9 @@
     <Filter Include="IslandData\Recipes">
       <UniqueIdentifier>{565afc8c-1555-4317-af33-10195d164a23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\FastNoise">
+      <UniqueIdentifier>{a77b02cc-d987-49a7-9370-6bf6fe562168}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Header Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="FastNoise\FastNoise.cpp">
+      <Filter>Header Files\FastNoise</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="MonsterManager.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FastNoise\FastNoise.h">
+      <Filter>Header Files\FastNoise</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
