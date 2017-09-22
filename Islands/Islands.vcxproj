@@ -74,11 +74,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\cpplibs\SFML-2.4.0\include;C:\cpplibs\rapidxml-1.13;C:\cpplibs\boost_1_63_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\cpplibs\SFML-2.4.0\include;E:\cpplibs\rapidxml-1.13;E:\cpplibs\boost_1_63_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++14 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\cpplibs\SFML-2.4.0\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\cpplibs\SFML-2.4.0\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -177,7 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Data\CraftingTableRecipes.xml" />
-    <Xml Include="Data\Entities.xml" />
+    <Xml Include="Data\Entities.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="Data\Items.xml">
       <SubType>Designer</SubType>
     </Xml>

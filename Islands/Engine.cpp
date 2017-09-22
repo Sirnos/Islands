@@ -495,7 +495,7 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 
 	Player.Stats = Entities->getContainer().front().getStats();
 	spawnPlayer();
-	Player.pushTexture(mediaContainer.getTexture(TextureContainer::CharacterTextures, 1));
+	Player.pushTexture(mediaContainer.getTexture(TextureContainer::EntitiesTextures, 1));
 }
 
 Engine::~Engine()
