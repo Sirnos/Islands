@@ -23,13 +23,13 @@ public:
 		:Body(EBody), Stats(EStats)
 	{}
 
-	void move(sf::Vector2f vectr) 
-	{ 
+	void move(const sf::Vector2f &vectr)
+	{
 		if (vectr.x < 0.0f)
 		{
 			ActualSide = EntitySide::Left;
 		}
-		else if(vectr.x > 0.0f)
+		else if (vectr.x > 0.0f)
 		{
 			ActualSide = EntitySide::Right;
 		}
@@ -45,7 +45,7 @@ public:
 
 		return position;
 	}
-	void setPosition(sf::Vector2f newPosition)
+	void setPosition(const sf::Vector2f &newPosition)
 	{
 		Body.setPosition(newPosition);
 	}

@@ -56,4 +56,12 @@
       <Part>Legs</Part>
     </ArmorDef>
   </Item>
+  <Item name="Coal">
+    <Graphics>2,1</Graphics>
+    <MaxStack>32</MaxStack>
+  </Item>
+  <Item name="IronOre">
+    <Graphics>4,1</Graphics>
+    <MaxStack>32</MaxStack>
+  </Item>
 </Items>
