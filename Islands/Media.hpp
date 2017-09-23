@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/Texture.hpp>
+#include "EntitySide.hpp"
 #include "ErrorHandler.hpp"
 
 enum class TextureContainer : unsigned
@@ -9,12 +10,6 @@ enum class TextureContainer : unsigned
 	EntitiesTextures,
 	ObjectTextures,
 	ItemsTextures,
-};
-
-enum class EntitySideTexture : unsigned
-{
-	Right,
-	Left
 };
 
 inline std::string TextureContainerToString(TextureContainer type)
@@ -86,7 +81,7 @@ public:
 		bool isRightSideSuccessful = rightSide.loadFromFile(fileName, sf::IntRect(entityTextureBeginPosition, EntitySize));
 		bool isLeftSideSuccessful = leftSide.loadFromFile(fileName, sf::IntRect(entityTextureBeginPosition + sf::Vector2i(EntitySize.x, 0), EntitySize));
 
-		EntitiesTexture.push_back(std::pair<sf::Texture, sf::Texture>(rightSide, leftSide));
+		EntitiesTexture.push_back(std::pair<sf::Texture, sf::Texture>(leftSide, rightSide));
 		return isLeftSideSuccessful && isRightSideSuccessful;
 	}
 
@@ -111,7 +106,7 @@ public:
 
 		}
 	}
-	sf::Texture* getTexture(TextureContainer container, size_t index, EntitySideTexture EntitySide = EntitySideTexture::Right)
+	sf::Texture* getTexture(TextureContainer container, size_t index, EntitySide EntitySideTexture = EntitySide::Right)
 	{
 		switch (container)
 		{
@@ -119,7 +114,7 @@ public:
 			return &TerrainTexture[index];
 			break;
 		case TextureContainer::EntitiesTextures:
-			if (EntitySide == EntitySideTexture::Left)
+			if (EntitySideTexture == EntitySide::Left)
 			{
 				return &EntitiesTexture[index].second;
 			}
@@ -155,9 +150,9 @@ public:
 	}
 
 	Media()
-		:TerrainTexture(1), EntitiesTexture(2)
+		:TerrainTexture(1), EntitiesTexture(1)
 	{
-		EntitiesTexture.back().first.loadFromFile("Data/char.png", sf::IntRect(0, 0, 40, 60));
+		pushEntitiesTexture(std::string("Data/Entities.png"), sf::Vector2i(40, 80), sf::Vector2i(0, 0));
 	}
 	~Media()
 	{

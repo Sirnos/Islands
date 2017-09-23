@@ -179,6 +179,9 @@
     <ClInclude Include="FastNoise\FastNoise.h">
       <Filter>Header Files\FastNoise</Filter>
     </ClInclude>
+    <ClInclude Include="EntitySide.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\char.png">

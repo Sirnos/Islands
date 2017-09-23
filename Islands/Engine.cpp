@@ -86,6 +86,8 @@ void Engine::checkPlayerBehaviour()
 	{
 		Player.Inventory.popInteractionWithChest();
 		GameGui.deleteChestFields();
+		Player.pushTexture(mediaContainer.getTexture(TextureContainer::EntitiesTextures, 1, Player.getActualEntitySide()));
+
 		if (!Crafting.isUsedPlayerRecipes())
 		{
 			Crafting.clear();

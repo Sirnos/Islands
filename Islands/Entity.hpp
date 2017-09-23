@@ -2,11 +2,14 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "EntityStats.hpp"
+#include "EntitySide.hpp"
 
 class Entity
 {
 protected:
 	sf::RectangleShape Body;
+
+	EntitySide ActualSide;
 
 	virtual void attack() {}
 	virtual void idle() {}
@@ -20,10 +23,21 @@ public:
 		:Body(EBody), Stats(EStats)
 	{}
 
-	void move(sf::Vector2f vectr) { Body.move(vectr); }
+	void move(sf::Vector2f vectr) 
+	{ 
+		if (vectr.x < 0.0f)
+		{
+			ActualSide = EntitySide::Left;
+		}
+		else if(vectr.x > 0.0f)
+		{
+			ActualSide = EntitySide::Right;
+		}
+		Body.move(vectr);
+	}
 	virtual void operator()(){}
 
-	sf::Vector2f getCharacterCenterPosition()
+	sf::Vector2f getCharacterCenterPosition() const
 	{
 		sf::Vector2f position = Body.getPosition();
 		position.x += Body.getSize().x / 2;
@@ -36,7 +50,8 @@ public:
 		Body.setPosition(newPosition);
 	}
 
-	const sf::RectangleShape &getBody() { return Body; }
+	const sf::RectangleShape &getBody() const { return Body; }
+	EntitySide getActualEntitySide() const { return ActualSide; }
 
 	void pushTexture(sf::Texture *Texture) { Body.setTexture(Texture); }
 };
