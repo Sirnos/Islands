@@ -27,7 +27,7 @@ struct EquipmentFieldInfo
 		if (isHover) { rect.setFillColor(HoverEquipmentFieldColor); }
 		else { rect.setFillColor(EquipmentFieldColor); }
 	}
-	void checkIsHover(sf::Vector2f mousePos)
+	void checkIsHover(const sf::Vector2f &mousePos)
 	{
 		isHover = sf::Rect<float>(Position, sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize)).contains(mousePos);
 	}
@@ -36,7 +36,7 @@ struct EquipmentFieldInfo
 		:isHover(false)
 	{}
 	EquipmentFieldInfo(const EquipmentFieldInfo &other)
-		:Position(other.Position),isHover(false),ScreenPosition(other.ScreenPosition)
+		:Position(other.Position), isHover(false), ScreenPosition(other.ScreenPosition)
 	{}
 	~EquipmentFieldInfo() = default;
 };

@@ -13,10 +13,13 @@ class textbox
 
 public:
 	textbox()
-		:MAX_TEXT_SIZE(32),IsEnable(false),IsConstant(false)
+		:MAX_TEXT_SIZE(32), IsEnable(false), IsConstant(false)
+	{}
+	textbox(size_t textLength, const std::string &text, const sf::Font &font, bool Constant)
+		:MAX_TEXT_SIZE(textLength), TXBOX_text(text, font), String(text), IsConstant(Constant), IsEnable(false)
 	{}
 	textbox(const textbox &other)
-		:MAX_TEXT_SIZE(other.MAX_TEXT_SIZE),IsEnable(other.IsEnable),IsConstant(other.IsConstant),String(other.String),TXBOX_text(other.TXBOX_text)
+		:MAX_TEXT_SIZE(other.MAX_TEXT_SIZE), IsEnable(other.IsEnable), IsConstant(other.IsConstant), String(other.String), TXBOX_text(other.TXBOX_text)
 	{}
 	~textbox() = default;
 
@@ -65,27 +68,27 @@ public:
 		return "";
 	}
 
-	void create(sf::Font &font, bool isConstant, std::string strForTextBox, size_t MAXSIZE)
+	void create(const sf::Font &font, bool isConstant, const std::string &strForTextBox, size_t MAXSIZE)
 	{
 		TXBOX_text.setFont(font);
 		IsConstant = isConstant;
 		TXBOX_text.setString(strForTextBox);
 		MAX_TEXT_SIZE = MAXSIZE;
 	}
-	void changeVars(sf::Color colorForText, unsigned int CharSize, sf::Uint32 style)
+	void changeVars(const sf::Color &colorForText, unsigned int CharSize, sf::Uint32 style)
 	{
 		TXBOX_text.setFillColor(colorForText);
 		TXBOX_text.setOutlineColor(colorForText);
 		TXBOX_text.setCharacterSize(CharSize);
 		TXBOX_text.setStyle(style);
 	}
-	bool isClick(sf::Vector2f mousePos,bool isMouseClick)
+	bool isClick(const sf::Vector2f &mousePos, bool isMouseClick)
 	{
 		return (TXBOX_text.getGlobalBounds().contains(mousePos) && isMouseClick == true);
 	}
 
 	std::string getString() { return TXBOX_text.getString(); }
-	void setString(std::string str)
+	void setString(const std::string &str)
 	{
 		String = str;
 		TXBOX_text.setString(str);
@@ -97,13 +100,13 @@ public:
 	{
 		IsEnable = !IsEnable;
 	}
-	bool getIsEnable() { return IsEnable; }
+	bool getIsEnable() const { return IsEnable; }
 
-	void setPosition(sf::Vector2f newPos)
+	void setPosition(const sf::Vector2f &newPos)
 	{
 		TXBOX_text.setPosition(newPos);
 	}
-	sf::Vector2u getPosition()
+	sf::Vector2u getPosition() const
 	{
 		sf::Vector2f text_position = TXBOX_text.getPosition();
 		return sf::Vector2u(static_cast<size_t>(text_position.x),

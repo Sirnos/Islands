@@ -48,9 +48,8 @@ public:
 	MonsterManager() = default;
 	MonsterManager(const MonsterManager& other) = delete;
 	MonsterManager(const std::vector<Monster> &SavedMonsters)
-	{
-		ManagementMonsters = SavedMonsters;
-	}
+		:ManagementMonsters(SavedMonsters)
+	{}
 	~MonsterManager() = default;
 
 

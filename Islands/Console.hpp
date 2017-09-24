@@ -33,24 +33,24 @@ public:
 		history.clear();
 	}
 	
-	bool getEnable() { return enable; }
+	bool getEnable() const { return enable; }
 	void setEnable(bool newVal) { enable = newVal; }
 
 	bool getTextboxEnable() { return ConsoleInput.getIsEnable(); }
 	void setTexboxEnable(bool newVal) { ConsoleInput.setEnable(newVal); }
 
-	void pushCommandToHistory(std::string command) 
+	void pushCommandToHistory(const std::string &command) 
 	{ 
 		history.push_back(command); 
 		lastHistoryCmd = history.size() - 1;
 	}
 	std::string getCmdFromHistory(unsigned cmdNumber) { return history[cmdNumber]; }
 	std::string getLastCmdFromHistory() { return history.back(); }
-	unsigned getHistorySize() { return history.size(); }
+	unsigned getHistorySize() const { return history.size(); }
 
 	unsigned &getLastHistoryCmdNumber() { return lastHistoryCmd; }
 
-	std::string operator()(sf::Event &event,sf::Vector2f mousePos,bool isMouseClick)
+	std::string operator()(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseClick)
 	{
 		if (ConsoleInput.isClick(mousePos, isMouseClick))
 		{
@@ -67,14 +67,14 @@ public:
 	void clearHistory() { history.clear(); }
 
 	std::string getCurrentText() { return ConsoleInput.getString(); }
-	void setCurrentText(std::string text) { ConsoleInput.setString(text); }
+	void setCurrentText(const std::string &text) { ConsoleInput.setString(text); }
 
-	size_t getCommandsSize() { return commands.size(); }
-	void pushText(std::string text) { commands.push_back(text); }
-	std::string getText(unsigned index) { return commands[index]; }
-	std::string getLastText() { return commands.back(); }
+	size_t getCommandsSize() const { return commands.size(); }
+	void pushText(const std::string &text) { commands.push_back(text); }
+	std::string getText(unsigned index) const { return commands[index]; }
+	std::string getLastText() const { return commands.back(); }
 
-	void setPosition(sf::Vector2f position)
+	void setPosition(const sf::Vector2f &position)
 	{
 		ConsoleWindow.setPosition(position);
 		ConsoleInput.setPosition(position + sf::Vector2f(20, 560));
@@ -84,12 +84,12 @@ public:
 	sf::Text getInputText() { return ConsoleInput.getText(); }
 
 	//function for /giveItem command
-	void giveItemCheck(std::string command, ItemDefContainer &Items, PlayerInventory &Inv)
+	void giveItemCheck(const std::string &command, ItemDefContainer &Items, PlayerInventory &Inv)
 	{
 		bool firstParam = true;
 		std::string idStr;
 		std::string amountStr;
-		size_t begPos = command.find("m") + 2;
+		size_t begPos = command.find('m') + 2;
 		size_t i = begPos;
 
 		while (i < command.size())

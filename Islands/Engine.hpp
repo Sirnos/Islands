@@ -53,21 +53,21 @@ class Engine
 
 	void spawnPlayer();
 
-	void checkGuiOperations(EquipmentType type, sf::Vector2u field);
+	void checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field);
 
 	void drawConsole(IslandApp &app);
 
-	void updateTile(sf::Vector2u tileIndex);
+	void updateTile(const sf::Vector2u &tileIndex);
 
 	void drawMonsters(sf::RenderWindow &window);
-	void drawTile(TerrainType &preTile, sf::Vector2u tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
-	void drawObject(size_t &preObjectId, sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
+	void drawTile(TerrainType &preTile, const sf::Vector2u &tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
+	void drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 
 	void drawWorld(IslandApp &app);
 	void drawLyingItems(IslandApp &app);
 
 	void drawPlayerGui(IslandApp & app);
-	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::RectangleShape &rect);
+	void pushItemTextureToRect(const sf::Vector2f &pos, unsigned itemId, sf::RectangleShape &rect);
 
 public:
 	Engine(GameVars &v1, unsigned MaxTileDrawRange);
@@ -76,7 +76,7 @@ public:
 
 	void operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClick);
 
-	void manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick);
+	void manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseRClick);
 
 	void DrawAll(IslandApp &app);
 };

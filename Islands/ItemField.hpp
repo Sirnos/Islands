@@ -44,7 +44,7 @@ struct ItemField
 		return !(operator==(other));
 	}
 
-	bool isEmpty() 
+	bool isEmpty() const
 	{
 		if (ItemId == 0 || ItemAmount == 0)
 		{
@@ -52,7 +52,7 @@ struct ItemField
 		}
 		return false;
 	}
-	bool isCorrect()
+	bool isCorrect() const
 	{
 		if ((ItemAmount == 0 || ItemAmount == -1) && ItemId != 0)
 		{

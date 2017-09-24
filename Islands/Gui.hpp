@@ -81,7 +81,7 @@ public:
 
 	sf::Font GuiFont;
 
-	Gui() 
+	Gui()
 	{ 
 		GuiFont.loadFromFile("Data/Fonts/ariali.ttf");
 		Hud.MpInfo.setFont(GuiFont);
@@ -174,7 +174,7 @@ public:
 	void deleteChestFields() { Chest.ChestContain.clear(); }
 
 private:
-	sf::Vector2i getScreenPositionForEquipmentField(sf::Vector2u field)
+	sf::Vector2i getScreenPositionForEquipmentField(const sf::Vector2u &field)
 	{
 		return sf::Vector2i(BeginEquipmentFieldPosition.x + (field.x * EqFieldMarginI) + (field.x * EqFieldSizeI),
 			BeginEquipmentFieldPosition.y + (field.y * EqFieldMarginI) + (field.y * EqFieldSizeI));

@@ -16,8 +16,10 @@ struct LyingItem
 
 	
 	LyingItem() = default;
-	LyingItem(sf::Time atTime,sf::Vector2f atPosition,ItemField item) : 
-		lyingTime(atTime), lyingPosition(atPosition), lyingItem(item){}
+	LyingItem(sf::Time atTime, sf::Vector2f atPosition, ItemField item)
+		:lyingTime(atTime), lyingPosition(atPosition), lyingItem(item)
+	{}
+	~LyingItem() = default;
 };
 
 class LyingItemsContainer
@@ -26,35 +28,37 @@ class LyingItemsContainer
 	size_t MaxNumberOfLyingItems;
 	sf::Vector2f LyingItemsPickUpRange;
 public:
-	LyingItemsContainer() { MaxNumberOfLyingItems = 0; LyingItemsPickUpRange = sf::Vector2f(); }
+	LyingItemsContainer()
+		:MaxNumberOfLyingItems(0)
+	{}
 	~LyingItemsContainer() { LyingItems.clear(); }
 
-	void init(unsigned MaxSize, sf::Vector2f MinimalItemPickUpDistance)
+	void init(unsigned MaxSize, const sf::Vector2f &MinimalItemPickUpDistance)
 	{
 		MaxNumberOfLyingItems = MaxSize;
 		LyingItemsPickUpRange = MinimalItemPickUpDistance;
 	}
 
-	size_t getSize() { return LyingItems.size(); }
+	size_t getSize() const { return LyingItems.size(); }
 
 	void eraseFirstItem() { LyingItems.erase(LyingItems.begin()); }
 	void eraseItem(unsigned index) { LyingItems.erase(LyingItems.begin() + index); }
 
-	void pushNewItem(sf::Time time, sf::Vector2f position, ItemField item)
+	void pushNewItem(const sf::Time &time, const sf::Vector2f &position, const ItemField &item)
 	{
 		LyingItems.push_back(LyingItem(time, position, item));
 		if (LyingItems.size() >= MaxNumberOfLyingItems) { eraseFirstItem(); }
 	}
 
-	sf::Time getTime(unsigned index) { return LyingItems[index].lyingTime; }
-	sf::Vector2f getPosition(unsigned index) { return LyingItems[index].lyingPosition; }
-	ItemField getItem(unsigned index) { return LyingItems[index].lyingItem; }
+	sf::Time getTime(unsigned index) const { return LyingItems[index].lyingTime; }
+	sf::Vector2f getPosition(unsigned index) const { return LyingItems[index].lyingPosition; }
+	ItemField getItem(unsigned index) const { return LyingItems[index].lyingItem; }
 
 	void setItemAmount(unsigned index, unsigned newAmount)
 	{
 		LyingItems[index].lyingItem.ItemAmount = newAmount;
 	}
-	void clearOldItems(sf::Time currentGameTime)
+	void clearOldItems(const sf::Time &currentGameTime)
 	{
 		while (true)
 		{
@@ -73,5 +77,5 @@ public:
 		}
 	}
 
-	sf::Vector2f getLyingItemsPickUpRange() { return LyingItemsPickUpRange; }
+	sf::Vector2f getLyingItemsPickUpRange() const { return LyingItemsPickUpRange; }
 };

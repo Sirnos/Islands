@@ -6,15 +6,15 @@
 
 namespace ErrorHandler
 {
-	inline void log(std::string text)
+	inline void log(const std::string &text)
 	{
 		std::cout << text << std::endl;
 	}
-	inline void logB(std::string text)
+	inline void logB(const std::string &text)
 	{
 		std::cout << text;
 	}
-	inline void logToFile(std::string text)
+	inline void logToFile(const std::string &text)
 	{
 		std::fstream file("log.txt",std::ios::app | std::ios::out);
 		file << text.data() << std::endl;

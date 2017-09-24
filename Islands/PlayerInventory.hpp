@@ -19,7 +19,7 @@ public:
 	PlayerInventory() = default;
 	~PlayerInventory() { InteractedChest = nullptr; }
 
-	ItemField getInventoryField(sf::Vector2u field)
+	ItemField getInventoryField(const sf::Vector2u &field)
 	{
 		return Inventory[field.x][field.y];
 	}
@@ -59,13 +59,13 @@ public:
 	{
 		InteractedChest = nullptr;
 	}
-	bool isInteractedChestExist()
+	bool isInteractedChestExist() const
 	{
 		if (InteractedChest == nullptr) { return false; }
 		return true;
 	}
 
-	void setInventoryField(sf::Vector2u field, ItemField newVal)
+	void setInventoryField(const sf::Vector2u &field, ItemField newVal)
 	{
 		if (!newVal.isCorrect()) 
 		{ 

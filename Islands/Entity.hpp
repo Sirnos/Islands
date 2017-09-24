@@ -17,10 +17,10 @@ public:
 	EntityStats Stats;
 
 	Entity(sf::RectangleShape EBody, float EHP, float EMP, float ESpeed)
-		:Stats(EHP, EMP, ESpeed), Body(EBody)
+		:Stats(EHP, EMP, ESpeed), Body(EBody), ActualSide(EntitySide::Left)
 	{}
 	Entity(sf::RectangleShape EBody, EntityStats EStats)
-		:Body(EBody), Stats(EStats)
+		:Body(EBody), Stats(EStats), ActualSide(EntitySide::Left)
 	{}
 
 	void move(const sf::Vector2f &vectr)
@@ -63,7 +63,7 @@ public:
 	Monster(sf::RectangleShape MBody, float MHP, float MMP, float MSpeed, unsigned MId)
 		:Entity(MBody, MHP, MMP, MSpeed), Id(MId)
 	{}
-	Monster(sf::RectangleShape MBody, const EntityStats MStats, unsigned MId)
+	Monster(sf::RectangleShape MBody, const EntityStats &MStats, unsigned MId)
 		:Entity(MBody, MStats), Id(MId)
 	{}
 	Monster(const Monster &other)

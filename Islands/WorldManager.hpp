@@ -59,7 +59,7 @@ public:
 		StructuresPerLocalMap = Amount;
 	}
 
-	void buildLocalMap(TerrainType Base,size_t LocalMapSize = World::DefaultMapSize)
+	void buildLocalMap(TerrainType Base, size_t LocalMapSize = World::DefaultMapSize)
 	{
 		sf::Clock TestClock;
 
@@ -170,11 +170,11 @@ public:
 		ErrorHandler::logToFile("Generate Local Map [Size] = " + std::to_string(ManagementWorld->getLocalMapSize()) +
 			" [Time] = " + std::to_string(TestClock.getElapsedTime().asMilliseconds()) + " milisecs ");
 	}
-	void buildWorld(size_t WorldSize = World::DefaultWorldSize,unsigned Seed = 1)
+	void buildWorld(size_t WorldSize = World::DefaultWorldSize, unsigned Seed = 1)
 	{}
 
 
-	bool placeObject(sf::Vector2u tile, unsigned ObjectId)
+	bool placeObject(const sf::Vector2u &tile, unsigned ObjectId)
 	{
 		if (ObjectId >= ObjectsDef->getSize() || ManagementWorld->getLocalMapTileObject(tile) != nullptr)
 		{
@@ -215,7 +215,7 @@ public:
 		}
 		return false;
 	}
-	bool placeStructure(sf::Vector2u begin,unsigned StructureId)
+	bool placeStructure(const sf::Vector2u &begin, unsigned StructureId)
 	{
 		if (StructureId >= Structures.size())
 		{
@@ -248,7 +248,7 @@ public:
 	}
 
 
-	std::vector<ItemField> getLocalMapTileObjectAsItems(sf::Vector2u tile)
+	std::vector<ItemField> getLocalMapTileObjectAsItems(const sf::Vector2u &tile)
 	{
 		std::vector<ItemField> ret;
 		if (ManagementWorld->getLocalMapTileObject(tile) != nullptr)
@@ -266,7 +266,7 @@ public:
 	}
 
 
-	sf::IntRect getLocalMapTileCollisionBox(sf::Vector2u tile)
+	sf::IntRect getLocalMapTileCollisionBox(const sf::Vector2u &tile)
 	{
 		if (!sf::Rect<unsigned>(sf::Vector2u(), sf::Vector2u(ManagementWorld->getLocalMapSize(),
 			ManagementWorld->getLocalMapSize())).contains(tile))

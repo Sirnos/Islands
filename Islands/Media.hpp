@@ -46,7 +46,7 @@ class Media
 
 	std::vector<std::pair<sf::Texture, sf::Texture>> EntitiesTexture;
 public:
-	bool pushTexture(const TextureContainer container, const std::string &fileName, const sf::IntRect textCord)
+	bool pushTexture(const TextureContainer &container, const std::string &fileName, const sf::IntRect &textCord)
 	{
 		if (container == TextureContainer::EntitiesTextures)
 		{
@@ -85,7 +85,7 @@ public:
 		return isLeftSideSuccessful && isRightSideSuccessful;
 	}
 
-	void pushTextures(TextureContainer container,const std::string &fileName, std::vector<sf::IntRect> coords)
+	void pushTextures(const TextureContainer &container, const std::string &fileName, const std::vector<sf::IntRect> &coords)
 	{
 		bool good;
 		for (size_t i = 0; i < coords.size(); i++)
@@ -106,7 +106,7 @@ public:
 
 		}
 	}
-	sf::Texture* getTexture(TextureContainer container, size_t index, EntitySide EntitySideTexture = EntitySide::Right)
+	sf::Texture* getTexture(const TextureContainer &container, size_t index, EntitySide EntitySideTexture = EntitySide::Right)
 	{
 		switch (container)
 		{
@@ -130,7 +130,7 @@ public:
 		return nullptr;
 	}
 
-	size_t getSizeOfContainer(TextureContainer typeOfContainer) const
+	size_t getSizeOfContainer(const TextureContainer &typeOfContainer) const
 	{
 		switch (typeOfContainer)
 		{

@@ -123,7 +123,7 @@ void Engine::spawnPlayer()
 	Player.setSpawnPoint(spawnPoint);
 }
 
-void Engine::checkGuiOperations(EquipmentType type, sf::Vector2u field)
+void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field)
 {
 	unsigned holdedItemId = Player.Inventory.getHoldItem().ItemId;
 	switch (type)
@@ -320,7 +320,7 @@ void Engine::drawConsole(IslandApp & app)
 	}
 }
 
-void Engine::updateTile(sf::Vector2u tileIndex)
+void Engine::updateTile(const sf::Vector2u &tileIndex)
 {
 	unsigned objectId = GameWorld->getLocalMapTileObjectId(tileIndex);
 	if (objectId == 0) { return; }
@@ -344,7 +344,7 @@ void Engine::updateTile(sf::Vector2u tileIndex)
 	}
 }
 
-void Engine::manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick)
+void Engine::manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseRClick)
 {
 	if (!GameConsole.getEnable()) { return; }
 
@@ -433,7 +433,7 @@ void Engine::drawMonsters(sf::RenderWindow & window)
 	}
 }
 
-void Engine::drawTile(TerrainType &preTile, sf::Vector2u tileIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
+void Engine::drawTile(TerrainType &preTile, const sf::Vector2u &tileIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
 {
 	TerrainType TerrainType = GameWorld->getLocalMapTileTerrain(tileIndex);
 	if (TerrainType == TerrainType::Null) { return; }
@@ -447,7 +447,7 @@ void Engine::drawTile(TerrainType &preTile, sf::Vector2u tileIndex, sf::RenderWi
 	window.draw(shp);
 }
 
-void Engine::drawObject(size_t &preObjectId,sf::Vector2u objectIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
+void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf::RenderWindow & window, sf::RectangleShape &shp)
 {
 	unsigned ObjectID = GameWorld->getLocalMapTileObjectId(objectIndex);
 	if (ObjectID == 0) { return; }
@@ -842,28 +842,27 @@ void Engine::drawPlayerGui(IslandApp & app)
 
 	if (GameGui.Eq.isEnable && !GameGui.Craft.isEnable)
 	{
-		sf::Vector2u field = sf::Vector2u(0, 0);
-		for (field.x; field.x < PlayerInventorySize; field.x++)
+		sf::Vector2u field;
+		for (field.x = 0; field.x < PlayerInventorySize; field.x++)
 		{
-			field.y = 0;
-			if (field.x < 3)
+			for (field.y = 0; field.y < PlayerInventorySize; field.y++)
 			{
-				sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords
-				(GameGui.Eq.ArmorEquipment[field.x].ScreenPosition);
+				if (field.x < 3)
+				{
+					sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords
+					(GameGui.Eq.ArmorEquipment[field.x].ScreenPosition);
 
-				GameGui.Eq.ArmorEquipment[field.x].checkIsHover(mousePosition);
-				GameGui.Eq.ArmorEquipment[field.x].Position = newPos;
+					GameGui.Eq.ArmorEquipment[field.x].checkIsHover(mousePosition);
+					GameGui.Eq.ArmorEquipment[field.x].Position = newPos;
 
-				GameGui.Eq.ArmorEquipment[field.x].pushChangesToRectangleShape(FieldShape);
-				ItemField temp = Player.Inventory.getArmorInventoryField(field.x);
-				pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
+					GameGui.Eq.ArmorEquipment[field.x].pushChangesToRectangleShape(FieldShape);
+					ItemField temp = Player.Inventory.getArmorInventoryField(field.x);
+					pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
 
-				app.draw(FieldShape);
-				if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
-			}
+					app.draw(FieldShape);
+					if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
+				}
 
-			for (field.y; field.y < PlayerInventorySize; field.y++)
-			{
 				amountItem.setString("");
 
 				GameGui.Eq.Equipment[field.x][field.y].checkIsHover(mousePosition);
@@ -959,7 +958,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 	}
 }
 
-void Engine::pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::RectangleShape & rect)
+void Engine::pushItemTextureToRect(const sf::Vector2f &pos, unsigned itemId, sf::RectangleShape & rect)
 {
 	rect.setPosition(pos);
 	if (itemId > 0) { rect.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures, itemId)); }
