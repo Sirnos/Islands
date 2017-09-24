@@ -72,7 +72,7 @@ class GameComponentsLoader
 	}
 
 public:
-	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects, std::string &ObjectsGraphicsFile,std::vector<sf::IntRect> &Textures)
+	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects, std::string &ObjectsGraphicsFile, std::vector<sf::IntRect> &Textures)
 	{
 		Objects.push_back(new ObjectDef());
 		Textures.push_back(sf::IntRect());
@@ -112,38 +112,38 @@ public:
 					{
 						newObjSize = getVectorFromString<int>(std::string(objectsParamNode->value()));
 					}
-					else if(paramName == "Graphics")
+					else if (paramName == "Graphics")
 					{
 						newObjTextureCoord = getRectFromString<int>(std::string(objectsParamNode->value()));
 					}
-					else if(paramName == "Collision")
+					else if (paramName == "Collision")
 					{
 						newObjCollisionBox = getRectFromString<float>(std::string(objectsParamNode->value()));
 					}
-					else if(paramName == "Isdestructible")
+					else if (paramName == "Isdestructible")
 					{
 						std::string temp = objectsParamNode->value();
 						if (temp == "1") { newObjDestructible = true; }
 					}
-					else if(paramName == "Ifdestroyed")
+					else if (paramName == "Ifdestroyed")
 					{
 						newObjYield = getYieldFromString(std::string(objectsParamNode->value()));
 					}
-					else if(paramName == "ChestDef")
+					else if (paramName == "ChestDef")
 					{
 						newObjType = ObjectType::Chest;
 						tempUint.push_back(std::stoul(std::string(objectsParamNode->first_node()->value())));
 					}
-					else if(paramName == "SaplingDef")
+					else if (paramName == "SaplingDef")
 					{
 						newObjType = ObjectType::Sapling;
 						tempFloat.push_back(std::stof(std::string(objectsParamNode->first_node()->value())));
 						tempString.push_back(std::string(objectsParamNode->first_node()->next_sibling()->value()));
 					}
-					else if(paramName == "CraftingPlaceDef")
+					else if (paramName == "CraftingPlaceDef")
 					{
 						newObjType = ObjectType::CraftingPlace;
-						LoadRecipeDefFromFile(tempRecipes,std::string(objectsParamNode->value()));
+						LoadRecipeDefFromFile(tempRecipes, std::string(objectsParamNode->value()));
 					}
 				}
 
@@ -178,7 +178,7 @@ public:
 		Objects.shrink_to_fit();
 	}
 
-	static void GenerateItemsFromObjectDef(std::vector<ObjectDef*> &Objs,std::vector<ItemDef*> &Items)
+	static void GenerateItemsFromObjectDef(std::vector<ObjectDef*> &Objs, std::vector<ItemDef*> &Items)
 	{
 		for (unsigned i = 0; i < Objs.size(); i++)
 		{
@@ -187,7 +187,7 @@ public:
 		Items.shrink_to_fit();
 	}
 
-	static void LoadItemDefFromFile(std::vector<ItemDef*> &Items, std::string &ItemsGraphicsFile,std::vector<sf::IntRect> &textures)
+	static void LoadItemDefFromFile(std::vector<ItemDef*> &Items, std::string &ItemsGraphicsFile, std::vector<sf::IntRect> &textures)
 	{
 		rapidxml::file<char> File("Data/Items.xml");
 		rapidxml::xml_document<> document;
@@ -231,23 +231,23 @@ public:
 					{
 						texturePos = getVectorFromString<int>(std::string(itemParamNode->value()));
 					}
-					else if(paramName == "MaxStack")
+					else if (paramName == "MaxStack")
 					{
 						newItemMaxStack = std::stoul(std::string(itemParamNode->value()));
 					}
-					else if(paramName == "MeleeWeaponDef")
+					else if (paramName == "MeleeWeaponDef")
 					{
 						newItemType = ItemType::MeleeWeapon;
 						IntTemp.push_back(std::stoi(std::string(itemParamNode->first_node()->value())));
 						FloatTemp.push_back(std::stof(std::string(itemParamNode->first_node()->next_sibling()->value())));
 					}
-					else if(paramName == "DistantWeaponDef")
+					else if (paramName == "DistantWeaponDef")
 					{
 						newItemType = ItemType::DistanceWeapon;
 						IntTemp.push_back(std::stoi(std::string(itemParamNode->first_node()->value())));
 						FloatTemp.push_back(std::stof(std::string(itemParamNode->first_node()->next_sibling()->value())));
 					}
-					else if(paramName == "ArmorDef")
+					else if (paramName == "ArmorDef")
 					{
 						newItemType = ItemType::Armor;
 						IntTemp.push_back(std::stoi(std::string(itemParamNode->first_node()->value())));
@@ -269,12 +269,12 @@ public:
 					Items.push_back(new DistantWeaponDef(newItemName, IntTemp.back(), FloatTemp.back()));
 					break;
 				case ItemType::Armor:
-					if (StringTemp.back() == "Head"){}
-					else if(StringTemp.back() == "Chest")
+					if (StringTemp.back() == "Head") {}
+					else if (StringTemp.back() == "Chest")
 					{
 						newArmorPart = ArmorPart::Chest;
 					}
-					else if(StringTemp.back() == "Legs")
+					else if (StringTemp.back() == "Legs")
 					{
 						newArmorPart = ArmorPart::Legs;
 					}

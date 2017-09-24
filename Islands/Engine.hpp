@@ -59,7 +59,7 @@ class Engine
 
 	void updateTile(sf::Vector2u tileIndex);
 
-	//void drawMonsters(sf::RenderWindow &window, sf::RectangleShape &shp);
+	void drawMonsters(sf::RenderWindow &window);
 	void drawTile(TerrainType &preTile, sf::Vector2u tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 	void drawObject(size_t &preObjectId, sf::Vector2u objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 
@@ -67,14 +67,14 @@ class Engine
 	void drawLyingItems(IslandApp &app);
 
 	void drawPlayerGui(IslandApp & app);
-	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId,sf::RectangleShape &rect);
+	void pushItemTextureToRect(sf::Vector2f pos, unsigned itemId, sf::RectangleShape &rect);
 
 public:
 	Engine(GameVars &v1, unsigned MaxTileDrawRange);
 	Engine(const Engine &other) = delete;
 	~Engine();
 
-	void operator()(IslandApp &app,char key,mouseWheel last,bool isMouseClick);
+	void operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClick);
 
 	void manageConsole(sf::Event &event, sf::Vector2f mousePos, bool isMouseRClick);
 
