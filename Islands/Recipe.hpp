@@ -13,17 +13,18 @@ class BaseRecipe
 	RecType Out;
 	std::vector<RecType> In;
 public:
-	BaseRecipe(RecType &outElement,std::vector<RecType> &inElements)
+	BaseRecipe(const RecType &outElement, const std::vector<RecType> &inElements)
 		:Out(outElement), In(inElements)
 	{
 		In.shrink_to_fit();
 	}
+	~BaseRecipe() = default;
 
-	RecType getOutElement() { return Out; }
-	std::vector<RecType> getIn() { return In; }
-	RecType getInElement(size_t index) { return In[index]; }
+	RecType getOutElement() const { return Out; }
+	std::vector<RecType> getIn() const { return In; }
+	RecType getInElement(size_t index) const { return In[index]; }
 
-	size_t getInSize() { return In.size(); }
+	size_t getInSize() const { return In.size(); }
 };
 
 typedef BaseRecipe<RecipeElement> RecipeDef;

@@ -3,7 +3,7 @@
 #include <rapidxml.hpp>
 #include <rapidxml_utils.hpp>
 
-#include "SFMLTypesFromText.hpp"
+#include "TypesFromText.hpp"
 #include <array>
 
 struct VideoVars
@@ -86,17 +86,11 @@ struct EngineVars
 					}
 					else if(VarName == "VerticalSync")
 					{
-						if (VarValue == "1")
-						{
-							Video.VerticalSync = true;
-						}
+						Video.VerticalSync = getBoolFromString(VarValue);
 					}
 					else if(VarName == "Windowed")
 					{
-						if (VarValue == "1")
-						{
-							Video.Windowed = true;
-						}
+						Video.Windowed = getBoolFromString(VarValue);
 					}
 					else if(VarName == "TileDrawRange")
 					{

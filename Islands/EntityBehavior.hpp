@@ -1,27 +1,51 @@
 #pragma once
 
-enum class AttackTypePrefer
+#include "EntityBehaviorState.hpp"
+#include "EntityBehaviorValues.hpp"
+
+class EntityBehavior
 {
-	Melee,
-	Distance
+	EntityBehaviorState currentState;
+	EntityBehaviorValues values;
+
+public:
+	EntityBehavior()
+		:currentState(), values()
+	{}
+	EntityBehavior(const EntityBehaviorState &firstState, const EntityBehaviorValues &behaviorValues)
+		:currentState(firstState), values(behaviorValues)
+	{}
+	EntityBehavior(const EntityBehavior &other) = delete;
+	~EntityBehavior() = default;
+
+
+	void changeState(const EntityBehaviorState &newState)
+	{
+		currentState = newState;
+	}
+	const EntityBehaviorState &getCurrentState() const
+	{
+		return currentState;
+	}
+
+
+	void changeBehaviorValues(const EntityBehaviorValues &newValues)
+	{
+		values = newValues;
+	}
+	const EntityBehaviorValues &getBehaviorValues() const
+	{
+		return values;
+	}
+
+
+	EntityBehaviorState &getCurrentState()
+	{
+		return currentState;
+	}
+	EntityBehaviorValues &getValues()
+	{
+		return values;
+	}
 };
 
-struct BehaviorVariables
-{
-	unsigned aggressive;
-
-	unsigned maxGroupSize;
-	bool canLiveInGroup;
-
-	AttackTypePrefer attackPrefer;
-
-
-	BehaviorVariables()
-		:aggressive(0), maxGroupSize(0), canLiveInGroup(false), attackPrefer(AttackTypePrefer::Melee)
-	{}
-	BehaviorVariables(unsigned aggres, unsigned groupSize, bool canGroup, AttackTypePrefer attckPref)
-		:aggressive(aggres), maxGroupSize(groupSize), canLiveInGroup(canGroup), attackPrefer(attckPref)
-	{}
-	BehaviorVariables(const BehaviorVariables &other) = default;
-	~BehaviorVariables() = default;
-};

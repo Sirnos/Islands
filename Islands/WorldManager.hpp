@@ -199,7 +199,8 @@ public:
 			return true;
 			break;
 		case ObjectType::CraftingPlace:
-			ManagementWorld->setLocalMapTileObject(tile, new CraftingPlaceObject(ObjectId, makeFromDef::makeRecipe(dynamic_cast<CraftingPlaceDef*>(ObjectsDef->getDefinition(ObjectId))->getRecipes(),*ItemsDef.get())));
+			ManagementWorld->setLocalMapTileObject(tile, new CraftingPlaceObject(ObjectId, 
+				makeFromDef::makeRecipe(dynamic_cast<CraftingPlaceDef*>(ObjectsDef->getDefinition(ObjectId))->getRecipes(),*ItemsDef.get())));
 			return true;
 			break;
 		case ObjectType::Tree:
@@ -277,8 +278,19 @@ public:
 		{
 			return sf::IntRect();
 		}
+		if (ObjectsDef->getDefinition(ManagementWorld->getLocalMapTileObjectId(tile))->getCollision())
+		{
+			sf::IntRect collideObject;
+			collideObject.top = tile.y * static_cast<int>(TILE_SIZE);
+			collideObject.left = tile.x * static_cast<int>(TILE_SIZE);
+			collideObject.height = static_cast<int>(TILE_SIZE);
+			collideObject.width = collideObject.height;
 
+			return collideObject;
+		}
+		return sf::IntRect();
 
+		/*
 		sf::IntRect collideObject;
 		unsigned collideObjectId = ManagementWorld->getLocalMapTileObject(tile)->Id;
 		if (collideObjectId != 0)
@@ -312,5 +324,6 @@ public:
 			}
 		}
 		return collideObject;
+		*/
 	}
 };

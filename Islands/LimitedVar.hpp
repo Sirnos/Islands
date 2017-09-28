@@ -80,8 +80,17 @@ public:
 		return *this;
 	}
 
-	T getVar() { return Var; }
-	T getLimit() { return Limit; }
+
+	LimitedVar<T> &operator=(const LimitedVar<T> &other)
+	{
+		Var = other.Var;
+		Limit = other.Limit;
+
+		return *this;
+	}
+
+	T getVar() const { return Var; }
+	T getLimit() const { return Limit; }
 
 	void setVar(T newVar)
 	{

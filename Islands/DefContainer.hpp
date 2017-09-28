@@ -24,13 +24,13 @@ public:
 		Container.clear();
 	}
 
-	size_t getSize() { return Container.size(); }
+	size_t getSize() const { return Container.size(); }
 
-	DefType getDefinition(unsigned index)
+	DefType getDefinition(unsigned index) const
 	{
 		return Container[index];
 	}
-	DefType getDefinition(std::string &DefName)
+	DefType getDefinition(const std::string &DefName) const
 	{
 		for (size_t i = 0; i < Container.size(); i++)
 		{
@@ -39,7 +39,7 @@ public:
 		return nullptr;
 	}
 
-	unsigned getDefIdbyName(std::string DefName)
+	unsigned getDefIdbyName(const std::string &DefName) const
 	{
 		for (size_t i = 0; i < Container.size(); i++)
 		{
@@ -69,13 +69,13 @@ public:
 	StaticDefContainer(const StaticDefContainer &other) = delete;
 	~StaticDefContainer() = default;
 
-	size_t getSize() { return Container.size(); }
+	size_t getSize() const { return Container.size(); }
 
-	const DefType &getDefinition(unsigned index)
+	const DefType &getDefinition(unsigned index) const
 	{
 		return Container[index];
 	}
-	const DefType &getDefinition(const std::string &defName)
+	const DefType &getDefinition(const std::string &defName) const
 	{
 		for (const auto &elem : Container)
 		{
@@ -87,7 +87,7 @@ public:
 		return Container.front();
 	}
 
-	unsigned getDefIdbyName(const std::string &defName)
+	unsigned getDefIdbyName(const std::string &defName) const
 	{
 		for (size_t i = 0; i < getSize(); i++)
 		{
@@ -114,7 +114,7 @@ typedef StaticDefContainer <MonsterEntityDef> MonsterDefContainer;
 
 namespace makeFromDef
 {
-	inline std::vector<Recipe> makeRecipe(std::vector<RecipeDef> &def,ItemDefContainer &itemsDef)
+	inline std::vector<Recipe> makeRecipe(const std::vector<RecipeDef> &def, const ItemDefContainer &itemsDef)
 	{
 		std::vector<Recipe> out;
 
@@ -143,11 +143,11 @@ namespace makeFromDef
 		return out;
 	}
 
-	inline std::vector<Structure> makeStructure(std::vector<StructureDef> &Def,ObjectDefContainer & ObjsDef)
+	inline std::vector<Structure> makeStructure(const std::vector<StructureDef> &Def, const ObjectDefContainer & ObjsDef)
 	{
 		std::vector<Structure> Structs;
 
-		for (auto & i : Def)
+		for (const auto & i : Def)
 		{
 			std::vector<unsigned> Ids;
 			StructureData Data;
@@ -185,7 +185,7 @@ namespace makeFromDef
 		return Structs;
 	}
 
-	inline std::vector<LocalMapVariables> makeLocalMapVars(std::vector<LocalMapVariablesDef> & Def, ObjectDefContainer & ObjsDef, std::vector<Structure> & Structs)
+	inline std::vector<LocalMapVariables> makeLocalMapVars(std::vector<LocalMapVariablesDef> & Def, const ObjectDefContainer & ObjsDef, const std::vector<Structure> & Structs)
 	{
 		std::vector<LocalMapVariables> ret;
 

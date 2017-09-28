@@ -14,14 +14,15 @@ protected:
 	unsigned SpawnChance;
 
 public:
-	StructureBase(std::string &Name, unsigned SpawnChance)
-		:Name(Name), SpawnChance(SpawnChance){}
+	StructureBase(const std::string &Name, unsigned SpawnChance)
+		:Name(Name), SpawnChance(SpawnChance)
+	{}
 
-	std::string getName()
+	std::string getName() const
 	{
 		return Name;
 	}
-	unsigned getSpawnChance()
+	unsigned getSpawnChance() const
 	{
 		return SpawnChance;
 	}
@@ -33,14 +34,15 @@ class StructureDef : public StructureBase
 	StructureData Data;
 
 public:
-	StructureDef(std::string &Name, unsigned SpawnChance, StructureData &Data,StructureInfo &Info)
-		:StructureBase(Name,SpawnChance), Data(Data), Info(Info){}
+	StructureDef(const std::string &Name, unsigned SpawnChance, const StructureData &Data, const StructureInfo &Info)
+		:StructureBase(Name, SpawnChance), Data(Data), Info(Info)
+	{}
 
-	const StructureData &getData()
+	const StructureData &getData() const
 	{
 		return Data;
 	}
-	const StructureInfo &getInfo()
+	const StructureInfo &getInfo() const
 	{
 		return Info;
 	}
@@ -51,10 +53,11 @@ class Structure : public StructureBase
 	StructureData Data;
 
 public:
-	Structure(std::string &Name, unsigned SpawnChance, StructureData &Data)
-		:StructureBase(Name, SpawnChance), Data(Data){}
+	Structure(const std::string &Name, unsigned SpawnChance, const StructureData &Data)
+		:StructureBase(Name, SpawnChance), Data(Data)
+	{}
 
-	const StructureData &getData()
+	const StructureData &getData() const
 	{
 		return Data;
 	}

@@ -35,3 +35,14 @@ sf::Vector2<T> getVectorFromString(const std::string &String)
 	temp.y = boost::lexical_cast<T>(String.substr(String.find(',') + 1, String.size() - 1));
 	return temp;
 }
+
+inline bool getBoolFromString(const std::string &String)
+{
+	bool ret = false;
+	if (String == "1")
+	{
+		ret = true;
+	}
+
+	return ret;
+}

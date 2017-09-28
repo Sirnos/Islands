@@ -18,7 +18,8 @@ class MonsterManager
 		sf::Vector2f followedEntityPos = toFollow->getCharacterCenterPosition();
 		sf::Vector2f followerEntityPos = ManagementMonsters[Monster].getCharacterCenterPosition();
 
-		float distance = sqrt(pow(followerEntityPos.x - followedEntityPos.x, 2)) + sqrt(pow(followerEntityPos.y - followedEntityPos.y, 2));
+
+		float distance = std::sqrt(std::pow(followerEntityPos.x - followedEntityPos.x, 2)) + std::sqrt(std::pow(followerEntityPos.y - followedEntityPos.y, 2));
 		if (distance >= DistanceToFollow)
 		{
 			sf::Vector2f DistanceVector = followedEntityPos - followerEntityPos;

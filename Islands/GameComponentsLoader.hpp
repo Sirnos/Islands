@@ -2,10 +2,9 @@
 
 #include <vector>
 
-#include <rapidxml_utils.hpp>
 #include <rapidxml.hpp>
 
-#include "SFMLTypesFromText.hpp"
+#include "TypesFromText.hpp"
 #include "DefContainer.hpp"
 
 class GameComponentsLoader
@@ -90,21 +89,20 @@ public:
 			std::vector<RecipeDef> tempRecipes;
 
 			ObjectsGraphicsFile = mainNode->first_attribute()->value();
-			for (rapidxml::xml_node<>* objectsNode = mainNode->first_node(); objectsNode != nullptr;
-				objectsNode = objectsNode->next_sibling())
+
+			rapidxml::xml_node<>* objectsNode = mainNode->first_node();
+			for (objectsNode; objectsNode != nullptr; objectsNode = objectsNode->next_sibling())
 			{
 				std::string newObjName = objectsNode->first_attribute()->value();
 				bool newObjDestructible = false;
+				bool newObjCollision = false;
 				Yield newObjYield;
 				sf::Vector2i newObjSize;
 				sf::IntRect newObjTextureCoord;
-				sf::FloatRect newObjCollisionBox;
-
 				ObjectType newObjType = ObjectType::Default;
 
-
-				for (rapidxml::xml_node<>* objectsParamNode = objectsNode->first_node(); objectsParamNode != nullptr;
-					objectsParamNode = objectsParamNode->next_sibling())
+				rapidxml::xml_node<>* objectsParamNode = objectsNode->first_node();
+				for (objectsParamNode; objectsParamNode != nullptr; objectsParamNode = objectsParamNode->next_sibling())
 				{
 					std::string paramName = objectsParamNode->name();
 
@@ -118,12 +116,11 @@ public:
 					}
 					else if (paramName == "Collision")
 					{
-						newObjCollisionBox = getRectFromString<float>(std::string(objectsParamNode->value()));
+						newObjCollision = getBoolFromString(std::string(objectsParamNode->value()));
 					}
 					else if (paramName == "Isdestructible")
 					{
-						std::string temp = objectsParamNode->value();
-						if (temp == "1") { newObjDestructible = true; }
+						newObjDestructible = getBoolFromString(objectsParamNode->value());
 					}
 					else if (paramName == "Ifdestroyed")
 					{
@@ -150,20 +147,20 @@ public:
 				switch (newObjType)
 				{
 				case ObjectType::Default:
-					Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible));
+					Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjYield, newObjDestructible, newObjCollision));
 					break;
 				case ObjectType::Chest:
-					Objects.push_back(new ChestDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible, tempUint.back()));
+					Objects.push_back(new ChestDef(newObjName, newObjSize, newObjCollision, newObjYield, newObjDestructible, tempUint.back()));
 					break;
 				case ObjectType::Tree:
 					break;
 				case ObjectType::Sapling:
-					Objects.push_back(new SaplingDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));
+					Objects.push_back(new SaplingDef(newObjName, newObjSize, newObjCollision, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));
 					break;
 				case ObjectType::Spawner:
 					break;
 				case ObjectType::CraftingPlace:
-					Objects.push_back(new CraftingPlaceDef(newObjName, newObjSize, newObjCollisionBox, newObjYield, newObjDestructible, tempRecipes));
+					Objects.push_back(new CraftingPlaceDef(newObjName, newObjSize, newObjYield, newObjDestructible, newObjCollision, tempRecipes));
 					break;
 				default:
 					break;
@@ -178,7 +175,7 @@ public:
 		Objects.shrink_to_fit();
 	}
 
-	static void GenerateItemsFromObjectDef(std::vector<ObjectDef*> &Objs, std::vector<ItemDef*> &Items)
+	static void GenerateItemsFromObjectDef(const std::vector<ObjectDef*> &Objs, std::vector<ItemDef*> &Items)
 	{
 		for (unsigned i = 0; i < Objs.size(); i++)
 		{
@@ -352,6 +349,7 @@ public:
 				Structures.push_back(LoadStructureDefFromFile(StructureFile));
 			}
 		}
+		Structures.shrink_to_fit();
 	}
 
 	static void LoadTerrainTextureCoords(std::vector<sf::IntRect> & TerrainTextCoords)
@@ -369,6 +367,7 @@ public:
 				TerrainTextCoords.push_back(getRectFromString<int>(std::string(TerrainNode->value())));
 			}
 		}
+		TerrainTextCoords.shrink_to_fit();
 	}
 
 	static void LoadLocalMapVariables(std::vector<LocalMapVariablesDef> & Vars)
@@ -449,6 +448,7 @@ public:
 				}
 			}
 		}
+		Vars.shrink_to_fit();
 	}
 
 	static void LoadEntitiesDefFromFile(std::vector<MonsterEntityDef> &Entities)
@@ -468,7 +468,7 @@ public:
 				float EntityMp = 0.0f;
 				float EntitySpeed = 0.0f;
 				sf::Vector2f EntitySize;
-				BehaviorVariables EntityBehavior;
+				EntityBehaviorValues EntityBehavior;
 
 				rapidxml::xml_node<> *EntityAttribs = EntitiesNode->first_node();
 				for (EntityAttribs; EntityAttribs != nullptr; EntityAttribs = EntityAttribs->next_sibling())
@@ -511,14 +511,11 @@ public:
 							std::string BehaviorVarName = EntityBehaviorNode->name();
 							if (BehaviorVarName == "Aggressive")
 							{
-								EntityBehavior.aggressive = std::stoul(std::string(EntityBehaviorNode->value()));
+								EntityBehavior.aggresion = static_cast<EntityAggressive>(std::stoul(std::string(EntityBehaviorNode->value())));
 							}
 							else if(BehaviorVarName == "CanGroup")
 							{
-								if (std::string(EntityBehaviorNode->value()) == "1")
-								{
-									EntityBehavior.canLiveInGroup = true;
-								}
+								EntityBehavior.canLiveInGroup = getBoolFromString(std::string(EntityBehaviorNode->value()));
 							}
 							else if(BehaviorVarName == "GroupSize")
 							{
@@ -528,7 +525,7 @@ public:
 							{
 								if (std::string(EntityBehaviorNode->value()) == "Distance")
 								{
-									EntityBehavior.attackPrefer = AttackTypePrefer::Distance;
+									EntityBehavior.attackPrefer = EntityAttackType::Distance;
 								}
 							}
 						}
@@ -537,5 +534,6 @@ public:
 				Entities.push_back(MonsterEntityDef(EntityName, EntityStats(EntityHp, EntityMp, EntitySpeed), EntityBehavior, EntitySize));
 			}
 		}
+		Entities.shrink_to_fit();
 	}
 };

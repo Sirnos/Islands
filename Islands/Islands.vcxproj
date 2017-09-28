@@ -128,6 +128,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EntityBehaviorState.hpp" />
     <ClInclude Include="button.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Console.hpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="EngineVars.hpp" />
     <ClInclude Include="EntityBehavior.hpp" />
+    <ClInclude Include="EntityBehaviorValues.hpp" />
     <ClInclude Include="EntityDef.hpp" />
     <ClInclude Include="EntitySide.hpp" />
     <ClInclude Include="EntityStats.hpp" />
@@ -161,7 +163,7 @@
     <ClInclude Include="Gui.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="Recipe.hpp" />
-    <ClInclude Include="SFMLTypesFromText.hpp" />
+    <ClInclude Include="TypesFromText.hpp" />
     <ClInclude Include="Structure.hpp" />
     <ClInclude Include="TerrainType.hpp" />
     <ClInclude Include="textbox.hpp" />

@@ -128,9 +128,6 @@
     <ClInclude Include="EngineVars.hpp">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
-    <ClInclude Include="SFMLTypesFromText.hpp">
-      <Filter>Header Files\other</Filter>
-    </ClInclude>
     <ClInclude Include="EntityStats.hpp">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
@@ -181,6 +178,15 @@
     </ClInclude>
     <ClInclude Include="EntitySide.hpp">
       <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityBehaviorState.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityBehaviorValues.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TypesFromText.hpp">
+      <Filter>Header Files\other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

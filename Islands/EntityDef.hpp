@@ -37,17 +37,17 @@ public:
 
 class MonsterEntityDef : public EntityDef
 {
-	BehaviorVariables Behavior;
+	EntityBehaviorValues Behavior;
 
 public:
 	MonsterEntityDef() = delete;
 	MonsterEntityDef(const MonsterEntityDef &other)
 		:EntityDef(other.EntityName, other.Stats, other.EntitySize), Behavior(other.Behavior)
 	{}
-	MonsterEntityDef(const std::string &name, const EntityStats &stats, const BehaviorVariables &behavior, sf::Vector2f size)
+	MonsterEntityDef(const std::string &name, const EntityStats &stats, const EntityBehaviorValues &behavior, sf::Vector2f size)
 		:EntityDef(name, stats, size), Behavior(behavior)
 	{}
 	MonsterEntityDef& operator=(const MonsterEntityDef& other) = delete;
 
-	BehaviorVariables getBehavior() const { return Behavior; }
+	EntityBehaviorValues getBehavior() const { return Behavior; }
 };
