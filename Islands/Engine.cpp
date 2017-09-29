@@ -326,10 +326,10 @@ void Engine::updateTile(const sf::Vector2u &tileIndex)
 	if (objectId == 0) { return; }
 	float Time = GameClock.getElapsedTime().asSeconds();
 
-	if (GameWorld->getLocalMapTileObject(tileIndex)->type == ObjectType::Sapling)
+	if (GameWorld->getLocalMapTileObject(tileIndex)->getType() == ObjectType::Sapling)
 	{
 		float Time = GameClock.getElapsedTime().asSeconds();
-		float plantTime = dynamic_cast<SaplingObject*>(GameWorld->getLocalMapTileObject(tileIndex))->PlantTime;
+		float plantTime = dynamic_cast<SaplingObject*>(GameWorld->getLocalMapTileObject(tileIndex))->getPlantTime();
 		float growTime = dynamic_cast<SaplingDef*>(Objects->getDefinition(objectId))->getGrowTime();
 
 		if (sf::seconds(Time) >= sf::seconds(plantTime) + sf::seconds(growTime))
@@ -684,20 +684,20 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 
 		if (GameWorld->getLocalMapTileObject(objectPos) != nullptr)
 		{
-			ObjectType clickedObjectType = GameWorld->getLocalMapTileObject(objectPos)->type;
+			ObjectType clickedObjectType = GameWorld->getLocalMapTileObject(objectPos)->getType();
 
 			switch (clickedObjectType)
 			{
 			case ObjectType::Default:
 				break;
 			case ObjectType::Chest:
-				Player.Inventory.pushInteractionWithChest(&dynamic_cast<ChestObject*>(GameWorld->getLocalMapTileObject(objectPos))->Contain);
+				Player.Inventory.pushInteractionWithChest(&dynamic_cast<ChestObject*>(GameWorld->getLocalMapTileObject(objectPos))->getContain());
 				GameGui.createChestFields(Player.Inventory.getInteractedChestSize());
 				GameGui.Eq.isEnable = true;
 				break;
 			case ObjectType::CraftingPlace:
 				Crafting.clear();
-				Crafting.AssingRecipes(dynamic_cast<CraftingPlaceObject*>(GameWorld->getLocalMapTileObject(objectPos))->Recipes);
+				Crafting.AssingRecipes(dynamic_cast<CraftingPlaceObject*>(GameWorld->getLocalMapTileObject(objectPos))->getRecipes());
 				GameGui.Craft.isEnable = true;
 				break;
 			case ObjectType::Tree:

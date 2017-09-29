@@ -54,7 +54,7 @@ public:
 	{
 		if (LocalMap[tile.x][tile.y].TileObject != nullptr)
 		{
-			return LocalMap[tile.x][tile.y].TileObject->Id;
+			return LocalMap[tile.x][tile.y].TileObject->getId();
 		}
 		return 0;
 	}

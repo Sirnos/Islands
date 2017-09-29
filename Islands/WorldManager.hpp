@@ -254,9 +254,9 @@ public:
 		std::vector<ItemField> ret;
 		if (ManagementWorld->getLocalMapTileObject(tile) != nullptr)
 		{
-			if (ManagementWorld->getLocalMapTileObject(tile)->type == ObjectType::Chest)
+			if (ManagementWorld->getLocalMapTileObject(tile)->getType() == ObjectType::Chest)
 			{
-				for (const auto & chestItem : dynamic_cast<ChestObject*>(ManagementWorld->getLocalMapTileObject(tile))->Contain)
+				for (const auto & chestItem : dynamic_cast<ChestObject*>(ManagementWorld->getLocalMapTileObject(tile))->getContain())
 				{
 					ret.push_back(chestItem);
 				}
