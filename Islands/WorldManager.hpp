@@ -249,17 +249,14 @@ public:
 	}
 
 
-	std::vector<ItemField> getLocalMapTileObjectAsItems(const sf::Vector2u &tile)
+	std::vector<ItemField> getItemsFromChestObject(const sf::Vector2u &tile) const
 	{
 		std::vector<ItemField> ret;
 		if (ManagementWorld->getLocalMapTileObject(tile) != nullptr)
 		{
 			if (ManagementWorld->getLocalMapTileObject(tile)->getType() == ObjectType::Chest)
 			{
-				for (const auto & chestItem : dynamic_cast<ChestObject*>(ManagementWorld->getLocalMapTileObject(tile))->getContain())
-				{
-					ret.push_back(chestItem);
-				}
+				ret = dynamic_cast<ChestObject*>(ManagementWorld->getLocalMapTileObject(tile))->getContain();
 			}
 		}
 
@@ -290,40 +287,5 @@ public:
 		}
 		return sf::IntRect();
 
-		/*
-		sf::IntRect collideObject;
-		unsigned collideObjectId = ManagementWorld->getLocalMapTileObject(tile)->Id;
-		if (collideObjectId != 0)
-		{
-			sf::FloatRect collideObjectBox = ObjectsDef->getDefinition(collideObjectId)->getCollisionBox();
-			if (collideObjectBox.top <= 0.01f && collideObjectBox.left <= 0.01f
-				&& collideObjectBox.height <= 0.01f && collideObjectBox.width <= 0.01f)
-			{
-				return collideObject;
-			}
-			collideObject.top = tile.y * static_cast<int>(TILE_SIZE);
-			collideObject.left = tile.x * static_cast<int>(TILE_SIZE);
-			collideObject.width = static_cast<int>(TILE_SIZE);
-			collideObject.height = static_cast<int>(TILE_SIZE);
-
-			if (collideObjectBox.top < 1.0f)
-			{
-				collideObject.top += static_cast<int>(TILE_SIZE * collideObjectBox.top);
-			}
-			if (collideObjectBox.left < 1.0f)
-			{
-				collideObject.left += static_cast<int>(TILE_SIZE * collideObjectBox.left);
-			}
-			if (collideObjectBox.height < 1.0f)
-			{
-				collideObject.height -= static_cast<int>(TILE_SIZE * collideObjectBox.height);
-			}
-			if (collideObjectBox.width < 1.0f)
-			{
-				collideObject.width -= static_cast<int>(TILE_SIZE * collideObjectBox.width);
-			}
-		}
-		return collideObject;
-		*/
 	}
 };

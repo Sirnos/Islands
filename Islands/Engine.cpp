@@ -666,7 +666,7 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 						}
 
 
-						for (const auto & Item : GWorldManager.getLocalMapTileObjectAsItems(objectPos))
+						for (const auto & Item : GWorldManager.getItemsFromChestObject(objectPos))
 						{
 							LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, Item);
 						}

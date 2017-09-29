@@ -11,7 +11,7 @@ public:
 	PlayerInventory Inventory;
 
 	PlayerEntity(const sf::RectangleShape &PlayerBody, sf::Vector2f position, float HP, float MP, float Speed)
-		:Entity(PlayerBody, HP, MP, Speed)
+		:Entity(PlayerBody, HP, MP, Speed), Inventory()
 	{}
 
 	void setSpawnPoint(const sf::Vector2f &newSpawnPoint) { spawnPoint = newSpawnPoint; }
