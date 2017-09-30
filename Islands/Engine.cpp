@@ -106,23 +106,6 @@ void Engine::checkPlayerBehaviour()
 	}
 }
 
-void Engine::spawnPlayer()
-{
-	IntegerGenerator<unsigned> Gen;
-	sf::Vector2f spawnPoint;
-
-	spawnPoint.x = static_cast<float>(Gen.get(1, GameWorld->getLocalMapSize()));
-	spawnPoint.y = static_cast<float>(Gen.get(1, GameWorld->getLocalMapSize()));
-	spawnPoint.x *= TILE_SIZE;
-
-	ErrorHandler::log(std::string("Spawn Player position:"));
-	ErrorHandler::log("Tile Y " + std::to_string(World::getTiledPosition(spawnPoint).y));
-	ErrorHandler::log("Tile X " + std::to_string(World::getTiledPosition(spawnPoint).x));
-
-	Player.setPosition(spawnPoint);
-	Player.setSpawnPoint(spawnPoint);
-}
-
 void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field)
 {
 	unsigned holdedItemId = Player.Inventory.getHoldItem().ItemId;
@@ -424,7 +407,7 @@ void Engine::drawMonsters(sf::RenderWindow & window)
 {
 	sf::FloatRect cameraPos{ window.getView().getCenter() - (window.getView().getSize() / 2.0f),window.getView().getSize() };
 
-	for (const auto & monster : GMonsterManager.getManagementMonsters())
+	for (const auto & monster : GMonsterManager.getMonsters())
 	{
 		if (cameraPos.contains(monster.getCharacterCenterPosition()))
 		{
@@ -509,9 +492,17 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	GWorldManager.buildLocalMap(TerrainType::Grass, v1.LocalMapSize);
 
 	Player.Stats = Entities->getContainer().front().getStats();
-	spawnPlayer();
 	Player.pushTexture(mediaContainer.getTexture(TextureContainer::EntitiesTextures, 1));
+	sf::Vector2f playerSpawnPos = GWorldManager.getSpawnPosition();
 
+	ErrorHandler::log(std::string("Spawn Player position:"));
+	ErrorHandler::log("Tile Y " + std::to_string(World::getTiledPosition(playerSpawnPos).y));
+	ErrorHandler::log("Tile X " + std::to_string(World::getTiledPosition(playerSpawnPos).x));
+
+	Player.setPosition(playerSpawnPos);
+	Player.setSpawnPoint(playerSpawnPos);
+
+	GMonsterManager.assingMonsterWorld(GameWorld);
 	GMonsterManager.addEntityToObserved(&Player);
 }
 

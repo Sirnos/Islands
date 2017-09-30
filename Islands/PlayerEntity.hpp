@@ -10,7 +10,7 @@ class PlayerEntity :public Entity
 public:
 	PlayerInventory Inventory;
 
-	PlayerEntity(const sf::RectangleShape &PlayerBody, sf::Vector2f position, float HP, float MP, float Speed)
+	PlayerEntity(const sf::RectangleShape &PlayerBody, const sf::Vector2f &position, float HP, float MP, float Speed)
 		:Entity(PlayerBody, HP, MP, Speed), Inventory()
 	{}
 

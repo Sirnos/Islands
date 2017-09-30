@@ -20,10 +20,10 @@ public:
 	EntityDef(const EntityDef &other)
 		:Stats(other.Stats), EntityName(other.EntityName), EntitySize(other.EntitySize)
 	{}
-	EntityDef(const std::string &Name, sf::Vector2f Size, float Hp, float Mp, float Speed)
+	EntityDef(const std::string &Name, const sf::Vector2f &Size, float Hp, float Mp, float Speed)
 		:Stats(Hp, Mp, Speed), EntityName(Name), EntitySize(Size)
 	{}
-	EntityDef(const std::string &Name, const EntityStats &stats, sf::Vector2f size)
+	EntityDef(const std::string &Name, const EntityStats &stats, const sf::Vector2f &size)
 		:EntityName(Name), Stats(stats), EntitySize(size)
 	{}
 	~EntityDef() = default;

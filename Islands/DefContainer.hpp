@@ -8,7 +8,7 @@
 #include "EntityDef.hpp"
 #include <vector>
 
-template<typename DefType,typename = typename std::enable_if<std::is_pointer<DefType>::value,DefType>::type>
+template<typename DefType, typename = typename std::enable_if<std::is_pointer<DefType>::value,DefType>::type>
 class DynamicDefContainer
 {
 	std::vector<DefType> Container;

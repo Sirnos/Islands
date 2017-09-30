@@ -14,6 +14,7 @@ public:
 	World(const World & other) = delete;
 	~World() = default;
 
+
 	const static size_t DefaultMapSize = 512;
 	const static size_t DefaultWorldSize = 256;
 
@@ -37,6 +38,7 @@ public:
 	TerrainType getWorldMapTileTerrain(const sf::Vector2u &tile) const { return WorldMap[tile.x][tile.y]; }
 	TerrainType getLocalMapTileTerrain(const sf::Vector2u &tile) const { return LocalMap[tile.x][tile.y].Terrain; }
 
+
 	void setWorldMapTileTerrain(const sf::Vector2u &tile, const TerrainType &Terrain)
 	{
 		WorldMap[tile.x][tile.y] = Terrain;
@@ -46,11 +48,12 @@ public:
 		LocalMap[tile.x][tile.y].Terrain = Terrain;
 	}
 
-	Object* const getLocalMapTileObject(const sf::Vector2u &tile)
+
+	Object* const getLocalMapTileObject(const sf::Vector2u &tile) const
 	{
 		return LocalMap[tile.x][tile.y].TileObject;
 	}
-	unsigned getLocalMapTileObjectId(const sf::Vector2u &tile)
+	unsigned getLocalMapTileObjectId(const sf::Vector2u &tile) const
 	{
 		if (LocalMap[tile.x][tile.y].TileObject != nullptr)
 		{
@@ -59,6 +62,7 @@ public:
 		return 0;
 	}
 	
+
 	void removeLocalMapTileObject(const sf::Vector2u &tile)
 	{
 		if (LocalMap[tile.x][tile.y].TileObject != nullptr)
@@ -67,7 +71,6 @@ public:
 			LocalMap[tile.x][tile.y].TileObject = nullptr;
 		}
 	}
-
 	void setLocalMapTileObject(const sf::Vector2u &tile, Object* objectToSet)
 	{
 		LocalMap[tile.x][tile.y].TileObject = objectToSet;

@@ -28,6 +28,7 @@ public:
 	WorldManager(const WorldManager & other) = delete;
 	~WorldManager() = default;
 
+
 	void AssingLocalMapsBuilderVars(std::vector<LocalMapVariables> &BuildVars)
 	{
 		LocalMapsBuilderVars = BuildVars;
@@ -53,11 +54,13 @@ public:
 		GameClockPtr = std::make_shared<sf::Clock>(Clock);
 	}
 
+
 	void setStructuresAmountInLocalMap(unsigned Amount)
 	{
 		if (Amount >= 6) { Amount = 5; }
 		StructuresPerLocalMap = Amount;
 	}
+
 
 	void buildLocalMap(TerrainType Base, size_t LocalMapSize = World::DefaultMapSize)
 	{
@@ -264,7 +267,7 @@ public:
 	}
 
 
-	sf::IntRect getLocalMapTileCollisionBox(const sf::Vector2u &tile)
+	sf::IntRect getLocalMapTileCollisionBox(const sf::Vector2u &tile) const
 	{
 		if (!sf::Rect<unsigned>(sf::Vector2u(), sf::Vector2u(ManagementWorld->getLocalMapSize(),
 			ManagementWorld->getLocalMapSize())).contains(tile))
@@ -287,5 +290,34 @@ public:
 		}
 		return sf::IntRect();
 
+	}
+
+
+	sf::Vector2f getSpawnPosition() const
+	{
+		IntegerGenerator<unsigned> Gen;
+		sf::Vector2u spawnTile;
+		sf::Vector2f spawnPosition;
+
+		while (true)
+		{
+			spawnTile.x = Gen.get(1, ManagementWorld->getLocalMapSize());
+			spawnTile.y = Gen.get(1, ManagementWorld->getLocalMapSize());
+
+			if (ManagementWorld->getLocalMapTileObject(spawnTile) != nullptr)
+			{
+				if (!ObjectsDef->getDefinition(ManagementWorld->getLocalMapTileObjectId(spawnTile))->getCollision())
+				{
+					break;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		spawnPosition = (static_cast<sf::Vector2f>(spawnTile) * TILE_SIZE);
+		return spawnPosition;
 	}
 };

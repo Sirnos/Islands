@@ -16,12 +16,14 @@ protected:
 public:
 	EntityStats Stats;
 
+	Entity() = delete;
 	Entity(sf::RectangleShape EBody, float EHP, float EMP, float ESpeed)
 		:Stats(EHP, EMP, ESpeed), Body(EBody), ActualSide(EntitySide::Left)
 	{}
 	Entity(sf::RectangleShape EBody, EntityStats EStats)
 		:Body(EBody), Stats(EStats), ActualSide(EntitySide::Left)
 	{}
+	virtual ~Entity() = default;
 
 	void move(const sf::Vector2f &vectr)
 	{
@@ -58,17 +60,19 @@ public:
 
 class Monster : public Entity
 {
-	unsigned Id;
+	size_t Id;
 public:
-	Monster(sf::RectangleShape MBody, float MHP, float MMP, float MSpeed, unsigned MId)
+	Monster() = delete;
+	Monster(sf::RectangleShape MBody, float MHP, float MMP, float MSpeed, size_t MId)
 		:Entity(MBody, MHP, MMP, MSpeed), Id(MId)
 	{}
-	Monster(sf::RectangleShape MBody, const EntityStats &MStats, unsigned MId)
+	Monster(sf::RectangleShape MBody, const EntityStats &MStats, size_t MId)
 		:Entity(MBody, MStats), Id(MId)
 	{}
 	Monster(const Monster &other)
 		:Entity(other.Body, other.Stats), Id(other.Id)
 	{}
+	~Monster() = default;
 
-	unsigned getId() const { return Id; }
+	size_t getId() const { return Id; }
 };

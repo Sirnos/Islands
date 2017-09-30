@@ -46,25 +46,29 @@ class Engine
 	sf::Clock GameClock;
 	Console GameConsole;
 
+
 	void loadGameComponents();
+
 
 	void checkPlayerEnvironment();
 	void checkPlayerBehaviour();
-
-	void spawnPlayer();
-
 	void checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field);
+
 
 	void drawConsole(IslandApp &app);
 
+
 	void updateTile(const sf::Vector2u &tileIndex);
+
 
 	void drawMonsters(sf::RenderWindow &window);
 	void drawTile(TerrainType &preTile, const sf::Vector2u &tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 	void drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 
+
 	void drawWorld(IslandApp &app);
 	void drawLyingItems(IslandApp &app);
+
 
 	void drawPlayerGui(IslandApp & app);
 	void pushItemTextureToRect(const sf::Vector2f &pos, unsigned itemId, sf::RectangleShape &rect);
@@ -74,9 +78,13 @@ public:
 	Engine(const Engine &other) = delete;
 	~Engine();
 
+
 	void operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClick);
+
 
 	void manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseRClick);
 
+
 	void DrawAll(IslandApp &app);
+
 };

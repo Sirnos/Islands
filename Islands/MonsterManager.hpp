@@ -12,6 +12,8 @@ class MonsterManager
 	std::vector<Monster> ManagementMonsters;
 	std::vector<Entity*> ObservedEntities;
 
+	std::shared_ptr<World> MonsterWorld;
+
 
 	void _monsterFollow(const Entity * toFollow, size_t Monster)
 	{
@@ -54,21 +56,22 @@ public:
 	~MonsterManager() = default;
 
 
-	void addMonster(const Monster& toAdd)
+	void spawnMonster(const MonsterEntityDef &MonsterDef, const size_t MonsterId, const sf::Vector2f &SpawnPosition)
 	{
-		ManagementMonsters.push_back(toAdd);
+		ManagementMonsters.push_back(Monster(sf::RectangleShape(MonsterDef.getSize()), MonsterDef.getStats(), MonsterId));
+		ManagementMonsters.back().setPosition(SpawnPosition);
 	}
-	void addMonster(const MonsterEntityDef& toAdd, unsigned MonsterId)
+	void spawnMonsters(const std::vector<MonsterEntityDef> &MonstersDef, const std::vector<size_t> &IDs, const std::vector<sf::Vector2f> &SpawnPositions)
 	{
-		ManagementMonsters.push_back(Monster(sf::RectangleShape(toAdd.getSize()), toAdd.getStats(), MonsterId));
-	}
-	void addMonsters(const std::vector<Monster> &Monsters)
-	{
-		for (const auto m : Monsters)
+		size_t i = 0;
+		while (i < MonstersDef.size() && i < IDs.size() && i < SpawnPositions.size())
 		{
-			ManagementMonsters.push_back(m);
+			spawnMonster(MonstersDef[i], IDs[i], SpawnPositions[i]);
+			i++;
 		}
 	}
+
+
 	void removeMonster(size_t index)
 	{
 		ManagementMonsters.erase(ManagementMonsters.begin() + index);
@@ -77,13 +80,13 @@ public:
 	{
 		ManagementMonsters.clear();
 	}
+
+
 	Monster & getMonster(size_t index)
 	{
 		return ManagementMonsters[index];
 	}
-
-
-	const std::vector<Monster> &getManagementMonsters() const
+	const std::vector<Monster> &getMonsters() const
 	{
 		return ManagementMonsters;
 	}
@@ -100,6 +103,12 @@ public:
 	void removeAllObserved()
 	{
 		ObservedEntities.clear();
+	}
+
+
+	void assingMonsterWorld(std::shared_ptr<World> &ptrToWorld)
+	{
+		MonsterWorld = ptrToWorld;
 	}
 
 
