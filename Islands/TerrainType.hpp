@@ -43,7 +43,7 @@ inline std::string TerrainTypeToString(TerrainType terrain)
 	}
 	return ret;
 }
-inline TerrainType StringToTerrainType(std::string &str)
+inline TerrainType StringToTerrainType(const std::string &str)
 {
 	TerrainType ret = TerrainType::Null;
 	if (str == "Dirt") { ret = TerrainType::Dirt; }

@@ -57,7 +57,7 @@ public:
 
 	ItemType getType() { return type; }
 
-	ItemDef(std::string &ItemName, unsigned maxItemStack,ItemType typeOfItem = ItemType::Default)
+	ItemDef(const std::string &ItemName, unsigned maxItemStack,ItemType typeOfItem = ItemType::Default)
 		:name(ItemName), maxStack(maxItemStack), type(typeOfItem)
 	{
 		if (maxItemStack < MAXIMUM_STACK_SIZE)
@@ -107,7 +107,7 @@ public:
 	std::string ifHold() { return "DRAW"; }
 	std::string ifClicked() { return "MATTACK:1:1"; }
 
-	PlaceableDef(std::string &ItemName, unsigned maxStack = 64)
+	PlaceableDef(const std::string &ItemName, unsigned maxStack = 64)
 		:ItemDef(ItemName, maxStack, ItemType::Placeable) {}
 };
 
@@ -118,7 +118,7 @@ public:
 	std::string ifHold() { return "DRAW"; }
 	std::string ifClicked() { return ""; }
 
-	RawMaterialDef(std::string &RMaterialName, unsigned maxStack = 128)
+	RawMaterialDef(const std::string &RMaterialName, unsigned maxStack = 128)
 		:ItemDef(RMaterialName, maxStack) {}
 };
 
@@ -142,6 +142,6 @@ public:
 	unsigned getProtectionValue() { return protection; }
 	ArmorPart getPart() { return part; }
 
-	ArmorDef(std::string &ArmorName, ArmorPart armor,unsigned protectVal, unsigned maxStack = 1)
+	ArmorDef(const std::string &ArmorName, ArmorPart armor,unsigned protectVal, unsigned maxStack = 1)
 		:ItemDef(ArmorName, maxStack, ItemType::Armor), protection(protectVal), part(armor){}
 };

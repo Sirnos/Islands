@@ -32,16 +32,16 @@ public:
 		commands.clear();
 		history.clear();
 	}
-	
+
 	bool getEnable() const { return enable; }
 	void setEnable(bool newVal) { enable = newVal; }
 
 	bool getTextboxEnable() { return ConsoleInput.getIsEnable(); }
 	void setTexboxEnable(bool newVal) { ConsoleInput.setEnable(newVal); }
 
-	void pushCommandToHistory(const std::string &command) 
-	{ 
-		history.push_back(command); 
+	void pushCommandToHistory(const std::string &command)
+	{
+		history.push_back(command);
 		lastHistoryCmd = history.size() - 1;
 	}
 	std::string getCmdFromHistory(unsigned cmdNumber) { return history[cmdNumber]; }
@@ -120,7 +120,8 @@ public:
 		if (static_cast<unsigned>(amount) > MAXIMUM_STACK_SIZE) { commands.push_back("amount is higher than MAXIMUM_STACK_SIZE"); return; }
 		if (static_cast<unsigned>(amount) > Items.getDefinition(id)->getMaxStack()) { commands.push_back("amount is higher than Item::MaxStack"); return; }
 
-		Inv.pushItem(ItemField(id, amount), Items.getDefinition(id)->getMaxStack());
+		ItemField item(id, amount);
+		Inv.pushItem(item, Items.getDefinition(id)->getMaxStack());
 		pushCommandToHistory(command);
 
 		return;

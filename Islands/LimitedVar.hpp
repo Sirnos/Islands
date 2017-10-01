@@ -15,7 +15,7 @@ class LimitedVar
 	}
 public:
 	LimitedVar()
-		:Var(0), Limit(std::numeric_limits<T>.max() - 1)
+		:Var(0), Limit(std::numeric_limits<T>::max() - 1)
 	{}
 	LimitedVar(T Max)
 		:Limit(Max), Var(Max)
