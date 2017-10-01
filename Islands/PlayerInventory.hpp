@@ -27,8 +27,8 @@ public:
 	{
 		return HandInventory[field];
 	}
-	ItemField getArmorInventoryField(unsigned field) 
-	{ 
+	ItemField getArmorInventoryField(unsigned field)
+	{
 		return ArmorInventory[field];
 	}
 	ItemField getHoldItem() { return HoldItem; }
@@ -67,8 +67,8 @@ public:
 
 	void setInventoryField(const sf::Vector2u &field, ItemField newVal)
 	{
-		if (!newVal.isCorrect()) 
-		{ 
+		if (!newVal.isCorrect())
+		{
 			newVal.empty();
 		}
 		Inventory[field.x][field.y] = newVal;
@@ -89,13 +89,13 @@ public:
 		}
 		ArmorInventory[field] = newVal;
 	}
-	void setHoldItem(ItemField newVal) 
+	void setHoldItem(ItemField newVal)
 	{
 		if (!newVal.isCorrect())
 		{
 			newVal.empty();
 		}
-		HoldItem = newVal; 
+		HoldItem = newVal;
 	}
 
 	void pushItem(ItemField &item, unsigned ItemMaxStack)

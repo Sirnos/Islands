@@ -51,7 +51,7 @@ public:
 		clearPlayerSelects();
 	}
 
-	void loadPlayerRecipes(std::vector<Recipe> &DefaultRecipes)
+	void loadPlayerRecipes(const std::vector<Recipe> &DefaultRecipes)
 	{
 		PlayerBaseRecipes = DefaultRecipes;
 	}

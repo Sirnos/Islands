@@ -1,7 +1,7 @@
 #pragma once
 
-#include <rapidxml.hpp>
-#include <rapidxml_utils.hpp>
+#include <rapidxml/rapidxml.hpp>
+#include <rapidxml/rapidxml_utils.hpp>
 
 #include "TypesFromText.hpp"
 #include <array>
@@ -68,7 +68,7 @@ struct EngineVars
 					else if(VarName == "BitsPerPixel")
 					{
 						unsigned BitsPerPixelVar = std::stoul(VarValue);
-						
+
 						size_t isMatch = std::count(Video.AllowedBitsPerPixel.begin(), Video.AllowedBitsPerPixel.end(), BitsPerPixelVar);
 						if(isMatch == 1)
 						{

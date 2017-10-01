@@ -48,7 +48,7 @@ public:
 	void displayContext() { IslandWindow.display(); }
 
 	template<class ShapeType>
-	void draw(ShapeType & object) { IslandWindow.draw(object); }
+	void draw(const ShapeType & object) { IslandWindow.draw(object); }
 
 	template<class ShapePointersVector>
 	void drawShapePointersVector(ShapePointersVector & Vector)

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <rapidxml.hpp>
+#include <rapidxml/rapidxml.hpp>
 
 #include "TypesFromText.hpp"
 #include "DefContainer.hpp"
