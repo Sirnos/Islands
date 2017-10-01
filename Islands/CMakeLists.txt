@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-find_package(SFML REQUIRED)
+find_package(SFML REQUIRED graphics window system)
 find_package(RapidXML REQUIRED)
 find_package(Boost REQUIRED)
 
@@ -67,6 +67,6 @@ include_directories(${BOOST_INCLUDE_DIRS})
 include_directories(${SFML_INCLUDE_DIRS})
 include_directories(${RAPIDXML_INCLUDE_DIRS})
 
-link_directories(${SFML_LIBS_DIR})
-
 add_executable(Islands ${SRC})
+
+target_link_libraries(Islands ${SFML_LIBRARIES})
