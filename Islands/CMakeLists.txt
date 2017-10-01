@@ -1,7 +1,14 @@
+
 cmake_minimum_required(VERSION 3.6.0)
 
 project (Islands)
 set(CMAKE_CXX_STANDARD 14)
+
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+find_package(SFML REQUIRED)
+find_package(RapidXML REQUIRED)
+find_package(Boost REQUIRED)
 
 set(SRC
 
@@ -56,14 +63,9 @@ set(SRC
    FastNoise/FastNoise.cpp
 )
 
-set(SFML_INCLUDE_DIR "/" CACHE PATH "sfml include dir")
-set(SFML_LIBS_DIR "/" CACHE PATH "sfml libs dir")
-set(RAPIDXML_DIR "/" CACHE PATH "rapidxml include dir")
-set(BOOST_INCLUDE_DIR "/" CACHE PATH "boost include dir")
-
-include_directories(${BOOST_INCLUDE_DIR})
-include_directories(${SFML_INCLUDE_DIR})
-include_directories(${RAPIDXML_DIR})
+include_directories(${BOOST_INCLUDE_DIRS})
+include_directories(${SFML_INCLUDE_DIRS})
+include_directories(${RAPIDXML_INCLUDE_DIRS})
 
 link_directories(${SFML_LIBS_DIR})
 
