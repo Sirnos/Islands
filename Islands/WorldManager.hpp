@@ -193,7 +193,7 @@ public:
 		switch (ObjectsDef->getDefinition(ObjectId)->getType())
 		{
 		case ObjectType::Default:
-			ManagementWorld->setLocalMapTileObject(tile, new Object(ObjectId));
+			ManagementWorld->setLocalMapTileObject(tile, new Object(ObjectId, ObjectsDef->getDefinition(ObjectId)->getCollision()));
 			return true;
 			break;
 		case ObjectType::Chest:
