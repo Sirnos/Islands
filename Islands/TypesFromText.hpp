@@ -46,3 +46,11 @@ inline bool getBoolFromString(const std::string &String)
 
 	return ret;
 }
+
+template<typename T>
+std::pair<std::string, T> getStringAndTpairFromString(const std::string &String)
+{
+	std::string first{ String.substr(0, String.find(',')) };
+	T second{ boost::lexical_cast<T>(String.substr(String.find(',') + 1, String.size() - 1)) };
+	return std::pair<std::string, T>(first, second);
+}

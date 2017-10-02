@@ -9,10 +9,6 @@
 
 class GameComponentsLoader
 {
-	static Yield getYieldFromString(const std::string &str)
-	{
-		return Yield(str.substr(0, str.find(',')), std::stoul(str.substr(str.find(',') + 1, str.size() - 1)));
-	}
 	static StructureInfoKey getStructureInfoKeyFromString(const std::string &str)
 	{
 		return StructureInfoKey(std::stoul(str.substr(0, str.find(','))), str.substr(str.find(',') + 1, str.size() - 1));
@@ -124,7 +120,7 @@ public:
 					}
 					else if (paramName == "Ifdestroyed")
 					{
-						newObjYield = getYieldFromString(std::string(objectsParamNode->value()));
+						newObjYield = getStringAndTpairFromString<unsigned>(std::string(objectsParamNode->value()));
 					}
 					else if (paramName == "ChestDef")
 					{
@@ -313,14 +309,14 @@ public:
 
 					if (paramName == "Out")
 					{
-						newRecipeOut = getYieldFromString(std::string(recipeParamNode->value()));
+						newRecipeOut = getStringAndTpairFromString<unsigned>(std::string(recipeParamNode->value()));
 					}
 					else if(paramName == "In")
 					{
 						for (rapidxml::xml_node<>* recipeIn = recipeParamNode->first_node(); recipeIn != nullptr;
 							recipeIn = recipeIn->next_sibling())
 						{
-							newRecipeIn.push_back(getYieldFromString(std::string(recipeIn->value())));
+							newRecipeIn.push_back(getStringAndTpairFromString<unsigned>(std::string(recipeIn->value())));
 						}
 					}
 
@@ -405,7 +401,7 @@ public:
 						for (Structures; Structures != nullptr; Structures = Structures->next_sibling())
 						{
 							Vars.back().SpawnableStructures.push_back(std::pair<std::string, unsigned>());
-							Yield strct = getYieldFromString(std::string(Structures->value()));
+							Yield strct = getStringAndTpairFromString<unsigned>(std::string(Structures->value()));
 							if(strct.first != "" && strct.second != 0)
 							{
 								Vars.back().SpawnableStructures.back() = strct;

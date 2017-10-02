@@ -143,4 +143,5 @@ public:
 		bool Destructible, bool HaveCollision, const sf::Vector2i &TreeSize)
 		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Tree), treeSize(TreeSize)
 	{}
+	~TreeDef() = default;
 };

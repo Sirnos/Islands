@@ -245,4 +245,9 @@
       <Filter>IslandData</Filter>
     </Font>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
