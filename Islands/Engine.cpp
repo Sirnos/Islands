@@ -303,30 +303,6 @@ void Engine::drawConsole(IslandApp & app)
 	}
 }
 
-void Engine::updateTile(const sf::Vector2u &tileIndex)
-{
-	unsigned objectId = GameWorld->getLocalMapTileObjectId(tileIndex);
-	if (objectId == 0) { return; }
-	float Time = GameClock.getElapsedTime().asSeconds();
-
-	if (GameWorld->getLocalMapTileObject(tileIndex)->getType() == ObjectType::Sapling)
-	{
-		float Time = GameClock.getElapsedTime().asSeconds();
-		float plantTime = dynamic_cast<SaplingObject*>(GameWorld->getLocalMapTileObject(tileIndex))->getPlantTime();
-		float growTime = dynamic_cast<SaplingDef*>(Objects->getDefinition(objectId))->getGrowTime();
-
-		if (sf::seconds(Time) >= sf::seconds(plantTime) + sf::seconds(growTime))
-		{
-			unsigned GrowToId = Objects->getDefIdbyName(dynamic_cast<SaplingDef*>(Objects->getDefinition(objectId))->getGrowTo());
-			if (GrowToId != 0)
-			{
-				GameWorld->removeLocalMapTileObject(tileIndex);
-				GWorldManager.placeObject(tileIndex, GrowToId);
-			}
-		}
-	}
-}
-
 void Engine::manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseRClick)
 {
 	if (!GameConsole.getEnable()) { return; }
@@ -479,7 +455,7 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 
 	std::vector<BiomeValuesDef> MapsDef;
 	MapsDef.push_back(BiomeValuesDef());
-	GameComponentsLoader::LoadLocalMapVariables(MapsDef);
+	GameComponentsLoader::LoadBiomesDef(MapsDef);
 	std::vector<BiomeValues> MapsVars = makeFromDef::makeBiome(MapsDef, *Objects, Structures);
 
 	GWorldManager.setStructuresAmountInLocalMap(v1.StructuresPerLocalMap);
@@ -753,7 +729,7 @@ void Engine::drawWorld(IslandApp & app)
 			if (j > MapSize - 1) { break; }
 			drawTile(preTile, static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
 			drawObject(preObjectId, static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), ObjectShape);
-			updateTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)));
+			GWorldManager.updateTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)));
 		}
 	}
 }

@@ -58,9 +58,6 @@ class Engine
 	void drawConsole(IslandApp &app);
 
 
-	void updateTile(const sf::Vector2u &tileIndex);
-
-
 	void drawMonsters(sf::RenderWindow &window);
 	void drawTile(TerrainType &preTile, const sf::Vector2u &tileIndex, sf::RenderWindow &window, sf::RectangleShape &shp);
 	void drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf::RenderWindow &window, sf::RectangleShape &shp);

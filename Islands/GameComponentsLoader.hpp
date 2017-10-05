@@ -366,7 +366,7 @@ public:
 		TerrainTextCoords.shrink_to_fit();
 	}
 
-	static void LoadLocalMapVariables(std::vector<BiomeValuesDef> & Vars)
+	static void LoadBiomesDef(std::vector<BiomeValuesDef> & Vars)
 	{
 		rapidxml::file<> File("Data/World/MapGenerator.xml");
 		rapidxml::xml_document<> Doc;

@@ -29,27 +29,27 @@ public:
 	~WorldManager() = default;
 
 
-	void AssingLocalMapsBuilderVars(std::vector<BiomeValues> &newBiomes)
+	void AssingLocalMapsBuilderVars(const std::vector<BiomeValues> &newBiomes)
 	{
 		Biomes = newBiomes;
 	}
-	void AssingStructures(std::vector<Structure> &Structs)
+	void AssingStructures(const std::vector<Structure> &Structs)
 	{
 		this->Structures = Structs;
 	}
-	void AssingItemsDef(std::shared_ptr<ItemDefContainer> &Items)
+	void AssingItemsDef(const std::shared_ptr<ItemDefContainer> &Items)
 	{
 		ItemsDef = Items;
 	}
-	void AssingObjectsDef(std::shared_ptr<ObjectDefContainer> &ObjectDef)
+	void AssingObjectsDef(const std::shared_ptr<ObjectDefContainer> &ObjectDef)
 	{
 		this->ObjectsDef = ObjectDef;
 	}
-	void AssingWorld(std::shared_ptr<World> &World)
+	void AssingWorld(const std::shared_ptr<World> &World)
 	{
 		this->ManagementWorld = World;
 	}
-	void AssingClock(sf::Clock &Clock)
+	void AssingClock(const sf::Clock &Clock)
 	{
 		GameClockPtr = std::make_shared<sf::Clock>(Clock);
 	}
@@ -319,5 +319,30 @@ public:
 
 		spawnPosition = (static_cast<sf::Vector2f>(spawnTile) * TILE_SIZE);
 		return spawnPosition;
+	}
+
+
+	void updateTile(const sf::Vector2u &tileIndex)
+	{
+		unsigned objectId = ManagementWorld->getLocalMapTileObjectId(tileIndex);
+		if (objectId == 0) { return; }
+		float Time = GameClockPtr->getElapsedTime().asSeconds();
+
+		if (ManagementWorld->getLocalMapTileObject(tileIndex)->getType() == ObjectType::Sapling)
+		{
+			float Time = GameClockPtr->getElapsedTime().asSeconds();
+			float plantTime = dynamic_cast<SaplingObject*>(ManagementWorld->getLocalMapTileObject(tileIndex))->getPlantTime();
+			float growTime = dynamic_cast<SaplingDef*>(ObjectsDef->getDefinition(objectId))->getGrowTime();
+
+			if (sf::seconds(Time) >= sf::seconds(plantTime) + sf::seconds(growTime))
+			{
+				unsigned GrowToId = ObjectsDef->getDefIdbyName(dynamic_cast<SaplingDef*>(ObjectsDef->getDefinition(objectId))->getGrowTo());
+				if (GrowToId != 0)
+				{
+					ManagementWorld->removeLocalMapTileObject(tileIndex);
+					placeObject(tileIndex, GrowToId);
+				}
+			}
+		}
 	}
 };
