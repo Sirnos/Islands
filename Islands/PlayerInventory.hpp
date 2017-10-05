@@ -19,30 +19,35 @@ public:
 	PlayerInventory() = default;
 	~PlayerInventory() { InteractedChest = nullptr; }
 
-	ItemField getInventoryField(const sf::Vector2u &field)
+
+	ItemField getInventoryField(const sf::Vector2u &field) const
 	{
 		return Inventory[field.x][field.y];
 	}
-	ItemField getHandInventoryField(unsigned field)
+	ItemField getHandInventoryField(unsigned field) const
 	{
 		return HandInventory[field];
 	}
-	ItemField getArmorInventoryField(unsigned field)
+	ItemField getArmorInventoryField(unsigned field) const
 	{
 		return ArmorInventory[field];
 	}
-	ItemField getHoldItem() { return HoldItem; }
+	ItemField getHoldItem() const
+	{
+		return HoldItem;
+	}
+
 
 	void pushInteractionWithChest(std::vector<ItemField> *Chest)
 	{
 		InteractedChest = Chest;
 	}
-	ItemField getItemFromInteractedChest(unsigned field)
+	ItemField getItemFromInteractedChest(unsigned field) const
 	{
 		if (InteractedChest == nullptr) { return ItemField(); }
 		return InteractedChest->operator[](field);
 	}
-	size_t getInteractedChestSize()
+	size_t getInteractedChestSize() const
 	{
 		if (InteractedChest == nullptr) { return 0; }
 		return InteractedChest->size();
@@ -64,6 +69,7 @@ public:
 		if (InteractedChest == nullptr) { return false; }
 		return true;
 	}
+
 
 	void setInventoryField(const sf::Vector2u &field, ItemField newVal)
 	{
@@ -97,6 +103,7 @@ public:
 		}
 		HoldItem = newVal;
 	}
+
 
 	void pushItem(ItemField &item, unsigned ItemMaxStack)
 	{
@@ -152,4 +159,31 @@ public:
 			}
 		}
 	}
+
+
+	const std::array<std::array<ItemField, PLAYER_INVENTORY_SIZE>, PLAYER_INVENTORY_SIZE> &getMainInventory() const
+	{
+		return Inventory;
+	}
+	std::array<std::array<ItemField, PLAYER_INVENTORY_SIZE>, PLAYER_INVENTORY_SIZE> &getMainInventory()
+	{
+		return Inventory;
+	}
+	const std::array<ItemField, PLAYER_INVENTORY_SIZE> &getHandInventory() const
+	{
+		return HandInventory;
+	}
+	std::array<ItemField, PLAYER_INVENTORY_SIZE> &getHandInventory()
+	{
+		return HandInventory;
+	}
+	const std::array<ItemField, PLAYER_ARMOR_INVENTORY_SIZE> &getArmorInventory() const
+	{
+		return ArmorInventory;
+	}
+	std::array<ItemField, PLAYER_ARMOR_INVENTORY_SIZE> &getArmorInventory()
+	{
+		return ArmorInventory;
+	}
+
 };
