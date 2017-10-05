@@ -508,6 +508,7 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 	if (GameGui.Eq.isEnable)
 	{
 		sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
+
 		for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 		{
 			if (i < PLAYER_ARMOR_INVENTORY_SIZE)

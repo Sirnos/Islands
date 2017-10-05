@@ -3,6 +3,12 @@
     <Recipe>
         <Out>WoodChest,1</Out>
         <In>
+            <li>Plank,4</li>
+        </In>
+    </Recipe>
+	    <Recipe>
+        <Out>WoodWall,1</Out>
+        <In>
             <li>Plank,8</li>
         </In>
     </Recipe>
