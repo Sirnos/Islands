@@ -40,7 +40,7 @@ set(SRC
    ItemDef.hpp
    ItemField.hpp
    LimitedVar.hpp
-   LocalMapVariables.hpp
+   BiomeValues.hpp
    LyingItemsContainer.hpp
    main.cpp
    MapTile.hpp

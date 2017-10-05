@@ -477,10 +477,10 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	GameComponentsLoader::LoadStructuresDef(StructuresDef);
 	std::vector<Structure> Structures = makeFromDef::makeStructure(StructuresDef, *Objects);
 
-	std::vector<LocalMapVariablesDef> MapsDef;
-	MapsDef.push_back(LocalMapVariablesDef());
+	std::vector<BiomeValuesDef> MapsDef;
+	MapsDef.push_back(BiomeValuesDef());
 	GameComponentsLoader::LoadLocalMapVariables(MapsDef);
-	std::vector<LocalMapVariables> MapsVars = makeFromDef::makeLocalMapVars(MapsDef, *Objects, Structures);
+	std::vector<BiomeValues> MapsVars = makeFromDef::makeBiome(MapsDef, *Objects, Structures);
 
 	GWorldManager.setStructuresAmountInLocalMap(v1.StructuresPerLocalMap);
 	GWorldManager.AssingClock(GameClock);

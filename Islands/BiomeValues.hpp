@@ -7,31 +7,31 @@
 
 #include "TerrainType.hpp"
 
-struct LocalMapVariablesDef
+struct BiomeValuesDef
 {
-	TerrainType Biome;
+	TerrainType BiomeName;
 	std::vector<std::pair<TerrainType, float>> TerrainTiles;
 	std::vector<std::tuple<std::string, float, TerrainType>> SpawnableObjects;
 	std::vector<std::pair<std::string, float>> SpawnableEntities;
 	std::vector<std::pair<std::string, unsigned >> SpawnableStructures;
 
 
-	LocalMapVariablesDef()
-		:Biome(TerrainType::Null)
+	BiomeValuesDef()
+		:BiomeName(TerrainType::Null)
 	{}
-	~LocalMapVariablesDef() = default;
+	~BiomeValuesDef() = default;
 };
 
-struct LocalMapVariables
+struct BiomeValues
 {
-	TerrainType Biome;
+	TerrainType BiomeName;
 	std::vector<std::pair<TerrainType, float>> TerrainTiles;
 	std::vector<std::tuple<size_t, float, TerrainType>> SpawnableObjects;
 	std::vector<std::pair<size_t, float>> SpawnableEntities;
 	std::vector<std::pair<size_t, unsigned >> SpawnableStructures;
 
-	LocalMapVariables()
-		:Biome(TerrainType::Null)
+	BiomeValues()
+		:BiomeName(TerrainType::Null)
 	{}
-	~LocalMapVariables() = default;
+	~BiomeValues() = default;
 };

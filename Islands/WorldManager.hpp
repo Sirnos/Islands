@@ -12,7 +12,7 @@
 
 class WorldManager
 {
-	std::vector<LocalMapVariables> LocalMapsBuilderVars;
+	std::vector<BiomeValues> Biomes;
 
 	std::shared_ptr<World> ManagementWorld;
 	std::shared_ptr<ItemDefContainer> ItemsDef;
@@ -29,9 +29,9 @@ public:
 	~WorldManager() = default;
 
 
-	void AssingLocalMapsBuilderVars(std::vector<LocalMapVariables> &BuildVars)
+	void AssingLocalMapsBuilderVars(std::vector<BiomeValues> &newBiomes)
 	{
-		LocalMapsBuilderVars = BuildVars;
+		Biomes = newBiomes;
 	}
 	void AssingStructures(std::vector<Structure> &Structs)
 	{
@@ -80,9 +80,9 @@ public:
 		TerrainType Terrain = TerrainType::Null;
 
 		size_t match = 0;
-		for (size_t i = 0; i < LocalMapsBuilderVars.size(); i++)
+		for (size_t i = 0; i < Biomes.size(); i++)
 		{
-			if (Base == LocalMapsBuilderVars[i].Biome) { match = i; break; }
+			if (Base == Biomes[i].BiomeName) { match = i; break; }
 		}
 
 		if (match == 0)
@@ -123,7 +123,7 @@ public:
 				{
 					noise = noiseModule.GetValue(1.25f + (0.1f * x), 0.75f + (0.1f * y), 0.5f);
 					ManagementWorld->setLocalMapTileTerrain(sf::Vector2u(x, y), TerrainType::Water);
-					for (const auto & terrainChance : LocalMapsBuilderVars[match].TerrainTiles)
+					for (const auto & terrainChance : Biomes[match].TerrainTiles)
 					{
 						if (noise > terrainChance.second)
 						{
@@ -132,7 +132,7 @@ public:
 						}
 					}
 
-					for (const auto & SpawnObject : LocalMapsBuilderVars[match].SpawnableObjects)
+					for (const auto & SpawnObject : Biomes[match].SpawnableObjects)
 					{
 						size_t ObjectId = std::get<size_t>(SpawnObject);
 						float ObjectSpawnChance = std::get<float>(SpawnObject);
@@ -158,7 +158,7 @@ public:
 				structurePosition.y = Gen.get(0, ManagementWorld->getLocalMapSize());
 
 				unsigned dice = Gen.get(0, 100);
-				for (auto const & i : LocalMapsBuilderVars[match].SpawnableStructures)
+				for (auto const & i : Biomes[match].SpawnableStructures)
 				{
 					if (dice <= i.second )
 					{

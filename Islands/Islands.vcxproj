@@ -146,7 +146,7 @@
     <ClInclude Include="FastNoise\FastNoise.h" />
     <ClInclude Include="GameComponentsLoader.hpp" />
     <ClInclude Include="LimitedVar.hpp" />
-    <ClInclude Include="LocalMapVariables.hpp" />
+    <ClInclude Include="BiomeValues.hpp" />
     <ClInclude Include="MonsterManager.hpp" />
     <ClInclude Include="PlayerInventory.hpp" />
     <ClInclude Include="IslandApp.hpp" />

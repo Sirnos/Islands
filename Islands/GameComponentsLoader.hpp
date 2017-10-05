@@ -366,7 +366,7 @@ public:
 		TerrainTextCoords.shrink_to_fit();
 	}
 
-	static void LoadLocalMapVariables(std::vector<LocalMapVariablesDef> & Vars)
+	static void LoadLocalMapVariables(std::vector<BiomeValuesDef> & Vars)
 	{
 		rapidxml::file<> File("Data/World/MapGenerator.xml");
 		rapidxml::xml_document<> Doc;
@@ -378,8 +378,8 @@ public:
 			rapidxml::xml_node<> * Biome = Base->first_node();
 			for (Biome; Biome != nullptr; Biome = Biome->next_sibling())
 			{
-				Vars.push_back(LocalMapVariablesDef());
-				Vars.back().Biome = StringToTerrainType(std::string(Biome->first_attribute()->value()));
+				Vars.push_back(BiomeValuesDef());
+				Vars.back().BiomeName = StringToTerrainType(std::string(Biome->first_attribute()->value()));
 				rapidxml::xml_node<> * BiomeVars = Biome->first_node();
 				for (BiomeVars; BiomeVars != nullptr; BiomeVars = BiomeVars->next_sibling())
 				{

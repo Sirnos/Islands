@@ -2,7 +2,7 @@
 
 #include "Recipe.hpp"
 #include "Structure.hpp"
-#include "LocalMapVariables.hpp"
+#include "BiomeValues.hpp"
 #include "ItemDef.hpp"
 #include "ObjectDef.hpp"
 #include "EntityDef.hpp"
@@ -185,61 +185,48 @@ namespace makeFromDef
 		return Structs;
 	}
 
-	inline std::vector<LocalMapVariables> makeLocalMapVars(std::vector<LocalMapVariablesDef> & Def, const ObjectDefContainer & ObjsDef, const std::vector<Structure> & Structs)
+	inline std::vector<BiomeValues> makeBiome(std::vector<BiomeValuesDef> & Defs, const ObjectDefContainer & ObjsDef, const std::vector<Structure> & Structs)
 	{
-		std::vector<LocalMapVariables> ret;
+		std::vector<BiomeValues> ret;
 
-		for (auto & i : Def)
+		for (auto & biome : Defs)
 		{
-			ret.push_back(LocalMapVariables());
-			ret.back().Biome = i.Biome;
+			ret.push_back(BiomeValues());
+			ret.back().BiomeName = biome.BiomeName;
 
-			for (auto & iterrain : i.TerrainTiles)
+			for (auto & biomeTerrain : biome.TerrainTiles)
 			{
-				ret.back().TerrainTiles.push_back(std::pair<TerrainType, float>());
-				ret.back().TerrainTiles.back() = iterrain;
+				ret.back().TerrainTiles.push_back(biomeTerrain);
 			}
 
-			for (auto & iobjects : i.SpawnableObjects)
+			for (auto & biomeObjects : biome.SpawnableObjects)
 			{
-				ret.back().SpawnableObjects.push_back(std::tuple<size_t, float, TerrainType>());
 				size_t objectId = 0;
-				
-				objectId = ObjsDef.getDefIdbyName(std::get<0>(iobjects));
-				if (objectId == 0)
-				{
-					ret.back().SpawnableObjects.pop_back();
-				}
-				else
-				{
-					float objectChance = std::get<1>(iobjects);
-					TerrainType objectTerrain = std::get<2>(iobjects);
+				objectId = ObjsDef.getDefIdbyName(std::get<0>(biomeObjects));
 
-					ret.back().SpawnableObjects.back() = std::tuple<size_t, float, TerrainType>(objectId, objectChance, objectTerrain);
+				if (objectId != 0)
+				{
+					ret.back().SpawnableObjects.push_back(std::tuple<size_t, float, TerrainType>
+						(objectId, std::get<1>(biomeObjects), std::get<2>(biomeObjects)));
 				}
 			}
-			for (auto & istructures : i.SpawnableStructures)
+			for (auto & biomeStructures : biome.SpawnableStructures)
 			{
-				ret.back().SpawnableStructures.push_back(std::pair<size_t, unsigned>());
 				size_t structId = -1;
-				unsigned structChance = istructures.second;
+				unsigned structChance = biomeStructures.second;
 
 				for (size_t i = 0; i < Structs.size(); i++)
 				{
-					if (istructures.first == Structs[i].getName())
+					if (biomeStructures.first == Structs[i].getName())
 					{
 						structId = i;
 						break;
 					}
 				}
 
-				if (structId == -1)
+				if (structId != -1)
 				{
-					ret.back().SpawnableStructures.pop_back();
-				}
-				else
-				{
-					ret.back().SpawnableStructures.back() = std::pair<size_t, unsigned>(structId, structChance);
+					ret.back().SpawnableStructures.push_back(std::pair<size_t, unsigned>(structId, structChance));
 				}
 			}
 		}

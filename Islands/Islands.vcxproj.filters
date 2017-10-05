@@ -152,9 +152,6 @@
     <ClInclude Include="WorldManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LocalMapVariables.hpp">
-      <Filter>Header Files\GameComponents</Filter>
-    </ClInclude>
     <ClInclude Include="TerrainType.hpp">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
@@ -187,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="TypesFromText.hpp">
       <Filter>Header Files\other</Filter>
+    </ClInclude>
+    <ClInclude Include="BiomeValues.hpp">
+      <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
