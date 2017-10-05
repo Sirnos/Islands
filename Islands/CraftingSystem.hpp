@@ -95,9 +95,9 @@ public:
 		availableResources.resize(neededResources.size(), ItemField());
 
 		sf::Vector2u inventoryIndex = sf::Vector2u(0, 0);
-		for (inventoryIndex.x = 0; inventoryIndex.x < PlayerInventorySize; inventoryIndex.x++)
+		for (inventoryIndex.x = 0; inventoryIndex.x < PLAYER_INVENTORY_SIZE; inventoryIndex.x++)
 		{
-			for (inventoryIndex.y = 0; inventoryIndex.y < PlayerInventorySize; inventoryIndex.y++)
+			for (inventoryIndex.y = 0; inventoryIndex.y < PLAYER_INVENTORY_SIZE; inventoryIndex.y++)
 			{
 				ItemField inventoryItem = Inv.getInventoryField(inventoryIndex);
 				if (inventoryItem.ItemId != 0)
@@ -146,9 +146,9 @@ public:
 			craftedItem = ItemField(craftedItemId, maxAmount * AvailableRecipes[SelectedRecipe].getOutElement().ItemAmount);
 		}
 
-		for (inventoryIndex.x = 0; inventoryIndex.x < PlayerInventorySize; inventoryIndex.x++)
+		for (inventoryIndex.x = 0; inventoryIndex.x < PLAYER_INVENTORY_SIZE; inventoryIndex.x++)
 		{
-			for (inventoryIndex.y = 0; inventoryIndex.y < PlayerInventorySize; inventoryIndex.y++)
+			for (inventoryIndex.y = 0; inventoryIndex.y < PLAYER_INVENTORY_SIZE; inventoryIndex.y++)
 			{
 				if (restResources.size() == 0) { return craftedItem; }
 				if (Inv.getInventoryField(inventoryIndex).isEmpty())

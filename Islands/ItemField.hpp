@@ -1,6 +1,7 @@
 #pragma once
 
-const unsigned PlayerInventorySize = 5;
+const unsigned PLAYER_INVENTORY_SIZE = 5u;
+const unsigned PLAYER_ARMOR_INVENTORY_SIZE = 3u;
 
 struct ItemField
 {

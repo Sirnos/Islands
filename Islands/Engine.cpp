@@ -508,9 +508,9 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 	if (GameGui.Eq.isEnable)
 	{
 		sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
-		for (size_t i = 0; i < PlayerInventorySize; i++)
+		for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 		{
-			if (i < 3)
+			if (i < PLAYER_ARMOR_INVENTORY_SIZE)
 			{
 				if (GameGui.Eq.ArmorEquipment[i].isHover && isMouseClick)
 				{
@@ -523,7 +523,7 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 				checkGuiOperations(EquipmentType::Belt, sf::Vector2u(i, 0));
 			}
 
-			for (size_t j = 0; j < PlayerInventorySize; j++)
+			for (size_t j = 0; j < PLAYER_INVENTORY_SIZE; j++)
 			{
 				if (GameGui.Eq.Equipment[i][j].isHover && isMouseClick)
 				{
@@ -786,7 +786,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 	}
 
 
-	for (size_t i = 0; i < PlayerInventorySize; i++)
+	for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 	{
 		amountItem.setString("");
 
@@ -810,11 +810,11 @@ void Engine::drawPlayerGui(IslandApp & app)
 	if (GameGui.Eq.isEnable && !GameGui.Craft.isEnable)
 	{
 		sf::Vector2u field;
-		for (field.x = 0; field.x < PlayerInventorySize; field.x++)
+		for (field.x = 0; field.x < PLAYER_INVENTORY_SIZE; field.x++)
 		{
-			for (field.y = 0; field.y < PlayerInventorySize; field.y++)
+			for (field.y = 0; field.y < PLAYER_INVENTORY_SIZE; field.y++)
 			{
-				if (field.x < 3)
+				if (field.x < PLAYER_ARMOR_INVENTORY_SIZE)
 				{
 					sf::Vector2f newPos = app.getIslandWindow()->mapPixelToCoords
 					(GameGui.Eq.ArmorEquipment[field.x].ScreenPosition);

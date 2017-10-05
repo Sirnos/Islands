@@ -13,8 +13,8 @@ enum class EquipmentType
 
 struct EquipmentGui
 {
-	std::array<std::array<EquipmentFieldInfo, PlayerInventorySize>, PlayerInventorySize> Equipment;
-	std::array<EquipmentFieldInfo, 3> ArmorEquipment;
+	std::array<std::array<EquipmentFieldInfo, PLAYER_INVENTORY_SIZE>, PLAYER_INVENTORY_SIZE> Equipment;
+	std::array<EquipmentFieldInfo, PLAYER_ARMOR_INVENTORY_SIZE> ArmorEquipment;
 
 	bool isEnable;
 
@@ -33,7 +33,7 @@ struct HudGui
 	sf::Text HpInfo;
 	sf::Text MpInfo;
 
-	std::array<EquipmentFieldInfo, PlayerInventorySize> Belt;
+	std::array<EquipmentFieldInfo, PLAYER_INVENTORY_SIZE> Belt;
 
 	unsigned ActiveBeltField;
 
@@ -72,7 +72,7 @@ class Gui
 	const int static keyForCraftGui = 'c';
 	const int static keyForEqGui = 'e';
 
-	const std::array<int, PlayerInventorySize> keyForBeltFields = { '1','2','3','4','5' };
+	const std::array<int, PLAYER_INVENTORY_SIZE> keyForBeltFields = { '1','2','3','4','5' };
 public:
 	CraftingGui Craft;
 	ChestGui Chest;
@@ -89,14 +89,14 @@ public:
 		Hud.MpInfo.setFillColor(sf::Color::Blue);
 		Hud.HpInfo.setFillColor(sf::Color::Red);
 
-		for (size_t i = 0; i < PlayerInventorySize; i++)
+		for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 		{
-			if (i < 3)
+			if (i < PLAYER_ARMOR_INVENTORY_SIZE)
 			{
 				Eq.ArmorEquipment[i].ScreenPosition = getScreenPositionForArmorEquipmentField(i);
 			}
 			Hud.Belt[i].ScreenPosition = getScreenPositionForBeltEquipmentField(i);
-			for (size_t j = 0; j < PlayerInventorySize; j++)
+			for (size_t j = 0; j < PLAYER_INVENTORY_SIZE; j++)
 			{
 				Eq.Equipment[i][j].ScreenPosition = getScreenPositionForEquipmentField(sf::Vector2u(i, j));
 			}
@@ -126,7 +126,7 @@ public:
 			return;
 		}
 
-		for (size_t i = 0; i < PlayerInventorySize; i++)
+		for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 		{
 			if (keyVar == keyForBeltFields[i])
 			{
@@ -138,7 +138,7 @@ public:
 
 	void incrActiveBeltField()
 	{
-		if (Hud.ActiveBeltField >= PlayerInventorySize - 1)
+		if (Hud.ActiveBeltField >= PLAYER_INVENTORY_SIZE - 1)
 			Hud.ActiveBeltField = 0;
 		else
 		{
@@ -149,7 +149,7 @@ public:
 	void decrActiveBeltField()
 	{
 		if (Hud.ActiveBeltField == 0)
-			Hud.ActiveBeltField = PlayerInventorySize - 1;
+			Hud.ActiveBeltField = PLAYER_INVENTORY_SIZE - 1;
 		else
 		{
 			Hud.ActiveBeltField--;

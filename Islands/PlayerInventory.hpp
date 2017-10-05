@@ -8,9 +8,9 @@
 
 class PlayerInventory
 {
-	std::array<std::array<ItemField, PlayerInventorySize>, PlayerInventorySize> Inventory;
-	std::array<ItemField, PlayerInventorySize> HandInventory;
-	std::array<ItemField, 3> ArmorInventory;
+	std::array<std::array<ItemField, PLAYER_INVENTORY_SIZE>, PLAYER_INVENTORY_SIZE> Inventory;
+	std::array<ItemField, PLAYER_INVENTORY_SIZE> HandInventory;
+	std::array<ItemField, PLAYER_ARMOR_INVENTORY_SIZE> ArmorInventory;
 	ItemField HoldItem;
 
 	std::vector<ItemField> *InteractedChest;
@@ -102,7 +102,7 @@ public:
 	{
 		if (!item.isCorrect()) { item.empty(); return; }
 
-		for (size_t i = 0; i < PlayerInventorySize; i++)
+		for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 		{
 			if (getHandInventoryField(i).ItemId == item.ItemId)
 			{
@@ -126,7 +126,7 @@ public:
 				item.empty();
 				return;
 			}
-			for (size_t j = 0; j < PlayerInventorySize; j++)
+			for (size_t j = 0; j < PLAYER_INVENTORY_SIZE; j++)
 			{
 				if (getInventoryField(sf::Vector2u(i, j)).ItemId == item.ItemId)
 				{
