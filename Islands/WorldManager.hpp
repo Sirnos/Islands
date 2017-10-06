@@ -207,6 +207,8 @@ public:
 			return true;
 			break;
 		case ObjectType::Tree:
+			ManagementWorld->setLocalMapTileObject(tile, new Object(ObjectId, true, ObjectType::Tree));
+			return true;
 			break;
 		case ObjectType::Sapling:
 			ManagementWorld->setLocalMapTileObject(tile, new SaplingObject(ObjectId, GameClockPtr->getElapsedTime().asSeconds()));

@@ -138,6 +138,10 @@ public:
 						newObjType = ObjectType::CraftingPlace;
 						LoadRecipeDefFromFile(tempRecipes, std::string(objectsParamNode->value()));
 					}
+					else if (paramName == "TreeDef")
+					{
+						newObjType = ObjectType::Tree;
+					}
 				}
 
 				switch (newObjType)
@@ -149,6 +153,7 @@ public:
 					Objects.push_back(new ChestDef(newObjName, newObjSize, newObjCollision, newObjYield, newObjDestructible, tempUint.back()));
 					break;
 				case ObjectType::Tree:
+					Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjYield, newObjDestructible, newObjCollision, ObjectType::Tree));
 					break;
 				case ObjectType::Sapling:
 					Objects.push_back(new SaplingDef(newObjName, newObjSize, newObjCollision, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));

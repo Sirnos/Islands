@@ -413,25 +413,30 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 	if (ObjectID > Objects->getSize()) { return; }
 
 	shp.setPosition(sf::Vector2f(World::getNormalPosition(static_cast<sf::Vector2i>(objectIndex))));
-	if(preObjectId != ObjectID)
-	{
-		shp.setTexture(mediaContainer.getTexture(TextureContainer::ObjectTextures, ObjectID), true);
-	}
-	preObjectId = ObjectID;
-	window.draw(shp);
+	bool isTree = false;
+	isTree = (Objects->getDefinition(ObjectID)->getType() == ObjectType::Tree);
 
-	/*
-	int sizeY = Objects->getDefinition(ObjectID)->getSize().y;
-	if (sizeY < 0)
+	if (preObjectId != ObjectID)
 	{
-		shp.setPosition(sf::Vector2f(World::getNormalPosition(sf::Vector2i(objectIndex.x, objectIndex.y+(sizeY+1)))));
-		shp.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE * (-sizeY)));
-		shp.setTexture(mediaContainer.getTexture(TextureContainer::ObjectTextures, ObjectID), true);
-		window.draw(shp);
 		shp.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-		return;
+		shp.setTexture(mediaContainer.getTexture(TextureContainer::ObjectTextures, ObjectID), true);
+
+		if (isTree)
+		{
+			shp.move(-TILE_SIZE, -(3.0f * TILE_SIZE));
+			shp.setSize(sf::Vector2f(TILE_SIZE * 3.0f, TILE_SIZE * 4.0f));
+		}
 	}
-	*/
+	else
+	{
+		if (isTree)
+		{
+			shp.move(-TILE_SIZE, -(3.0f * TILE_SIZE));
+		}
+	}
+
+	window.draw(shp);
+	preObjectId = ObjectID;
 }
 
 Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
@@ -929,7 +934,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 void Engine::pushItemTextureToRect(const sf::Vector2f &pos, unsigned itemId, sf::RectangleShape & rect)
 {
 	rect.setPosition(pos);
-	if (itemId > 0) { rect.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures, itemId)); }
+	if (itemId > 0) { rect.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures, itemId), true); }
 	else { rect.setTexture(nullptr); }
 }
 

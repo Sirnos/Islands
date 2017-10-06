@@ -50,28 +50,54 @@ inline std::string ObjectTypeToString(ObjectType type)
 class ObjectDef
 {
 	ObjectType type;
-
 	std::string ObjName;
 	sf::Vector2i ObjSize;
 	bool ObjCollision;
 	bool ObjDestructible;
 	Yield ObjYield;
-public:
-	ObjectType getType() const { return type; }
-	std::string getName() const { return ObjName; }
-	sf::Vector2i getSize() const { return ObjSize; }
-	bool getCollision() const { return ObjCollision; }
-	bool getDestructible() const { return ObjDestructible; }
-	Yield getYield() const { return ObjYield; }
 
+public:
 	ObjectDef()
 		:ObjDestructible(false), ObjName(), ObjSize(), ObjYield(Yield("", 0)), ObjCollision(false), type(ObjectType::Default)
 	{}
+	ObjectDef(const ObjectDef &other) = delete;
+	ObjectDef(ObjectDef &&other) = delete;
 	ObjectDef(const std::string &Name, const sf::Vector2i &Size, const Yield &yield,
 		bool Destructible, bool Collision, ObjectType type = ObjectType::Default)
 		:ObjDestructible(Destructible), ObjName(Name), ObjSize(Size), ObjYield(yield), type(type), ObjCollision(Collision)
 	{}
-	virtual ~ObjectDef(){}
+	virtual ~ObjectDef() = default;
+
+
+	ObjectDef &operator=(const ObjectDef &other) = delete;
+	ObjectDef &operator=(ObjectDef &&other) = delete;
+
+
+	ObjectType getType() const
+	{
+		return type;
+	}
+	std::string getName() const
+	{
+		return ObjName;
+	}
+	sf::Vector2i getSize() const
+	{
+		return ObjSize;
+	}
+	bool getCollision() const
+	{
+		return ObjCollision;
+	}
+	bool getDestructible() const
+	{
+		return ObjDestructible;
+	}
+	Yield getYield() const
+	{
+		return ObjYield;
+	}
+
 };
 
 class ChestDef : public ObjectDef
@@ -79,26 +105,39 @@ class ChestDef : public ObjectDef
 	unsigned Capacity;
 
 public:
-	unsigned getCapacity() const { return Capacity; }
-
+	ChestDef() = delete;
 	ChestDef(const std::string &Name, const sf::Vector2i &Size,
 		bool HaveCollision, const Yield &yield, bool Destructible, unsigned ChestCapacity)
 		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Chest), Capacity(ChestCapacity)
 	{}
 	~ChestDef() = default;
+
+
+	unsigned getCapacity() const
+	{
+		return Capacity;
+	}
+
 };
 
 class CraftingPlaceDef : public ObjectDef
 {
 	std::vector<RecipeDef> Recipes;
-public:
-	const std::vector<RecipeDef> & getRecipes() const { return Recipes; }
 
+public:
+	CraftingPlaceDef() = delete;
 	CraftingPlaceDef(const std::string &Name, const sf::Vector2i &Size,
 		const Yield &yield, bool Destructible, bool HaveCollision, const std::vector<RecipeDef> &RecipeVect)
 		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::CraftingPlace), Recipes(RecipeVect)
 	{}
 	~CraftingPlaceDef() = default;
+
+
+	const std::vector<RecipeDef> & getRecipes() const
+	{
+		return Recipes;
+	}
+
 };
 
 class SaplingDef : public ObjectDef
@@ -107,41 +146,46 @@ class SaplingDef : public ObjectDef
 	std::string GrowTo;
 
 public:
-	float getGrowTime() const { return GrowTime; }
-	std::string getGrowTo() const { return GrowTo; }
-
+	SaplingDef() = delete;
 	SaplingDef(const std::string &Name, const sf::Vector2i &Size, bool HaveCollision,
 		const Yield &yield, bool Destructible, float TimeForGrow, std::string &For)
 		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Sapling), GrowTo(For), GrowTime(TimeForGrow)
 	{}
 	~SaplingDef() = default;
+
+
+	float getGrowTime() const
+	{
+		return GrowTime;
+	}
+	std::string getGrowTo() const
+	{
+		return GrowTo;
+	}
+
 };
 
 class SpawnerDef : public ObjectDef
 {
 	float SpawnTime;
 	std::string MonsterName;
-public:
-	float getSpawnTime() const { return SpawnTime; }
-	std::string getMonsterName() const { return MonsterName; }
 
+public:
+	SpawnerDef() = delete;
 	SpawnerDef(const std::string &Name, const sf::Vector2i &Size, bool HaveCollision,
 		const Yield &yield, bool Destructible, float TimeForSpawn, const std::string &MonsterToSpawn)
 		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Spawner), SpawnTime(TimeForSpawn), MonsterName(MonsterToSpawn)
 	{}
 	~SpawnerDef() = default;
-};
 
-class TreeDef : public ObjectDef
-{
-	sf::Vector2i treeSize;
 
-public:
-	sf::Vector2i getSize() const { return treeSize; }
+	float getSpawnTime() const
+	{
+		return SpawnTime;
+	}
+	std::string getMonsterName() const
+	{
+		return MonsterName;
+	}
 
-	TreeDef(const std::string &Name, const sf::Vector2i &Size, const Yield &yield,
-		bool Destructible, bool HaveCollision, const sf::Vector2i &TreeSize)
-		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Tree), treeSize(TreeSize)
-	{}
-	~TreeDef() = default;
 };

@@ -12,6 +12,7 @@ class Object
 	bool Collision;
 
 public:
+	Object() = delete;
 	Object(unsigned objectId, bool objectCollision, ObjectType objectType = ObjectType::Default)
 		:type(objectType), Id(objectId), Collision(objectCollision)
 	{}
@@ -38,6 +39,7 @@ class SaplingObject : public Object
 	float PlantTime;
 
 public:
+	SaplingObject() = delete;
 	SaplingObject(unsigned objectId, float AtTime)
 		:Object(objectId, false, ObjectType::Sapling), PlantTime(AtTime)
 	{}
@@ -56,6 +58,7 @@ class ChestObject : public Object
 	std::vector<ItemField> Contain;
 
 public:
+	ChestObject() = delete;
 	ChestObject(unsigned objectId, size_t ChestSize)
 		:Object(objectId, true, ObjectType::Chest), Contain(ChestSize)
 	{}
@@ -80,6 +83,7 @@ class CraftingPlaceObject : public Object
 	std::vector<Recipe> Recipes;
 
 public:
+	CraftingPlaceObject() = delete;
 	CraftingPlaceObject(unsigned objectId, const std::vector<Recipe> &ObjectRecipes)
 		:Object(objectId, true, ObjectType::CraftingPlace), Recipes(ObjectRecipes)
 	{

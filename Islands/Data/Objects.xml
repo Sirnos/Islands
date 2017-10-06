@@ -106,4 +106,12 @@
 	<Isdestructible>1</Isdestructible>
 	<Ifdestroyed>SELF,1</Ifdestroyed>
   </Object>
+  <Object name="Tree">
+	<Size>1,1</Size>
+	<Graphics>0,80,48,64</Graphics>
+	<Collision>1</Collision>
+	<Isdestructible>1</Isdestructible>
+	<Ifdestroyed>WoodLog,8</Ifdestroyed>
+	<TreeDef></TreeDef>
+  </Object>
 </Objects>
