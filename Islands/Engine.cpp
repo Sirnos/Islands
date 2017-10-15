@@ -725,17 +725,21 @@ void Engine::drawWorld(IslandApp & app)
 	TerrainType preTile = TerrainType::Null;
 	size_t preObjectId = 0;
 
-	for (int i = PlayerPosToTile.x - iTileDrawRange; i < PlayerPosToTile.x + iTileDrawRange + 1; i++)
+	for (int y_tile = PlayerPosToTile.y - iTileDrawRange; y_tile < PlayerPosToTile.y + iTileDrawRange + 1; y_tile++)
 	{
-		if (i < 0) { continue; }
-		if (i > MapSize - 1) { break; }
-		for (int j = PlayerPosToTile.y - iTileDrawRange; j < PlayerPosToTile.y + iTileDrawRange + 1; j++)
+		if (y_tile < 0) { continue; }
+		if (y_tile > MapSize - 1) { break; }
+
+		for (int x_tile = PlayerPosToTile.x - iTileDrawRange; x_tile < PlayerPosToTile.x + iTileDrawRange + 1; x_tile++)
 		{
-			if (j < 0) { continue; }
-			if (j > MapSize - 1) { break; }
-			drawTile(preTile, static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), TileShape);
-			drawObject(preObjectId, static_cast<sf::Vector2u>(sf::Vector2i(i, j)), *app.getIslandWindow(), ObjectShape);
-			GWorldManager.updateTile(static_cast<sf::Vector2u>(sf::Vector2i(i, j)));
+			if (x_tile < 0) { continue; }
+			if (x_tile > MapSize - 1) { break; }
+
+			sf::Vector2u currentTile = static_cast<sf::Vector2u>(sf::Vector2i(x_tile, y_tile));
+
+			drawTile(preTile, currentTile, *app.getIslandWindow(), TileShape);
+			drawObject(preObjectId, currentTile, *app.getIslandWindow(), ObjectShape);
+			GWorldManager.updateTile(currentTile);
 		}
 	}
 }
