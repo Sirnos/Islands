@@ -24,7 +24,9 @@
 
 class Engine
 {
-	unsigned TileDrawRange;
+	GameVars GameRules;
+	RenderVars RenderRules;
+
 
 	WorldManager GWorldManager;
 	MonsterManager GMonsterManager;
@@ -36,14 +38,18 @@ class Engine
 
 
 	Media mediaContainer;
-	PlayerEntity Player;
-
 	Gui GameGui;
 
+
+	PlayerEntity Player;
 	CraftingSystem Crafting;
 	LyingItemsContainer LyingItems;
 
+
 	sf::Clock GameClock;
+	sf::Time lastUpdateLocalMapTime;
+
+
 	Console GameConsole;
 
 
@@ -71,7 +77,7 @@ class Engine
 	void pushItemTextureToRect(const sf::Vector2f &pos, unsigned itemId, sf::RectangleShape &rect);
 
 public:
-	Engine(GameVars &v1, unsigned MaxTileDrawRange);
+	Engine(const GameVars &game, const RenderVars &render);
 	Engine(const Engine &other) = delete;
 	~Engine();
 

@@ -56,7 +56,7 @@ public:
 		PlayerBaseRecipes = DefaultRecipes;
 	}
 	void usePlayerRecipes() { AvailableRecipes = PlayerBaseRecipes; }
-	bool isUsedPlayerRecipes()
+	bool isUsedPlayerRecipes() const
 	{
 		if (PlayerBaseRecipes[0].getOutElement().ItemId == AvailableRecipes[0].getOutElement().ItemId)
 		{
@@ -67,18 +67,21 @@ public:
 	}
 
 	void setSelectedRecipe(unsigned newSelect) { SelectedRecipe = newSelect; }
-	unsigned getSelectedRecipeNumber() { return SelectedRecipe; }
+	unsigned getSelectedRecipeNumber() const { return SelectedRecipe; }
 
-	ItemField getRecipeOut(unsigned Index)
+	ItemField getRecipeOut(unsigned Index) const
 	{
 		return AvailableRecipes[Index].getOutElement();
 	}
-	unsigned getRecipesNumber() { return AvailableRecipes.size(); }
+	unsigned getRecipesNumber() const
+	{
+		return AvailableRecipes.size();
+	}
 
 	void setCraftAmount(unsigned newAmount) { CraftAmount = newAmount; }
-	unsigned getCraftAmount() { return CraftAmount; }
+	unsigned getCraftAmount() const { return CraftAmount; }
 
-	const std::vector<Recipe> & getRecipes()
+	const std::vector<Recipe> & getRecipes() const
 	{
 		return AvailableRecipes;
 	}

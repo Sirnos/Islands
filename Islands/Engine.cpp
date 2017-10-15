@@ -439,8 +439,8 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 	preObjectId = ObjectID;
 }
 
-Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
-	:Player(sf::RectangleShape{sf::Vector2f(48,64)}, sf::Vector2f(), 20.0f, 10.0f, 5.0f)
+Engine::Engine(const GameVars &game, const RenderVars &render)
+	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), GameRules(game), RenderRules(render)
 {
 	ErrorHandler::clearLogFile();
 	loadGameComponents();
@@ -451,8 +451,7 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	Crafting.usePlayerRecipes();
 	Crafting.AssingItemDef(Items);
 
-	LyingItems.init(v1.MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(v1.PlayerPickUpItemsRange, v1.PlayerPickUpItemsRange)));
-	TileDrawRange = MaxTileDrawRange;
+	LyingItems.init(GameRules.MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(GameRules.PlayerPickUpItemsRange, GameRules.PlayerPickUpItemsRange)));
 
 	std::vector<StructureDef> StructuresDef;
 	GameComponentsLoader::LoadStructuresDef(StructuresDef);
@@ -463,14 +462,14 @@ Engine::Engine(GameVars &v1, unsigned MaxTileDrawRange)
 	GameComponentsLoader::LoadBiomesDef(MapsDef);
 	std::vector<BiomeValues> MapsVars = makeFromDef::makeBiome(MapsDef, *Objects, Structures);
 
-	GWorldManager.setStructuresAmountInLocalMap(v1.StructuresPerLocalMap);
+	GWorldManager.setStructuresAmountInLocalMap(GameRules.StructuresPerLocalMap);
 	GWorldManager.AssingClock(GameClock);
 	GWorldManager.AssingItemsDef(Items);
 	GWorldManager.AssingObjectsDef(Objects);
 	GWorldManager.AssingStructures(Structures);
 	GWorldManager.AssingWorld(GameWorld);
 	GWorldManager.AssingLocalMapsBuilderVars(MapsVars);
-	GWorldManager.buildLocalMap(TerrainType::Grass, v1.LocalMapSize);
+	GWorldManager.buildLocalMap(TerrainType::Grass, GameRules.LocalMapSize);
 
 	Player.Stats = Entities->getContainer().front().getStats();
 	Player.pushTexture(mediaContainer.getTexture(TextureContainer::EntitiesTextures, 1));
@@ -715,22 +714,26 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 void Engine::drawWorld(IslandApp & app)
 {
 	sf::Vector2i PlayerPosToTile = World::getTiledPosition(Player.getCharacterCenterPosition());
-	sf::RectangleShape TileShape;
-	sf::RectangleShape ObjectShape;
-	TileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-	ObjectShape = TileShape;
+	sf::RectangleShape TileShape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+	sf::RectangleShape ObjectShape(TileShape);
 
-	int iTileDrawRange = static_cast<int>(TileDrawRange);
 	int MapSize = static_cast<int>(GameWorld->getLocalMapSize());
 	TerrainType preTile = TerrainType::Null;
 	size_t preObjectId = 0;
 
-	for (int y_tile = PlayerPosToTile.y - iTileDrawRange; y_tile < PlayerPosToTile.y + iTileDrawRange + 1; y_tile++)
+	bool updateLocalMap = false;
+	if (sf::seconds(GameClock.getElapsedTime().asSeconds()) >= sf::seconds(lastUpdateLocalMapTime.asSeconds()) + sf::seconds(GameRules.TimeToUpdateLocalMap))
+	{
+		lastUpdateLocalMapTime = GameClock.getElapsedTime();
+		updateLocalMap = true;
+	}
+
+	for (int y_tile = PlayerPosToTile.y - RenderRules.TileDrawRange; y_tile < PlayerPosToTile.y + RenderRules.TileDrawRange + 1; y_tile++)
 	{
 		if (y_tile < 0) { continue; }
 		if (y_tile > MapSize - 1) { break; }
 
-		for (int x_tile = PlayerPosToTile.x - iTileDrawRange; x_tile < PlayerPosToTile.x + iTileDrawRange + 1; x_tile++)
+		for (int x_tile = PlayerPosToTile.x - RenderRules.TileDrawRange; x_tile < PlayerPosToTile.x + RenderRules.TileDrawRange + 1; x_tile++)
 		{
 			if (x_tile < 0) { continue; }
 			if (x_tile > MapSize - 1) { break; }
@@ -739,7 +742,11 @@ void Engine::drawWorld(IslandApp & app)
 
 			drawTile(preTile, currentTile, *app.getIslandWindow(), TileShape);
 			drawObject(preObjectId, currentTile, *app.getIslandWindow(), ObjectShape);
-			GWorldManager.updateTile(currentTile);
+
+			if (updateLocalMap)
+			{
+				GWorldManager.updateTile(currentTile);
+			}
 		}
 	}
 }

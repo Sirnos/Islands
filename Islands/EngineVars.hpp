@@ -8,30 +8,39 @@
 
 struct VideoVars
 {
-	sf::Vector2u WindowSize{ 1280,1024 };
+	sf::Vector2u WindowSize{ 1280, 1024 };
 	unsigned BitsPerPixel{ 32 };
 	unsigned FrameRate{ 60 };
 	bool VerticalSync{ false };
 	bool Windowed{ false };
 
-	const std::array<unsigned, 3> AllowedBitsPerPixel = { 8,16,32 };
-	const std::array<unsigned, 6> AllowedFrameRates = { 24,30,60,90,120,144 };
+
+	const std::array<unsigned, 3> AllowedBitsPerPixel{ 8, 16, 32 };
+	const std::array<unsigned, 6> AllowedFrameRates{ 24, 30, 60, 90, 120, 144 };
 };
 
 struct RenderVars
 {
-	unsigned TileDrawRange{ 32 };
+	int TileDrawRange{ 24 };
+
+	const int DefaultTileDrawRange{ 24 };
 };
 
 struct GameVars
 {
 	unsigned GlobalMapSize{ 0 };
 	unsigned LocalMapSize{ 512 };
+
+
 	unsigned MaxNumberOfLyingItems{ 64 };
 	unsigned PlayerPickUpItemsRange{ 128 };
 	unsigned StructuresPerLocalMap{ 4 };
 
-	const std::array<unsigned, 4> AllowedLocalMapSize = { 256,512,1024,2048 };
+
+	float TimeToUpdateLocalMap{ 2.0f };
+
+
+	const std::array<unsigned, 4> AllowedLocalMapSize{ 256, 512, 1024, 2048 };
 };
 
 struct EngineVars
@@ -94,7 +103,11 @@ struct EngineVars
 					}
 					else if(VarName == "TileDrawRange")
 					{
-						Render.TileDrawRange = std::stoul(VarValue);
+						Render.TileDrawRange = std::stoi(VarValue);
+						if (static_cast<unsigned>(Render.TileDrawRange) == std::numeric_limits<unsigned>().max())
+						{
+							Render.TileDrawRange = Render.DefaultTileDrawRange;
+						}
 					}
 					else if(VarName == "LocalMapSize")
 					{
@@ -116,6 +129,10 @@ struct EngineVars
 					else if(VarName == "StructuresPerLocalMap")
 					{
 						Game.StructuresPerLocalMap = std::stoul(VarValue);
+					}
+					else if(VarName == "TimeToUpdateLocalMap")
+					{
+						Game.TimeToUpdateLocalMap = std::stof(VarValue);
 					}
 				}
 			}

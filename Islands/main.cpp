@@ -10,7 +10,7 @@ int main()
 	EngineVars Vars;
 
 	IslandApp app{ Vars.Video };
-	Engine IslandEngine{ Vars.Game, Vars.Render.TileDrawRange };
+	Engine IslandEngine{ Vars.Game, Vars.Render };
 
 	bool isClick = false;
 	char lastKey = 'U';

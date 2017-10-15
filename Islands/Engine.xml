@@ -16,5 +16,6 @@
     <MaxNumberOfLyingItems>64</MaxNumberOfLyingItems>
     <PlayerPickUpItemsRange>128</PlayerPickUpItemsRange><!--In pixels-->
 	  <StructuresPerLocalMap>6</StructuresPerLocalMap>
+    <TimeToUpdateLocalMap>2</TimeToUpdateLocalMap>
   </Game>
 </EngineVars>
