@@ -21,6 +21,8 @@ class WorldManager
 	std::vector<Structure> Structures;
 
 	unsigned StructuresPerLocalMap;
+
+	std::vector<sf::Vector2u> tilesToUpdate;
 public:
 	WorldManager()
 		:StructuresPerLocalMap(0)
@@ -212,6 +214,7 @@ public:
 			break;
 		case ObjectType::Sapling:
 			ManagementWorld->setLocalMapTileObject(tile, new SaplingObject(ObjectId, GameClockPtr->getElapsedTime().asSeconds()));
+			tilesToUpdate.push_back(tile);
 			return true;
 			break;
 		case ObjectType::Spawner:
@@ -324,26 +327,29 @@ public:
 	}
 
 
-	void updateTile(const sf::Vector2u &tileIndex)
+	void updateTiles()
 	{
-		unsigned objectId = ManagementWorld->getLocalMapTileObjectId(tileIndex);
-		if (objectId == 0) { return; }
-		float Time = GameClockPtr->getElapsedTime().asSeconds();
-
-		if (ManagementWorld->getLocalMapTileObject(tileIndex)->getType() == ObjectType::Sapling)
+		if (!tilesToUpdate.empty())
 		{
-			float Time = GameClockPtr->getElapsedTime().asSeconds();
-			float plantTime = dynamic_cast<SaplingObject*>(ManagementWorld->getLocalMapTileObject(tileIndex))->getPlantTime();
-			float growTime = dynamic_cast<SaplingDef*>(ObjectsDef->getDefinition(objectId))->getGrowTime();
+			sf::Time currentTime = GameClockPtr->getElapsedTime();
 
-			if (sf::seconds(Time) >= sf::seconds(plantTime) + sf::seconds(growTime))
+			for (size_t i = 0; i < tilesToUpdate.size(); i++)
 			{
-				unsigned GrowToId = ObjectsDef->getDefIdbyName(dynamic_cast<SaplingDef*>(ObjectsDef->getDefinition(objectId))->getGrowTo());
-				if (GrowToId != 0)
+				float plantTime = dynamic_cast<SaplingObject*>(ManagementWorld->getLocalMapTileObject(tilesToUpdate[i]))->getPlantTime();
+				size_t objectId = ManagementWorld->getLocalMapTileObject(tilesToUpdate[i])->getId();
+				float growTime = dynamic_cast<SaplingDef*>(ObjectsDef->getDefinition(objectId))->getGrowTime();
+
+				if (currentTime >= sf::seconds(plantTime) + sf::seconds(growTime))
 				{
-					ManagementWorld->removeLocalMapTileObject(tileIndex);
-					placeObject(tileIndex, GrowToId);
+					unsigned GrowToId = ObjectsDef->getDefIdbyName(dynamic_cast<SaplingDef*>(ObjectsDef->getDefinition(objectId))->getGrowTo());
+					if (GrowToId != 0)
+					{
+						ManagementWorld->removeLocalMapTileObject(tilesToUpdate[i]);
+						placeObject(tilesToUpdate[i], GrowToId);
+					}
+					tilesToUpdate.erase(tilesToUpdate.begin() + i);
 				}
+
 			}
 		}
 	}

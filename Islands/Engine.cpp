@@ -495,6 +495,12 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 {
 	LyingItems.clearOldItems(GameClock.getElapsedTime());
 
+	if (GameClock.getElapsedTime().asSeconds() >= lastUpdateLocalMapTime.asSeconds() + sf::seconds(GameRules.TimeToUpdateLocalMap).asSeconds())
+	{
+		lastUpdateLocalMapTime = GameClock.getElapsedTime();
+		GWorldManager.updateTiles();
+	}
+	
 	checkPlayerBehaviour();
 	checkPlayerEnvironment();
 
@@ -721,13 +727,7 @@ void Engine::drawWorld(IslandApp & app)
 	TerrainType preTile = TerrainType::Null;
 	size_t preObjectId = 0;
 
-	bool updateLocalMap = false;
-	if (sf::seconds(GameClock.getElapsedTime().asSeconds()) >= sf::seconds(lastUpdateLocalMapTime.asSeconds()) + sf::seconds(GameRules.TimeToUpdateLocalMap))
-	{
-		lastUpdateLocalMapTime = GameClock.getElapsedTime();
-		updateLocalMap = true;
-	}
-
+	
 	for (int y_tile = PlayerPosToTile.y - RenderRules.TileDrawRange; y_tile < PlayerPosToTile.y + RenderRules.TileDrawRange + 1; y_tile++)
 	{
 		if (y_tile < 0) { continue; }
@@ -742,11 +742,6 @@ void Engine::drawWorld(IslandApp & app)
 
 			drawTile(preTile, currentTile, *app.getIslandWindow(), TileShape);
 			drawObject(preObjectId, currentTile, *app.getIslandWindow(), ObjectShape);
-
-			if (updateLocalMap)
-			{
-				GWorldManager.updateTile(currentTile);
-			}
 		}
 	}
 }
