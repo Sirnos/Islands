@@ -727,17 +727,30 @@ void Engine::drawWorld(IslandApp & app)
 	TerrainType preTile = TerrainType::Null;
 	size_t preObjectId = 0;
 
-	
-	for (int y_tile = PlayerPosToTile.y - RenderRules.TileDrawRange; y_tile < PlayerPosToTile.y + RenderRules.TileDrawRange + 1; y_tile++)
+	sf::Vector2i begin(PlayerPosToTile.x - RenderRules.TileDrawRange, PlayerPosToTile.y - RenderRules.TileDrawRange);
+	if (begin.y < 0)
 	{
-		if (y_tile < 0) { continue; }
-		if (y_tile > MapSize - 1) { break; }
+		begin.y = 0;
+	}
+	if (begin.x < 0)
+	{
+		begin.x = 0;
+	}
+	sf::Vector2i end(PlayerPosToTile.x + RenderRules.TileDrawRange + 1, PlayerPosToTile.y + RenderRules.TileDrawRange + 1);
+	if (end.x > MapSize)
+	{
+		end.x = MapSize;
+	}
+	if (end.y > MapSize)
+	{
+		end.y = MapSize;
+	}
 
-		for (int x_tile = PlayerPosToTile.x - RenderRules.TileDrawRange; x_tile < PlayerPosToTile.x + RenderRules.TileDrawRange + 1; x_tile++)
+	
+	for (int y_tile = begin.y; y_tile < end.y; y_tile++)
+	{
+		for (int x_tile = begin.x; x_tile < end.x; x_tile++)
 		{
-			if (x_tile < 0) { continue; }
-			if (x_tile > MapSize - 1) { break; }
-
 			sf::Vector2u currentTile = static_cast<sf::Vector2u>(sf::Vector2i(x_tile, y_tile));
 
 			drawTile(preTile, currentTile, *app.getIslandWindow(), TileShape);

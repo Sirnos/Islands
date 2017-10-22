@@ -1,14 +1,12 @@
-<?xml version = "1.0" encoding = "UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Objects graphics="Data/Objects.png">
   <Object name="Shrub">
-    <Size>1,1</Size>
     <Graphics>0,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>Stick,1</Ifdestroyed>
   </Object>
   <Object name="WoodChest">
-    <Size>1,1</Size>
     <Graphics>16,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
@@ -18,28 +16,24 @@
     </ChestDef>
   </Object>
   <Object name="SmallStone">
-    <Size>1,1</Size>
     <Graphics>32,48,16,16</Graphics>
     <Collision>0</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>Pebble,1</Ifdestroyed>
   </Object>
   <Object name="Stone">
-    <Size>1,1</Size>
     <Graphics>48,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>Pebble,4</Ifdestroyed>
   </Object>
   <Object name="BigStone">
-    <Size>1,1</Size>
     <Graphics>64,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>Pebble,8</Ifdestroyed>
   </Object>
   <Object name="ShrubSapling">
-    <Size>1,1</Size>
     <Graphics>80,48,16,16</Graphics>
     <Collision>0</Collision>
     <Isdestructible>1</Isdestructible>
@@ -50,7 +44,6 @@
     </SaplingDef>
   </Object>
   <Object name="CraftingTable">
-    <Size>1,1</Size>
     <Graphics>96,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
@@ -58,60 +51,52 @@
     <CraftingPlaceDef>Data/Recipes/CraftingTableRecipes.xml</CraftingPlaceDef>
   </Object>
   <Object name="CobblestoneWall">
-    <Size>1,1</Size>
     <Graphics>112,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>SELF,1</Ifdestroyed>
   </Object>
   <Object name="DestroyedCobblestoneWall">
-    <Size>1,1</Size>
     <Graphics>128,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>Pebble,8</Ifdestroyed>
   </Object>
   <Object name="HighGrass">
-    <Size>1,1</Size>
     <Graphics>144,48,16,16</Graphics>
     <Collision>0</Collision>
     <Isdestructible>1</Isdestructible>
     <Ifdestroyed>SELF,1</Ifdestroyed>
   </Object>
   <Object name="Flower">
-	<Size>1,1</Size>
-	<Graphics>0,64,16,16</Graphics>
-	<Collision>0</Collision>
-	<Isdestructible>1</Isdestructible>
-	<Ifdestroyed>SELF,1</Ifdestroyed>
+    <Graphics>0,64,16,16</Graphics>
+    <Collision>0</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>SELF,1</Ifdestroyed>
   </Object>
   <Object name="CoalMine">
-	<Size>1,1</Size>
-	<Graphics>64,64,16,16</Graphics>
-	<Collision>1</Collision>
-	<Isdestructible>1</Isdestructible>
-	<Ifdestroyed>Coal,4</Ifdestroyed>
+    <Graphics>64,64,16,16</Graphics>
+    <Collision>1</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>Coal,4</Ifdestroyed>
   </Object>
   <Object name="IronMine">
-	<Size>1,1</Size>
-	<Graphics>96,64,16,16</Graphics>
-	<Collision>1</Collision>
-	<Isdestructible>1</Isdestructible>
-	<Ifdestroyed>IronOre,3</Ifdestroyed>
+    <Graphics>96,64,16,16</Graphics>
+    <Collision>1</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>IronOre,3</Ifdestroyed>
   </Object>
-    <Object name="WoodWall">
-	<Size>1,1</Size>
-	<Graphics>128,64,16,16</Graphics>
-	<Collision>1</Collision>
-	<Isdestructible>1</Isdestructible>
-	<Ifdestroyed>SELF,1</Ifdestroyed>
+  <Object name="WoodWall">
+    <Graphics>128,64,16,16</Graphics>
+    <Collision>1</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>SELF,1</Ifdestroyed>
   </Object>
   <Object name="Tree">
-	<Size>1,1</Size>
-	<Graphics>0,80,48,64</Graphics>
-	<Collision>1</Collision>
-	<Isdestructible>1</Isdestructible>
-	<Ifdestroyed>WoodLog,8</Ifdestroyed>
-	<TreeDef></TreeDef>
+    <Graphics>0,80,48,64</Graphics>
+    <Collision>1</Collision>
+    <Isdestructible>1</Isdestructible>
+    <Ifdestroyed>WoodLog,8</Ifdestroyed>
+    <TreeDef />
   </Object>
 </Objects>

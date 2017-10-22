@@ -93,7 +93,6 @@ public:
 				bool newObjDestructible = false;
 				bool newObjCollision = false;
 				Yield newObjYield;
-				sf::Vector2i newObjSize;
 				sf::IntRect newObjTextureCoord;
 				ObjectType newObjType = ObjectType::Default;
 
@@ -102,11 +101,7 @@ public:
 				{
 					std::string paramName = objectsParamNode->name();
 
-					if (paramName == "Size")
-					{
-						newObjSize = getVectorFromString<int>(std::string(objectsParamNode->value()));
-					}
-					else if (paramName == "Graphics")
+					if (paramName == "Graphics")
 					{
 						newObjTextureCoord = getRectFromString<int>(std::string(objectsParamNode->value()));
 					}
@@ -147,21 +142,21 @@ public:
 				switch (newObjType)
 				{
 				case ObjectType::Default:
-					Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjYield, newObjDestructible, newObjCollision));
+					Objects.push_back(new ObjectDef(newObjName, newObjYield, newObjDestructible, newObjCollision));
 					break;
 				case ObjectType::Chest:
-					Objects.push_back(new ChestDef(newObjName, newObjSize, newObjCollision, newObjYield, newObjDestructible, tempUint.back()));
+					Objects.push_back(new ChestDef(newObjName, newObjCollision, newObjYield, newObjDestructible, tempUint.back()));
 					break;
 				case ObjectType::Tree:
-					Objects.push_back(new ObjectDef(newObjName, newObjSize, newObjYield, newObjDestructible, newObjCollision, ObjectType::Tree));
+					Objects.push_back(new ObjectDef(newObjName, newObjYield, newObjDestructible, newObjCollision, ObjectType::Tree));
 					break;
 				case ObjectType::Sapling:
-					Objects.push_back(new SaplingDef(newObjName, newObjSize, newObjCollision, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));
+					Objects.push_back(new SaplingDef(newObjName, newObjCollision, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));
 					break;
 				case ObjectType::Spawner:
 					break;
 				case ObjectType::CraftingPlace:
-					Objects.push_back(new CraftingPlaceDef(newObjName, newObjSize, newObjYield, newObjDestructible, newObjCollision, tempRecipes));
+					Objects.push_back(new CraftingPlaceDef(newObjName, newObjYield, newObjDestructible, newObjCollision, tempRecipes));
 					break;
 				default:
 					break;

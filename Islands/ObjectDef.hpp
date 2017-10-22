@@ -51,20 +51,18 @@ class ObjectDef
 {
 	ObjectType type;
 	std::string ObjName;
-	sf::Vector2i ObjSize;
 	bool ObjCollision;
 	bool ObjDestructible;
 	Yield ObjYield;
 
 public:
 	ObjectDef()
-		:ObjDestructible(false), ObjName(), ObjSize(), ObjYield(Yield("", 0)), ObjCollision(false), type(ObjectType::Default)
+		:ObjDestructible(false), ObjName(), ObjYield(Yield("", 0)), ObjCollision(false), type(ObjectType::Default)
 	{}
 	ObjectDef(const ObjectDef &other) = delete;
 	ObjectDef(ObjectDef &&other) = delete;
-	ObjectDef(const std::string &Name, const sf::Vector2i &Size, const Yield &yield,
-		bool Destructible, bool Collision, ObjectType type = ObjectType::Default)
-		:ObjDestructible(Destructible), ObjName(Name), ObjSize(Size), ObjYield(yield), type(type), ObjCollision(Collision)
+	ObjectDef(const std::string &Name, const Yield &yield, bool Destructible, bool Collision, ObjectType type = ObjectType::Default)
+		:ObjDestructible(Destructible), ObjName(Name), ObjYield(yield), type(type), ObjCollision(Collision)
 	{}
 	virtual ~ObjectDef() = default;
 
@@ -81,10 +79,6 @@ public:
 	{
 		return ObjName;
 	}
-	sf::Vector2i getSize() const
-	{
-		return ObjSize;
-	}
 	bool getCollision() const
 	{
 		return ObjCollision;
@@ -97,7 +91,6 @@ public:
 	{
 		return ObjYield;
 	}
-
 };
 
 class ChestDef : public ObjectDef
@@ -106,9 +99,8 @@ class ChestDef : public ObjectDef
 
 public:
 	ChestDef() = delete;
-	ChestDef(const std::string &Name, const sf::Vector2i &Size,
-		bool HaveCollision, const Yield &yield, bool Destructible, unsigned ChestCapacity)
-		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Chest), Capacity(ChestCapacity)
+	ChestDef(const std::string &Name, bool HaveCollision, const Yield &yield, bool Destructible, unsigned ChestCapacity)
+		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::Chest), Capacity(ChestCapacity)
 	{}
 	~ChestDef() = default;
 
@@ -117,7 +109,6 @@ public:
 	{
 		return Capacity;
 	}
-
 };
 
 class CraftingPlaceDef : public ObjectDef
@@ -126,9 +117,9 @@ class CraftingPlaceDef : public ObjectDef
 
 public:
 	CraftingPlaceDef() = delete;
-	CraftingPlaceDef(const std::string &Name, const sf::Vector2i &Size,
-		const Yield &yield, bool Destructible, bool HaveCollision, const std::vector<RecipeDef> &RecipeVect)
-		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::CraftingPlace), Recipes(RecipeVect)
+	CraftingPlaceDef(const std::string &Name, const Yield &yield, 
+		bool Destructible, bool HaveCollision, const std::vector<RecipeDef> &RecipeVect)
+		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::CraftingPlace), Recipes(RecipeVect)
 	{}
 	~CraftingPlaceDef() = default;
 
@@ -137,7 +128,6 @@ public:
 	{
 		return Recipes;
 	}
-
 };
 
 class SaplingDef : public ObjectDef
@@ -147,9 +137,9 @@ class SaplingDef : public ObjectDef
 
 public:
 	SaplingDef() = delete;
-	SaplingDef(const std::string &Name, const sf::Vector2i &Size, bool HaveCollision,
-		const Yield &yield, bool Destructible, float TimeForGrow, std::string &For)
-		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Sapling), GrowTo(For), GrowTime(TimeForGrow)
+	SaplingDef(const std::string &Name, bool HaveCollision, const Yield &yield,
+		bool Destructible, float TimeForGrow, const std::string &For)
+		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::Sapling), GrowTo(For), GrowTime(TimeForGrow)
 	{}
 	~SaplingDef() = default;
 
@@ -162,7 +152,6 @@ public:
 	{
 		return GrowTo;
 	}
-
 };
 
 class SpawnerDef : public ObjectDef
@@ -172,9 +161,9 @@ class SpawnerDef : public ObjectDef
 
 public:
 	SpawnerDef() = delete;
-	SpawnerDef(const std::string &Name, const sf::Vector2i &Size, bool HaveCollision,
-		const Yield &yield, bool Destructible, float TimeForSpawn, const std::string &MonsterToSpawn)
-		:ObjectDef(Name, Size, yield, Destructible, HaveCollision, ObjectType::Spawner), SpawnTime(TimeForSpawn), MonsterName(MonsterToSpawn)
+	SpawnerDef(const std::string &Name, bool HaveCollision, const Yield &yield,
+		bool Destructible, float TimeForSpawn, const std::string &MonsterToSpawn)
+		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::Spawner), SpawnTime(TimeForSpawn), MonsterName(MonsterToSpawn)
 	{}
 	~SpawnerDef() = default;
 
@@ -187,5 +176,4 @@ public:
 	{
 		return MonsterName;
 	}
-
 };

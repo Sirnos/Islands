@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <EngineVars>
   <Video>
     <Resolution>1920,1084</Resolution>
@@ -15,7 +15,7 @@
     <LocalMapSize>256</LocalMapSize>
     <MaxNumberOfLyingItems>64</MaxNumberOfLyingItems>
     <PlayerPickUpItemsRange>128</PlayerPickUpItemsRange><!--In pixels-->
-	  <StructuresPerLocalMap>6</StructuresPerLocalMap>
+    <StructuresPerLocalMap>6</StructuresPerLocalMap>
     <TimeToUpdateLocalMap>2</TimeToUpdateLocalMap>
   </Game>
 </EngineVars>
