@@ -46,6 +46,13 @@ class Media
 
 	std::vector<std::pair<sf::Texture, sf::Texture>> EntitiesTexture;
 public:
+	Media()
+		:TerrainTexture(1), ObjectsTexture(1), ItemsTexture(1), EntitiesTexture(1)
+	{
+		pushEntitiesTexture(std::string("Data/Entities.png"), sf::Vector2i(40, 80), sf::Vector2i(0, 0));
+	}
+	~Media() = default;
+
 	bool pushTexture(const TextureContainer &container, const std::string &fileName, const sf::IntRect &textCord)
 	{
 		if (container == TextureContainer::EntitiesTextures)
@@ -147,18 +154,5 @@ public:
 			return ItemsTexture.size();
 			break;
 		}
-	}
-
-	Media()
-		:TerrainTexture(1), EntitiesTexture(1)
-	{
-		pushEntitiesTexture(std::string("Data/Entities.png"), sf::Vector2i(40, 80), sf::Vector2i(0, 0));
-	}
-	~Media()
-	{
-		ObjectsTexture.clear();
-		ItemsTexture.clear();
-		TerrainTexture.clear();
-		EntitiesTexture.clear();
 	}
 };

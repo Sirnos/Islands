@@ -440,8 +440,12 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 }
 
 Engine::Engine(const GameVars &game, const RenderVars &render)
-	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), GameRules(game), RenderRules(render)
+	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), GameRules(game), RenderRules(render),
+	GameWorld(new World), Objects(new ObjectDefContainer), Items(new ItemDefContainer), Entities(new MonsterDefContainer)
 {
+	Objects->getContainer()[0] = new ObjectDef;
+	Items->getContainer()[0] = new PlaceableDef("");
+
 	ErrorHandler::clearLogFile();
 	loadGameComponents();
 

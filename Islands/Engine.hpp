@@ -31,10 +31,10 @@ class Engine
 	WorldManager GWorldManager;
 	MonsterManager GMonsterManager;
 
-	std::shared_ptr<World> GameWorld{ new World };
-	std::shared_ptr<ObjectDefContainer> Objects{ new ObjectDefContainer };
-	std::shared_ptr<ItemDefContainer> Items{ new ItemDefContainer };
-	std::shared_ptr<MonsterDefContainer> Entities{ new MonsterDefContainer };
+	std::shared_ptr<World> GameWorld;
+	std::shared_ptr<ObjectDefContainer> Objects;
+	std::shared_ptr<ItemDefContainer> Items;
+	std::shared_ptr<MonsterDefContainer> Entities;
 
 
 	Media mediaContainer;

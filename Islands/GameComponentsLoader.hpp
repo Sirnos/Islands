@@ -69,9 +69,6 @@ class GameComponentsLoader
 public:
 	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects, std::string &ObjectsGraphicsFile, std::vector<sf::IntRect> &Textures)
 	{
-		Objects.push_back(new ObjectDef());
-		Textures.push_back(sf::IntRect());
-
 		rapidxml::file<char> File("Data/Objects.xml");
 		rapidxml::xml_document<> document;
 		document.parse<0>(File.data());
@@ -173,7 +170,7 @@ public:
 
 	static void GenerateItemsFromObjectDef(const std::vector<ObjectDef*> &Objs, std::vector<ItemDef*> &Items)
 	{
-		for (unsigned i = 0; i < Objs.size(); i++)
+		for (unsigned i = 1; i < Objs.size(); i++)
 		{
 			Items.push_back(new PlaceableDef(Objs[i]->getName()));
 		}
