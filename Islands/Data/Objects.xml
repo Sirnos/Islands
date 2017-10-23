@@ -4,13 +4,17 @@
     <Graphics>0,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Stick,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>Stick,1</li>
+    </Ifdestroyed>
   </Object>
   <Object name="WoodChest">
     <Graphics>16,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>SELF,1</li>
+    </Ifdestroyed>
     <ChestDef>
       <Capacity>24</Capacity>
     </ChestDef>
@@ -19,25 +23,33 @@
     <Graphics>32,48,16,16</Graphics>
     <Collision>0</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Pebble,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>Pebble,1</li>
+    </Ifdestroyed>
   </Object>
   <Object name="Stone">
     <Graphics>48,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Pebble,4</Ifdestroyed>
+    <Ifdestroyed>
+      <li>Pebble,4</li>
+    </Ifdestroyed>
   </Object>
   <Object name="BigStone">
     <Graphics>64,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Pebble,8</Ifdestroyed>
+    <Ifdestroyed>
+      <li>Pebble,8</li>
+    </Ifdestroyed>
   </Object>
   <Object name="ShrubSapling">
     <Graphics>80,48,16,16</Graphics>
     <Collision>0</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>SELF,1</li>
+    </Ifdestroyed>
     <SaplingDef>
       <GrowTime>24</GrowTime>
       <For>Shrub</For>
@@ -47,56 +59,74 @@
     <Graphics>96,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>SELF,1</li>
+    </Ifdestroyed>
     <CraftingPlaceDef>Data/Recipes/CraftingTableRecipes.xml</CraftingPlaceDef>
   </Object>
   <Object name="CobblestoneWall">
     <Graphics>112,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>SELF,1</li>
+    </Ifdestroyed>
   </Object>
   <Object name="DestroyedCobblestoneWall">
     <Graphics>128,48,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Pebble,8</Ifdestroyed>
+    <Ifdestroyed>
+      <li>Pebble,8</li>
+    </Ifdestroyed>
   </Object>
   <Object name="HighGrass">
     <Graphics>144,48,16,16</Graphics>
     <Collision>0</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>SELF,1</li>
+    </Ifdestroyed>
   </Object>
   <Object name="Flower">
     <Graphics>0,64,16,16</Graphics>
     <Collision>0</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>SELF,1</li>
+    </Ifdestroyed>
   </Object>
   <Object name="CoalMine">
     <Graphics>64,64,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>Coal,4</Ifdestroyed>
+    <Ifdestroyed>
+      <li>Coal,4</li>
+    </Ifdestroyed>
   </Object>
   <Object name="IronMine">
     <Graphics>96,64,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>IronOre,3</Ifdestroyed>
+    <Ifdestroyed>
+      <li>IronOre,3</li>
+    </Ifdestroyed>
   </Object>
   <Object name="WoodWall">
     <Graphics>128,64,16,16</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>SELF,1</Ifdestroyed>
+    <Ifdestroyed>
+      <li>SELF,1</li>
+  </Ifdestroyed>
   </Object>
   <Object name="Tree">
     <Graphics>0,80,48,64</Graphics>
     <Collision>1</Collision>
     <Isdestructible>1</Isdestructible>
-    <Ifdestroyed>WoodLog,8</Ifdestroyed>
+    <Ifdestroyed>
+      <li>WoodLog,8</li>
+    </Ifdestroyed>
     <TreeDef />
   </Object>
 </Objects>

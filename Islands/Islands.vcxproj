@@ -177,7 +177,6 @@
     <Image Include="Data\Objects.png" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Data\CraftingTableRecipes.xml" />
     <Xml Include="Data\Entities.xml">
       <SubType>Designer</SubType>
     </Xml>
@@ -187,7 +186,8 @@
     <Xml Include="Data\Objects.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="Data\PlayerRecipes.xml" />
+    <Xml Include="Data\Recipes\CraftingTableRecipes.xml" />
+    <Xml Include="Data\Recipes\PlayerRecipes.xml" />
     <Xml Include="Data\Terrain.xml" />
     <Xml Include="Data\World\MapGenerator.xml">
       <SubType>Designer</SubType>

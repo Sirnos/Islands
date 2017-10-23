@@ -631,22 +631,25 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 					timeOfMouseClickHold = GameClock.getElapsedTime();
 					if (timeOfMouseClickHold.asMilliseconds() - timeAtMouseClick.asMilliseconds() >= 101)
 					{
-						Yield objectYield = Objects->getDefinition(objectId)->getYield();
-						if (objectYield.first != "NULL")
+						for (const auto & i : Objects->getDefinition(objectId)->getYield())
 						{
-							if (objectYield.first == "SELF")
+							sf::Time currentTime = GameClock.getElapsedTime();
+							if (i.first != "NULL")
 							{
-								LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, ItemField(objectId, objectYield.second));
-							}
-							else
-							{
-								ItemField item;
-								item.ItemId = Items->getDefIdbyName(objectYield.first);
-								item.ItemAmount = objectYield.second;
-								LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, item);
+								if (i.first == "SELF")
+								{
+									LyingItems.pushNewItem(currentTime, mousePos, ItemField(objectId, i.second));
+									break;
+								}
+								else
+								{
+									ItemField item;
+									item.ItemId = Items->getDefIdbyName(i.first);
+									item.ItemAmount = i.second;
+									LyingItems.pushNewItem(currentTime, mousePos, item);
+								}
 							}
 						}
-
 
 						for (const auto & Item : GWorldManager.getItemsFromChestObject(objectPos))
 						{

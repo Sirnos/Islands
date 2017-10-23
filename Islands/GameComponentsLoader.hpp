@@ -89,7 +89,7 @@ public:
 				std::string newObjName = objectsNode->first_attribute()->value();
 				bool newObjDestructible = false;
 				bool newObjCollision = false;
-				Yield newObjYield;
+				ObjYield newObjYield;
 				sf::IntRect newObjTextureCoord;
 				ObjectType newObjType = ObjectType::Default;
 
@@ -112,7 +112,11 @@ public:
 					}
 					else if (paramName == "Ifdestroyed")
 					{
-						newObjYield = getStringAndTpairFromString<unsigned>(std::string(objectsParamNode->value()));
+						rapidxml::xml_node<char> *listNode = objectsParamNode->first_node();
+						for (listNode; listNode != nullptr; listNode = listNode->next_sibling())
+						{
+							newObjYield.push_back(getStringAndTpairFromString<unsigned>(std::string(listNode->value())));
+						}
 					}
 					else if (paramName == "ChestDef")
 					{
@@ -163,6 +167,7 @@ public:
 				tempString.clear();
 				tempUint.clear();
 				tempRecipes.clear();
+				newObjYield.clear();
 			}
 		}
 		Objects.shrink_to_fit();

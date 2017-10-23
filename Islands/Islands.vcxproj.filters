@@ -216,12 +216,6 @@
     <Xml Include="Data\World\Structures.xml">
       <Filter>IslandData\World</Filter>
     </Xml>
-    <Xml Include="Data\CraftingTableRecipes.xml">
-      <Filter>IslandData\Recipes</Filter>
-    </Xml>
-    <Xml Include="Data\PlayerRecipes.xml">
-      <Filter>IslandData\Recipes</Filter>
-    </Xml>
     <Xml Include="Data\Terrain.xml">
       <Filter>IslandData</Filter>
     </Xml>
@@ -230,6 +224,12 @@
     </Xml>
     <Xml Include="Data\Entities.xml">
       <Filter>IslandData</Filter>
+    </Xml>
+    <Xml Include="Data\Recipes\CraftingTableRecipes.xml">
+      <Filter>IslandData\Recipes</Filter>
+    </Xml>
+    <Xml Include="Data\Recipes\PlayerRecipes.xml">
+      <Filter>IslandData\Recipes</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>

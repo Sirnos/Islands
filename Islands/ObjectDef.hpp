@@ -6,6 +6,7 @@
 #include <string>
 
 typedef std::pair<std::string, unsigned> Yield;
+typedef std::vector<Yield> ObjYield;
 
 enum class ObjectType
 {
@@ -53,16 +54,16 @@ class ObjectDef
 	std::string ObjName;
 	bool ObjCollision;
 	bool ObjDestructible;
-	Yield ObjYield;
+	ObjYield Yield;
 
 public:
 	ObjectDef()
-		:ObjDestructible(false), ObjName(), ObjYield(Yield("", 0)), ObjCollision(false), type(ObjectType::Default)
+		:ObjDestructible(false), ObjName(), Yield(), ObjCollision(false), type(ObjectType::Default)
 	{}
 	ObjectDef(const ObjectDef &other) = delete;
 	ObjectDef(ObjectDef &&other) = delete;
-	ObjectDef(const std::string &Name, const Yield &yield, bool Destructible, bool Collision, ObjectType type = ObjectType::Default)
-		:ObjDestructible(Destructible), ObjName(Name), ObjYield(yield), type(type), ObjCollision(Collision)
+	ObjectDef(const std::string &Name, const ObjYield &yield, bool Destructible, bool Collision, ObjectType type = ObjectType::Default)
+		:ObjDestructible(Destructible), ObjName(Name), Yield(yield), type(type), ObjCollision(Collision)
 	{}
 	virtual ~ObjectDef() = default;
 
@@ -87,9 +88,9 @@ public:
 	{
 		return ObjDestructible;
 	}
-	Yield getYield() const
+	const ObjYield &getYield() const
 	{
-		return ObjYield;
+		return Yield;
 	}
 };
 
@@ -99,7 +100,7 @@ class ChestDef : public ObjectDef
 
 public:
 	ChestDef() = delete;
-	ChestDef(const std::string &Name, bool HaveCollision, const Yield &yield, bool Destructible, unsigned ChestCapacity)
+	ChestDef(const std::string &Name, bool HaveCollision, const ObjYield &yield, bool Destructible, unsigned ChestCapacity)
 		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::Chest), Capacity(ChestCapacity)
 	{}
 	~ChestDef() = default;
@@ -117,7 +118,7 @@ class CraftingPlaceDef : public ObjectDef
 
 public:
 	CraftingPlaceDef() = delete;
-	CraftingPlaceDef(const std::string &Name, const Yield &yield, 
+	CraftingPlaceDef(const std::string &Name, const ObjYield &yield, 
 		bool Destructible, bool HaveCollision, const std::vector<RecipeDef> &RecipeVect)
 		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::CraftingPlace), Recipes(RecipeVect)
 	{}
@@ -137,7 +138,7 @@ class SaplingDef : public ObjectDef
 
 public:
 	SaplingDef() = delete;
-	SaplingDef(const std::string &Name, bool HaveCollision, const Yield &yield,
+	SaplingDef(const std::string &Name, bool HaveCollision, const ObjYield &yield,
 		bool Destructible, float TimeForGrow, const std::string &For)
 		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::Sapling), GrowTo(For), GrowTime(TimeForGrow)
 	{}
@@ -161,7 +162,7 @@ class SpawnerDef : public ObjectDef
 
 public:
 	SpawnerDef() = delete;
-	SpawnerDef(const std::string &Name, bool HaveCollision, const Yield &yield,
+	SpawnerDef(const std::string &Name, bool HaveCollision, const ObjYield &yield,
 		bool Destructible, float TimeForSpawn, const std::string &MonsterToSpawn)
 		:ObjectDef(Name, yield, Destructible, HaveCollision, ObjectType::Spawner), SpawnTime(TimeForSpawn), MonsterName(MonsterToSpawn)
 	{}
