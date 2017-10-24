@@ -32,9 +32,7 @@ class Engine
 	MonsterManager GMonsterManager;
 
 	std::shared_ptr<World> GameWorld;
-	std::shared_ptr<ObjectDefContainer> Objects;
-	std::shared_ptr<ItemDefContainer> Items;
-	std::shared_ptr<MonsterDefContainer> Entities;
+	GameComponents Components;
 
 
 	Media mediaContainer;

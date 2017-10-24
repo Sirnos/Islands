@@ -5,7 +5,7 @@
 #include <rapidxml/rapidxml.hpp>
 
 #include "TypesFromText.hpp"
-#include "DefContainer.hpp"
+#include "GameComponents.hpp"
 
 class GameComponentsLoader
 {

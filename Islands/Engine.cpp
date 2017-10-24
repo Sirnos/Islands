@@ -5,6 +5,10 @@ void Engine::loadGameComponents()
 	std::string objectGraphicsfile;
 	std::vector<sf::IntRect> objectTextureCords;
 
+	ObjectDefContainer *Objects = Components.getObjects().get();
+	ItemDefContainer *Items = Components.getItems().get();
+	MonsterDefContainer *Entities = Components.getEntities().get();
+
 	sf::Clock ObjectsDefLoadClock;
 	GameComponentsLoader::LoadObjectDefFromFile(Objects->getContainer(), objectGraphicsfile, objectTextureCords);
 	mediaContainer.pushTextures(TextureContainer::ObjectTextures, objectGraphicsfile, objectTextureCords);
@@ -30,7 +34,7 @@ void Engine::loadGameComponents()
 	mediaContainer.pushTextures(TextureContainer::TerrainTextures, objectGraphicsfile, terrainTextureCords);
 
 	sf::Clock entitiesDefLoadClock;
-	GameComponentsLoader::LoadEntitiesDefFromFile(Entities.get()->getContainer());
+	GameComponentsLoader::LoadEntitiesDefFromFile(Entities->getContainer());
 
 	ErrorHandler::logToFile("Load Entities Definitions [Size] = " + std::to_string(Entities->getSize()) +
 		" [Time] = " + std::to_string(entitiesDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
@@ -41,8 +45,9 @@ void Engine::checkPlayerEnvironment()
 	sf::Vector2i PlayerCollectRectPos{ static_cast<sf::Vector2i>(Player.getCharacterCenterPosition()) - 
 		static_cast<sf::Vector2i>((LyingItems.getLyingItemsPickUpRange() / 2.0f)) };
 	sf::Vector2i PlayerColletRectSize{ static_cast<sf::Vector2i>(LyingItems.getLyingItemsPickUpRange()) };
-
 	sf::FloatRect PlayerCollectRect{ static_cast<sf::Vector2f>(PlayerCollectRectPos),static_cast<sf::Vector2f>(PlayerColletRectSize) };
+
+	ItemDefContainer *Items = Components.getItems().get();
 
 	for (size_t i = 0; i < LyingItems.getSize(); i++)
 	{
@@ -109,6 +114,8 @@ void Engine::checkPlayerBehaviour()
 void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field)
 {
 	unsigned holdedItemId = Player.Inventory.getHoldItem().ItemId;
+	ItemDefContainer *Items = Components.getItems().get();
+
 	switch (type)
 	{
 	case EquipmentType::Inventory:
@@ -365,7 +372,7 @@ void Engine::manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool 
 			}
 			else if(tmp.find("/giveItem") != std::string::npos)
 			{
-				GameConsole.giveItemCheck(tmp, *Items, Player.Inventory);
+				GameConsole.giveItemCheck(tmp, *Components.getItems().get(), Player.Inventory);
 			}
 			else
 			{
@@ -410,11 +417,11 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 {
 	unsigned ObjectID = GameWorld->getLocalMapTileObjectId(objectIndex);
 	if (ObjectID == 0) { return; }
-	if (ObjectID > Objects->getSize()) { return; }
+	if (ObjectID > Components.getObjects().get()->getSize()) { return; }
 
 	shp.setPosition(sf::Vector2f(World::getNormalPosition(static_cast<sf::Vector2i>(objectIndex))));
 	bool isTree = false;
-	isTree = (Objects->getDefinition(ObjectID)->getType() == ObjectType::Tree);
+	isTree = (Components.getObjects()->getDefinition(ObjectID)->getType() == ObjectType::Tree);
 
 	if (preObjectId != ObjectID)
 	{
@@ -440,42 +447,42 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 }
 
 Engine::Engine(const GameVars &game, const RenderVars &render)
-	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), GameRules(game), RenderRules(render),
-	GameWorld(new World), Objects(new ObjectDefContainer), Items(new ItemDefContainer), Entities(new MonsterDefContainer)
+	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), 
+	GameRules(game), RenderRules(render), GameWorld(new World)
 {
-	Objects->getContainer()[0] = new ObjectDef;
-	Items->getContainer()[0] = new PlaceableDef("");
+	Components.getObjects()->getContainer()[0] = new ObjectDef;
+	Components.getItems()->getContainer()[0] = new PlaceableDef("");
 
 	ErrorHandler::clearLogFile();
 	loadGameComponents();
 
 	std::vector<RecipeDef> PlayerRecipesDef;
 	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/Recipes/PlayerRecipes.xml");
-	Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(PlayerRecipesDef, *Items));
+	Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(PlayerRecipesDef, *Components.getItems()));
 	Crafting.usePlayerRecipes();
-	Crafting.AssingItemDef(Items);
+	Crafting.AssingItemDef(Components.getItems());
 
 	LyingItems.init(GameRules.MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(GameRules.PlayerPickUpItemsRange, GameRules.PlayerPickUpItemsRange)));
 
 	std::vector<StructureDef> StructuresDef;
 	GameComponentsLoader::LoadStructuresDef(StructuresDef);
-	std::vector<Structure> Structures = makeFromDef::makeStructure(StructuresDef, *Objects);
+	std::vector<Structure> Structures = makeFromDef::makeStructure(StructuresDef, *Components.getObjects());
 
 	std::vector<BiomeValuesDef> MapsDef;
 	MapsDef.push_back(BiomeValuesDef());
 	GameComponentsLoader::LoadBiomesDef(MapsDef);
-	std::vector<BiomeValues> MapsVars = makeFromDef::makeBiome(MapsDef, *Objects, Structures);
+	std::vector<BiomeValues> MapsVars = makeFromDef::makeBiome(MapsDef, *Components.getObjects(), Structures);
 
 	GWorldManager.setStructuresAmountInLocalMap(GameRules.StructuresPerLocalMap);
 	GWorldManager.AssingClock(GameClock);
-	GWorldManager.AssingItemsDef(Items);
-	GWorldManager.AssingObjectsDef(Objects);
+	GWorldManager.AssingItemsDef(Components.getItems());
+	GWorldManager.AssingObjectsDef(Components.getObjects());
 	GWorldManager.AssingStructures(Structures);
 	GWorldManager.AssingWorld(GameWorld);
 	GWorldManager.AssingLocalMapsBuilderVars(MapsVars);
 	GWorldManager.buildLocalMap(TerrainType::Grass, GameRules.LocalMapSize);
 
-	Player.Stats = Entities->getContainer().front().getStats();
+	Player.Stats = Components.getEntities()->getContainer().front().getStats();
 	Player.pushTexture(mediaContainer.getTexture(TextureContainer::EntitiesTextures, 1));
 	sf::Vector2f playerSpawnPos = GWorldManager.getSpawnPosition();
 
@@ -505,6 +512,9 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 		GWorldManager.updateTiles();
 	}
 	
+	ObjectDefContainer *Objects = Components.getObjects().get();
+	ItemDefContainer *Items = Components.getItems().get();
+
 	checkPlayerBehaviour();
 	checkPlayerEnvironment();
 

@@ -144,6 +144,7 @@
     <ClInclude Include="EntityStats.hpp" />
     <ClInclude Include="EquipmentFieldInfo.hpp" />
     <ClInclude Include="FastNoise\FastNoise.h" />
+    <ClInclude Include="GameComponents.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
     <ClInclude Include="LimitedVar.hpp" />
     <ClInclude Include="BiomeValues.hpp" />
