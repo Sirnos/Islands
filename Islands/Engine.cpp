@@ -634,9 +634,9 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 						for (const auto & i : Objects->getDefinition(objectId)->getYield())
 						{
 							sf::Time currentTime = GameClock.getElapsedTime();
-							if (i.first != "NULL")
+							if (i.first != NULL_ITEM_YIELD)
 							{
-								if (i.first == "SELF")
+								if (i.first == SELF_ITEM_YIELD)
 								{
 									LyingItems.pushNewItem(currentTime, mousePos, ItemField(objectId, i.second));
 									break;

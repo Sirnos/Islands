@@ -8,6 +8,9 @@
 typedef std::pair<std::string, unsigned> Yield;
 typedef std::vector<Yield> ObjYield;
 
+const std::string NULL_ITEM_YIELD{ "NULL" };
+const std::string SELF_ITEM_YIELD{ "SELF" };
+
 enum class ObjectType
 {
 	Default,
