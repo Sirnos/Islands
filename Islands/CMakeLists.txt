@@ -12,6 +12,7 @@ find_package(Boost REQUIRED)
 
 set(SRC
 
+   GameComponents.hpp
    button.hpp
    Console.hpp
    CraftingGui.hpp
