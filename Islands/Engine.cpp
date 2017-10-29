@@ -10,7 +10,7 @@ void Engine::loadGameComponents()
 	MonsterDefContainer *Entities = Components.getEntities().get();
 
 	sf::Clock ObjectsDefLoadClock;
-	GameComponentsLoader::LoadObjectDefFromFile(Objects->getContainer(), objectGraphicsfile, objectTextureCords);
+	GameComponentsLoader::LoadObjectDefFromFile(*Objects, objectGraphicsfile, objectTextureCords);
 	mediaContainer.pushTextures(TextureContainer::ObjectTextures, objectGraphicsfile, objectTextureCords);
 	mediaContainer.pushTextures(TextureContainer::ItemsTextures, objectGraphicsfile, objectTextureCords);
 
@@ -18,11 +18,11 @@ void Engine::loadGameComponents()
 		" [Time] = " + std::to_string(ObjectsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
 
 	sf::Clock ItemsDefLoadClock;
-	GameComponentsLoader::GenerateItemsFromObjectDef(Objects->getContainer(), Items->getContainer());
+	GameComponentsLoader::GenerateItemsFromObjectDef(Objects->getContainer(), *Items);
 
 	std::string itemGraphicsFile;
 	std::vector<sf::IntRect> itemTextureCords;
-	GameComponentsLoader::LoadItemDefFromFile(Items->getContainer(), itemGraphicsFile, itemTextureCords);
+	GameComponentsLoader::LoadItemDefFromFile(*Items, itemGraphicsFile, itemTextureCords);
 	mediaContainer.pushTextures(TextureContainer::ItemsTextures, itemGraphicsFile, itemTextureCords);
 
 
@@ -450,8 +450,8 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), 
 	GameRules(game), RenderRules(render), GameWorld(new World)
 {
-	Components.getObjects()->getContainer()[0] = new ObjectDef;
-	Components.getItems()->getContainer()[0] = new PlaceableDef("");
+	Components.getObjects().get()->getContainer()[0] = new ObjectDef;
+	Components.getItems().get()->getContainer()[0] = new PlaceableDef("");
 
 	ErrorHandler::clearLogFile();
 	loadGameComponents();

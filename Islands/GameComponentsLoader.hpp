@@ -67,7 +67,7 @@ class GameComponentsLoader
 	}
 
 public:
-	static void LoadObjectDefFromFile(std::vector<ObjectDef*> &Objects, std::string &ObjectsGraphicsFile, std::vector<sf::IntRect> &Textures)
+	static void LoadObjectDefFromFile(ObjectDefContainer &Objects, std::string &ObjectsGraphicsFile, std::vector<sf::IntRect> &Textures)
 	{
 		rapidxml::file<char> File("Data/Objects.xml");
 		rapidxml::xml_document<> document;
@@ -143,21 +143,21 @@ public:
 				switch (newObjType)
 				{
 				case ObjectType::Default:
-					Objects.push_back(new ObjectDef(newObjName, newObjYield, newObjDestructible, newObjCollision));
+					Objects.pushNewDef(new ObjectDef(newObjName, newObjYield, newObjDestructible, newObjCollision));
 					break;
 				case ObjectType::Chest:
-					Objects.push_back(new ChestDef(newObjName, newObjCollision, newObjYield, newObjDestructible, tempUint.back()));
+					Objects.pushNewDef(new ChestDef(newObjName, newObjCollision, newObjYield, newObjDestructible, tempUint.back()));
 					break;
 				case ObjectType::Tree:
-					Objects.push_back(new ObjectDef(newObjName, newObjYield, newObjDestructible, newObjCollision, ObjectType::Tree));
+					Objects.pushNewDef(new ObjectDef(newObjName, newObjYield, newObjDestructible, newObjCollision, ObjectType::Tree));
 					break;
 				case ObjectType::Sapling:
-					Objects.push_back(new SaplingDef(newObjName, newObjCollision, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));
+					Objects.pushNewDef(new SaplingDef(newObjName, newObjCollision, newObjYield, newObjDestructible, tempFloat.back(), tempString.back()));
 					break;
 				case ObjectType::Spawner:
 					break;
 				case ObjectType::CraftingPlace:
-					Objects.push_back(new CraftingPlaceDef(newObjName, newObjYield, newObjDestructible, newObjCollision, tempRecipes));
+					Objects.pushNewDef(new CraftingPlaceDef(newObjName, newObjYield, newObjDestructible, newObjCollision, tempRecipes));
 					break;
 				default:
 					break;
@@ -170,19 +170,17 @@ public:
 				newObjYield.clear();
 			}
 		}
-		Objects.shrink_to_fit();
 	}
 
-	static void GenerateItemsFromObjectDef(const std::vector<ObjectDef*> &Objs, std::vector<ItemDef*> &Items)
+	static void GenerateItemsFromObjectDef(const std::vector<ObjectDef*> &Objs,ItemDefContainer &Items)
 	{
 		for (unsigned i = 1; i < Objs.size(); i++)
 		{
-			Items.push_back(new PlaceableDef(Objs[i]->getName()));
+			Items.pushNewDef(new PlaceableDef(Objs[i]->getName()));
 		}
-		Items.shrink_to_fit();
 	}
 
-	static void LoadItemDefFromFile(std::vector<ItemDef*> &Items, std::string &ItemsGraphicsFile, std::vector<sf::IntRect> &textures)
+	static void LoadItemDefFromFile(ItemDefContainer &Items, std::string &ItemsGraphicsFile, std::vector<sf::IntRect> &textures)
 	{
 		rapidxml::file<char> File("Data/Items.xml");
 		rapidxml::xml_document<> document;
@@ -253,15 +251,15 @@ public:
 				switch (newItemType)
 				{
 				case ItemType::Default:
-					Items.push_back(new RawMaterialDef(newItemName, newItemMaxStack));
+					Items.pushNewDef(new RawMaterialDef(newItemName, newItemMaxStack));
 					break;
 				case ItemType::Placeable:
 					break;
 				case ItemType::MeleeWeapon:
-					Items.push_back(new MeleeWeaponDef(newItemName, IntTemp.back(), FloatTemp.back()));
+					Items.pushNewDef(new MeleeWeaponDef(newItemName, IntTemp.back(), FloatTemp.back()));
 					break;
 				case ItemType::DistanceWeapon:
-					Items.push_back(new DistantWeaponDef(newItemName, IntTemp.back(), FloatTemp.back()));
+					Items.pushNewDef(new DistantWeaponDef(newItemName, IntTemp.back(), FloatTemp.back()));
 					break;
 				case ItemType::Armor:
 					if (StringTemp.back() == "Head") {}
@@ -274,7 +272,7 @@ public:
 						newArmorPart = ArmorPart::Legs;
 					}
 
-					Items.push_back(new ArmorDef(newItemName, newArmorPart, IntTemp.back()));
+					Items.pushNewDef(new ArmorDef(newItemName, newArmorPart, IntTemp.back()));
 					break;
 				default:
 					break;
@@ -285,7 +283,6 @@ public:
 				StringTemp.clear();
 				textures.push_back(sf::IntRect(texturePos.x * textureSize, texturePos.y * textureSize, textureSize, textureSize));
 			}
-			Items.shrink_to_fit();
 		}
 	}
 

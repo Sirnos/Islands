@@ -15,15 +15,15 @@ public:
 	{}
 	~GameComponents() = default;
 
-	const std::shared_ptr<ObjectDefContainer> &getObjects() const
+	std::shared_ptr<ObjectDefContainer> &getObjects()
 	{
 		return Objects;
 	}
-	const std::shared_ptr<ItemDefContainer> &getItems() const
+	std::shared_ptr<ItemDefContainer> &getItems()
 	{
 		return Items;
 	}
-	const std::shared_ptr<MonsterDefContainer> &getEntities() const
+	std::shared_ptr<MonsterDefContainer> &getEntities()
 	{
 		return Entities;
 	}

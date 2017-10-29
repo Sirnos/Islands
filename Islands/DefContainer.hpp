@@ -7,15 +7,19 @@
 #include "ObjectDef.hpp"
 #include "EntityDef.hpp"
 #include <vector>
+#include <map>
 
 template<typename DefType, typename = typename std::enable_if<std::is_pointer<DefType>::value, DefType>::type>
 class DynamicDefContainer
 {
 	std::vector<DefType> Container;
+	std::map<std::string, size_t> ContainerMap;
 public:
 	DynamicDefContainer()
 		:Container(1)
-	{}
+	{
+		ContainerMap.insert(std::pair<std::string, size_t>("", 0));
+	}
 	DynamicDefContainer(const DynamicDefContainer & other) = delete;
 	~DynamicDefContainer()
 	{
@@ -23,42 +27,44 @@ public:
 		{
 			delete elem;
 		}
-		Container.clear();
 	}
 
 	size_t getSize() const { return Container.size(); }
 
-	DefType getDefinition(unsigned index) const
+	DefType getDefinition(unsigned index)
 	{
 		return Container[index];
 	}
 	DefType getDefinition(const std::string &DefName) const
 	{
-		for (size_t i = 0; i < Container.size(); i++)
+		auto index = ContainerMap.find(DefName);
+		if (index != ContainerMap.end())
 		{
-			if (Container[i]->getName() == DefName) { return Container[i]; }
+			return Container[index->second];
 		}
 		return nullptr;
 	}
 
 	unsigned getDefIdbyName(const std::string &DefName) const
 	{
-		for (size_t i = 0; i < Container.size(); i++)
+		auto index = ContainerMap.find(DefName);
+		if (index != ContainerMap.end())
 		{
-			if (Container[i]->getName() == DefName.data())
-			{
-				return i;
-			}
+			return index->second;
 		}
-
 		return 0;
 	}
 
-	std::vector<DefType> &getContainer() { return Container; }
+	const std::vector<DefType> &getContainer() const { return Container; }
+	std::vector<DefType> &getContainer(){ return Container; }
 
 	void pushNewDef(DefType def)
 	{
-		Container.push_back(def);
+		if (def != nullptr)
+		{
+			Container.push_back(def);
+			ContainerMap.insert(std::pair<std::string, size_t>(def->getName(), Container.size() - 1));
+		}
 	}
 };
 
