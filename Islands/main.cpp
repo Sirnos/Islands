@@ -12,7 +12,8 @@ int main()
 	IslandApp app{ Vars.Video };
 	Engine IslandEngine{ Vars.Game, Vars.Render };
 
-	bool isClick = false;
+	bool isClickL = false;
+	bool isClickR = false;
 	char lastKey = 'U';
 	mouseWheel lastMouseWheelAct;
 
@@ -20,7 +21,8 @@ int main()
 	{
 		lastMouseWheelAct = mouseWheel::Stop;
 		lastKey = '0';
-		isClick = false;
+		isClickL = false;
+		isClickR = false;
 
 		while (app.getIslandWindow()->pollEvent(*app.getIslandWindowEvent()))
 		{
@@ -32,9 +34,10 @@ int main()
 			{
 				lastKey = static_cast<char>(app.getIslandWindowEvent()->text.unicode);
 			}
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { isClick = true; }
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { isClickL = true; }
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) { isClickR = true; }
 		
-			IslandEngine.manageConsole(*app.getIslandWindowEvent(), app.getMousePosInWorld(), isClick);
+			IslandEngine.manageConsole(*app.getIslandWindowEvent(), app.getMousePosInWorld(), isClickL);
 
 			if (app.getIslandWindowEvent()->type == sf::Event::MouseWheelScrolled)
 				{
@@ -51,7 +54,7 @@ int main()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { break; }
 
-		IslandEngine(app, lastKey, lastMouseWheelAct, isClick);
+		IslandEngine(app, lastKey, lastMouseWheelAct, isClickL, isClickR);
 
 		app.clearContext(skyColor);
 

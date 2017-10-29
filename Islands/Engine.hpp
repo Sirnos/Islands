@@ -80,10 +80,10 @@ public:
 	~Engine();
 
 
-	void operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClick);
+	void operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClickL, bool isMouseClickR);
 
 
-	void manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseRClick);
+	void manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseLClick);
 
 
 	void DrawAll(IslandApp &app);

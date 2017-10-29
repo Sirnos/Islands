@@ -310,11 +310,11 @@ void Engine::drawConsole(IslandApp & app)
 	}
 }
 
-void Engine::manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseRClick)
+void Engine::manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseLClick)
 {
 	if (!GameConsole.getEnable()) { return; }
 
-	auto tmp = GameConsole(event, mousePos, isMouseRClick);
+	auto tmp = GameConsole(event, mousePos, isMouseLClick);
 
 	if (!GameConsole.getTextboxEnable()) { return; }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -502,11 +502,11 @@ Engine::~Engine()
 	ErrorHandler::log("Clear data");
 }
 
-void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClick)
+void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClickL, bool isMouseClickR)
 {
 	LyingItems.clearOldItems(GameClock.getElapsedTime());
 
-	if (GameClock.getElapsedTime().asSeconds() >= lastUpdateLocalMapTime.asSeconds() + sf::seconds(GameRules.TimeToUpdateLocalMap).asSeconds())
+	if (GameClock.getElapsedTime() >= lastUpdateLocalMapTime + sf::seconds(GameRules.TimeToUpdateLocalMap))
 	{
 		lastUpdateLocalMapTime = GameClock.getElapsedTime();
 		GWorldManager.updateTiles();
@@ -529,62 +529,62 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 		GameConsole.setTexboxEnable(!GameConsole.getTextboxEnable());
 	}
 
-	if (GameGui.Eq.isEnable)
+	if (isMouseClickL)
 	{
-		sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
-
-		for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
+		if (GameGui.Eq.isEnable)
 		{
-			if (i < PLAYER_ARMOR_INVENTORY_SIZE)
+			sf::Vector2f mousePosInWorld = app.getMousePosInWorld();
+
+			for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 			{
-				if (GameGui.Eq.ArmorEquipment[i].isHover && isMouseClick)
+				if (i < PLAYER_ARMOR_INVENTORY_SIZE)
 				{
-					checkGuiOperations(EquipmentType::Armor, sf::Vector2u(i, 0));
+					if (GameGui.Eq.ArmorEquipment[i].isHover)
+					{
+						checkGuiOperations(EquipmentType::Armor, sf::Vector2u(i, 0));
+					}
+				}
+
+				if (GameGui.Hud.Belt[i].isHover)
+				{
+					checkGuiOperations(EquipmentType::Belt, sf::Vector2u(i, 0));
+				}
+
+				for (size_t j = 0; j < PLAYER_INVENTORY_SIZE; j++)
+				{
+					if (GameGui.Eq.Equipment[i][j].isHover)
+					{
+						checkGuiOperations(EquipmentType::Inventory, sf::Vector2u(i, j));
+					}
 				}
 			}
-
-			if (GameGui.Hud.Belt[i].isHover && isMouseClick)
+			if (Player.Inventory.isInteractedChestExist())
 			{
-				checkGuiOperations(EquipmentType::Belt, sf::Vector2u(i, 0));
-			}
-
-			for (size_t j = 0; j < PLAYER_INVENTORY_SIZE; j++)
-			{
-				if (GameGui.Eq.Equipment[i][j].isHover && isMouseClick)
+				for (size_t i = 0; i < Player.Inventory.getInteractedChestSize(); i++)
 				{
-					checkGuiOperations(EquipmentType::Inventory, sf::Vector2u(i, j));
+					if (GameGui.Chest.ChestContain[i].isHover)
+					{
+						checkGuiOperations(EquipmentType::Chest, sf::Vector2u(i, 0));
+					}
 				}
 			}
 		}
-		if (Player.Inventory.isInteractedChestExist())
+		else if (GameGui.Craft.isEnable)
 		{
-			for (size_t i = 0; i < Player.Inventory.getInteractedChestSize(); i++)
+			size_t RecipeNumber = 0;
+			for (auto & i : GameGui.Craft.RecipeFields)
 			{
-				if (GameGui.Chest.ChestContain[i].isHover && isMouseClick)
+				for (auto & j : i)
 				{
-					checkGuiOperations(EquipmentType::Chest, sf::Vector2u(i, 0));
+					if (j.isHover)
+					{
+						Crafting.setSelectedRecipe(RecipeNumber);
+					}
+
+					RecipeNumber++;
 				}
 			}
-		}
-	}
-	else if (GameGui.Craft.isEnable)
-	{
-		size_t RecipeNumber = 0;
-		for (auto & i : GameGui.Craft.RecipeFields)
-		{
-			for (auto & j : i)
-			{
 
-				if (j.isHover && isMouseClick)
-				{
-					Crafting.setSelectedRecipe(RecipeNumber);
-				}
-
-				RecipeNumber++;
-			}
-		}
-		if (isMouseClick)
-		{
 			sf::Vector2i mousePos = sf::Mouse::getPosition(*app.getIslandWindow());
 			if (GameGui.Craft.RecipeInfo.CraftButton.isClick(mousePos))
 			{
@@ -609,70 +609,70 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 				else { Crafting.setCraftAmount(craftAmount - 1); }
 			}
 		}
-	}
-	else if (!GameGui.Eq.isEnable && Player.Inventory.getHoldItem().isEmpty() && isMouseClick)
-	{
-		ItemField item = Player.Inventory.getHandInventoryField(GameGui.Hud.ActiveBeltField);
-		sf::Vector2f mousePos = app.getMousePosInWorld();
-		sf::Vector2u objectPos(static_cast<sf::Vector2u>(mousePos / TILE_SIZE));
-
-		if (!item.isEmpty())
+		else if (!GameGui.Eq.isEnable && Player.Inventory.getHoldItem().isEmpty())
 		{
-			if (sf::FloatRect(sf::Vector2f(), sf::Vector2f(GameWorld->getLocalMapSize() * TILE_SIZE,
-				GameWorld->getLocalMapSize() * TILE_SIZE)).contains(mousePos))
+			ItemField item = Player.Inventory.getHandInventoryField(GameGui.Hud.ActiveBeltField);
+			sf::Vector2f mousePos = app.getMousePosInWorld();
+			sf::Vector2u objectPos(static_cast<sf::Vector2u>(mousePos / TILE_SIZE));
+
+			if (!item.isEmpty())
 			{
-				if (GWorldManager.placeObject(objectPos, item.ItemId))
+				if (sf::FloatRect(sf::Vector2f(), sf::Vector2f(GameWorld->getLocalMapSize() * TILE_SIZE,
+					GameWorld->getLocalMapSize() * TILE_SIZE)).contains(mousePos))
 				{
-					item -= 1;
-					Player.Inventory.setHandInventoryField(GameGui.Hud.ActiveBeltField, item);
+					if (GWorldManager.placeObject(objectPos, item.ItemId))
+					{
+						item -= 1;
+						Player.Inventory.setHandInventoryField(GameGui.Hud.ActiveBeltField, item);
+					}
 				}
 			}
-		}
-		else
-		{
-			unsigned objectId = GameWorld->getLocalMapTileObjectId(objectPos);
-			if (objectId > 0)
+			else
 			{
-				sf::Time timeAtMouseClick = GameClock.getElapsedTime();
-				sf::Time timeOfMouseClickHold;
-
-				while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				unsigned objectId = GameWorld->getLocalMapTileObjectId(objectPos);
+				if (objectId > 0)
 				{
-					timeOfMouseClickHold = GameClock.getElapsedTime();
-					if (timeOfMouseClickHold.asMilliseconds() - timeAtMouseClick.asMilliseconds() >= 101)
+					sf::Time timeAtMouseClick = GameClock.getElapsedTime();
+					sf::Time timeOfMouseClickHold;
+
+					while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 					{
-						for (const auto & i : Objects->getDefinition(objectId)->getYield())
+						timeOfMouseClickHold = GameClock.getElapsedTime();
+						if (timeOfMouseClickHold.asMilliseconds() - timeAtMouseClick.asMilliseconds() >= 101)
 						{
-							sf::Time currentTime = GameClock.getElapsedTime();
-							if (i.first != NULL_ITEM_YIELD)
+							for (const auto & i : Objects->getDefinition(objectId)->getYield())
 							{
-								if (i.first == SELF_ITEM_YIELD)
+								sf::Time currentTime = GameClock.getElapsedTime();
+								if (i.first != NULL_ITEM_YIELD)
 								{
-									LyingItems.pushNewItem(currentTime, mousePos, ItemField(objectId, i.second));
-									break;
-								}
-								else
-								{
-									ItemField item;
-									item.ItemId = Items->getDefIdbyName(i.first);
-									item.ItemAmount = i.second;
-									LyingItems.pushNewItem(currentTime, mousePos, item);
+									if (i.first == SELF_ITEM_YIELD)
+									{
+										LyingItems.pushNewItem(currentTime, mousePos, ItemField(objectId, i.second));
+										break;
+									}
+									else
+									{
+										ItemField item;
+										item.ItemId = Items->getDefIdbyName(i.first);
+										item.ItemAmount = i.second;
+										LyingItems.pushNewItem(currentTime, mousePos, item);
+									}
 								}
 							}
-						}
 
-						for (const auto & Item : GWorldManager.getItemsFromChestObject(objectPos))
-						{
-							LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, Item);
+							for (const auto & Item : GWorldManager.getItemsFromChestObject(objectPos))
+							{
+								LyingItems.pushNewItem(GameClock.getElapsedTime(), mousePos, Item);
+							}
+							GameWorld->removeLocalMapTileObject(objectPos);
+							break;
 						}
-						GameWorld->removeLocalMapTileObject(objectPos);
-						break;
 					}
 				}
 			}
 		}
 	}
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	if(isMouseClickR)
 	{
 		sf::Vector2f mousePos = app.getMousePosInWorld();
 		sf::Vector2u objectPos(static_cast<sf::Vector2u>(mousePos / TILE_SIZE));
@@ -706,15 +706,16 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 			}
 		}
 
-	}
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || !GameGui.Eq.isEnable)
-	{
-		if (Player.Inventory.getHoldItem().ItemId != 0)
+		if (!GameGui.Eq.isEnable)
 		{
-			LyingItems.pushNewItem(GameClock.getElapsedTime(), app.getMousePosInWorld(), Player.Inventory.getHoldItem());
-			Player.Inventory.setHoldItem(ItemField(0, 0));
+			if (Player.Inventory.getHoldItem().ItemId != 0)
+			{
+				LyingItems.pushNewItem(GameClock.getElapsedTime(), app.getMousePosInWorld(), Player.Inventory.getHoldItem());
+				Player.Inventory.setHoldItem(ItemField(0, 0));
+			}
 		}
 	}
+
 	switch (last)
 	{
 	case mouseWheel::Up:
