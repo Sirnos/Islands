@@ -83,7 +83,7 @@ public:
 	void operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClickL, bool isMouseClickR);
 
 
-	void manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseLClick);
+	void manageConsole(const sf::Event &event, const sf::Vector2f &mousePos, bool isMouseLClick);
 
 
 	void DrawAll(IslandApp &app);

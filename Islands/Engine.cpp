@@ -310,7 +310,7 @@ void Engine::drawConsole(IslandApp & app)
 	}
 }
 
-void Engine::manageConsole(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseLClick)
+void Engine::manageConsole(const sf::Event &event, const sf::Vector2f &mousePos, bool isMouseLClick)
 {
 	if (!GameConsole.getEnable()) { return; }
 

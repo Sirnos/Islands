@@ -50,7 +50,7 @@ public:
 
 	unsigned &getLastHistoryCmdNumber() { return lastHistoryCmd; }
 
-	std::string operator()(sf::Event &event, const sf::Vector2f &mousePos, bool isMouseClick)
+	std::string operator()(const sf::Event &event, const sf::Vector2f &mousePos, bool isMouseClick)
 	{
 		if (ConsoleInput.isClick(mousePos, isMouseClick))
 		{

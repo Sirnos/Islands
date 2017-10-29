@@ -25,7 +25,7 @@ public:
 
 	//Return String when player press Return(Enter)
 	//Else return empty string
-	std::string operator()(sf::Event &event)
+	std::string operator()(const sf::Event &event)
 	{
 		if (IsEnable == false || IsConstant == true)
 		{
