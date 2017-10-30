@@ -31,11 +31,11 @@ public:
 
 	size_t getSize() const { return Container.size(); }
 
-	DefType getDefinition(unsigned index)
+	const DefType getDefinition(unsigned index) const
 	{
 		return Container[index];
 	}
-	DefType getDefinition(const std::string &DefName) const
+	const DefType getDefinition(const std::string &DefName) const
 	{
 		auto index = ContainerMap.find(DefName);
 		if (index != ContainerMap.end())
@@ -45,7 +45,7 @@ public:
 		return nullptr;
 	}
 
-	unsigned getDefIdbyName(const std::string &DefName) const
+	size_t getDefIdbyName(const std::string &DefName) const
 	{
 		auto index = ContainerMap.find(DefName);
 		if (index != ContainerMap.end())

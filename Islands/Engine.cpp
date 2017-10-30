@@ -29,7 +29,7 @@ void Engine::loadGameComponents()
 	ErrorHandler::logToFile("Load Items Definitions [Size] = " + std::to_string(Items->getSize()) + 
 		" [Time] = " + std::to_string(ItemsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
 
-	std::vector<sf::Rect<int>> terrainTextureCords;
+	std::vector<sf::IntRect> terrainTextureCords;
 	GameComponentsLoader::LoadTerrainTextureCoords(terrainTextureCords);
 	mediaContainer.pushTextures(TextureContainer::TerrainTextures, objectGraphicsfile, terrainTextureCords);
 
