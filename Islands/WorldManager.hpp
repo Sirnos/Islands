@@ -283,18 +283,22 @@ public:
 		{
 			return sf::IntRect();
 		}
-		if (ObjectsDef->getDefinition(ManagementWorld->getLocalMapTileObjectId(tile))->getCollision())
-		{
-			sf::IntRect collideObject;
-			collideObject.top = tile.y * static_cast<int>(TILE_SIZE);
-			collideObject.left = tile.x * static_cast<int>(TILE_SIZE);
-			collideObject.height = static_cast<int>(TILE_SIZE);
-			collideObject.width = collideObject.height;
 
-			return collideObject;
+		unsigned objID = ManagementWorld->getLocalMapTileObjectId(tile);
+		if (objID < ObjectsDef->getSize())
+		{
+			if (ObjectsDef->getDefinition(objID)->getCollision())
+			{
+				sf::IntRect collideObject;
+				collideObject.top = tile.y * static_cast<int>(TILE_SIZE);
+				collideObject.left = tile.x * static_cast<int>(TILE_SIZE);
+				collideObject.height = static_cast<int>(TILE_SIZE);
+				collideObject.width = collideObject.height;
+
+				return collideObject;
+			}
 		}
 		return sf::IntRect();
-
 	}
 
 

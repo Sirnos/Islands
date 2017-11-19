@@ -2,42 +2,30 @@
 
 void Engine::loadGameComponents()
 {
-	std::string objectGraphicsfile;
-	std::vector<sf::IntRect> objectTextureCords;
+	GameComponentsLoader CoreLoader("Core", Components);
+	CoreLoader.load();
 
-	ObjectDefContainer *Objects = Components.getObjects().get();
-	ItemDefContainer *Items = Components.getItems().get();
-	MonsterDefContainer *Entities = Components.getEntities().get();
-
-	sf::Clock ObjectsDefLoadClock;
-	GameComponentsLoader::LoadObjectDefFromFile(*Objects, objectGraphicsfile, objectTextureCords);
-	mediaContainer.pushTextures(TextureContainer::ObjectTextures, objectGraphicsfile, objectTextureCords);
-	mediaContainer.pushTextures(TextureContainer::ItemsTextures, objectGraphicsfile, objectTextureCords);
-
-	ErrorHandler::logToFile("Load Objects Definitions [Size] = " + std::to_string(Objects->getSize()) + 
-		" [Time] = " + std::to_string(ObjectsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
-
-	sf::Clock ItemsDefLoadClock;
-	GameComponentsLoader::GenerateItemsFromObjectDef(Objects->getContainer(), *Items);
-
-	std::string itemGraphicsFile;
-	std::vector<sf::IntRect> itemTextureCords;
-	GameComponentsLoader::LoadItemDefFromFile(*Items, itemGraphicsFile, itemTextureCords);
-	mediaContainer.pushTextures(TextureContainer::ItemsTextures, itemGraphicsFile, itemTextureCords);
+	mediaContainer.pushTextures(TextureContainer::ObjectTextures, CoreLoader.getObjectsTextures().fromFile, CoreLoader.getObjectsTextures().TexturesCoords);
+	mediaContainer.pushTextures(TextureContainer::ItemsTextures, CoreLoader.getObjectsTextures().fromFile, CoreLoader.getObjectsTextures().TexturesCoords);
+	mediaContainer.pushTextures(TextureContainer::ItemsTextures, CoreLoader.getItemsTextures().fromFile, CoreLoader.getItemsTextures().TexturesCoords);
 
 
-	ErrorHandler::logToFile("Load Items Definitions [Size] = " + std::to_string(Items->getSize()) + 
-		" [Time] = " + std::to_string(ItemsDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
+	std::vector<Structure> Structures = makeFromDef::makeStructure(CoreLoader.getStructures(), *Components.getObjects());
+	std::vector<BiomeValuesDef> MapsDef(1);
+	MapsDef.insert(MapsDef.end(), CoreLoader.getBiomes().begin(), CoreLoader.getBiomes().end());
+	std::vector<BiomeValues> MapsVars = makeFromDef::makeBiome(MapsDef, *Components.getObjects(), Structures);
+	GWorldManager.AssingStructures(Structures);
+	GWorldManager.AssingLocalMapsBuilderVars(MapsVars);
 
-	std::vector<sf::IntRect> terrainTextureCords;
-	GameComponentsLoader::LoadTerrainTextureCoords(terrainTextureCords);
-	mediaContainer.pushTextures(TextureContainer::TerrainTextures, objectGraphicsfile, terrainTextureCords);
-
-	sf::Clock entitiesDefLoadClock;
-	GameComponentsLoader::LoadEntitiesDefFromFile(Entities->getContainer());
-
-	ErrorHandler::logToFile("Load Entities Definitions [Size] = " + std::to_string(Entities->getSize()) +
-		" [Time] = " + std::to_string(entitiesDefLoadClock.getElapsedTime().asMilliseconds()) + " milisecs");
+	for (const auto & it : CoreLoader.getRecipes())
+	{
+		if (it.first == "Player")
+		{
+			Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(it.second, *Components.getItems()));
+			Crafting.usePlayerRecipes();
+			break;
+		}
+	}
 }
 
 void Engine::checkPlayerEnvironment()
@@ -450,36 +438,27 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), 
 	GameRules(game), RenderRules(render), GameWorld(new World)
 {
+	std::vector<sf::IntRect> terrainTextureCords;
+	GameComponentsLoader::loadTerrainTextureCoords(terrainTextureCords);
+	mediaContainer.pushTextures(TextureContainer::TerrainTextures, boost::filesystem::current_path().string() + SETTINGS_DIR.string() + "Terrain.png", terrainTextureCords);
+
 	Components.getObjects().get()->getContainer()[0] = new ObjectDef;
 	Components.getItems().get()->getContainer()[0] = new PlaceableDef("");
 
 	ErrorHandler::clearLogFile();
 	loadGameComponents();
-
-	std::vector<RecipeDef> PlayerRecipesDef;
-	GameComponentsLoader::LoadRecipeDefFromFile(PlayerRecipesDef, "Data/Recipes/PlayerRecipes.xml");
-	Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(PlayerRecipesDef, *Components.getItems()));
-	Crafting.usePlayerRecipes();
 	Crafting.AssingItemDef(Components.getItems());
+
 
 	LyingItems.init(GameRules.MaxNumberOfLyingItems, static_cast<sf::Vector2f>(sf::Vector2u(GameRules.PlayerPickUpItemsRange, GameRules.PlayerPickUpItemsRange)));
 
-	std::vector<StructureDef> StructuresDef;
-	GameComponentsLoader::LoadStructuresDef(StructuresDef);
-	std::vector<Structure> Structures = makeFromDef::makeStructure(StructuresDef, *Components.getObjects());
-
-	std::vector<BiomeValuesDef> MapsDef;
-	MapsDef.push_back(BiomeValuesDef());
-	GameComponentsLoader::LoadBiomesDef(MapsDef);
-	std::vector<BiomeValues> MapsVars = makeFromDef::makeBiome(MapsDef, *Components.getObjects(), Structures);
-
+	
 	GWorldManager.setStructuresAmountInLocalMap(GameRules.StructuresPerLocalMap);
 	GWorldManager.AssingClock(GameClock);
 	GWorldManager.AssingItemsDef(Components.getItems());
 	GWorldManager.AssingObjectsDef(Components.getObjects());
-	GWorldManager.AssingStructures(Structures);
 	GWorldManager.AssingWorld(GameWorld);
-	GWorldManager.AssingLocalMapsBuilderVars(MapsVars);
+
 	GWorldManager.buildLocalMap(TerrainType::Grass, GameRules.LocalMapSize);
 
 	Player.Stats = Components.getEntities()->getContainer().front().getStats();

@@ -37,17 +37,11 @@
     <Filter Include="Header Files\Entity">
       <UniqueIdentifier>{581cfd8b-198c-4243-b78e-dc4ce7081575}</UniqueIdentifier>
     </Filter>
-    <Filter Include="IslandData\World">
-      <UniqueIdentifier>{93a985b2-33b8-46bb-88ca-3ae19ece70c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="IslandData\World\Structures">
-      <UniqueIdentifier>{7dba4e72-0d5f-4473-9598-953f0ecb9fde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="IslandData\Recipes">
-      <UniqueIdentifier>{565afc8c-1555-4317-af33-10195d164a23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\FastNoise">
       <UniqueIdentifier>{a77b02cc-d987-49a7-9370-6bf6fe562168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IslandData\Core">
+      <UniqueIdentifier>{3ba37099-25d3-4d9e-87f0-8d1baeecaa47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -193,55 +187,33 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Data\char.png">
-      <Filter>IslandData</Filter>
-    </Image>
-    <Image Include="Data\Items.png">
-      <Filter>IslandData</Filter>
-    </Image>
-    <Image Include="Data\Objects.png">
-      <Filter>IslandData</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="Data\Objects.xml">
-      <Filter>IslandData</Filter>
-    </Xml>
-    <Xml Include="Data\Items.xml">
-      <Filter>IslandData</Filter>
-    </Xml>
     <Xml Include="Engine.xml">
       <Filter>Header Files\Engine</Filter>
     </Xml>
-    <Xml Include="Data\World\Structures\Ruin.xml">
-      <Filter>IslandData\World\Structures</Filter>
+    <Xml Include="Data\Mods\Core\Entities.xml">
+      <Filter>IslandData\Core</Filter>
     </Xml>
-    <Xml Include="Data\World\Structures.xml">
-      <Filter>IslandData\World</Filter>
+    <Xml Include="Data\Mods\Core\Items.xml">
+      <Filter>IslandData\Core</Filter>
     </Xml>
-    <Xml Include="Data\Terrain.xml">
-      <Filter>IslandData</Filter>
+    <Xml Include="Data\Mods\Core\Objects.xml">
+      <Filter>IslandData\Core</Filter>
     </Xml>
-    <Xml Include="Data\World\MapGenerator.xml">
-      <Filter>IslandData\World</Filter>
+    <Xml Include="Data\Mods\Core\Recipes\CraftingTableRecipes.xml">
+      <Filter>IslandData\Core</Filter>
     </Xml>
-    <Xml Include="Data\Entities.xml">
-      <Filter>IslandData</Filter>
+    <Xml Include="Data\Mods\Core\Recipes\PlayerRecipes.xml">
+      <Filter>IslandData\Core</Filter>
     </Xml>
-    <Xml Include="Data\Recipes\CraftingTableRecipes.xml">
-      <Filter>IslandData\Recipes</Filter>
+    <Xml Include="Data\Mods\Core\World\MapGenerator.xml">
+      <Filter>IslandData\Core</Filter>
     </Xml>
-    <Xml Include="Data\Recipes\PlayerRecipes.xml">
-      <Filter>IslandData\Recipes</Filter>
+    <Xml Include="Data\Mods\Core\World\Structures.xml">
+      <Filter>IslandData\Core</Filter>
     </Xml>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Data\Items.xcf">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Data\Objects.xcf">
-      <Filter>Resource Files</Filter>
-    </None>
+    <Xml Include="Data\Mods\Core\World\Structures\Ruin.xml">
+      <Filter>IslandData\Core</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Data\Fonts\ariali.ttf">

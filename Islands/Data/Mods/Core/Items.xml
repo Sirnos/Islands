@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Items graphics="Data/Items.png" textureSize="16">
+<Items textureSize="16">
   <Item name="WoodLog">
     <Graphics>0,0</Graphics>
     <MaxStack>32</MaxStack>

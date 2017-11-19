@@ -49,7 +49,7 @@ public:
 	Media()
 		:TerrainTexture(1), ObjectsTexture(1), ItemsTexture(1), EntitiesTexture(1)
 	{
-		pushEntitiesTexture(std::string("Data/Entities.png"), sf::Vector2i(40, 80), sf::Vector2i(0, 0));
+		pushEntitiesTexture(std::string("Data/Mods/Core/Graphics/Entities/Entities.png"), sf::Vector2i(40, 80), sf::Vector2i(0, 0));
 	}
 	~Media() = default;
 

@@ -114,7 +114,7 @@ public:
 
 		int id = std::stoi(idStr);
 		if (id <= 0) { commands.push_back("id is equal 0 or smaller"); return; }
-		if (static_cast<unsigned>(id) > Items.getContainer().size()-1) { commands.push_back("item with this id does not exist"); return; }
+		if (static_cast<unsigned>(id) > Items.getContainer().size() - 1) { commands.push_back("item with this id does not exist"); return; }
 		int amount = std::stoi(amountStr);
 		if (amount <= 0) { commands.push_back("amount is equal 0 or smaller"); return; }
 		if (static_cast<unsigned>(amount) > MAXIMUM_STACK_SIZE) { commands.push_back("amount is higher than MAXIMUM_STACK_SIZE"); return; }

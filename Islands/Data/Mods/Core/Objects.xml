@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Objects graphics="Data/Objects.png">
+<Objects>
   <Object name="Shrub">
     <Graphics>0,48,16,16</Graphics>
     <Collision>1</Collision>
@@ -62,7 +62,7 @@
     <Ifdestroyed>
       <li>SELF,1</li>
     </Ifdestroyed>
-    <CraftingPlaceDef>Data/Recipes/CraftingTableRecipes.xml</CraftingPlaceDef>
+    <CraftingPlaceDef>CraftingTable</CraftingPlaceDef>
   </Object>
   <Object name="CobblestoneWall">
     <Graphics>112,48,16,16</Graphics>
