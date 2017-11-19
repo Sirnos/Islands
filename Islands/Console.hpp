@@ -17,13 +17,11 @@ class Console
 
 	bool enable;
 public:
-	Console()
-		:lastHistoryCmd(0), enable(true)
+	Console(const sf::Vector2f &size, const sf::Color &color, unsigned fontSize)
+		:lastHistoryCmd(0), enable(true), ConsoleWindow(size)
 	{
-		ConsoleWindow.setSize(sf::Vector2f(400, 600));
-		ConsoleWindow.setFillColor(sf::Color(36, 10, 92, 120));
-
-		ConsoleInput.changeVars(sf::Color::White, 16, sf::Text::Style::Regular);
+		ConsoleWindow.setFillColor(color);
+		ConsoleInput.changeVars(sf::Color::White, fontSize, sf::Text::Style::Regular);
 		ConsoleFont.loadFromFile("Data/Fonts/ariali.ttf");
 		ConsoleInput.create(ConsoleFont, false, "Type you command here! ", 64);
 	}

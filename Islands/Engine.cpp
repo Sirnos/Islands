@@ -436,7 +436,8 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 
 Engine::Engine(const GameVars &game, const RenderVars &render)
 	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), 
-	GameRules(game), RenderRules(render), GameWorld(new World)
+	GameRules(game), RenderRules(render), GameWorld(new World),
+	GameConsole(sf::Vector2f(400.0f, 600.0f), sf::Color(36, 10, 92, 120), 16)
 {
 	std::vector<sf::IntRect> terrainTextureCords;
 	GameComponentsLoader::loadTerrainTextureCoords(terrainTextureCords);
@@ -500,7 +501,7 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 	app.getIslandWindow()->setView(*app.getIslandView());
 
 	auto Window = app.getIslandWindow();
-	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(800, 200)));
+	GameConsole.setPosition(Window->mapPixelToCoords(sf::Vector2i(0, 0)));
 
 	if (key == '`')
 	{
