@@ -205,7 +205,7 @@ public:
 			break;
 		case ObjectType::CraftingPlace:
 			ManagementWorld->setLocalMapTileObject(tile, new CraftingPlaceObject(ObjectId, 
-				makeFromDef::makeRecipe(dynamic_cast<CraftingPlaceDef*>(ObjectsDef->getDefinition(ObjectId))->getRecipes(),*ItemsDef.get())));
+				makeFromDef::makeRecipes(dynamic_cast<CraftingPlaceDef*>(ObjectsDef->getDefinition(ObjectId))->getRecipes(),*ItemsDef.get())));
 			return true;
 			break;
 		case ObjectType::Tree:

@@ -122,33 +122,34 @@ typedef StaticDefContainer <MonsterEntityDef> MonsterDefContainer;
 
 namespace makeFromDef
 {
-	inline std::vector<Recipe> makeRecipe(const std::vector<RecipeDef> &def, const ItemDefContainer &itemsDef)
+	inline std::vector<Recipe> makeRecipes(const std::vector<RecipeDef> &defs, const ItemDefContainer &itemsDefs)
 	{
-		std::vector<Recipe> out;
+		std::vector<Recipe> ret;
+		std::vector<ItemField> recipeIn;
 
-		std::vector<ItemField> recipeInElement;
-		for (size_t i = 0; i < def.size(); i++)
+		for (const auto & recipeDef : defs)
 		{
-			ItemField recipeOutElement;
+			ItemField recipeOut;
+			recipeOut.ItemId = itemsDefs.getDefIdbyName(recipeDef.getOutElement().first);
+			recipeOut.ItemAmount = recipeDef.getOutElement().second;
 
-			recipeOutElement.ItemId = itemsDef.getDefIdbyName(def[i].getOutElement().first);
-			recipeOutElement.ItemAmount = def[i].getOutElement().second;
-
-			for (size_t j = 0; j < def[i].getInSize(); j++)
+			for (const auto & recipeDefIn : recipeDef.getIn())
 			{
-				recipeInElement.push_back(ItemField(itemsDef.getDefIdbyName(def[i].getInElement(j).first),
-					def[i].getInElement(j).second));
-				if (recipeInElement.back().isEmpty()) { recipeInElement.pop_back(); }
+				recipeIn.push_back(ItemField(itemsDefs.getDefIdbyName(recipeDefIn.first), recipeDefIn.second));
+				if (recipeIn.back().isEmpty())
+				{
+					recipeIn.pop_back();
+				}
 			}
-			out.push_back(Recipe(recipeOutElement, recipeInElement));
+			ret.push_back(Recipe(recipeOut, recipeIn));
 
-			if (out.back().getOutElement().isEmpty() && out.size() > 0)
+			if (ret.back().getOutElement().isEmpty() && ret.size() > 0)
 			{
-				out.pop_back();
+				ret.pop_back();
 			}
-			recipeInElement.clear();
+			recipeIn.clear();
 		}
-		return out;
+		return ret;
 	}
 
 	inline std::vector<Structure> makeStructure(const std::vector<StructureDef> &Def, const ObjectDefContainer & ObjsDef)

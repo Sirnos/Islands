@@ -21,7 +21,7 @@ void Engine::loadGameComponents()
 	{
 		if (it.first == "Player")
 		{
-			Crafting.loadPlayerRecipes(makeFromDef::makeRecipe(it.second, *Components.getItems()));
+			Crafting.loadPlayerRecipes(makeFromDef::makeRecipes(it.second, *Components.getItems()));
 			Crafting.usePlayerRecipes();
 			break;
 		}
