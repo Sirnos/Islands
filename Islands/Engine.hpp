@@ -6,6 +6,7 @@
 
 #include "WorldManager.hpp"
 #include "MonsterManager.hpp"
+#include "SavesManager.hpp"
 
 #include "Gui.hpp"
 

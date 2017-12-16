@@ -164,6 +164,7 @@
     <ClInclude Include="Gui.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="Recipe.hpp" />
+    <ClInclude Include="SavesManager.hpp" />
     <ClInclude Include="TypesFromText.hpp" />
     <ClInclude Include="Structure.hpp" />
     <ClInclude Include="TerrainType.hpp" />

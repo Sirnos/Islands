@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # Engine Temp Files
 log.txt
+
+# databases
+*.db

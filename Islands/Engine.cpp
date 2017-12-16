@@ -439,6 +439,13 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GameRules(game), RenderRules(render), GameWorld(new World),
 	GameConsole(sf::Vector2f(400.0f, 600.0f), sf::Color(36, 10, 92, 120), 16)
 {
+	int errC1, errC2;
+	SavesManager test(errC1, errC2, "default");
+	if (errC1 != SQLITE_OK)
+	{
+		ErrorHandler::logToFile("cannot open character database \n");
+	}
+
 	std::vector<sf::IntRect> terrainTextureCords;
 	GameComponentsLoader::loadTerrainTextureCoords(terrainTextureCords);
 	mediaContainer.pushTextures(TextureContainer::TerrainTextures, boost::filesystem::current_path().string() + SETTINGS_DIR.string() + "Terrain.png", terrainTextureCords);

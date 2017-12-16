@@ -185,6 +185,9 @@
     <ClInclude Include="GameComponents.hpp">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
+    <ClInclude Include="SavesManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Engine.xml">
