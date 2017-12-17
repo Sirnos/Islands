@@ -482,6 +482,8 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 
 	GMonsterManager.assingMonsterWorld(GameWorld);
 	GMonsterManager.addEntityToObserved(&Player);
+
+	test.savePlayerStats(Player);
 }
 
 Engine::~Engine()
