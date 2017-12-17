@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EngineVars>
   <Video>
-    <Resolution>1920,1084</Resolution>
+    <Resolution>1920,1080</Resolution>
     <BitsPerPixel>32</BitsPerPixel>
     <Framerate>60</Framerate>
     <VerticalSync>1</VerticalSync><!--1 is true, 0 is false-->
