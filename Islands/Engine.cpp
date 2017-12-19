@@ -439,11 +439,11 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GameRules(game), RenderRules(render), GameWorld(new World),
 	GameConsole(sf::Vector2f(400.0f, 600.0f), sf::Color(36, 10, 92, 120), 16)
 {
-	int errC1, errC2;
-	SavesManager test(errC1, errC2, "default");
-	if (errC1 != SQLITE_OK)
+
+	SavesManager test("default");
+	if (!test.isValid())
 	{
-		ErrorHandler::logToFile("cannot open character database \n");
+		ErrorHandler::logToFile("cannot open databases \n");
 	}
 
 	std::vector<sf::IntRect> terrainTextureCords;
@@ -483,7 +483,7 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GMonsterManager.assingMonsterWorld(GameWorld);
 	GMonsterManager.addEntityToObserved(&Player);
 
-	test.savePlayerStats(Player);
+	if (test.isValid()) { test.savePlayerStats(Player); }
 }
 
 Engine::~Engine()
