@@ -128,6 +128,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Directories.hpp" />
     <ClInclude Include="EntityBehaviorState.hpp" />
     <ClInclude Include="button.hpp" />
     <ClInclude Include="Entity.hpp" />

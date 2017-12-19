@@ -3,48 +3,24 @@
 
 #include <vector>
 #include <rapidxml/rapidxml.hpp>
-#include <boost/filesystem.hpp>
 
 #include "TypesFromText.hpp"
+#include "Directories.hpp"
 #include "GameComponents.hpp"
 
-
-#if defined _WIN32
-
-	const boost::filesystem::path SLASH = "\\";
-
-	const boost::filesystem::path MODS_DIR = "\\Data\\Mods\\";
-	const boost::filesystem::path MOD_GRAPHICS_OBJECTS_FILE = "Graphics\\Objects\\Objects.png";
-	const boost::filesystem::path MOD_GRAPHICS_ITEMS_FILE = "Graphics\\Items\\Items.png";
-	const boost::filesystem::path MOD_GRAPHICS_ENTITIES_FILE = "Graphics\\Entities\\Entities.png";
-	const boost::filesystem::path MOD_WORLD_DEFS_DIR = "World\\";
-	const boost::filesystem::path MOD_RECIPES_DEFS_DIR = "Recipes\\";
-	const boost::filesystem::path MOD_STRUCTURES_DEFS_DIR = "World\\Structures\\";
-	const boost::filesystem::path SETTINGS_DIR = "\\Data\\Settings\\";
-#else
-
-	const boost::filesystem::path SLASH = "/";
-
-	const boost::filesystem::path MODS_DIR = "/Data/Mods/";
-	const boost::filesystem::path MOD_GRAPHICS_OBJECTS_FILE = "Graphics/Objects/Objects.png";
-	const boost::filesystem::path MOD_GRAPHICS_ITEMS_FILE = "Graphics/Items/Items.png";
-	const boost::filesystem::path MOD_GRAPHICS_ENTITIES_FILE = "Graphics/Entities/Entities.png";
-	const boost::filesystem::path MOD_WORLD_DEFS_DIR = "/World/";
-	const boost::filesystem::path MOD_RECIPES_DEFS_DIR = "Recipes/";
-	const boost::filesystem::path MOD_STRUCTURES_DEFS_DIR = "World/Structures/";
-	const boost::filesystem::path SETTINGS_DIR = "Data/Settings/";
-#endif
 
 inline StructureInfoKey getStructureInfoKeyFromString(const std::string &str)
 {
 	return StructureInfoKey(std::stoul(str.substr(0, str.find(','))), str.substr(str.find(',') + 1, str.size() - 1));
 }
 
+
 struct TexturePack
 {
 	std::string fromFile;
 	std::vector<sf::IntRect> TexturesCoords;
 };
+
 
 class GameComponentsLoader
 {
