@@ -88,7 +88,7 @@ public:
 		std::string playerPosStr = std::to_string(playerPos.x);
 		playerPosStr += (", " + std::to_string(playerPos.y));
 
-		auto simpleSqlQueriers = [](sqlite3 *Dbase, const std::string &query)
+		auto simpleSqlQueries = [](sqlite3 *Dbase, const std::string &query)
 		{
 			char * error;
 			sqlite3_exec(Dbase, query.data(), empty_sql_callback, NULL, &error);
@@ -98,7 +98,7 @@ public:
 			}
 		};
 
-		simpleSqlQueriers(playerDBase, 
+		simpleSqlQueries(playerDBase, 
 			"CREATE TABLE IF NOT EXISTS STATS(" \
 			"ID  INT  PRIMARY KEY  NOT NULL," \
 			"HP_MAX  INT  NOT NULL," \
@@ -108,7 +108,7 @@ public:
 			"POS_X  REAL  NOT NULL," \
 			"POS_Y  REAL  NOT NULL);"
 		);
-		simpleSqlQueriers(playerDBase, "DELETE FROM STATS");
+		simpleSqlQueries(playerDBase, "DELETE FROM STATS");
 
 		std::string insertPlayerStatsQueryStr = "INSERT INTO STATS VALUES(1, ";
 		insertPlayerStatsQueryStr += playerHpMax + ", ";
@@ -117,7 +117,7 @@ public:
 		insertPlayerStatsQueryStr += playerMp + ", ";
 		insertPlayerStatsQueryStr += (playerPosStr + ");");
 
-		simpleSqlQueriers(playerDBase, insertPlayerStatsQueryStr.data());
+		simpleSqlQueries(playerDBase, insertPlayerStatsQueryStr.data());
 	}
 	//void loadPlayerStats(){}
 };
