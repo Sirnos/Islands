@@ -79,27 +79,45 @@ public:
 	{
 		if (!isValid()) { return; }
 
-		float playerHpMax = player.Stats.HP.getLimit();
-		float playerHp = player.Stats.HP.getVar();
-		float playerMpMax = player.Stats.MP.getLimit();
-		float playerMp = player.Stats.MP.getVar();
+		std::string playerHpMax = std::to_string(player.Stats.HP.getLimit());
+		std::string playerHp = std::to_string(player.Stats.HP.getVar());
+		std::string playerMpMax = std::to_string(player.Stats.MP.getLimit());
+		std::string playerMp = std::to_string(player.Stats.MP.getVar());
 
 		sf::Vector2f playerPos = player.getBody().getPosition();
+		std::string playerPosStr = std::to_string(playerPos.x);
+		playerPosStr += (", " + std::to_string(playerPos.y));
 
-		char  *error;
-		sqlite3_exec(playerDBase, "CREATE TABLE  STATS(" \
+		auto simpleSqlQueriers = [](sqlite3 *Dbase, const std::string &query)
+		{
+			char * error;
+			sqlite3_exec(Dbase, query.data(), empty_sql_callback, NULL, &error);
+			if (error != nullptr)
+			{
+				ErrorHandler::log(std::string(error));
+			}
+		};
+
+		simpleSqlQueriers(playerDBase, 
+			"CREATE TABLE IF NOT EXISTS STATS(" \
 			"ID  INT  PRIMARY KEY  NOT NULL," \
 			"HP_MAX  INT  NOT NULL," \
 			"HP  INT  NOT NULL," \
 			"MP_MAX  INT  NOT NULL," \
 			"MP  INT  NOT NULL," \
 			"POS_X  REAL  NOT NULL," \
-			"POS_Y  REAL  NOT NULL);",
-			empty_sql_callback, NULL, &error);
-		if (error != nullptr)
-		{
-			ErrorHandler::log(std::string(error));
-		}
+			"POS_Y  REAL  NOT NULL);"
+		);
+		simpleSqlQueriers(playerDBase, "DELETE FROM STATS");
+
+		std::string insertPlayerStatsQueryStr = "INSERT INTO STATS VALUES(1, ";
+		insertPlayerStatsQueryStr += playerHpMax + ", ";
+		insertPlayerStatsQueryStr += playerHp + ", ";
+		insertPlayerStatsQueryStr += playerMpMax + ", ";
+		insertPlayerStatsQueryStr += playerMp + ", ";
+		insertPlayerStatsQueryStr += (playerPosStr + ");");
+
+		simpleSqlQueriers(playerDBase, insertPlayerStatsQueryStr.data());
 	}
 	//void loadPlayerStats(){}
 };
