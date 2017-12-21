@@ -435,7 +435,7 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 }
 
 Engine::Engine(const GameVars &game, const RenderVars &render)
-	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, sf::Vector2f(), 20.0f, 10.0f, 5.0f), 
+	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, EntityStats(DEFAULT_PLAYER_HP, DEFAULT_PLAYER_MP, DEFAULT_PLAYER_SPEED)),
 	GameRules(game), RenderRules(render), GameWorld(new World),
 	GameConsole(sf::Vector2f(400.0f, 600.0f), sf::Color(36, 10, 92, 120), 16)
 {
@@ -484,6 +484,7 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GMonsterManager.addEntityToObserved(&Player);
 
 	if (test.isValid()) { test.savePlayerStats(Player); }
+	test.loadPlayerStats(Player);
 }
 
 Engine::~Engine()

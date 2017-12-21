@@ -14,6 +14,31 @@ static int empty_sql_callback(void *NotUsed, int argc, char **argv, char **azCol
 	return 0;
 }
 
+static int get_player_stats_callback(void *Player, int argc, char **argv, char **ColName)
+{
+	if (argc == 7)
+	{
+		auto getFloatRowParam = [argv](int n_argv)->float
+		{
+			return std::stof(std::string(argv[n_argv]));
+		};
+
+		float HpMax = getFloatRowParam(1);
+		float Hp = getFloatRowParam(2);
+		float MpMax = getFloatRowParam(3);
+		float Mp = getFloatRowParam(4);
+		sf::Vector2f Position(getFloatRowParam(5), getFloatRowParam(6));
+
+		auto ptrToPlayer = static_cast<PlayerEntity*>(Player);
+		if (ptrToPlayer != nullptr)
+		{
+			ptrToPlayer->Stats.operator=(EntityStats(HpMax, MpMax, DEFAULT_PLAYER_SPEED, Hp, Mp));
+			ptrToPlayer->setPosition(Position);
+		}
+	}
+	return 0;
+}
+
 class SavesManager
 {
 	sqlite3 *playerDBase;
@@ -101,10 +126,10 @@ public:
 		simpleSqlQueries(playerDBase, 
 			"CREATE TABLE IF NOT EXISTS STATS(" \
 			"ID  INT  PRIMARY KEY  NOT NULL," \
-			"HP_MAX  INT  NOT NULL," \
-			"HP  INT  NOT NULL," \
-			"MP_MAX  INT  NOT NULL," \
-			"MP  INT  NOT NULL," \
+			"HP_MAX  REAL  NOT NULL," \
+			"HP  REAL  NOT NULL," \
+			"MP_MAX  REAL  NOT NULL," \
+			"MP  REAL  NOT NULL," \
 			"POS_X  REAL  NOT NULL," \
 			"POS_Y  REAL  NOT NULL);"
 		);
@@ -119,5 +144,20 @@ public:
 
 		simpleSqlQueries(playerDBase, insertPlayerStatsQueryStr.data());
 	}
-	//void loadPlayerStats(){}
+	void loadPlayerStats(PlayerEntity &player)
+	{
+		if (!isValid())
+		{
+			return;
+		}
+
+		char * selectQueryError;
+		std::string query = "SELECT * FROM STATS;";
+
+		sqlite3_exec(playerDBase, query.data(), get_player_stats_callback, &player, &selectQueryError);
+		if (selectQueryError != nullptr)
+		{
+			ErrorHandler::log(std::string(selectQueryError));
+		}
+	}
 };
