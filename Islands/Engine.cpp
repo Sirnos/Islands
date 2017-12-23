@@ -436,12 +436,10 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 
 Engine::Engine(const GameVars &game, const RenderVars &render)
 	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, EntityStats(DEFAULT_PLAYER_HP, DEFAULT_PLAYER_MP, DEFAULT_PLAYER_SPEED)),
-	GameRules(game), RenderRules(render), GameWorld(new World),
+	GameRules(game), RenderRules(render), GameWorld(new World), GSavesManager("default"),
 	GameConsole(sf::Vector2f(400.0f, 600.0f), sf::Color(36, 10, 92, 120), 16)
 {
-
-	SavesManager test("default");
-	if (!test.isValid())
+	if (!GSavesManager.isValid())
 	{
 		ErrorHandler::logToFile("cannot open databases \n");
 	}
@@ -466,8 +464,8 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GWorldManager.AssingItemsDef(Components.getItems());
 	GWorldManager.AssingObjectsDef(Components.getObjects());
 	GWorldManager.AssingWorld(GameWorld);
-
 	GWorldManager.buildLocalMap(TerrainType::Grass, GameRules.LocalMapSize);
+
 
 	Player.Stats = Components.getEntities()->getContainer().front().getStats();
 	Player.pushTexture(mediaContainer.getTexture(TextureContainer::EntitiesTextures, 1));
@@ -483,12 +481,23 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GMonsterManager.assingMonsterWorld(GameWorld);
 	GMonsterManager.addEntityToObserved(&Player);
 
-	if (test.isValid()) { test.savePlayerStats(Player); }
-	test.loadPlayerStats(Player);
+	GSavesManager.loadPlayerStats(Player);
 }
 
 Engine::~Engine()
 {
+	GSavesManager.savePlayerStats(Player);
+	std::vector<ItemField> inventory;
+	for (const auto & invRow : Player.Inventory.getMainInventory())
+	{
+		for (const auto & invCell : invRow)
+		{
+			inventory.push_back(invCell);
+		}
+	}
+	GSavesManager.savePlayerInventory(inventory);
+
+
 	ErrorHandler::log("Clear data");
 }
 

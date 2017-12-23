@@ -31,6 +31,7 @@ class Engine
 
 	WorldManager GWorldManager;
 	MonsterManager GMonsterManager;
+	SavesManager GSavesManager;
 
 	std::shared_ptr<World> GameWorld;
 	GameComponents Components;

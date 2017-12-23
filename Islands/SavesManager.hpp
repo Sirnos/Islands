@@ -39,14 +39,28 @@ static int get_player_stats_callback(void *Player, int argc, char **argv, char *
 	return 0;
 }
 
+//static int get_player_inventory_callback(void *Inventory, int argc, char **argv, char **ColName) {}
+
 class SavesManager
 {
 	sqlite3 *playerDBase;
 	sqlite3 *worldDBase;
 
 	bool valid = true;
+
+
+	void SqlQuery(sqlite3 *Dbase, const std::string &query, void *Data = nullptr, sqlite3_callback callback = empty_sql_callback)
+	{
+		char *error;
+		sqlite3_exec(Dbase, query.data(), callback, Data, &error);
+		if (error != nullptr)
+		{
+			ErrorHandler::log(std::string(error));
+		}
+	}
 public:
 	SavesManager() = delete;
+	SavesManager(const SavesManager &other) = delete;
 	SavesManager(const std::string & saveName)
 	{
 		namespace fs = boost::filesystem;
@@ -113,17 +127,7 @@ public:
 		std::string playerPosStr = std::to_string(playerPos.x);
 		playerPosStr += (", " + std::to_string(playerPos.y));
 
-		auto simpleSqlQueries = [](sqlite3 *Dbase, const std::string &query)
-		{
-			char * error;
-			sqlite3_exec(Dbase, query.data(), empty_sql_callback, NULL, &error);
-			if (error != nullptr)
-			{
-				ErrorHandler::log(std::string(error));
-			}
-		};
-
-		simpleSqlQueries(playerDBase, 
+		SqlQuery(playerDBase,
 			"CREATE TABLE IF NOT EXISTS STATS(" \
 			"ID  INT  PRIMARY KEY  NOT NULL," \
 			"HP_MAX  REAL  NOT NULL," \
@@ -131,33 +135,51 @@ public:
 			"MP_MAX  REAL  NOT NULL," \
 			"MP  REAL  NOT NULL," \
 			"POS_X  REAL  NOT NULL," \
-			"POS_Y  REAL  NOT NULL);"
-		);
-		simpleSqlQueries(playerDBase, "DELETE FROM STATS");
+			"POS_Y  REAL  NOT NULL);");
+		SqlQuery(playerDBase, "DELETE FROM STATS");
 
 		std::string insertPlayerStatsQueryStr = "INSERT INTO STATS VALUES(1, ";
-		insertPlayerStatsQueryStr += playerHpMax + ", ";
-		insertPlayerStatsQueryStr += playerHp + ", ";
-		insertPlayerStatsQueryStr += playerMpMax + ", ";
-		insertPlayerStatsQueryStr += playerMp + ", ";
+		auto concat = [&insertPlayerStatsQueryStr](const std::string &value)
+		{
+			insertPlayerStatsQueryStr += (value + ", ");
+		};
+
+		concat(playerHpMax);
+		concat(playerHp);
+		concat(playerMpMax);
+		concat(playerMp);
 		insertPlayerStatsQueryStr += (playerPosStr + ");");
 
-		simpleSqlQueries(playerDBase, insertPlayerStatsQueryStr.data());
+		SqlQuery(playerDBase, insertPlayerStatsQueryStr.data());
 	}
+	void savePlayerInventory(const std::vector<ItemField> &playerInv)
+	{
+		if (!isValid()) { return; }
+
+		SqlQuery(playerDBase, 
+			"CREATE TABLE IF NOT EXISTS INVENTORY(" \
+			"ID  INT  NOT NULL," \
+			"AMOUNT  INT  NOT NULL);");
+		SqlQuery(playerDBase, "DELETE FROM INVENTORY");
+
+		const std::string insertQueryBegin = "INSERT INTO INVENTORY VALUES(";
+		std::string insertQuery = insertQueryBegin;
+
+		for (const auto & it : playerInv)
+		{
+			insertQuery += (std::to_string(it.ItemId) + ", " + std::to_string(it.ItemAmount) + ");");
+			SqlQuery(playerDBase, insertQuery);
+			insertQuery = insertQueryBegin;
+		}
+	}
+
+
 	void loadPlayerStats(PlayerEntity &player)
 	{
-		if (!isValid())
-		{
-			return;
-		}
+		if (!isValid()) { return; }
 
-		char * selectQueryError;
 		std::string query = "SELECT * FROM STATS;";
-
-		sqlite3_exec(playerDBase, query.data(), get_player_stats_callback, &player, &selectQueryError);
-		if (selectQueryError != nullptr)
-		{
-			ErrorHandler::log(std::string(selectQueryError));
-		}
+		SqlQuery(playerDBase, query, &player, get_player_stats_callback);
 	}
+	//void loadPlayerInventory(){}
 };
