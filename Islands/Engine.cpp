@@ -482,20 +482,13 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GMonsterManager.addEntityToObserved(&Player);
 
 	GSavesManager.loadPlayerStats(Player);
+	GSavesManager.loadPlayerInventory(Player.Inventory);
 }
 
 Engine::~Engine()
 {
 	GSavesManager.savePlayerStats(Player);
-	std::vector<ItemField> inventory;
-	for (const auto & invRow : Player.Inventory.getMainInventory())
-	{
-		for (const auto & invCell : invRow)
-		{
-			inventory.push_back(invCell);
-		}
-	}
-	GSavesManager.savePlayerInventory(inventory);
+	GSavesManager.savePlayerInventory(Player.Inventory);
 
 
 	ErrorHandler::log("Clear data");

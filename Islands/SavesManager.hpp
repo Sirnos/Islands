@@ -39,7 +39,23 @@ static int get_player_stats_callback(void *Player, int argc, char **argv, char *
 	return 0;
 }
 
-//static int get_player_inventory_callback(void *Inventory, int argc, char **argv, char **ColName) {}
+static int get_player_inventory_callback(void *vectorInventory, int argc, char **argv, char **ColName) 
+{
+	auto getIntParam = [argv](int n_argv)->unsigned
+	{
+		return static_cast<unsigned>(std::stoi(std::string(argv[n_argv])));
+	};
+
+	if (argc == 2)
+	{
+		auto ptrToVector = static_cast<std::vector<ItemField>*>(vectorInventory);
+		if (ptrToVector != nullptr)
+		{
+			ptrToVector->push_back(ItemField{ getIntParam(0), getIntParam(1) });
+		}
+	}
+	return 0;
+}
 
 class SavesManager
 {
@@ -55,7 +71,7 @@ class SavesManager
 		sqlite3_exec(Dbase, query.data(), callback, Data, &error);
 		if (error != nullptr)
 		{
-			ErrorHandler::log(std::string(error));
+			ErrorHandler::logToFile(std::string(error));
 		}
 	}
 public:
@@ -152,7 +168,7 @@ public:
 
 		SqlQuery(playerDBase, insertPlayerStatsQueryStr.data());
 	}
-	void savePlayerInventory(const std::vector<ItemField> &playerInv)
+	void savePlayerInventory(const PlayerInventory &playerInv)
 	{
 		if (!isValid()) { return; }
 
@@ -165,7 +181,18 @@ public:
 		const std::string insertQueryBegin = "INSERT INTO INVENTORY VALUES(";
 		std::string insertQuery = insertQueryBegin;
 
-		for (const auto & it : playerInv)
+		std::vector<ItemField> inventory;
+
+		for (auto & mainInvRow : playerInv.getMainInventory())
+		{
+			inventory.insert(inventory.end(), mainInvRow.begin(), mainInvRow.end());
+		}
+		inventory.insert(inventory.end(), playerInv.getArmorInventory().begin(), playerInv.getArmorInventory().end());
+		inventory.insert(inventory.end(), playerInv.getHandInventory().begin(), playerInv.getHandInventory().end());
+		inventory.push_back(playerInv.getHoldItem());
+
+
+		for (const auto & it : inventory)
 		{
 			insertQuery += (std::to_string(it.ItemId) + ", " + std::to_string(it.ItemAmount) + ");");
 			SqlQuery(playerDBase, insertQuery);
@@ -181,5 +208,37 @@ public:
 		std::string query = "SELECT * FROM STATS;";
 		SqlQuery(playerDBase, query, &player, get_player_stats_callback);
 	}
-	//void loadPlayerInventory(){}
+	void loadPlayerInventory(PlayerInventory &playerInv)
+	{
+		std::vector<ItemField> inventoryBuffer;
+		SqlQuery(playerDBase, "SELECT * FROM INVENTORY;", &inventoryBuffer, get_player_inventory_callback);
+
+		if (!inventoryBuffer.empty())
+		{
+			size_t bufferOffset = 0;
+
+			sf::Vector2u mainInvIterator;
+			for (mainInvIterator.x = 0; mainInvIterator.x < PLAYER_INVENTORY_SIZE; mainInvIterator.x++)
+			{
+				for (mainInvIterator.y = 0; mainInvIterator.y < PLAYER_INVENTORY_SIZE; mainInvIterator.y++)
+				{
+					playerInv.setInventoryField(mainInvIterator, inventoryBuffer[bufferOffset]);
+					bufferOffset++;
+				}
+			}
+
+			for (size_t armorInvIt = 0; armorInvIt < PLAYER_ARMOR_INVENTORY_SIZE; armorInvIt++)
+			{
+				playerInv.setArmorField(armorInvIt, inventoryBuffer[bufferOffset]);
+				bufferOffset++;
+			}
+
+			for (size_t beltInvIt = 0; beltInvIt < PLAYER_INVENTORY_SIZE; beltInvIt++)
+			{
+				playerInv.setHandInventoryField(beltInvIt, inventoryBuffer[bufferOffset]);
+				bufferOffset++;
+			}
+			playerInv.setHoldItem(inventoryBuffer[bufferOffset]);
+		}
+	}
 };
