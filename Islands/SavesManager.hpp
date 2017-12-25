@@ -16,18 +16,18 @@ static int empty_sql_callback(void *NotUsed, int argc, char **argv, char **azCol
 
 static int get_player_stats_callback(void *Player, int argc, char **argv, char **ColName)
 {
-	if (argc == 7)
+	if (argc == 6)
 	{
 		auto getFloatRowParam = [argv](int n_argv)->float
 		{
 			return std::stof(std::string(argv[n_argv]));
 		};
 
-		float HpMax = getFloatRowParam(1);
-		float Hp = getFloatRowParam(2);
-		float MpMax = getFloatRowParam(3);
-		float Mp = getFloatRowParam(4);
-		sf::Vector2f Position(getFloatRowParam(5), getFloatRowParam(6));
+		float HpMax = getFloatRowParam(0);
+		float Hp = getFloatRowParam(1);
+		float MpMax = getFloatRowParam(2);
+		float Mp = getFloatRowParam(3);
+		sf::Vector2f Position(getFloatRowParam(4), getFloatRowParam(5));
 
 		auto ptrToPlayer = static_cast<PlayerEntity*>(Player);
 		if (ptrToPlayer != nullptr)
@@ -145,7 +145,6 @@ public:
 
 		SqlQuery(playerDBase,
 			"CREATE TABLE IF NOT EXISTS STATS(" \
-			"ID  INT  PRIMARY KEY  NOT NULL," \
 			"HP_MAX  REAL  NOT NULL," \
 			"HP  REAL  NOT NULL," \
 			"MP_MAX  REAL  NOT NULL," \
@@ -154,7 +153,7 @@ public:
 			"POS_Y  REAL  NOT NULL);");
 		SqlQuery(playerDBase, "DELETE FROM STATS");
 
-		std::string insertPlayerStatsQueryStr = "INSERT INTO STATS VALUES(1, ";
+		std::string insertPlayerStatsQueryStr = "INSERT INTO STATS VALUES(";
 		auto concat = [&insertPlayerStatsQueryStr](const std::string &value)
 		{
 			insertPlayerStatsQueryStr += (value + ", ");
