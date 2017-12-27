@@ -489,6 +489,7 @@ Engine::~Engine()
 {
 	GSavesManager.savePlayerStats(Player);
 	GSavesManager.savePlayerInventory(Player.Inventory);
+	GSavesManager.saveLocalMap(GameWorld->getLocalMap());
 
 
 	ErrorHandler::log("Clear data");

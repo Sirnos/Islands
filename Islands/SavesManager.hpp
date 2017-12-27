@@ -240,4 +240,18 @@ public:
 			playerInv.setHoldItem(inventoryBuffer[bufferOffset]);
 		}
 	}
+
+
+	void saveLocalMap(const std::vector<std::vector<MapTile>> &map)
+	{
+		std::string createMapTerrainTableQuery = "CREATE TABLE IF NOT EXISTS TERRAIN(";
+		for (size_t i = 0; i < map.size() - 1; i++)
+		{
+			createMapTerrainTableQuery += " C_" + std::to_string(i) + "  INTEGER  NOT NULL,";
+		}
+		createMapTerrainTableQuery += "C_" + std::to_string(map.size() - 1) + " INTEGER  NOT NULL);";
+		SqlQuery(worldDBase, createMapTerrainTableQuery);
+
+
+	}
 };
