@@ -72,6 +72,7 @@ class SavesManager
 		if (error != nullptr)
 		{
 			ErrorHandler::logToFile(std::string(error));
+			sqlite3_free(error);
 		}
 	}
 public:
