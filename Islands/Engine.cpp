@@ -482,7 +482,9 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GMonsterManager.addEntityToObserved(&Player);
 
 	GSavesManager.loadPlayerStats(Player);
-	GSavesManager.loadPlayerInventory(Player.Inventory);
+	GSavesManager.loadPlayerInventory(Player.Inventory);	
+	std::vector<std::vector<TerrainType>> localTerrain = GSavesManager.loadMapTerrain();
+	localTerrain.size();
 }
 
 Engine::~Engine()

@@ -57,6 +57,19 @@ static int get_player_inventory_callback(void *vectorInventory, int argc, char *
 	return 0;
 }
 
+static int get_row_count_callback(void *ptrToInt, int argc, char **argv, char **ColName)
+{
+	if (ptrToInt != nullptr)
+	{
+		if (argc == 1)
+		{
+			*(static_cast<int*>(ptrToInt)) = std::stoi(argv[0]);
+		}
+	}
+
+	return 0;
+}
+
 class SavesManager
 {
 	sqlite3 *playerDBase;
@@ -245,14 +258,77 @@ public:
 
 	void saveLocalMap(const std::vector<std::vector<MapTile>> &map)
 	{
-		std::string createMapTerrainTableQuery = "CREATE TABLE IF NOT EXISTS TERRAIN(";
-		for (size_t i = 0; i < map.size() - 1; i++)
+		SqlQuery(worldDBase, "CREATE TABLE IF NOT EXISTS TERRAIN(VAL  BLOB  NOT NULL);");
+		SqlQuery(worldDBase, "CREATE TABLE IF NOT EXISTS OBJECTS(VAL  BLOB  NOT NULL);");
+
+		SqlQuery(worldDBase, "DELETE FROM TERRAIN");
+		SqlQuery(worldDBase, "DELETE FROM OBJECTS");
+
+		std::vector<TerrainType> terrainRow;
+		std::vector<int> objectsRow;
+
+		sqlite3_stmt *terrainRes, *objectsRes;
+		std::string insertTerrainQuery = "INSERT INTO TERRAIN VALUES( ? );";
+		std::string insertObjectsQuery = "INSERT INTO OBJECTS VALUES( ? );";
+
+		for (auto & row : map)
 		{
-			createMapTerrainTableQuery += " C_" + std::to_string(i) + "  INTEGER  NOT NULL,";
+			sqlite3_prepare_v2(worldDBase, insertTerrainQuery.data(), insertTerrainQuery.size() + 1, &terrainRes, nullptr);
+			sqlite3_prepare_v2(worldDBase, insertObjectsQuery.data(), insertObjectsQuery.size() + 1, &objectsRes, nullptr);
+			
+
+			for (auto & cell : row)
+			{
+				int objectId = 0;
+				if (cell.TileObject != nullptr)
+				{
+					objectId = cell.TileObject->getId();
+				}
+
+				objectsRow.push_back(objectId);
+				terrainRow.push_back(cell.Terrain);
+			}
+			terrainRow.shrink_to_fit();
+			objectsRow.shrink_to_fit();
+
+			int errCode = sqlite3_bind_blob(terrainRes, 1, terrainRow.data(), sizeof(TerrainType) * terrainRow.size(), SQLITE_STATIC);
+			sqlite3_step(terrainRes);
+			sqlite3_finalize(terrainRes);
+
+			int errCode2 = sqlite3_bind_blob(objectsRes, 1, objectsRow.data(), sizeof(int) * objectsRow.size(), SQLITE_STATIC);
+			sqlite3_step(objectsRes);
+			sqlite3_finalize(objectsRes);
+
+
+			terrainRow.clear();
+			objectsRow.clear();
 		}
-		createMapTerrainTableQuery += "C_" + std::to_string(map.size() - 1) + " INTEGER  NOT NULL);";
-		SqlQuery(worldDBase, createMapTerrainTableQuery);
+	}
 
 
+	std::vector<std::vector<TerrainType>> loadMapTerrain()
+	{
+		sqlite3_blob *terrainRow;
+		std::vector<std::vector<TerrainType>> ret;
+
+		
+		int terrainRows = 0;
+		SqlQuery(worldDBase, "SELECT Count(*) FROM TERRAIN", &terrainRows, get_row_count_callback);
+		if (terrainRows != 0)
+		{
+			for (size_t row = 1; row < terrainRows + 1; row++)
+			{
+				int results = sqlite3_blob_open(worldDBase, "main", "TERRAIN", "VAL", row, NULL, &terrainRow);
+				if (results == SQLITE_OK)
+				{
+					int rowSize = sqlite3_blob_bytes(terrainRow) / sizeof(TerrainType);
+					ret.push_back(std::vector<TerrainType>(rowSize));
+
+					sqlite3_blob_read(terrainRow, ret.back().data(), rowSize * sizeof(TerrainType), 0);
+				}
+				sqlite3_blob_close(terrainRow);
+			}
+		}
+		return ret;
 	}
 };
