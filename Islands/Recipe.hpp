@@ -21,7 +21,7 @@ public:
 	~BaseRecipe() = default;
 
 	RecType getOutElement() const { return Out; }
-	std::vector<RecType> getIn() const { return In; }
+	const std::vector<RecType> & getIn() const { return In; }
 	RecType getInElement(size_t index) const { return In[index]; }
 
 	size_t getInSize() const { return In.size(); }

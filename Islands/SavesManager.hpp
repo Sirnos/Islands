@@ -235,7 +235,7 @@ public:
 
 		for (const auto & it : inventory)
 		{
-			insertQuery += (std::to_string(it.ItemId) + ", " + std::to_string(it.ItemAmount) + ");");
+			insertQuery += (std::to_string(it.Id) + ", " + std::to_string(it.Amount) + ");");
 			SqlQuery(playerDBase, insertQuery);
 			insertQuery = insertQueryBegin;
 		}

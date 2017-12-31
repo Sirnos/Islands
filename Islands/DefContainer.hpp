@@ -130,8 +130,8 @@ namespace makeFromDef
 		for (const auto & recipeDef : defs)
 		{
 			ItemField recipeOut;
-			recipeOut.ItemId = itemsDefs.getDefIdbyName(recipeDef.getOutElement().first);
-			recipeOut.ItemAmount = recipeDef.getOutElement().second;
+			recipeOut.Id = itemsDefs.getDefIdbyName(recipeDef.getOutElement().first);
+			recipeOut.Amount = recipeDef.getOutElement().second;
 
 			for (const auto & recipeDefIn : recipeDef.getIn())
 			{

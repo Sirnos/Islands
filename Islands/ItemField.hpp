@@ -5,49 +5,76 @@ const unsigned PLAYER_ARMOR_INVENTORY_SIZE = 3u;
 
 struct ItemField
 {
-	unsigned ItemId;
-	unsigned ItemAmount;
+	unsigned Id;
+	unsigned Amount;
 
 	ItemField()
-		:ItemId(0),ItemAmount(0)
+		:Id(0), Amount(0)
 	{}
-	ItemField(unsigned newItemId, unsigned newItemAmount)
-		:ItemId(newItemId),ItemAmount(newItemAmount)
+	ItemField(unsigned ItemId, unsigned ItemAmount)
+		:Id(ItemId), Amount(ItemAmount)
 	{}
 	ItemField(const ItemField &other)
-		:ItemId(other.ItemId),ItemAmount(other.ItemAmount)
+		:Id(other.Id), Amount(other.Amount)
 	{}
 	~ItemField() = default;
 
+
 	ItemField &operator= (const ItemField &other)
 	{
-		ItemId = other.ItemId;
-		ItemAmount = other.ItemAmount;
+		Id = other.Id;
+		Amount = other.Amount;
 
 		return *this;
 	}
-	void operator+= (unsigned amount)
+
+
+	ItemField &operator+=(unsigned amount)
 	{
-		ItemAmount += amount;
+		Amount += amount;
+		return *this;
 	}
-	void operator-= (unsigned amount)
+	ItemField &operator+=(const ItemField &other)
 	{
-		ItemAmount -= amount;
+		if (this->operator==(other))
+		{
+			Amount += other.Amount;
+		}
+
+		return *this;
+	}
+	ItemField &operator-=(unsigned amount)
+	{
+		Amount -= amount;
+		return *this;
+	}
+	ItemField &operator-=(const ItemField &other)
+	{
+		if (this->operator==(other))
+		{
+			Amount -= other.Amount;
+		}
 	}
 
-	bool operator==(const ItemField &other)
+
+	bool operator==(const ItemField &other) const
 	{
-		if (ItemId == other.ItemId) { return true; }
+		if (Id == other.Id) 
+		{ 
+			return true; 
+		}
+
 		return false;
 	}
-	bool operator!=(const ItemField &other)
+	bool operator!=(const ItemField &other) const
 	{
 		return !(operator==(other));
 	}
 
+
 	bool isEmpty() const
 	{
-		if (ItemId == 0 || ItemAmount == 0)
+		if (Id == 0 || Amount == 0)
 		{
 			return true;
 		}
@@ -55,11 +82,16 @@ struct ItemField
 	}
 	bool isCorrect() const
 	{
-		if ((ItemAmount == 0 || ItemAmount == -1) && ItemId != 0)
+		if ((Amount == 0 || Amount == -1) && Id != 0)
 		{
 			return false;
 		}
+
 		return true;
 	}
-	void empty() { *this = ItemField(); }
+	void empty()
+	{
+		Id = 0;
+		Amount = 0;
+	}
 };

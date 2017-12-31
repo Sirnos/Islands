@@ -42,14 +42,14 @@ void Engine::checkPlayerEnvironment()
 		if (PlayerCollectRect.contains(LyingItems.getPosition(i)))
 		{
 			ItemField temp = LyingItems.getItem(i);
-			Player.Inventory.pushItem(temp, Items->getDefinition(temp.ItemId)->getMaxStack());
+			Player.Inventory.pushItem(temp, Items->getDefinition(temp.Id)->getMaxStack());
 			if (temp.isEmpty())
 			{
 				LyingItems.eraseItem(i);
 			}
 			else
 			{
-				LyingItems.setItemAmount(i, temp.ItemAmount);
+				LyingItems.setItemAmount(i, temp.Amount);
 			}
 		}
 	}
@@ -101,7 +101,7 @@ void Engine::checkPlayerBehaviour()
 
 void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field)
 {
-	unsigned holdedItemId = Player.Inventory.getHoldItem().ItemId;
+	unsigned holdedItemId = Player.Inventory.getHoldItem().Id;
 	ItemDefContainer *Items = Components.getItems().get();
 
 	switch (type)
@@ -109,17 +109,17 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 	case EquipmentType::Inventory:
 		if (holdedItemId != 0)
 		{
-			if (Player.Inventory.getInventoryField(field).ItemId == holdedItemId)
+			if (Player.Inventory.getInventoryField(field).Id == holdedItemId)
 			{
 				Player.Inventory.setInventoryField(field, ItemField(holdedItemId,
-					Player.Inventory.getInventoryField(field).ItemAmount + Player.Inventory.getHoldItem().ItemAmount));
+					Player.Inventory.getInventoryField(field).Amount + Player.Inventory.getHoldItem().Amount));
 
 				unsigned maxStack = Items->getDefinition(holdedItemId)->getMaxStack();
-				if (Player.Inventory.getInventoryField(field).ItemAmount >= maxStack)
+				if (Player.Inventory.getInventoryField(field).Amount >= maxStack)
 				{
-					unsigned amountForHold = Player.Inventory.getInventoryField(field).ItemAmount - maxStack;
+					unsigned amountForHold = Player.Inventory.getInventoryField(field).Amount - maxStack;
 					Player.Inventory.setInventoryField(field, ItemField(holdedItemId,
-						Player.Inventory.getInventoryField(field).ItemAmount - amountForHold));
+						Player.Inventory.getInventoryField(field).Amount - amountForHold));
 
 					Player.Inventory.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
@@ -129,7 +129,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 				}
 
 			}
-			else if(Player.Inventory.getInventoryField(field).ItemId != 0)
+			else if(Player.Inventory.getInventoryField(field).Id != 0)
 			{
 				ItemField temp(Player.Inventory.getInventoryField(field));
 				Player.Inventory.setInventoryField(field, Player.Inventory.getHoldItem());
@@ -143,7 +143,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 		}
 		else
 		{
-			if (Player.Inventory.getInventoryField(field).ItemId != 0)
+			if (Player.Inventory.getInventoryField(field).Id != 0)
 			{
 				Player.Inventory.setHoldItem(Player.Inventory.getInventoryField(field));
 				Player.Inventory.setInventoryField(field, ItemField());
@@ -153,7 +153,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 	case EquipmentType::Armor:
 		if (holdedItemId != 0)
 		{
-			if (Player.Inventory.getArmorInventoryField(field.x).ItemId != 0)
+			if (Player.Inventory.getArmorInventoryField(field.x).Id != 0)
 			{
 				ItemField temp(Player.Inventory.getArmorInventoryField(field.x));
 				Player.Inventory.setArmorField(field.x, Player.Inventory.getHoldItem());
@@ -167,7 +167,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 		}
 		else
 		{
-			if (Player.Inventory.getArmorInventoryField(field.x).ItemId != 0)
+			if (Player.Inventory.getArmorInventoryField(field.x).Id != 0)
 			{
 				Player.Inventory.setHoldItem(Player.Inventory.getArmorInventoryField(field.x));
 				Player.Inventory.setArmorField(field.x, ItemField());
@@ -177,17 +177,17 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 	case EquipmentType::Belt:
 		if (holdedItemId != 0)
 		{
-			if (Player.Inventory.getHandInventoryField(field.x).ItemId == holdedItemId)
+			if (Player.Inventory.getHandInventoryField(field.x).Id == holdedItemId)
 			{
 				Player.Inventory.setHandInventoryField(field.x, ItemField(holdedItemId,
-					Player.Inventory.getHandInventoryField(field.x).ItemAmount + Player.Inventory.getHoldItem().ItemAmount));
+					Player.Inventory.getHandInventoryField(field.x).Amount + Player.Inventory.getHoldItem().Amount));
 
 				unsigned maxStack = Items->getDefinition(holdedItemId)->getMaxStack();
-				if (Player.Inventory.getHandInventoryField(field.x).ItemAmount >= maxStack)
+				if (Player.Inventory.getHandInventoryField(field.x).Amount >= maxStack)
 				{
-					unsigned amountForHold = Player.Inventory.getHandInventoryField(field.x).ItemAmount - maxStack;
+					unsigned amountForHold = Player.Inventory.getHandInventoryField(field.x).Amount - maxStack;
 					Player.Inventory.setHandInventoryField(field.x, ItemField(holdedItemId,
-						Player.Inventory.getHandInventoryField(field.x).ItemAmount - amountForHold));
+						Player.Inventory.getHandInventoryField(field.x).Amount - amountForHold));
 
 					Player.Inventory.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
@@ -197,7 +197,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 				}
 
 			}
-			else if (Player.Inventory.getHandInventoryField(field.x).ItemId != 0)
+			else if (Player.Inventory.getHandInventoryField(field.x).Id != 0)
 			{
 				ItemField temp(Player.Inventory.getHandInventoryField(field.x));
 				Player.Inventory.setHandInventoryField(field.x, Player.Inventory.getHoldItem());
@@ -211,7 +211,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 		}
 		else
 		{
-			if (Player.Inventory.getHandInventoryField(field.x).ItemId != 0)
+			if (Player.Inventory.getHandInventoryField(field.x).Id != 0)
 			{
 				Player.Inventory.setHoldItem(Player.Inventory.getHandInventoryField(field.x));
 				Player.Inventory.setHandInventoryField(field.x, ItemField());
@@ -221,17 +221,17 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 	case EquipmentType::Chest:
 		if (holdedItemId != 0)
 		{
-			if (holdedItemId == Player.Inventory.getItemFromInteractedChest(field.x).ItemId)
+			if (holdedItemId == Player.Inventory.getItemFromInteractedChest(field.x).Id)
 			{
 				Player.Inventory.setInteractedChestItemField(field.x, ItemField(holdedItemId,
-					Player.Inventory.getItemFromInteractedChest(field.x).ItemAmount + Player.Inventory.getHoldItem().ItemAmount));
+					Player.Inventory.getItemFromInteractedChest(field.x).Amount + Player.Inventory.getHoldItem().Amount));
 
 				unsigned maxStack = Items->getDefinition(holdedItemId)->getMaxStack();
-				if (Player.Inventory.getItemFromInteractedChest(field.x).ItemAmount >= maxStack)
+				if (Player.Inventory.getItemFromInteractedChest(field.x).Amount >= maxStack)
 				{
-					unsigned amountForHold = Player.Inventory.getInventoryField(field).ItemAmount - maxStack;
+					unsigned amountForHold = Player.Inventory.getInventoryField(field).Amount - maxStack;
 					Player.Inventory.setInteractedChestItemField(field.x, ItemField(holdedItemId,
-						Player.Inventory.getItemFromInteractedChest(field.x).ItemAmount - amountForHold));
+						Player.Inventory.getItemFromInteractedChest(field.x).Amount - amountForHold));
 
 					Player.Inventory.setHoldItem(ItemField(holdedItemId, amountForHold));
 				}
@@ -240,7 +240,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 					Player.Inventory.setHoldItem(ItemField(0, 0));
 				}
 			}
-			else if(Player.Inventory.getItemFromInteractedChest(field.x).ItemId != 0)
+			else if(Player.Inventory.getItemFromInteractedChest(field.x).Id != 0)
 			{
 
 				ItemField temp(Player.Inventory.getItemFromInteractedChest(field.x));
@@ -255,7 +255,7 @@ void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &f
 		}
 		else
 		{
-			if (Player.Inventory.getItemFromInteractedChest(field.x).ItemId != 0)
+			if (Player.Inventory.getItemFromInteractedChest(field.x).Id != 0)
 			{
 				Player.Inventory.setHoldItem(Player.Inventory.getItemFromInteractedChest(field.x));
 				Player.Inventory.setInteractedChestItemField(field.x, ItemField());
@@ -584,7 +584,7 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 				ItemField craftedItem = Crafting.craftItemFromRecipe(Player.Inventory);
 				if (!craftedItem.isEmpty())
 				{
-					Player.Inventory.pushItem(craftedItem, Items->getDefinition(craftedItem.ItemId)->getMaxStack());
+					Player.Inventory.pushItem(craftedItem, Items->getDefinition(craftedItem.Id)->getMaxStack());
 					Crafting.clearPlayerSelects();
 				}
 			}
@@ -613,7 +613,7 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 				if (sf::FloatRect(sf::Vector2f(), sf::Vector2f(GameWorld->getLocalMapSize() * TILE_SIZE,
 					GameWorld->getLocalMapSize() * TILE_SIZE)).contains(mousePos))
 				{
-					if (GWorldManager.placeObject(objectPos, item.ItemId))
+					if (GWorldManager.placeObject(objectPos, item.Id))
 					{
 						item -= 1;
 						Player.Inventory.setHandInventoryField(GameGui.Hud.ActiveBeltField, item);
@@ -646,8 +646,8 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 									else
 									{
 										ItemField item;
-										item.ItemId = Items->getDefIdbyName(i.first);
-										item.ItemAmount = i.second;
+										item.Id = Items->getDefIdbyName(i.first);
+										item.Amount = i.second;
 										LyingItems.pushNewItem(currentTime, mousePos, item);
 									}
 								}
@@ -701,7 +701,7 @@ void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseC
 
 		if (!GameGui.Eq.isEnable)
 		{
-			if (Player.Inventory.getHoldItem().ItemId != 0)
+			if (Player.Inventory.getHoldItem().Id != 0)
 			{
 				LyingItems.pushNewItem(GameClock.getElapsedTime(), app.getMousePosInWorld(), Player.Inventory.getHoldItem());
 				Player.Inventory.setHoldItem(ItemField(0, 0));
@@ -786,7 +786,7 @@ void Engine::drawLyingItems(IslandApp & app)
 		{
 			LyingItemShape.setPosition(LyingItems.getPosition(i));
 			LyingItemShape.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures,
-				LyingItems.getItem(i).ItemId), true);
+				LyingItems.getItem(i).Id), true);
 			app.draw(LyingItemShape);
 		}
 	}
@@ -811,7 +811,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 		sf::RectangleShape holdItemRep;
 		holdItemRep.setSize(sf::Vector2f(EquipmentFieldSize, EquipmentFieldSize));
 		holdItemRep.setTexture(mediaContainer.getTexture(TextureContainer::ItemsTextures,
-			Player.Inventory.getHoldItem().ItemId));
+			Player.Inventory.getHoldItem().Id));
 		holdItemRep.setPosition(app.getMousePosInWorld());
 
 		app.draw(holdItemRep);
@@ -842,10 +842,10 @@ void Engine::drawPlayerGui(IslandApp & app)
 		checkEquipmentField(GameGui.Hud.Belt[i], newPos);
 
 		ItemField temp = Player.Inventory.getHandInventoryField(i);
-		pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
+		pushItemTextureToRect(newPos, temp.Id, TextureFieldShape);
 		amountItem.setPosition(FieldShape.getPosition());
 
-		if (temp.ItemId != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
+		if (temp.Id != 0) { amountItem.setString(std::to_string(temp.Amount)); }
 		if (i == GameGui.Hud.ActiveBeltField) { FieldShape.setFillColor(ActiveBeltFieldColor); }
 
 		drawShapes(FieldShape, TextureFieldShape, amountItem);
@@ -864,7 +864,7 @@ void Engine::drawPlayerGui(IslandApp & app)
 					checkEquipmentField(GameGui.Eq.ArmorEquipment[field.x], newPos);
 
 					ItemField temp = Player.Inventory.getArmorInventoryField(field.x);
-					pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
+					pushItemTextureToRect(newPos, temp.Id, TextureFieldShape);
 
 					drawShapes(FieldShape, TextureFieldShape, amountItem, true);
 				}
@@ -875,10 +875,10 @@ void Engine::drawPlayerGui(IslandApp & app)
 				checkEquipmentField(GameGui.Eq.Equipment[field.x][field.y], newPos);
 
 				ItemField temp = Player.Inventory.getInventoryField(field);
-				pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
+				pushItemTextureToRect(newPos, temp.Id, TextureFieldShape);
 				amountItem.setPosition(newPos);
 
-				if (temp.ItemAmount != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
+				if (temp.Amount != 0) { amountItem.setString(std::to_string(temp.Amount)); }
 
 				drawShapes(FieldShape, TextureFieldShape, amountItem);
 			}
@@ -893,10 +893,10 @@ void Engine::drawPlayerGui(IslandApp & app)
 			checkEquipmentField(GameGui.Chest.ChestContain[i], newPos);
 
 			ItemField temp = Player.Inventory.getItemFromInteractedChest(i);
-			pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
+			pushItemTextureToRect(newPos, temp.Id, TextureFieldShape);
 			amountItem.setPosition(newPos);
 
-			if (temp.ItemAmount != 0) { amountItem.setString(std::to_string(temp.ItemAmount)); }
+			if (temp.Amount != 0) { amountItem.setString(std::to_string(temp.Amount)); }
 			
 			drawShapes(FieldShape, TextureFieldShape, amountItem);
 			amountItem.setString("");
@@ -925,12 +925,12 @@ void Engine::drawPlayerGui(IslandApp & app)
 				if (RecipeNumber < Crafting.getRecipesNumber())
 				{
 					ItemField temp = Crafting.getRecipeOut(RecipeNumber);
-					pushItemTextureToRect(newPos, temp.ItemId, TextureFieldShape);
+					pushItemTextureToRect(newPos, temp.Id, TextureFieldShape);
 					if (TextureFieldShape.getTexture() != nullptr) { app.draw(TextureFieldShape); }
 					if (!temp.isEmpty())
 					{
 						amountItem.setPosition(newPos);
-						amountItem.setString(std::to_string(temp.ItemAmount));
+						amountItem.setString(std::to_string(temp.Amount));
 						app.draw(amountItem);
 						amountItem.setString("");
 					}

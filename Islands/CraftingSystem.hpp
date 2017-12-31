@@ -40,6 +40,7 @@ public:
 		AvailableRecipes = recs;
 	}
 
+
 	void clearPlayerSelects()
 	{
 		SelectedRecipe = 0;
@@ -51,6 +52,7 @@ public:
 		clearPlayerSelects();
 	}
 
+
 	void loadPlayerRecipes(const std::vector<Recipe> &DefaultRecipes)
 	{
 		PlayerBaseRecipes = DefaultRecipes;
@@ -58,7 +60,7 @@ public:
 	void usePlayerRecipes() { AvailableRecipes = PlayerBaseRecipes; }
 	bool isUsedPlayerRecipes() const
 	{
-		if (PlayerBaseRecipes[0].getOutElement().ItemId == AvailableRecipes[0].getOutElement().ItemId)
+		if (PlayerBaseRecipes[0].getOutElement().Id == AvailableRecipes[0].getOutElement().Id)
 		{
 			return true;
 		}
@@ -66,8 +68,10 @@ public:
 		return false;
 	}
 
+
 	void setSelectedRecipe(unsigned newSelect) { SelectedRecipe = newSelect; }
 	unsigned getSelectedRecipeNumber() const { return SelectedRecipe; }
+
 
 	ItemField getRecipeOut(unsigned Index) const
 	{
@@ -78,6 +82,7 @@ public:
 		return AvailableRecipes.size();
 	}
 
+
 	void setCraftAmount(unsigned newAmount) { CraftAmount = newAmount; }
 	unsigned getCraftAmount() const { return CraftAmount; }
 
@@ -86,12 +91,16 @@ public:
 		return AvailableRecipes;
 	}
 
+
 	ItemField craftItemFromRecipe(PlayerInventory &Inv)
 	{
-		if (SelectedRecipe >= AvailableRecipes.size()) { return ItemField(); }
+		if (SelectedRecipe >= AvailableRecipes.size()) 
+		{ 
+			return ItemField(); 
+		}
 
-		unsigned craftedItemId = AvailableRecipes[SelectedRecipe].getOutElement().ItemId;
-		unsigned craftedItemAmount = CraftAmount * AvailableRecipes[SelectedRecipe].getOutElement().ItemAmount;
+		unsigned craftedItemId = AvailableRecipes[SelectedRecipe].getOutElement().Id;
+		unsigned craftedItemAmount = CraftAmount * AvailableRecipes[SelectedRecipe].getOutElement().Amount;
 		std::vector<ItemField> neededResources = AvailableRecipes[SelectedRecipe].getIn();
 		std::vector<ItemField> availableResources;
 		std::vector<ItemField> restResources;
@@ -103,13 +112,13 @@ public:
 			for (inventoryIndex.y = 0; inventoryIndex.y < PLAYER_INVENTORY_SIZE; inventoryIndex.y++)
 			{
 				ItemField inventoryItem = Inv.getInventoryField(inventoryIndex);
-				if (inventoryItem.ItemId != 0)
+				if (inventoryItem.Id != 0)
 				{
 					for (size_t i = 0; i < neededResources.size(); i++)
 					{
-						if (neededResources[i].ItemId == inventoryItem.ItemId)
+						if (neededResources[i].Id == inventoryItem.Id)
 						{
-							availableResources[i] += inventoryItem.ItemAmount;
+							availableResources[i] += inventoryItem.Amount;
 							Inv.setInventoryField(inventoryIndex, ItemField());
 							break;
 						}
@@ -121,14 +130,14 @@ public:
 		unsigned maxAmount = CraftAmount;
 		for (size_t i = 0; i < availableResources.size(); i++)
 		{
-			if (availableResources[i].ItemAmount < neededResources[i].ItemAmount)
+			if (availableResources[i].Amount < neededResources[i].Amount)
 			{
 				maxAmount = 0;
 				break;
 			}
 			else
 			{
-				unsigned craftAmountPerItem = availableResources[i].ItemAmount / neededResources[i].ItemAmount;
+				unsigned craftAmountPerItem = availableResources[i].Amount / neededResources[i].Amount;
 				if (craftAmountPerItem < CraftAmount) { CraftAmount = craftAmountPerItem; }
 			}
 		}
@@ -138,15 +147,15 @@ public:
 		{
 			for (size_t i = 0; i < neededResources.size(); i++)
 			{
-				restResources.push_back(ItemField(neededResources[i].ItemId,
-					availableResources[i].ItemAmount - (maxAmount * neededResources[i].ItemAmount)));
-				if (restResources.back().ItemAmount == -1 || restResources.back().ItemAmount == 0)
+				restResources.push_back(ItemField(neededResources[i].Id,
+					availableResources[i].Amount - (maxAmount * neededResources[i].Amount)));
+				if (restResources.back().Amount == -1 || restResources.back().Amount == 0)
 				{
 					restResources.pop_back();
 				}
 			}
 
-			craftedItem = ItemField(craftedItemId, maxAmount * AvailableRecipes[SelectedRecipe].getOutElement().ItemAmount);
+			craftedItem = ItemField(craftedItemId, maxAmount * AvailableRecipes[SelectedRecipe].getOutElement().Amount);
 		}
 
 		for (inventoryIndex.x = 0; inventoryIndex.x < PLAYER_INVENTORY_SIZE; inventoryIndex.x++)

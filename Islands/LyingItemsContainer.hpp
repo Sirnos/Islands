@@ -56,7 +56,7 @@ public:
 
 	void setItemAmount(unsigned index, unsigned newAmount)
 	{
-		LyingItems[index].lyingItem.ItemAmount = newAmount;
+		LyingItems[index].lyingItem.Amount = newAmount;
 	}
 	void clearOldItems(const sf::Time &currentGameTime)
 	{

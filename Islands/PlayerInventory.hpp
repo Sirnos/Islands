@@ -111,15 +111,15 @@ public:
 
 		for (size_t i = 0; i < PLAYER_INVENTORY_SIZE; i++)
 		{
-			if (getHandInventoryField(i).ItemId == item.ItemId)
+			if (getHandInventoryField(i).Id == item.Id)
 			{
 				ItemField temp = getHandInventoryField(i);
-				temp += item.ItemAmount;
+				temp += item.Amount;
 
-				if (temp.ItemAmount >= ItemMaxStack)
+				if (temp.Amount >= ItemMaxStack)
 				{
-					item.ItemAmount = temp.ItemAmount - ItemMaxStack;
-					temp.ItemAmount -= (temp.ItemAmount - ItemMaxStack);
+					item.Amount = temp.Amount - ItemMaxStack;
+					temp.Amount -= (temp.Amount - ItemMaxStack);
 				}
 				else
 				{
@@ -127,7 +127,7 @@ public:
 				}
 				setHandInventoryField(i, temp);
 			}
-			else if (getHandInventoryField(i).ItemId == 0)
+			else if (getHandInventoryField(i).Id == 0)
 			{
 				setHandInventoryField(i, item);
 				item.empty();
@@ -135,14 +135,14 @@ public:
 			}
 			for (size_t j = 0; j < PLAYER_INVENTORY_SIZE; j++)
 			{
-				if (getInventoryField(sf::Vector2u(i, j)).ItemId == item.ItemId)
+				if (getInventoryField(sf::Vector2u(i, j)).Id == item.Id)
 				{
 					ItemField temp = getInventoryField(sf::Vector2u(i, j));
-					temp += item.ItemAmount;
-					if (temp.ItemAmount >= ItemMaxStack)
+					temp += item.Amount;
+					if (temp.Amount >= ItemMaxStack)
 					{
-						item.ItemAmount = temp.ItemAmount - ItemMaxStack;
-						temp.ItemAmount -= (temp.ItemAmount - ItemMaxStack);
+						item.Amount = temp.Amount - ItemMaxStack;
+						temp.Amount -= (temp.Amount - ItemMaxStack);
 					}
 					else
 					{
@@ -150,7 +150,7 @@ public:
 					}
 					setInventoryField(sf::Vector2u(i, j), temp);
 				}
-				else if (getInventoryField(sf::Vector2u(i, j)).ItemId == 0)
+				else if (getInventoryField(sf::Vector2u(i, j)).Id == 0)
 				{
 					setInventoryField(sf::Vector2u(i, j), item);
 					item.empty();
@@ -185,5 +185,4 @@ public:
 	{
 		return ArmorInventory;
 	}
-
 };
