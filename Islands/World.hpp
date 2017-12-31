@@ -35,6 +35,16 @@ public:
 	}
 
 
+	const std::vector<std::vector<MapTile>> & getLocalMap() const
+	{
+		return LocalMap;
+	}
+	const std::vector<std::vector<TerrainType>> &getWorldMap() const
+	{
+		return WorldMap;
+	}
+
+
 	TerrainType getWorldMapTileTerrain(const sf::Vector2u &tile) const { return WorldMap[tile.x][tile.y]; }
 	TerrainType getLocalMapTileTerrain(const sf::Vector2u &tile) const { return LocalMap[tile.x][tile.y].Terrain; }
 

@@ -6,6 +6,7 @@
 
 #include "WorldManager.hpp"
 #include "MonsterManager.hpp"
+#include "SavesManager.hpp"
 
 #include "Gui.hpp"
 
@@ -30,6 +31,7 @@ class Engine
 
 	WorldManager GWorldManager;
 	MonsterManager GMonsterManager;
+	SavesManager GSavesManager;
 
 	std::shared_ptr<World> GameWorld;
 	GameComponents Components;

@@ -64,6 +64,19 @@ public:
 	}
 
 
+	void buildLocalMap(std::vector<std::vector<TerrainType>> &terrain, std::vector<std::vector<int>> &objects, size_t MapSize = World::DefaultMapSize)
+	{
+		ManagementWorld->resizeLocalMap(MapSize);
+		sf::Vector2u it;
+		for (it.x = 0; it.x < MapSize; it.x++)
+		{
+			for (it.y = 0; it.y < MapSize; it.y++)
+			{
+				ManagementWorld->setLocalMapTileTerrain(it, terrain[it.x][it.y]);
+				placeObject(it, objects[it.x][it.y]);
+			}
+		}
+	}
 	void buildLocalMap(TerrainType Base, size_t LocalMapSize = World::DefaultMapSize)
 	{
 		sf::Clock TestClock;
@@ -181,6 +194,10 @@ public:
 
 	bool placeObject(const sf::Vector2u &tile, unsigned ObjectId)
 	{
+		if (ObjectId == 0)
+		{
+			return false;
+		}
 		if (ObjectId >= ObjectsDef->getSize() || ManagementWorld->getLocalMapTileObject(tile) != nullptr)
 		{
 			return false;
