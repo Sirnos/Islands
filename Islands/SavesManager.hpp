@@ -88,6 +88,34 @@ class SavesManager
 			sqlite3_free(error);
 		}
 	}
+
+
+	template<typename vectT>
+	std::vector<std::vector<vectT>> worldBlobToVector(const std::string &tableName, const std::string &colName)
+	{
+		sqlite3_blob * blobHandle;
+		std::vector<std::vector<vectT>> ret;
+
+		int tableRows = 0;
+		SqlQuery(worldDBase, std::string("SELECT Count(*) FROM " + tableName).data(), &tableRows, get_row_count_callback);
+		if (tableRows > 0)
+		{
+			for (int row = 1; row < tableRows + 1; row++)
+			{
+				int results = sqlite3_blob_open(worldDBase, "main", tableName.data(), colName.data(), row, NULL, &blobHandle);
+				if (results == SQLITE_OK)
+				{
+					int blobSize = sqlite3_blob_bytes(blobHandle);
+					ret.push_back(std::vector<vectT>(blobSize / sizeof(vectT)));
+
+					sqlite3_blob_read(blobHandle, ret.back().data(), blobSize, 0);
+				}
+				sqlite3_blob_close(blobHandle);
+			}
+		}
+
+		return ret;
+	}
 public:
 	SavesManager() = delete;
 	SavesManager(const SavesManager &other) = delete;
@@ -308,27 +336,10 @@ public:
 
 	std::vector<std::vector<TerrainType>> loadMapTerrain()
 	{
-		sqlite3_blob *terrainRow;
-		std::vector<std::vector<TerrainType>> ret;
-
-		
-		int terrainRows = 0;
-		SqlQuery(worldDBase, "SELECT Count(*) FROM TERRAIN", &terrainRows, get_row_count_callback);
-		if (terrainRows != 0)
-		{
-			for (size_t row = 1; row < terrainRows + 1; row++)
-			{
-				int results = sqlite3_blob_open(worldDBase, "main", "TERRAIN", "VAL", row, NULL, &terrainRow);
-				if (results == SQLITE_OK)
-				{
-					int rowSize = sqlite3_blob_bytes(terrainRow) / sizeof(TerrainType);
-					ret.push_back(std::vector<TerrainType>(rowSize));
-
-					sqlite3_blob_read(terrainRow, ret.back().data(), rowSize * sizeof(TerrainType), 0);
-				}
-				sqlite3_blob_close(terrainRow);
-			}
-		}
-		return ret;
+		return worldBlobToVector<TerrainType>("TERRAIN", "VAL");
+	}
+	std::vector<std::vector<int>> loadMapObjects()
+	{
+		return worldBlobToVector<int>("OBJECTS", "VAL");
 	}
 };
