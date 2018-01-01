@@ -43,6 +43,9 @@
     <Filter Include="IslandData\Core">
       <UniqueIdentifier>{3ba37099-25d3-4d9e-87f0-8d1baeecaa47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameGui">
+      <UniqueIdentifier>{0a9c9191-9564-4bc7-9334-b03d0ca2f1e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="Directories.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiMenu.hpp">
+      <Filter>Header Files\GameGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

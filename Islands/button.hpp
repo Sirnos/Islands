@@ -16,7 +16,7 @@ public:
 	{}
 	~button() = default;
 
-	sf::Text getText() { return buttText; }
+	const sf::Text &getText() const { return buttText; }
 	sf::Vector2i getInterBoxSize() const { return InteractionBoxSize; }
 	sf::Vector2i getInterBoxPos() const { return InteractionBoxPosition; }
 

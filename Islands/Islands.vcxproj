@@ -147,6 +147,7 @@
     <ClInclude Include="FastNoise\FastNoise.h" />
     <ClInclude Include="GameComponents.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
+    <ClInclude Include="GuiMenu.hpp" />
     <ClInclude Include="LimitedVar.hpp" />
     <ClInclude Include="BiomeValues.hpp" />
     <ClInclude Include="MonsterManager.hpp" />
