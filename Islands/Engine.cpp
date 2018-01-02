@@ -99,8 +99,10 @@ void Engine::checkPlayerBehaviour()
 	}
 }
 
-void Engine::checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field)
+void Engine::checkGuiOperations(const Gui::EquipmentType &type, const sf::Vector2u &field)
 {
+	using namespace Gui;
+
 	unsigned holdedItemId = Player.Inventory.getHoldItem().Id;
 	ItemDefContainer *Items = Components.getItems().get();
 
@@ -497,6 +499,7 @@ Engine::~Engine()
 
 void Engine::operator()(IslandApp &app, char key, mouseWheel last, bool isMouseClickL, bool isMouseClickR)
 {
+	using namespace Gui;
 	LyingItems.clearOldItems(GameClock.getElapsedTime());
 
 	if (GameClock.getElapsedTime() >= lastUpdateLocalMapTime + sf::seconds(GameRules.TimeToUpdateLocalMap))

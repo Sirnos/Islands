@@ -8,7 +8,7 @@
 #include "MonsterManager.hpp"
 #include "SavesManager.hpp"
 
-#include "Gui.hpp"
+#include "GameGui.hpp"
 
 #include "GameComponentsLoader.hpp"
 
@@ -38,7 +38,7 @@ class Engine
 
 
 	Media mediaContainer;
-	Gui GameGui;
+	Gui::GameGui GameGui;
 
 
 	PlayerEntity Player;
@@ -58,7 +58,7 @@ class Engine
 
 	void checkPlayerEnvironment();
 	void checkPlayerBehaviour();
-	void checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field);
+	void checkGuiOperations(const Gui::EquipmentType &type, const sf::Vector2u &field);
 
 
 	void drawConsole(IslandApp &app);

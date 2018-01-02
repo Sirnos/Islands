@@ -104,9 +104,6 @@
     <ClInclude Include="Object.hpp">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Gui.hpp">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="EquipmentFieldInfo.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
@@ -194,7 +191,10 @@
     <ClInclude Include="Directories.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GuiMenu.hpp">
+    <ClInclude Include="GameGui.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuGui.hpp">
       <Filter>Header Files\GameGui</Filter>
     </ClInclude>
   </ItemGroup>

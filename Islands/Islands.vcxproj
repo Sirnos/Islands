@@ -147,7 +147,7 @@
     <ClInclude Include="FastNoise\FastNoise.h" />
     <ClInclude Include="GameComponents.hpp" />
     <ClInclude Include="GameComponentsLoader.hpp" />
-    <ClInclude Include="GuiMenu.hpp" />
+    <ClInclude Include="MenuGui.hpp" />
     <ClInclude Include="LimitedVar.hpp" />
     <ClInclude Include="BiomeValues.hpp" />
     <ClInclude Include="MonsterManager.hpp" />
@@ -163,7 +163,7 @@
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectDef.hpp" />
     <ClInclude Include="PlayerEntity.hpp" />
-    <ClInclude Include="Gui.hpp" />
+    <ClInclude Include="GameGui.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="Recipe.hpp" />
     <ClInclude Include="SavesManager.hpp" />

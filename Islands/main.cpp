@@ -2,6 +2,7 @@
 #include "IslandApp.hpp"
 #include "Engine.hpp"
 #include "EngineVars.hpp"
+#include "MenuGui.hpp"
 
 const sf::Color skyColor = { 54,128,235,60 };
 
