@@ -65,6 +65,10 @@ void run_game(IslandApp &app, const EngineVars &vars)
 
 Gui::MenuStates run_menu(IslandApp &app)
 {
+	sf::Font menuFont;
+	menuFont.loadFromFile(Gui::DEFAULT_MENU_GUI_FONT_LOCATION);
+	Gui::Menu menu(menuFont);
+
 	while (app.getIslandWindow()->isOpen())
 	{
 		while (app.getIslandWindow()->pollEvent(*app.getIslandWindowEvent()))
@@ -73,8 +77,26 @@ Gui::MenuStates run_menu(IslandApp &app)
 			{
 				return Gui::MenuStates::Exit;
 			}
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				Gui::MenuStates state;
+				menu.isClick(state, sf::Mouse::getPosition(*app.getIslandWindow()));
+				if (state != Gui::MenuStates::null)
+				{
+					return state;
+				}
+			}
+
 
 		}
+
+		app.clearContext(sf::Color::Black);
+		app.draw(menu.getStartGameButton());
+		app.draw(menu.getLoadGameButton());
+		app.draw(menu.getModsSettingsButton());
+		app.draw(menu.getSettingsButton());
+		app.draw(menu.getExitButton());
+		app.displayContext();
 	}
 
 	return Gui::MenuStates::Exit;
@@ -85,7 +107,28 @@ int main()
 {
 	EngineVars Vars;
 	IslandApp app{ Vars.Video };
-	run_game(app, Vars);
+
+	while (true)
+	{
+		app.getIslandWindow()->setView(app.getIslandWindow()->getDefaultView());
+		Gui::MenuStates state = run_menu(app);
+
+		if (state == Gui::MenuStates::null)
+		{
+			ErrorHandler::logToFile("Ooops! Game menu return null value");
+			return -1;
+		}
+		else if(state == Gui::MenuStates::NewGame)
+		{
+			run_game(app, Vars);
+		}
+		else if(state == Gui::MenuStates::Exit)
+		{
+			break;
+		}
+	}
+
+	
 
 	return 0;
 }
