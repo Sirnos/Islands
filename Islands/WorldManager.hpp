@@ -64,8 +64,13 @@ public:
 	}
 
 
-	void buildLocalMap(std::vector<std::vector<TerrainType>> &terrain, std::vector<std::vector<int>> &objects, size_t MapSize = World::DefaultMapSize)
+	bool buildLocalMap(std::vector<std::vector<TerrainType>> &terrain, std::vector<std::vector<int>> &objects, size_t MapSize = World::DefaultMapSize)
 	{
+		if (terrain.empty() || objects.empty())
+		{
+			return false;
+		}
+
 		ManagementWorld->resizeLocalMap(MapSize);
 		sf::Vector2u it;
 		for (it.x = 0; it.x < MapSize; it.x++)
@@ -76,6 +81,8 @@ public:
 				placeObject(it, objects[it.x][it.y]);
 			}
 		}
+
+		return true;
 	}
 	void buildLocalMap(TerrainType Base, size_t LocalMapSize = World::DefaultMapSize)
 	{
