@@ -466,7 +466,10 @@ Engine::Engine(const GameVars &game, const RenderVars &render)
 	GWorldManager.AssingItemsDef(Components.getItems());
 	GWorldManager.AssingObjectsDef(Components.getObjects());
 	GWorldManager.AssingWorld(GameWorld);
-	GWorldManager.buildLocalMap(GSavesManager.loadMapTerrain(), GSavesManager.loadMapObjects(), GameRules.LocalMapSize);
+	if (!GWorldManager.buildLocalMap(GSavesManager.loadMapTerrain(), GSavesManager.loadMapObjects(), GameRules.LocalMapSize))
+	{
+		GWorldManager.buildLocalMap(TerrainType::Grass, GameRules.LocalMapSize);
+	}
 
 
 	Player.Stats = Components.getEntities()->getContainer().front().getStats();

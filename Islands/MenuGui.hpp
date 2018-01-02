@@ -12,8 +12,8 @@ namespace Gui
 		NewGame,
 		LoadGame,
 		ModSettings,
-		Settings
-
+		Settings,
+		Exit
 	};
 
 	const static std::string DEFAULT_START_NEW_GAME_TEXT = "Start new game";
