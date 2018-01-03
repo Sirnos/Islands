@@ -436,14 +436,14 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 	preObjectId = ObjectID;
 }
 
-Engine::Engine(const GameVars &game, const RenderVars &render)
+Engine::Engine(const GameVars &game, const RenderVars &render , const std::string &saveName)
 	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, EntityStats(DEFAULT_PLAYER_HP, DEFAULT_PLAYER_MP, DEFAULT_PLAYER_SPEED)),
-	GameRules(game), RenderRules(render), GameWorld(new World), GSavesManager("default"),
+	GameRules(game), RenderRules(render), GameWorld(new World), GSavesManager(saveName),
 	GameConsole(sf::Vector2f(400.0f, 600.0f), sf::Color(36, 10, 92, 120), 16)
 {
 	if (!GSavesManager.isValid())
 	{
-		ErrorHandler::logToFile("cannot open databases \n");
+		ErrorHandler::logToFile("Cannot open databases \n");
 	}
 
 	std::vector<sf::IntRect> terrainTextureCords;

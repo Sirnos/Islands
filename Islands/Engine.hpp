@@ -77,7 +77,7 @@ class Engine
 	void pushItemTextureToRect(const sf::Vector2f &pos, unsigned itemId, sf::RectangleShape &rect);
 
 public:
-	Engine(const GameVars &game, const RenderVars &render);
+	Engine(const GameVars &game, const RenderVars &render, const std::string &saveName = "default");
 	Engine(const Engine &other) = delete;
 	~Engine();
 

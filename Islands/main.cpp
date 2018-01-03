@@ -92,7 +92,6 @@ Gui::MenuStates run_menu(IslandApp &app)
 
 		app.clearContext(sf::Color::Black);
 		app.draw(menu.getStartGameButton());
-		app.draw(menu.getLoadGameButton());
 		app.draw(menu.getModsSettingsButton());
 		app.draw(menu.getSettingsButton());
 		app.draw(menu.getExitButton());
@@ -118,7 +117,7 @@ int main()
 			ErrorHandler::logToFile("Ooops! Game menu return null value");
 			return -1;
 		}
-		else if(state == Gui::MenuStates::NewGame)
+		else if(state == Gui::MenuStates::StartGame)
 		{
 			run_game(app, Vars);
 		}
