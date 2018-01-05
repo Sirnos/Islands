@@ -27,6 +27,9 @@ namespace Gui
 	const static sf::Vector2i DEFAULT_SETTINGS_POS = sf::Vector2i(200, 600);
 	const static sf::Vector2i DEFAULT_EXIT_POS = sf::Vector2i(200, 800);
 
+	const static sf::Vector2i STARTGAME_MENU_DEFAULT_START_GAME_POS = sf::Vector2i(600, 200);
+	const static sf::Vector2i STARTGAME_MENU_DEFAULT_EXIT_POS = sf::Vector2i(600, 600);
+	const static sf::Vector2f STARTGAME_MENU_DEFAULT_GAME_NAME_POS = sf::Vector2f(600, 400);
 
 	const static std::string DEFAULT_MENU_GUI_FONT_LOCATION = "Data/Fonts/ariali.ttf";
 
@@ -96,5 +99,63 @@ namespace Gui
 		}
 	};
 
+	enum class StartGameMenuStates
+	{
+		null,
+		Start,
+		Exit,
+		Close
+	};
+
+	class StartGameMenu
+	{
+		button start;
+		button exit;
+
+		textbox gameName;
+
+	public:
+		StartGameMenu() = delete;
+		StartGameMenu(const StartGameMenu &other) = delete;
+		StartGameMenu(sf::Font &menuFont)
+			: start(menuFont, STARTGAME_MENU_DEFAULT_START_GAME_POS, DEFAULT_MENU_BUTTON_SIZE, DEFAULT_START_GAME_TEXT),
+			exit(menuFont, STARTGAME_MENU_DEFAULT_EXIT_POS, DEFAULT_MENU_BUTTON_SIZE, DEFAULT_EXIT_TEXT),
+			gameName(30, "Type here", menuFont, false)
+		{
+			start.setButtonPosition(static_cast<sf::Vector2f>(STARTGAME_MENU_DEFAULT_START_GAME_POS));
+			exit.setButtonPosition(static_cast<sf::Vector2f>(STARTGAME_MENU_DEFAULT_EXIT_POS));
+			gameName.setPosition(STARTGAME_MENU_DEFAULT_GAME_NAME_POS);
+			gameName.setEnable(true);
+		}
+
+
+		const sf::Text &getStartButton() const
+		{
+			return start.getText();
+		}
+		const sf::Text &getExitButton() const
+		{
+			return exit.getText();
+		}
+		const sf::Text &getGameNameText() const
+		{
+			return gameName.getText();
+		}
+
+
+		bool isStartClick(const sf::Vector2i &mousePos)
+		{
+			return start.isClick(mousePos);
+		}
+		bool isExitClick(const sf::Vector2i &mousePos)
+		{
+			return exit.isClick(mousePos);
+		}
+
+		std::string getGameName(sf::Event &events)
+		{
+			return gameName(events);
+		}
+	};
 }
 

@@ -93,7 +93,8 @@ public:
 		String = str;
 		TXBOX_text.setString(str);
 	}
-	sf::Text getText() { return TXBOX_text; }
+
+	const sf::Text &getText() const { return TXBOX_text; }
 
 	void setEnable(bool var) { IsEnable = var; }
 	void switchEnable()

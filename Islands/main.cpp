@@ -101,6 +101,53 @@ Gui::MenuStates run_menu(IslandApp &app)
 	return Gui::MenuStates::Exit;
 }
 
+Gui::StartGameMenuStates run_start_game_menu(IslandApp &app)
+{
+	sf::Font menuFont;
+	menuFont.loadFromFile(Gui::DEFAULT_GAME_GUI_FONT_LOCATION);
+	Gui::StartGameMenu startMenu(menuFont);
+
+	while (app.getIslandWindow()->isOpen())
+	{
+		while (app.getIslandWindow()->pollEvent(*app.getIslandWindowEvent()))
+		{
+			if (app.getIslandWindowEvent()->type == sf::Event::Closed)
+			{
+				return Gui::StartGameMenuStates::Close;
+			}
+
+			std::string gameNameStr = startMenu.getGameName(*app.getIslandWindowEvent());
+			if (!gameNameStr.empty())
+			{
+				return Gui::StartGameMenuStates::Start;
+			}
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				if (startMenu.isStartClick(sf::Mouse::getPosition(*app.getIslandWindow())))
+				{
+					if (!startMenu.getGameNameText().getString().isEmpty())
+					{
+						return Gui::StartGameMenuStates::Start;
+					}
+				}
+				if (startMenu.isExitClick(sf::Mouse::getPosition(*app.getIslandWindow())))
+				{
+					return Gui::StartGameMenuStates::Exit;
+				}
+			}
+		}
+
+
+		app.clearContext(sf::Color::Black);
+		app.draw(startMenu.getStartButton());
+		app.draw(startMenu.getGameNameText());
+		app.draw(startMenu.getExitButton());
+		app.displayContext();
+	}
+
+	return Gui::StartGameMenuStates::null;
+}
 
 int main()
 {
@@ -119,7 +166,16 @@ int main()
 		}
 		else if(state == Gui::MenuStates::StartGame)
 		{
-			run_game(app, Vars);
+			Gui::StartGameMenuStates startState = run_start_game_menu(app);
+			if (startState == Gui::StartGameMenuStates::Close)
+			{
+				break;
+			}
+			else if(startState == Gui::StartGameMenuStates::Start)
+			{
+				run_game(app, Vars);
+			}
+			
 		}
 		else if(state == Gui::MenuStates::Exit)
 		{
