@@ -462,7 +462,6 @@ Engine::Engine(const GameVars &game, const RenderVars &render , const std::strin
 	GWorldManager.AssingObjectsDef(Components.getObjects());
 	GWorldManager.AssingWorld(GameWorld);
 
-
 	SavesManager Save(CurrentSaveName);
 	if (Save.isSaveExist())
 	{

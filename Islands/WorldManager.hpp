@@ -70,7 +70,6 @@ public:
 		{
 			return false;
 		}
-	
 
 		ManagementWorld->resizeLocalMap(MapSize);
 		sf::Vector2u it;
