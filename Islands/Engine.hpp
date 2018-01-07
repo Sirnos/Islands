@@ -25,14 +25,13 @@
 
 class Engine
 {
+	std::string CurrentSaveName;
 	GameVars GameRules;
 	RenderVars RenderRules;
 
 
 	WorldManager GWorldManager;
 	MonsterManager GMonsterManager;
-	SavesManager GSavesManager;
-
 	std::shared_ptr<World> GameWorld;
 	GameComponents Components;
 

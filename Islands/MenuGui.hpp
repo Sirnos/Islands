@@ -120,7 +120,7 @@ namespace Gui
 		StartGameMenu(sf::Font &menuFont)
 			: start(menuFont, STARTGAME_MENU_DEFAULT_START_GAME_POS, DEFAULT_MENU_BUTTON_SIZE, DEFAULT_START_GAME_TEXT),
 			exit(menuFont, STARTGAME_MENU_DEFAULT_EXIT_POS, DEFAULT_MENU_BUTTON_SIZE, DEFAULT_EXIT_TEXT),
-			gameName(30, "Type here", menuFont, false)
+			gameName(30, "default", menuFont, false)
 		{
 			start.setButtonPosition(static_cast<sf::Vector2f>(STARTGAME_MENU_DEFAULT_START_GAME_POS));
 			exit.setButtonPosition(static_cast<sf::Vector2f>(STARTGAME_MENU_DEFAULT_EXIT_POS));

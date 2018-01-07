@@ -75,7 +75,8 @@ class SavesManager
 	sqlite3 *playerDBase;
 	sqlite3 *worldDBase;
 
-	bool valid = true;
+
+	bool saveExist = false;
 
 
 	void SqlQuery(sqlite3 *Dbase, const std::string &query, void *Data = nullptr, sqlite3_callback callback = empty_sql_callback)
@@ -88,7 +89,6 @@ class SavesManager
 			sqlite3_free(error);
 		}
 	}
-
 
 	template<typename vectT>
 	std::vector<std::vector<vectT>> worldBlobToVector(const std::string &tableName, const std::string &colName)
@@ -139,25 +139,15 @@ public:
 
 		if (!fs::exists(currentSaveDirPath))
 		{
-			if (!fs::create_directory(currentSaveDirPath))
-			{
-				valid = false;
-			}		
+			saveExist = false;
+			fs::create_directory(currentSaveDirPath);
 		}
 
 		sqlite3_open(pathToPlayerDBase.string().data(), &playerDBase);
 		ErrorHandler::logToFile(sqlite3_errmsg(playerDBase));
-		if (!fs::exists(pathToPlayerDBase))
-		{
-			valid = false;
-		}
 
 		sqlite3_open(pathToWorldDBase.string().data(), &worldDBase);
 		ErrorHandler::logToFile(sqlite3_errmsg(worldDBase));
-		if (!fs::exists(pathToPlayerDBase))
-		{
-			valid = false;
-		}
 	}
 	~SavesManager()
 	{
@@ -166,16 +156,14 @@ public:
 	}
 
 
-	bool isValid() const
+	bool isSaveExist() const
 	{
-		return valid;
+		return saveExist;
 	}
 
 
 	void savePlayerStats(const PlayerEntity &player)
 	{
-		if (!isValid()) { return; }
-
 		std::string playerHpMax = std::to_string(player.Stats.HP.getLimit());
 		std::string playerHp = std::to_string(player.Stats.HP.getVar());
 		std::string playerMpMax = std::to_string(player.Stats.MP.getLimit());
@@ -208,11 +196,10 @@ public:
 		insertPlayerStatsQueryStr += (playerPosStr + ");");
 
 		SqlQuery(playerDBase, insertPlayerStatsQueryStr.data());
+
 	}
 	void savePlayerInventory(const PlayerInventory &playerInv)
 	{
-		if (!isValid()) { return; }
-
 		SqlQuery(playerDBase, 
 			"CREATE TABLE IF NOT EXISTS INVENTORY(" \
 			"ID  INT  NOT NULL," \
@@ -239,15 +226,15 @@ public:
 			SqlQuery(playerDBase, insertQuery);
 			insertQuery = insertQueryBegin;
 		}
+
 	}
 
 
 	void loadPlayerStats(PlayerEntity &player)
 	{
-		if (!isValid()) { return; }
-
 		std::string query = "SELECT * FROM STATS;";
 		SqlQuery(playerDBase, query, &player, get_player_stats_callback);
+
 	}
 	void loadPlayerInventory(PlayerInventory &playerInv)
 	{
@@ -281,6 +268,7 @@ public:
 			}
 			playerInv.setHoldItem(inventoryBuffer[bufferOffset]);
 		}
+
 	}
 
 
@@ -331,6 +319,7 @@ public:
 			terrainRow.clear();
 			objectsRow.clear();
 		}
+
 	}
 
 

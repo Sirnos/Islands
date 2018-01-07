@@ -438,14 +438,9 @@ void Engine::drawObject(size_t &preObjectId, const sf::Vector2u &objectIndex, sf
 
 Engine::Engine(const GameVars &game, const RenderVars &render , const std::string &saveName)
 	:Player(sf::RectangleShape{ sf::Vector2f(48,64) }, EntityStats(DEFAULT_PLAYER_HP, DEFAULT_PLAYER_MP, DEFAULT_PLAYER_SPEED)),
-	GameRules(game), RenderRules(render), GameWorld(new World), GSavesManager(saveName),
+	GameRules(game), RenderRules(render), GameWorld(new World), CurrentSaveName(saveName),
 	GameConsole(sf::Vector2f(400.0f, 600.0f), sf::Color(36, 10, 92, 120), 16)
 {
-	if (!GSavesManager.isValid())
-	{
-		ErrorHandler::logToFile("Cannot open databases \n");
-	}
-
 	std::vector<sf::IntRect> terrainTextureCords;
 	GameComponentsLoader::loadTerrainTextureCoords(terrainTextureCords);
 	mediaContainer.pushTextures(TextureContainer::TerrainTextures, boost::filesystem::current_path().string() + SETTINGS_DIR.string() + "Terrain.png", terrainTextureCords);
@@ -466,36 +461,42 @@ Engine::Engine(const GameVars &game, const RenderVars &render , const std::strin
 	GWorldManager.AssingItemsDef(Components.getItems());
 	GWorldManager.AssingObjectsDef(Components.getObjects());
 	GWorldManager.AssingWorld(GameWorld);
-	if (!GWorldManager.buildLocalMap(GSavesManager.loadMapTerrain(), GSavesManager.loadMapObjects(), GameRules.LocalMapSize))
+
+
+	SavesManager Save(CurrentSaveName);
+	if (Save.isSaveExist())
+	{
+		GWorldManager.buildLocalMap(Save.loadMapTerrain(), Save.loadMapObjects(), GameRules.LocalMapSize);
+		Save.loadPlayerStats(Player);
+		Save.loadPlayerInventory(Player.Inventory);
+	}
+	else
 	{
 		GWorldManager.buildLocalMap(TerrainType::Grass, GameRules.LocalMapSize);
+		Player.Stats = Components.getEntities()->getContainer().front().getStats();
+		sf::Vector2f playerSpawnPos = GWorldManager.getSpawnPosition();
+
+		ErrorHandler::log(std::string("Spawn Player position:"));
+		ErrorHandler::log("Tile Y " + std::to_string(World::getTiledPosition(playerSpawnPos).y));
+		ErrorHandler::log("Tile X " + std::to_string(World::getTiledPosition(playerSpawnPos).x));
+
+		Player.setPosition(playerSpawnPos);
+		Player.setSpawnPoint(playerSpawnPos);
 	}
 
-
-	Player.Stats = Components.getEntities()->getContainer().front().getStats();
 	Player.pushTexture(mediaContainer.getTexture(TextureContainer::EntitiesTextures, 1));
-	sf::Vector2f playerSpawnPos = GWorldManager.getSpawnPosition();
 
-	ErrorHandler::log(std::string("Spawn Player position:"));
-	ErrorHandler::log("Tile Y " + std::to_string(World::getTiledPosition(playerSpawnPos).y));
-	ErrorHandler::log("Tile X " + std::to_string(World::getTiledPosition(playerSpawnPos).x));
-
-	Player.setPosition(playerSpawnPos);
-	Player.setSpawnPoint(playerSpawnPos);
 
 	GMonsterManager.assingMonsterWorld(GameWorld);
 	GMonsterManager.addEntityToObserved(&Player);
-
-	GSavesManager.loadPlayerStats(Player);
-	GSavesManager.loadPlayerInventory(Player.Inventory);
 }
 
 Engine::~Engine()
 {
-	GSavesManager.savePlayerStats(Player);
-	GSavesManager.savePlayerInventory(Player.Inventory);
-	GSavesManager.saveLocalMap(GameWorld->getLocalMap());
-
+	SavesManager Save(CurrentSaveName);
+	Save.savePlayerInventory(Player.Inventory);
+	Save.savePlayerStats(Player);
+	Save.saveLocalMap(GameWorld->getLocalMap());
 
 	ErrorHandler::log("Clear data");
 }
