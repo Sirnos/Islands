@@ -22,7 +22,7 @@ class IslandApp
 public:
 	IslandApp(VideoVars &v1)
 	{
-		sf::VideoMode appVideoMode{ v1.WindowSize.x,v1.WindowSize.y,v1.BitsPerPixel };
+		sf::VideoMode appVideoMode{ v1.WindowSize.x, v1.WindowSize.y, v1.BitsPerPixel };
 
 		if (!appVideoMode.isValid())
 		{

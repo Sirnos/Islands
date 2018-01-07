@@ -8,7 +8,7 @@
 #include "MonsterManager.hpp"
 #include "SavesManager.hpp"
 
-#include "Gui.hpp"
+#include "GameGui.hpp"
 
 #include "GameComponentsLoader.hpp"
 
@@ -25,20 +25,19 @@
 
 class Engine
 {
+	std::string CurrentSaveName;
 	GameVars GameRules;
 	RenderVars RenderRules;
 
 
 	WorldManager GWorldManager;
 	MonsterManager GMonsterManager;
-	SavesManager GSavesManager;
-
 	std::shared_ptr<World> GameWorld;
 	GameComponents Components;
 
 
 	Media mediaContainer;
-	Gui GameGui;
+	Gui::GameGui GameGui;
 
 
 	PlayerEntity Player;
@@ -58,7 +57,7 @@ class Engine
 
 	void checkPlayerEnvironment();
 	void checkPlayerBehaviour();
-	void checkGuiOperations(const EquipmentType &type, const sf::Vector2u &field);
+	void checkGuiOperations(const Gui::EquipmentType &type, const sf::Vector2u &field);
 
 
 	void drawConsole(IslandApp &app);
@@ -77,7 +76,7 @@ class Engine
 	void pushItemTextureToRect(const sf::Vector2f &pos, unsigned itemId, sf::RectangleShape &rect);
 
 public:
-	Engine(const GameVars &game, const RenderVars &render);
+	Engine(const GameVars &game, const RenderVars &render, const std::string &saveName = "default");
 	Engine(const Engine &other) = delete;
 	~Engine();
 
