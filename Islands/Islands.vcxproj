@@ -159,7 +159,6 @@
     <ClInclude Include="ErrorHandler.hpp" />
     <ClInclude Include="LyingItemsContainer.hpp" />
     <ClInclude Include="Media.hpp" />
-    <ClInclude Include="menus.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectDef.hpp" />
     <ClInclude Include="PlayerEntity.hpp" />

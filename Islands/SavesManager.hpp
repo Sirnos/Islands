@@ -142,6 +142,10 @@ public:
 			saveExist = false;
 			fs::create_directory(currentSaveDirPath);
 		}
+		else
+		{
+			saveExist = true;
+		}
 
 		sqlite3_open(pathToPlayerDBase.string().data(), &playerDBase);
 		ErrorHandler::logToFile(sqlite3_errmsg(playerDBase));

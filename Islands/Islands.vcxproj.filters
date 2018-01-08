@@ -43,9 +43,6 @@
     <Filter Include="IslandData\Core">
       <UniqueIdentifier>{3ba37099-25d3-4d9e-87f0-8d1baeecaa47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameGui">
-      <UniqueIdentifier>{0a9c9191-9564-4bc7-9334-b03d0ca2f1e8}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,9 +60,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IslandMenu.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="menus.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Media.hpp">
@@ -105,9 +99,6 @@
       <Filter>Header Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="EquipmentFieldInfo.hpp">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CraftingGui.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="CraftingSystem.hpp">
@@ -188,14 +179,17 @@
     <ClInclude Include="SavesManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Directories.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CraftingGui.hpp">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="GameGui.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="MenuGui.hpp">
-      <Filter>Header Files\GameGui</Filter>
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Directories.hpp">
+      <Filter>Header Files\other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
