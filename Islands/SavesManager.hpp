@@ -11,29 +11,6 @@ const static std::string DEFAULT_PLAYER_DBASE_NAME{ "player.db" };
 const static std::string DEFAULT_WORLD_DBASE_NAME{ "world.db" };
 
 
-static int empty_sql_callback(void *NotUsed, int argc, char **argv, char **azColName)
-{
-	return 0;
-}
-
-static int get_player_inventory_callback(void *vectorInventory, int argc, char **argv, char **ColName) 
-{
-	auto getIntParam = [argv](int n_argv)->unsigned
-	{
-		return static_cast<unsigned>(std::stoi(std::string(argv[n_argv])));
-	};
-
-	if (argc == 2)
-	{
-		auto ptrToVector = static_cast<std::vector<ItemField>*>(vectorInventory);
-		if (ptrToVector != nullptr)
-		{
-			ptrToVector->push_back(ItemField{ getIntParam(0), getIntParam(1) });
-		}
-	}
-	return 0;
-}
-
 static int get_row_count_callback(void *ptrToInt, int argc, char **argv, char **ColName)
 {
 	if (ptrToInt != nullptr)
@@ -47,6 +24,7 @@ static int get_row_count_callback(void *ptrToInt, int argc, char **argv, char **
 	return 0;
 }
 
+
 class SavesManager
 {
 	sqlite3 *playerDBase;
@@ -56,7 +34,8 @@ class SavesManager
 	bool saveExist = false;
 
 
-	void SqlQuery(sqlite3 *Dbase, const std::string &query, void *Data = nullptr, sqlite3_callback callback = empty_sql_callback)
+	void SqlQuery(sqlite3 *Dbase, const std::string &query, void *Data = nullptr, 
+		sqlite3_callback callback = [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; })
 	{
 		char *error;
 		sqlite3_exec(Dbase, query.data(), callback, Data, &error);
@@ -244,7 +223,25 @@ public:
 	void loadPlayerInventory(PlayerInventory &playerInv)
 	{
 		std::vector<ItemField> inventoryBuffer;
-		SqlQuery(playerDBase, "SELECT * FROM INVENTORY;", &inventoryBuffer, get_player_inventory_callback);
+		static auto getPlayerInventory = [](void *vectorInventory, int argc, char **argv, char **ColName)->int
+		{
+			auto getIntParam = [argv](int n_argv)->unsigned
+			{
+				return static_cast<unsigned>(std::stoi(std::string(argv[n_argv])));
+			};
+
+			if (argc == 2)
+			{
+				auto ptrToVector = static_cast<std::vector<ItemField>*>(vectorInventory);
+				if (ptrToVector != nullptr)
+				{
+					ptrToVector->push_back(ItemField{ getIntParam(0), getIntParam(1) });
+				}
+			}
+			return 0;
+		};
+
+		SqlQuery(playerDBase, "SELECT * FROM INVENTORY;", &inventoryBuffer, getPlayerInventory);
 
 		if (!inventoryBuffer.empty())
 		{
