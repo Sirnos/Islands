@@ -6,36 +6,13 @@
 #include "Directories.hpp"
 #include "PlayerEntity.hpp"
 
-const std::string playerDBaseName{ "player.db" };
-const std::string worldDBaseName{ "world.db" };
+
+const static std::string DEFAULT_PLAYER_DBASE_NAME{ "player.db" };
+const static std::string DEFAULT_WORLD_DBASE_NAME{ "world.db" };
+
 
 static int empty_sql_callback(void *NotUsed, int argc, char **argv, char **azColName)
 {
-	return 0;
-}
-
-static int get_player_stats_callback(void *Player, int argc, char **argv, char **ColName)
-{
-	if (argc == 6)
-	{
-		auto getFloatRowParam = [argv](int n_argv)->float
-		{
-			return std::stof(std::string(argv[n_argv]));
-		};
-
-		float HpMax = getFloatRowParam(0);
-		float Hp = getFloatRowParam(1);
-		float MpMax = getFloatRowParam(2);
-		float Mp = getFloatRowParam(3);
-		sf::Vector2f Position(getFloatRowParam(4), getFloatRowParam(5));
-
-		auto ptrToPlayer = static_cast<PlayerEntity*>(Player);
-		if (ptrToPlayer != nullptr)
-		{
-			ptrToPlayer->Stats.operator=(EntityStats(HpMax, MpMax, DEFAULT_PLAYER_SPEED, Hp, Mp));
-			ptrToPlayer->setPosition(Position);
-		}
-	}
 	return 0;
 }
 
@@ -134,8 +111,8 @@ public:
 
 			return toBuild;
 		};
-		fs::path pathToPlayerDBase{ buildPathToFile(playerDBaseName) };
-		fs::path pathToWorldDBase{ buildPathToFile(worldDBaseName) };
+		fs::path pathToPlayerDBase{ buildPathToFile(DEFAULT_PLAYER_DBASE_NAME) };
+		fs::path pathToWorldDBase{ buildPathToFile(DEFAULT_WORLD_DBASE_NAME) };
 
 		if (!fs::exists(currentSaveDirPath))
 		{
@@ -173,9 +150,8 @@ public:
 		std::string playerMpMax = std::to_string(player.Stats.MP.getLimit());
 		std::string playerMp = std::to_string(player.Stats.MP.getVar());
 
-		sf::Vector2f playerPos = player.getBody().getPosition();
-		std::string playerPosStr = std::to_string(playerPos.x);
-		playerPosStr += (", " + std::to_string(playerPos.y));
+		std::string playerPosStr = std::to_string(player.getBody().getPosition().x);
+		playerPosStr += (", " + std::to_string(player.getBody().getPosition().y));
 
 		SqlQuery(playerDBase,
 			"CREATE TABLE IF NOT EXISTS STATS(" \
@@ -237,7 +213,32 @@ public:
 	void loadPlayerStats(PlayerEntity &player)
 	{
 		std::string query = "SELECT * FROM STATS;";
-		SqlQuery(playerDBase, query, &player, get_player_stats_callback);
+		static auto getPlayerStats = [](void *Player, int argc, char **argv, char **ColName)->int
+		{
+			if (argc == 6)
+			{
+				auto getFloatRowParam = [argv](int n_argv)->float
+				{
+					return std::stof(std::string(argv[n_argv]));
+				};
+
+				float HpMax = getFloatRowParam(0);
+				float Hp = getFloatRowParam(1);
+				float MpMax = getFloatRowParam(2);
+				float Mp = getFloatRowParam(3);
+				sf::Vector2f Position(getFloatRowParam(4), getFloatRowParam(5));
+
+				auto ptrToPlayer = static_cast<PlayerEntity*>(Player);
+				if (ptrToPlayer != nullptr)
+				{
+					ptrToPlayer->Stats.operator=(EntityStats(HpMax, MpMax, DEFAULT_PLAYER_SPEED, Hp, Mp));
+					ptrToPlayer->setPosition(Position);
+				}
+			}
+			return 0;
+		};
+
+		SqlQuery(playerDBase, query, &player, getPlayerStats);
 
 	}
 	void loadPlayerInventory(PlayerInventory &playerInv)
