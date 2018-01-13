@@ -246,3 +246,6 @@ log.txt
 
 # databases
 *.db
+
+# CMake Settings
+CMakeSettings.json
