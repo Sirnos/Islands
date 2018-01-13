@@ -80,13 +80,13 @@ set(SRC
 )
 
 	
-	include_directories(${SFML_INCLUDE_DIR})
-	include_directories(${SQLITE3_INCLUDE_DIR})
-	include_directories(${RAPIDXML_INCLUDE_DIRS})
-	include_directories(${BOOST_INCLUDE_DIRS})
-	
-	add_executable(Islands ${SRC})
-	
-	target_link_libraries(Islands ${SFML_LIBRARIES})
-	target_link_libraries(Islands ${SQLITE3_LIBRARIES})
-	target_link_libraries(Islands Boost::boost Boost::system Boost::filesystem)
+include_directories(${SFML_INCLUDE_DIR})
+include_directories(${SQLITE3_INCLUDE_DIR})
+include_directories(${RAPIDXML_INCLUDE_DIRS})
+include_directories(${BOOST_INCLUDE_DIRS})
+
+add_executable(Islands ${SRC})
+
+target_link_libraries(Islands ${SFML_LIBRARIES})
+target_link_libraries(Islands ${SQLITE3_LIBRARIES})
+target_link_libraries(Islands Boost::boost Boost::system Boost::filesystem)
