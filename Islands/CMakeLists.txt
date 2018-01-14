@@ -36,7 +36,6 @@ set(SRC
 	Directories.hpp
 	Engine.cpp
 	Engine.hpp
-	Engine.xml
 	EngineVars.hpp
 	Entity.hpp
 	EntityBehavior.hpp

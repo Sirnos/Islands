@@ -6,6 +6,8 @@
 #include "TypesFromText.hpp"
 #include <array>
 
+const static std::string DEFAULT_ENGINE_SETTINGS_FILE_POS = "Data/Settings/Engine.xml";
+
 struct VideoVars
 {
 	sf::Vector2u WindowSize{ 1280, 1024 };
@@ -51,7 +53,7 @@ struct EngineVars
 
 	EngineVars()
 	{
-		rapidxml::file<> VarsFile("Engine.xml");
+		rapidxml::file<> VarsFile(DEFAULT_ENGINE_SETTINGS_FILE_POS.data());
 		rapidxml::xml_document<> Vars;
 		Vars.parse<0>(VarsFile.data());
 
